@@ -5,7 +5,7 @@
 
 #include <graphics/Renderer.h>
 #include <graphics/API/DXCommon.h>
-#include <graphics/shader/DXShader/DXStaticShader.h>
+#include <graphics/shader/DXShader/DXTextureShader.h>
 #include <graphics/camera/Camera.h>
 
 namespace zaap { namespace graphics { namespace DX {
@@ -31,7 +31,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11Texture2D *m_DepthStencil;
 		ID3D11DepthStencilView *m_DepthStencilView;
 
-		DXStaticShader m_Shader;
+		DXTextureShader m_Shader;
 
 		Camera* m_Camera;
 	protected:

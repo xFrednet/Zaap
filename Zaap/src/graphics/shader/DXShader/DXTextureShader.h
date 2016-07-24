@@ -10,7 +10,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
-	class ZAAP_API DXStaticShader : public DXShader
+	class ZAAP_API DXTextureShader : public DXShader
 	{
 		struct VS_MATRIX_BUFFER
 		{
@@ -42,7 +42,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11Buffer *m_LightColorBuffer;
 		PS_LIGHTCOLOR_BUFFER m_LightColorStruct;
 	public:
-		DXStaticShader(void);
+		DXTextureShader(void);
 
 		//matrix loader
 		void loadTransformationMatrix(math::Mat4 &matrix);

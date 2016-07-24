@@ -1,6 +1,6 @@
 #include "DXContext.h"
 
-#include <graphics/shader/DXShader/DXStaticShader.h>
+#include <graphics/shader/DXShader/DXTextureShader.h>
 #include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {

@@ -170,7 +170,7 @@
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
-    <ClCompile Include="src\graphics\shader\DXShader\DXStaticShader.cpp" />
+    <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathHelper.cpp" />
@@ -215,7 +215,7 @@
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />
-    <ClInclude Include="src\graphics\shader\DXShader\DXStaticShader.h" />
+    <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
     <ClInclude Include="src\maths\Mat4.h" />
@@ -231,7 +231,7 @@
     <ClInclude Include="src\Zaap.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Sandbox\DXStaticShader.shader" />
+    <None Include="..\Sandbox\DXTextureShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

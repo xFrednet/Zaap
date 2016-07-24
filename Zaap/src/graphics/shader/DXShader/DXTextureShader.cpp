@@ -1,4 +1,4 @@
-#include "DXStaticShader.h"
+#include "DXTextureShader.h"
 
 #include <maths/Maths.h>
 #include <graphics/API/DXContext.h>
@@ -13,15 +13,15 @@ D3D11_INPUT_ELEMENT_DESC ied[] = {
 
 namespace zaap { namespace graphics { namespace DX {
 
-	DXStaticShader::DXStaticShader(void)
+	DXTextureShader::DXTextureShader(void)
 		: DXShader()
 	{
-		if (loadShaders("DXStaticShader.shader", "DXStaticShader.shader", ied, 3))
+		if (loadShaders("DXTextureShader.shader", "DXTextureShader.shader", ied, 3))
 		{
-			ZAAP_INFO("DXStaticShader: compiled successfully");
+			ZAAP_INFO("DXTextureShader: compiled successfully");
 		} else
 		{
-			ZAAP_ALERT("DXStaticShader: compiling failed");
+			ZAAP_ALERT("DXTextureShader: compiling failed");
 			system("pause"); //TODO remove Debugcode
 		}
 
@@ -47,10 +47,10 @@ namespace zaap { namespace graphics { namespace DX {
 			initData.SysMemSlicePitch	= 0;
 
 			result = dev->CreateBuffer(&bDesc, &initData, &m_MarixBuffer);
-			DXNAME(m_MarixBuffer, "DXStaticShader::m_MarixBuffer")
+			DXNAME(m_MarixBuffer, "DXTextureShader::m_MarixBuffer")
 
 			if (FAILED(result))
-				ZAAP_ERROR("DXStaticShader: Could not create m_MarixBuffer");
+				ZAAP_ERROR("DXTextureShader: Could not create m_MarixBuffer");
 
 			devcon->VSSetConstantBuffers(0, 1, &m_MarixBuffer);
 		}
@@ -73,10 +73,10 @@ namespace zaap { namespace graphics { namespace DX {
 			initData.SysMemSlicePitch	= 0;
 
 			result = dev->CreateBuffer(&bDesc, &initData, &m_LightBuffer);
-			DXNAME(m_LightBuffer, "DXStaticShader::m_LightBuffer");
+			DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
 
 			if (FAILED(result))
-				ZAAP_ERROR("DXStaticShader: Could not create m_LightBuffer");
+				ZAAP_ERROR("DXTextureShader: Could not create m_LightBuffer");
 
 			devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
 		}
@@ -101,7 +101,7 @@ namespace zaap { namespace graphics { namespace DX {
 			initData.SysMemSlicePitch	= 0;
 
 			dev->CreateBuffer(&bDesc, &initData, &m_LightColorBuffer);
-			DXNAME(m_LightColorBuffer, "DXStaticShader::m_LightColorBuffer");
+			DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
 
 			devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 		}
@@ -110,26 +110,26 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Matrix loader
 	//
-	void DXStaticShader::loadTransformationMatrix(math::Mat4& matrix)
+	void DXTextureShader::loadTransformationMatrix(math::Mat4& matrix)
 	{
 		m_MatrixBufferStruct.TransformationMatrix = matrix;
 
 		loadMarixBuffer();
 	}
-	void DXStaticShader::loadProjectionMatrix(math::Mat4& matrix)
+	void DXTextureShader::loadProjectionMatrix(math::Mat4& matrix)
 	{
 		m_MatrixBufferStruct.ProjectionMatrix = matrix;
 
 		loadMarixBuffer();
 	}
-	void DXStaticShader::loadViewMatrix(math::Mat4& matrix)
+	void DXTextureShader::loadViewMatrix(math::Mat4& matrix)
 	{
 		m_MatrixBufferStruct.ViewMatrix = matrix;
 
 		loadMarixBuffer();
 	}
 	
-	void DXStaticShader::loadMarixBuffer() const
+	void DXTextureShader::loadMarixBuffer() const
 	{
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 		D3D11_MAPPED_SUBRESOURCE ms;
@@ -142,7 +142,7 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Light loader
 	//
-	void DXStaticShader::loadLight(const Light* light)
+	void DXTextureShader::loadLight(const Light* light)
 	{
 		//
 		// Light position
@@ -169,11 +169,11 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 	}
 
-	void DXStaticShader::cleanup()
+	void DXTextureShader::cleanup()
 	{
 		DXRELEASE(m_MarixBuffer);
 		DXRELEASE(m_LightBuffer);
 		cleanDXShader();
-		ZAAP_CLEANUP_LOG("DXStaticShader");
+		ZAAP_CLEANUP_LOG("DXTextureShader");
 	}
 }}}
