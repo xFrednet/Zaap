@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{a0d2758c-428d-4d8a-8a7d-d813d208cfaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\util">
+      <UniqueIdentifier>{0f706254-8331-4ca4-b3df-0d1d11f3339c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics">
+      <UniqueIdentifier>{f9c4f286-d2ac-4b95-85d2-184a25f9b3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\DX">
+      <UniqueIdentifier>{08e189bf-5b6c-41f6-9fd4-45a0a3348f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\API">
+      <UniqueIdentifier>{a78203de-f215-40f7-af68-c07f4fe21d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\shader">
+      <UniqueIdentifier>{3786fd76-937f-4f4e-a927-5d4540b23790}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\shader\DXShader">
+      <UniqueIdentifier>{11eac766-f16c-428b-b2f3-e65535e0d280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\maths">
+      <UniqueIdentifier>{1a0810fa-72de-49bb-b4de-4dd444cba215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\app">
+      <UniqueIdentifier>{4b7fb207-8a6f-46cc-8224-2413c80b59bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\camera">
+      <UniqueIdentifier>{72ef83b0-ab68-47f7-aad8-a933e960bd1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\events">
+      <UniqueIdentifier>{ff50829f-cec1-47e4-bfbb-fd31a35b82f0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\util\Console.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\StringUtil.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Bitmap.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\ImageLoader.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Loader.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Mesh.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Renderer.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DXShader\DXStaticShader.cpp">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\Context.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DXContext.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\Texture.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\Texture2D.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\VertexBuffer.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\DX\DXLoader.cpp">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\DX\DXRenderer.cpp">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\DX\DXTexture2D.cpp">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Mat4.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vec2.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vec3.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vec4.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Application.cpp">
+      <Filter>Source Files\src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Window.cpp">
+      <Filter>Source Files\src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\TexturedMesh.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Model.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\MathHelper.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\Camera.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\events\Event.cpp">
+      <Filter>Source Files\src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\events\Input.cpp">
+      <Filter>Source Files\src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\ControllableCamera.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\TextureManager.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Scene.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\DX\DXVertexBuffer.cpp">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\TMeshManager.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Common.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Types.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Console.h">
+      <Filter>Source Files\src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\StringUtil.h">
+      <Filter>Source Files\src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Bitmap.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\ImageLoader.h">
+      <Filter>Source Files\src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Loader.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Mesh.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Renderer.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\Shader.h">
+      <Filter>Source Files\src\graphics\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\DXShader\DXStaticShader.h">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\DXShader\DXShader.h">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\Context.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DXCommon.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DXContext.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\Texture.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\Texture2D.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\VertexBuffer.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\DX\DXLoader.h">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\DX\DXRenderer.h">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\DX\DXTexture2D.h">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Mat4.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Maths.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Vec2.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Vec3.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Vec4.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\Application.h">
+      <Filter>Source Files\src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\Window.h">
+      <Filter>Source Files\src\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Zaap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\TexturedMesh.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Model.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\MathHelper.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\Camera.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\Event.h">
+      <Filter>Source Files\src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\EventManager.h">
+      <Filter>Source Files\src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\Input.h">
+      <Filter>Source Files\src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\ControllableCamera.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\TextureManager.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\3DScene.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Scene.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\DX\DXVertexBuffer.h">
+      <Filter>Source Files\src\graphics\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\TMeshManager.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Sandbox\DXStaticPShader.shader">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
+    <None Include="..\Sandbox\DXStaticVShader.shader">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
+  </ItemGroup>
+</Project>
