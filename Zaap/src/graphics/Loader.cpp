@@ -1,6 +1,6 @@
 #include "Loader.h"
 
-#include "util/Console.h"
+#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 

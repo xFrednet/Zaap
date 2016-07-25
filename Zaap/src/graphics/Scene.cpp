@@ -1,21 +1,19 @@
 #include "Scene.h"
-#include "util/Console.h"
 
 namespace zaap { namespace graphics {
 	
-	void Scene::addModel(Model* model)
+	void Scene::addEntity(Entity* model)
 	{
-		//addModel if it is not present aleady
-		m_Models.push_back(model);
+		m_Entities.push_back(model);
 	}
 
-	void Scene::removeModel(Model* model)
+	void Scene::removeEntity(Entity* model)
 	{
-		for (unsigned int i = 0; i < m_Models.size(); i++)
+		for (unsigned int i = 0; i < m_Entities.size(); i++)
 		{
-			if (model == m_Models[i])
+			if (model == m_Entities[i])
 			{
-				m_Models.erase(m_Models.begin() + i);
+				m_Entities.erase(m_Entities.begin() + i);
 				return;
 			}
 		}
@@ -24,7 +22,7 @@ namespace zaap { namespace graphics {
 
 	void Scene::render() const
 	{
-		Renderer::RenderModelArray(m_Models);
+		Renderer::RenderEntityArray(m_Entities);
 	}
 
 	void Scene::update() const

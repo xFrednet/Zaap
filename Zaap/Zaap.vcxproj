@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\entity\Entity.cpp" />
     <ClCompile Include="src\events\Event.cpp" />
     <ClCompile Include="src\events\Input.cpp" />
     <ClCompile Include="src\graphics\API\Context.cpp" />
@@ -158,7 +159,6 @@
     <ClCompile Include="src\graphics\DX\DXVertexBuffer.cpp" />
     <ClCompile Include="src\graphics\Loader.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
-    <ClCompile Include="src\graphics\Model.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
@@ -179,10 +179,10 @@
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\entity\Entity.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventManager.h" />
     <ClInclude Include="src\events\Input.h" />
-    <ClInclude Include="src\graphics\3DScene.h" />
     <ClInclude Include="src\graphics\API\Context.h" />
     <ClInclude Include="src\graphics\API\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DXContext.h" />
@@ -198,7 +198,6 @@
     <ClInclude Include="src\graphics\DX\DXVertexBuffer.h" />
     <ClInclude Include="src\graphics\Loader.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
-    <ClInclude Include="src\graphics\Model.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />

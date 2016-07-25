@@ -2,8 +2,6 @@
 
 #include <windows.h>
 
-#include "Common.h"
-
 using namespace zaap;
 
 void console::Println_(void* hr, String message, int messageType)

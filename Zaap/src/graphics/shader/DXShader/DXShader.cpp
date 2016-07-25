@@ -1,7 +1,7 @@
 #include "DXShader.h"
 
-#include "graphics/API/DXContext.h"
-#include "util/Console.h"
+#include <graphics/API/DXContext.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {
 

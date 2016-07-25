@@ -2,8 +2,8 @@
 
 #include <Common.h>
 #include <Types.h>
+
 #include <graphics/camera/Camera.h>
-#include <events/Input.h>
 #include <maths/Maths.h>
 
 namespace zaap { namespace graphics {

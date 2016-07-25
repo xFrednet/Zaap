@@ -1,10 +1,12 @@
 #pragma once
 
-#include "graphics/API/DXCommon.h"
-#include "app/Window.h"
-#include "graphics/DX/DXLoader.h"
-#include "graphics/API/Context.h"
-#include "Common.h"
+#include <common.h>
+#include <types.h>
+
+#include <graphics/API/DXCommon.h>
+#include <app/Window.h>
+#include <graphics/DX/DXLoader.h>
+#include <graphics/API/Context.h>
 
 namespace zaap { namespace graphics	{ namespace DX {
 			

@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Common.h"
-#include "Types.h"
-#include "maths\MathHelper.h"
+#include <graphics/API/DXCommon.h>
+#include <maths/MathHelper.h>
 
 #ifndef DEFAULT_FOV
 #	define DEFAULT_FOV 90.0f

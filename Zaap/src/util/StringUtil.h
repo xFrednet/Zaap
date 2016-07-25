@@ -2,7 +2,8 @@
 
 #pragma warning( disable : 4114)
 
-#include "Common.h"
+#include <Common.h>
+
 #include <string>
 
 typedef std::string String;

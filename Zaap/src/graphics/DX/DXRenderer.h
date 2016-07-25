@@ -1,11 +1,12 @@
 #pragma once
 
-#include "graphics/Renderer.h"
-#include "graphics/API/DXCommon.h"
-#include "graphics/shader/DXShader/DXStaticShader.h"
-#include "graphics/Model.h"
-#include "graphics/camera/Camera.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/Renderer.h>
+#include <graphics/API/DXCommon.h>
+#include <graphics/shader/DXShader/DXStaticShader.h>
+#include <graphics/camera/Camera.h>
 
 namespace zaap { namespace graphics { namespace DX {
 
@@ -43,7 +44,7 @@ namespace zaap { namespace graphics { namespace DX {
 		void setRenderTargets(ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView) const;
 
 		void prepare() override;
-		void render(Model* model) override;
+		void render(Entity* entity) override;
 
 		void cleanup() override;
 	};

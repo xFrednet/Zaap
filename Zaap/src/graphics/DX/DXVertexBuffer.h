@@ -1,9 +1,10 @@
 #pragma once
 
-#include "graphics/API/DXCommon.h"
-#include "Common.h"
-#include "Types.h"
-#include "graphics/API/VertexBuffer.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/API/DXCommon.h>
+#include <graphics/API/VertexBuffer.h>
 
 namespace zaap { namespace graphics { namespace DX {
 

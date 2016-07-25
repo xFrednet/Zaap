@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Mesh.h"
+#include <Common.h>
+#include <Types.h>
 
-#include "Common.h"
-#include "maths/Maths.h"
+#include <graphics/Mesh.h>
+#include <maths/Maths.h>
 
-namespace zaap { namespace graphics {	
-	
+namespace zaap { namespace graphics {
+
 	struct ZAAP_API COLOR {	
 		float R, G, B, A;
 		

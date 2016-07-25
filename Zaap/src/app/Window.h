@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Common.h"
-#include "Types.h"
+#include <common.h>
+#include <types.h>
 
 #include <windows.h>
-#include <windowsx.h>
 
 namespace zaap
 {

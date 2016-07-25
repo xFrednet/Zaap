@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Common.h"
-#include "Vec3.h"
-#include "Vec4.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <maths/Vec3.h>
+#include <maths/Vec4.h>
 
 namespace zaap { namespace math {
 		

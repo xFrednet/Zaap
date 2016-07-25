@@ -1,9 +1,9 @@
 #include "ImageLoader.h"
 
+#include <util/Console.h>
+
 #include <FreeImage.h>
 #include <FreeImage/Utilities.h>
-
-#include "util/Console.h"
 
 namespace zaap
 {

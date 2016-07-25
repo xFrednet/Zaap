@@ -1,7 +1,7 @@
 #include "Context.h"
 
-#include "DXContext.h"
-#include "util/Console.h"
+#include <graphics/API/DXContext.h>
+#include <util/Console.h>
 
 using namespace zaap;
 using namespace graphics;

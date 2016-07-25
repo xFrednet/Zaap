@@ -46,6 +46,9 @@
     <Filter Include="Source Files\src\events">
       <UniqueIdentifier>{ff50829f-cec1-47e4-bfbb-fd31a35b82f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\entity">
+      <UniqueIdentifier>{d3c6f1f6-8c7a-4b50-ba19-f1b11f77a83d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -120,9 +123,6 @@
     <ClCompile Include="src\graphics\TexturedMesh.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Model.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\maths\MathHelper.cpp">
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
@@ -149,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="src\graphics\TMeshManager.cpp">
       <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\Entity.cpp">
+      <Filter>Source Files\src\entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +245,6 @@
     <ClInclude Include="src\graphics\TexturedMesh.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Model.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\maths\MathHelper.h">
       <Filter>Source Files\src\maths</Filter>
     </ClInclude>
@@ -266,9 +266,6 @@
     <ClInclude Include="src\graphics\TextureManager.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\3DScene.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Scene.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
@@ -277,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\TMeshManager.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\Entity.h">
+      <Filter>Source Files\src\entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

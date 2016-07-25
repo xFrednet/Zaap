@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Common.h"
-#include "Window.h"
-#include "graphics/Scene.h"
+#include <common.h>
+#include <types.h>
+
+#include <app/Window.h>
+#include <graphics/Scene.h>
 
 namespace zaap
 {

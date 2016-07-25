@@ -1,9 +1,11 @@
 #include "Window.h"
 
-#include "util/Console.h"
+#include <util/Console.h>
 #include <events/Input.h>
 #include <graphics/API/Context.h>
 #include <graphics/Renderer.h>
+
+#include <windowsx.h>
 
 //Event Method
 

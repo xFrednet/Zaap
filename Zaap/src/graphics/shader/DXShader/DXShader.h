@@ -1,9 +1,11 @@
 #pragma once
 
-#include "graphics/shader/Shader.h"
-#include "graphics/API/DXCommon.h"
-#include "Common.h"
-#include "Types.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/shader/Shader.h>
+#include <graphics/API/DXCommon.h>
+
 
 namespace zaap { namespace graphics { namespace DX {
 

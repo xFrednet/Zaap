@@ -1,9 +1,7 @@
 #include "DXLoader.h" 
 
-#include "graphics/API/DXContext.h"
-#include "graphics/API/VertexBuffer.h"
-#include "util/Console.h"
-#include "util/StringUtil.h"
+#include <graphics/API/DXContext.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {
 

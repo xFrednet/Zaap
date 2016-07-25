@@ -1,8 +1,10 @@
 #pragma once
 
-#include "graphics/Loader.h"
-#include "graphics/DX/DXVertexBuffer.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/Loader.h>
+#include <graphics/DX/DXVertexBuffer.h>
 
 #pragma warning( disable : 4251)
 

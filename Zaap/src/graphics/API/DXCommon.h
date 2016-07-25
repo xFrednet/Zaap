@@ -27,7 +27,7 @@
 	if (x) { /* nullptr == false */  \
 		String s(y); \
 		x->SetPrivateData(WKPDID_D3DDebugObjectName, s.size(), s.c_str()); \
-	}\
+	}
 	
 #else // ZAAP_DEBUG
 #	define DXNAME(x, y)

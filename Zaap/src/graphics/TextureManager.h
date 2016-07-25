@@ -2,7 +2,8 @@
 
 #include <Common.h>
 #include <Types.h>
-#include "API/Texture2D.h"
+
+#include <graphics/API/Texture2D.h>
 
 namespace zaap { namespace graphics {
 	

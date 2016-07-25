@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Types.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
 #include "Texture.h"
 
 namespace zaap { namespace graphics {

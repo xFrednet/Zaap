@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphics/Model.h"
 #include "Common.h"
 #include "graphics/camera/Camera.h"
+#include <entity/Entity.h>
 
 namespace zaap { namespace graphics {
 
@@ -15,7 +15,7 @@ namespace zaap { namespace graphics {
 		virtual void init() = 0;
 
 		//Render
-		virtual void render(Model* model) = 0;
+		virtual void render(Entity* model) = 0;
 
 		//Setters
 		virtual void setCamera(Camera* camera) = 0;
@@ -30,8 +30,8 @@ namespace zaap { namespace graphics {
 		static void Init();
 
 		//Render
-		static void Render(Model* model);
-		static void RenderModelArray(const std::vector<Model*>& models);
+		static void Render(Entity* model);
+		static void RenderEntityArray(const std::vector<Entity*>& models);
 		
 		//Setters
 		static void SetCamera(Camera* camera);

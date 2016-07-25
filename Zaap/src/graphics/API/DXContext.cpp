@@ -1,5 +1,6 @@
 #include "DXContext.h"
-#include "graphics/shader/DXShader/DXStaticShader.h"
+
+#include <graphics/shader/DXShader/DXStaticShader.h>
 #include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {
@@ -14,7 +15,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		{
 			UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#if (ZAAP_DEBUG)
+#ifdef ZAAP_DEBUG
 			creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
@@ -107,7 +108,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_SwapChain->Present(0, 0);
 	}
-
 
 	//
 	// Getters

@@ -1,8 +1,10 @@
 #pragma once
 
-#include "graphics/Loader.h"
-#include "app/Window.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/Loader.h>
+#include <app/Window.h>
 
 namespace zaap { namespace graphics { namespace API {
 	

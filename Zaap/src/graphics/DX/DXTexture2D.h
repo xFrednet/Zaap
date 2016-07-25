@@ -1,8 +1,10 @@
 #pragma once
 
-#include "graphics/API/Texture2D.h"
-#include "graphics/API/DXContext.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/API/Texture2D.h>
+#include <graphics/API/DXContext.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	

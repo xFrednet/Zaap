@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Event.h"
-#include "Types.h"
-#include "Common.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <events/Event.h>
 
 namespace zaap { namespace events {
 		

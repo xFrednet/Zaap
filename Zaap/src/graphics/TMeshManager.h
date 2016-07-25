@@ -1,8 +1,9 @@
 ﻿#pragma once
 
-#include "Types.h"
-#include "Common.h"
-#include "graphics/TexturedMesh.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/TexturedMesh.h>
 
 namespace zaap { namespace graphics {
 	

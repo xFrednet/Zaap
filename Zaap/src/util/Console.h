@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Common.h"
-#include "StringUtil.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <util/StringUtil.h>
 
 #ifndef ZAAP_LOG_LEVEL
-	#define ZAAP_LOG_LEVEL 0
+#	define ZAAP_LOG_LEVEL 0
 #endif
 
 #define ZAAP_LOG_CLEANUP 3

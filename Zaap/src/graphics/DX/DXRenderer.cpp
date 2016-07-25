@@ -1,8 +1,9 @@
 #include "DXRenderer.h"
-#include "graphics/API/DXContext.h"
-#include "graphics/API/VertexBuffer.h"
-#include "maths/MathHelper.h"
-#include "util/Console.h"
+
+#include <graphics/API/DXContext.h>
+#include <graphics/API/VertexBuffer.h>
+#include <maths/MathHelper.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -191,17 +192,17 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 
 	math::Mat4 matrix_;
-	void DXRenderer::render(Model* model)
+	void DXRenderer::render(Entity* entity)
 	{
 		//Texture
-		TexturedMesh tMesh = *(model->getTexturedMesh());
+		TexturedMesh tMesh = *(entity->getTexturedMesh());
 		tMesh.getTexture()->bind(0);
 
 		//Vertex Buffer
 		tMesh.getMesh()->getVertexBuffer()->bind(0);
 
 		//Matrix
-		model->getTransformationMatrix(matrix_);
+		entity->getTransformationMatrix(matrix_);
 		m_Shader.loadTransformationMatrix(matrix_);
 
 		//rendering

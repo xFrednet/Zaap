@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 	

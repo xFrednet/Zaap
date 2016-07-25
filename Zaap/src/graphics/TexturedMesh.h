@@ -1,8 +1,10 @@
 #pragma once
 
-#include "Common.h"
-#include "Mesh.h"
-#include "graphics/API/Texture2D.h"
+#include <Common.h>
+#include <Types.h>
+
+#include <graphics/API/Texture2D.h>
+#include <graphics/Mesh.h>
 
 namespace zaap
 {

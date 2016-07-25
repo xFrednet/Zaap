@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Common.h"
-#include "Types.h"
+#include <common.h>
+#include <types.h>
 
-#include "Model.h"
-#include "graphics/Renderer.h"
+#include <graphics/renderer.h>
+#include <entity/Entity.h>
 
 namespace zaap { namespace graphics {
 	
@@ -12,12 +12,12 @@ namespace zaap { namespace graphics {
 	{
 	private:
 	protected:
-		std::vector<Model*> m_Models;
+		std::vector<Entity*> m_Entities;
 
 	public:
 
-		virtual void addModel(Model* model);
-		virtual void removeModel(Model* model);
+		virtual void addEntity(Entity* model);
+		virtual void removeEntity(Entity* model);
 
 		virtual void render() const;
 		virtual void update() const;

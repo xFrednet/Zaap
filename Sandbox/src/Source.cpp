@@ -1,6 +1,6 @@
 #include <Zaap.h>
 #include <iostream>
-#include <graphics/API/Context.h>
+
 
 using namespace zaap;
 using namespace math;
@@ -8,9 +8,9 @@ using namespace graphics;
 using namespace std;
 
 graphics::Scene* scene;
-Model* m = nullptr;
+Entity* m = nullptr;
 
-void loadModels()
+void loadEntitys()
 {
 	//Flor
 	Mesh mesh = API::Context::GetLoader()->loadOBJFile("res/flor.obj");
@@ -19,7 +19,7 @@ void loadModels()
 
 	math::Vec3 v = math::Vec3(0, -1, 0);
 
-	scene->addModel(new Model(TMeshManager::GetTMesh("flor"), v));
+	scene->addEntity(new Entity(TMeshManager::GetTMesh("flor"), v));
 
 	//rock
 	TextureManager::LoadTexture2D("rock", "res/rock.png");
@@ -28,19 +28,19 @@ void loadModels()
 	
 	v = math::Vec3(0, 1, 0);
 
-	scene->addModel(new Model(TMeshManager::GetTMesh("rock"), v));
+	scene->addEntity(new Entity(TMeshManager::GetTMesh("rock"), v));
 	//Cube
 	mesh = API::Context::GetLoader()->loadOBJFile("res/cube.obj");
 	TextureManager::LoadTexture2D("cube", "res/cube.png");
 
 	TexturedMesh tMesh = graphics::TexturedMesh("cube", mesh, (graphics::Texture2D*)graphics::TextureManager::GetTexture("cube"));
 	v = math::Vec3(0, 1, 5);
-	scene->addModel(new Model(tMesh, v));
+	scene->addEntity(new Entity(tMesh, v));
 
 	v = math::Vec3(0, 1, -5);
-	m = new Model(tMesh, v);
+	m = new Entity(tMesh, v);
 	m->setScale(1.0f);
-	scene->addModel(m);
+	scene->addEntity(m);
 
 }
 
@@ -54,7 +54,7 @@ public:
 	void update() override {
 		Application::update();
 
-		m->addToRotation(Vec3(1.0f, 1.0f, 1.0f));
+		m->increaseRotation(Vec3(1.0f, 1.0f, 1.0f));
 		//m->addToScale(0.001f);
 	}
 };
@@ -64,11 +64,13 @@ int main()
 	scene = new graphics::Scene();
 	Test t;
 
-	loadModels();
+	loadEntitys();
 
 	t.start();
 
 	t.cleanup();
+
+	delete scene;
 
 	return 0;
 }

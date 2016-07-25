@@ -1,5 +1,6 @@
 #include "Texture2D.h"
-#include "DXContext.h"
+
+#include <graphics/API/DXContext.h>
 
 namespace zaap { namespace graphics {
 	

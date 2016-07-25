@@ -1,6 +1,7 @@
 #include "DXStaticShader.h"
-#include "maths/Maths.h"
-#include "graphics/API/DXContext.h"
+
+#include <maths/Maths.h>
+#include <graphics/API/DXContext.h>
 #include <util/Console.h>
 
 D3D11_INPUT_ELEMENT_DESC ied[] = {

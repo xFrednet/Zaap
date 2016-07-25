@@ -20,13 +20,13 @@ namespace zaap { namespace graphics {
 	//
 	//Render
 	//
-	void Renderer::Render(Model* model)
-	{ s_Instance->render(model); }
-	void Renderer::RenderModelArray(const std::vector<Model*>& models)
+	void Renderer::Render(Entity* entity)
+	{ s_Instance->render(entity); }
+	void Renderer::RenderEntityArray(const std::vector<Entity*>& Entities)
 	{
-		for (uint i = 0; i < models.size(); i++)
+		for (uint i = 0; i < Entities.size(); i++)
 		{
-			s_Instance->render(models[i]);
+			s_Instance->render(Entities[i]);
 		}
 	}
 

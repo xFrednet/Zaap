@@ -1,7 +1,7 @@
 #include "DXTexture2D.h"
 
-#include "util/ImageLoader.h"
-#include "util/Console.h"
+#include <util/ImageLoader.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	

@@ -1,5 +1,7 @@
 #include "ControllableCamera.h"
 
+#include <events/Input.h>
+
 namespace zaap { namespace graphics {
 	
 	ControllableCamera::ControllableCamera(math::Vec3& position, float yaw, float pitch, float fovX, float fovY)

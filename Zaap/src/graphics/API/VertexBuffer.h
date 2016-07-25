@@ -1,8 +1,7 @@
 #pragma once
 
-#include "graphics/API/DXCommon.h"
-#include "Common.h"
-#include "Types.h"
+#include <Common.h>
+#include <Types.h>
 
 namespace zaap { namespace graphics { namespace API {
 	

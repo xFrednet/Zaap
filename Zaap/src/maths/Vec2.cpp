@@ -1,6 +1,5 @@
 #include "Vec2.h"
 
-
 namespace zaap { namespace math {
 
 	Vec2::Vec2()

@@ -1,6 +1,6 @@
 #include "MathHelper.h"
 
-#include <math.h>
+#include <maths/Maths.h>
 
 namespace zaap { namespace math {
 	
