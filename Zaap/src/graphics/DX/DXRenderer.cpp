@@ -179,6 +179,11 @@ namespace zaap { namespace graphics { namespace DX {
 		//m_Devcon->OMSetRenderTargets(1, &renderTargetView, NULL);
 	}
 
+	void DXRenderer::loadLight(Light* light)
+	{
+		m_Shader.loadLight(light);
+	}
+
 	void DXRenderer::prepare()
 	{
 		DXContext::SwapBuffers();

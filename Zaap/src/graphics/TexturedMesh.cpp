@@ -10,7 +10,7 @@ namespace zaap { namespace graphics {
 
 	TexturedMesh::TexturedMesh()
 		: m_Texture(nullptr),
-		m_Name(nullptr)
+		m_Name("NULL")
 	{}
 
 	TexturedMesh::~TexturedMesh()

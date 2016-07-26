@@ -1,4 +1,6 @@
 #pragma once
+#include "BasicEntity.h"
+
 #include <Common.h>
 #include <Types.h>
 
@@ -7,26 +9,21 @@
 
 namespace zaap
 {
-	class ZAAP_API Entity
+	class ZAAP_API Entity : public BasicEntity
 	{
-	private:
+	protected:
 		graphics::TexturedMesh m_TMesh;
-		math::Vec3 m_Position;
 		math::Vec3 m_Rotation;
 		float m_Scale;
 	public:
 		Entity(graphics::TexturedMesh &mesh, math::Vec3 &position, math::Vec3 &rotation = math::Vec3(), float scale = 1.0f);
 		Entity();
 
-		//position
-		void setPosition(math::Vec3 &position);
-		void increasePosition(math::Vec3 &position);
-		math::Vec3 getPosition() const;
-
 		//rotation
-		void setRotation(math::Vec3 &rotation);
-		void increaseRotation(math::Vec3 &rotation);
-		math::Vec3 getRotation() const;
+		void setRotation(const math::Vec3 &rotation);
+		void increaseRotation(const math::Vec3 &rotation);
+		math::Vec3 getRotation(void) const;
+		math::Vec3* getRotationP(void);
 
 		//Scale
 		void setScale(float scale);
@@ -36,6 +33,8 @@ namespace zaap
 		//Getters
 		graphics::TexturedMesh* getTexturedMesh(void);
 		void getTransformationMatrix(math::Mat4& result) const;
-
+		
+		//util
+		virtual void render() override;
 	};
 }

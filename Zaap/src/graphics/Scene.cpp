@@ -1,31 +1,59 @@
 #include "Scene.h"
+#include "Renderer.h"
 
 namespace zaap { namespace graphics {
-	
-	void Scene::addEntity(Entity* model)
+	Scene::~Scene()
 	{
-		m_Entities.push_back(model);
+		for (uint i = 0; i < m_Entities.size(); i++)
+			delete m_Entities[i];
+		if (!m_LightSetup) delete m_LightSetup;
 	}
 
-	void Scene::removeEntity(Entity* model)
+	void Scene::addEntity(BasicEntity* entity)
+	{
+		m_Entities.push_back(entity);
+	}
+	void Scene::removeEntity(BasicEntity* entity)
 	{
 		for (unsigned int i = 0; i < m_Entities.size(); i++)
-		{
-			if (model == m_Entities[i])
+			if (entity == m_Entities[i])
 			{
 				m_Entities.erase(m_Entities.begin() + i);
 				return;
 			}
-		}
-
 	}
 
 	void Scene::render() const
 	{
-		Renderer::RenderEntityArray(m_Entities);
+		if (m_LightSetup)
+		{
+			m_LightSetup->render();
+			Renderer::LoadLight(m_LightSetup->getLight(0));
+		}
+		for (uint i = 0; i < m_Entities.size(); i++)
+		{
+			m_Entities[i]->render();
+		}
 	}
-
 	void Scene::update() const
 	{
+		if (m_LightSetup) m_LightSetup->update();
+		for (uint i = 0; i < m_Entities.size(); i++)
+		{
+			m_Entities[i]->update();
+		}
+	}
+
+	//
+	// LightSetup
+	//
+	void Scene::setLightSetup(LightSetup* lightSetup)
+	{
+		m_LightSetup = lightSetup;
+		Renderer::LoadLight(lightSetup->getLight(0));
+	}
+	LightSetup* Scene::getLightSetup()
+	{
+		return m_LightSetup;
 	}
 }}

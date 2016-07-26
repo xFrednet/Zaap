@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\entity\BasicEntity.cpp" />
     <ClCompile Include="src\entity\Entity.cpp" />
     <ClCompile Include="src\events\Event.cpp" />
     <ClCompile Include="src\events\Input.cpp" />
@@ -157,6 +158,8 @@
     <ClCompile Include="src\graphics\DX\DXRenderer.cpp" />
     <ClCompile Include="src\graphics\DX\DXTexture2D.cpp" />
     <ClCompile Include="src\graphics\DX\DXVertexBuffer.cpp" />
+    <ClCompile Include="src\graphics\light\Light.cpp" />
+    <ClCompile Include="src\graphics\light\LightSetup.cpp" />
     <ClCompile Include="src\graphics\Loader.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
@@ -179,6 +182,7 @@
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\entity\BasicEntity.h" />
     <ClInclude Include="src\entity\Entity.h" />
     <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventManager.h" />
@@ -196,6 +200,8 @@
     <ClInclude Include="src\graphics\DX\DXRenderer.h" />
     <ClInclude Include="src\graphics\DX\DXTexture2D.h" />
     <ClInclude Include="src\graphics\DX\DXVertexBuffer.h" />
+    <ClInclude Include="src\graphics\light\Light.h" />
+    <ClInclude Include="src\graphics\light\LightSetup.h" />
     <ClInclude Include="src\graphics\Loader.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
@@ -219,8 +225,7 @@
     <ClInclude Include="src\Zaap.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Sandbox\DXStaticPShader.shader" />
-    <None Include="..\Sandbox\DXStaticVShader.shader" />
+    <None Include="..\Sandbox\DXStaticShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

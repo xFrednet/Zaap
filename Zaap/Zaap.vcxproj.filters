@@ -49,6 +49,9 @@
     <Filter Include="Source Files\src\entity">
       <UniqueIdentifier>{d3c6f1f6-8c7a-4b50-ba19-f1b11f77a83d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\graphics\light">
+      <UniqueIdentifier>{e146fc29-9ed3-416b-a68e-00ccfdabb270}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -152,6 +155,15 @@
     </ClCompile>
     <ClCompile Include="src\entity\Entity.cpp">
       <Filter>Source Files\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\BasicEntity.cpp">
+      <Filter>Source Files\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\light\Light.cpp">
+      <Filter>Source Files\src\graphics\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\light\LightSetup.cpp">
+      <Filter>Source Files\src\graphics\light</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,12 +290,18 @@
     <ClInclude Include="src\entity\Entity.h">
       <Filter>Source Files\src\entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\entity\BasicEntity.h">
+      <Filter>Source Files\src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\light\Light.h">
+      <Filter>Source Files\src\graphics\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\light\LightSetup.h">
+      <Filter>Source Files\src\graphics\light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Sandbox\DXStaticPShader.shader">
-      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
-    </None>
-    <None Include="..\Sandbox\DXStaticVShader.shader">
+    <None Include="..\Sandbox\DXStaticShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </None>
   </ItemGroup>

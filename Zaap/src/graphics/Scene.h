@@ -3,8 +3,8 @@
 #include <common.h>
 #include <types.h>
 
-#include <graphics/renderer.h>
 #include <entity/Entity.h>
+#include <graphics/light/LightSetup.h>
 
 namespace zaap { namespace graphics {
 	
@@ -12,15 +12,20 @@ namespace zaap { namespace graphics {
 	{
 	private:
 	protected:
-		std::vector<Entity*> m_Entities;
+		std::vector<BasicEntity*> m_Entities;
 
+		LightSetup* m_LightSetup = nullptr;
 	public:
+		~Scene(void);
 
-		virtual void addEntity(Entity* model);
-		virtual void removeEntity(Entity* model);
+		virtual void addEntity(BasicEntity* entity);
+		virtual void removeEntity(BasicEntity* entity);
 
 		virtual void render() const;
 		virtual void update() const;
-
+		
+		//lightSetup
+		virtual void setLightSetup(LightSetup* lightSetup);
+		virtual LightSetup* getLightSetup(void);
 	};
 }}

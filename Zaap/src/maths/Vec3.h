@@ -15,6 +15,7 @@ namespace zaap { namespace math	{
 		Vec3(float x, float y, float z);
 
 		void scale(float scale);
+		void clamp(float min, float max);
 
 		String toString();
 
@@ -24,15 +25,15 @@ namespace zaap { namespace math	{
 		bool operator==(Vec3 &other) const;
 		bool operator!=(Vec3 &other) const;
 
-		Vec3& operator+=(Vec3 &other);
-		Vec3& operator-=(Vec3 &other);
-		Vec3& operator*=(Vec3 &other);
-		Vec3& operator*=(float scale);
+		Vec3& operator+=(const Vec3 &other);
+		Vec3& operator-=(const Vec3 &other);
+		Vec3& operator*=(const Vec3 &other);
+		Vec3& operator*=(const float scale);
 
-		Vec3 operator+(Vec3 &other) const;
-		Vec3 operator-(Vec3 &other) const;
-		Vec3 operator*(Vec3 &other) const;
-		Vec3 operator*(float scale) const;
+		Vec3 operator+(const Vec3 &other) const;
+		Vec3 operator-(const Vec3 &other) const;
+		Vec3 operator*(const Vec3 &other) const;
+		Vec3 operator*(const float scale) const;
 	};
 
 }}

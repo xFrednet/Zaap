@@ -5,6 +5,7 @@
 #include <entity/Entity.h>
 
 namespace zaap { namespace graphics {
+	class Light;
 
 	class ZAAP_API Renderer
 	{
@@ -19,6 +20,7 @@ namespace zaap { namespace graphics {
 
 		//Setters
 		virtual void setCamera(Camera* camera) = 0;
+		virtual void loadLight(Light* light) = 0;
 
 		//Util
 		virtual void prepare() = 0;
@@ -35,7 +37,8 @@ namespace zaap { namespace graphics {
 		
 		//Setters
 		static void SetCamera(Camera* camera);
-		
+		static void LoadLight(Light* light);
+
 		//Util
 		static void Prepare();
 		static void Cleanup();
