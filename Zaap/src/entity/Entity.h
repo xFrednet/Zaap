@@ -14,9 +14,9 @@ namespace zaap
 	protected:
 		graphics::TexturedMesh m_TMesh;
 		math::Vec3 m_Rotation;
-		float m_Scale;
+		math::Vec3 m_Scale;
 	public:
-		Entity(graphics::TexturedMesh &mesh, math::Vec3 &position, math::Vec3 &rotation = math::Vec3(), float scale = 1.0f);
+		Entity(graphics::TexturedMesh &tMesh, math::Vec3 position, math::Vec3 rotation = math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3 scale = math::Vec3(1.0f, 1.0f, 1.0f));
 		Entity();
 
 		//rotation
@@ -27,8 +27,11 @@ namespace zaap
 
 		//Scale
 		void setScale(float scale);
-		void addToScale(float scale);
-		float getScale() const;
+		void setScale(math::Vec3 scale);
+		void increaseScale(float scale);
+		void increaseScale(math::Vec3 scale);
+		math::Vec3 getScale(void) const;
+		math::Vec3* getScaleP(void);
 
 		//Getters
 		graphics::TexturedMesh* getTexturedMesh(void);

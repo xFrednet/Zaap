@@ -42,7 +42,7 @@ VOut VShader(VSInput input)
 	output.position = mul(ProjectionMatrix, output.position);
 	output.texCoords = input.texCoords;
 
-	output.surfaceNormal = mul(TransformationMatrix, input.normal).xyz;
+	output.surfaceNormal = mul(TransformationMatrix, input.normal.xyz);
 	output.toLightVector = lightPosition - worldPosition.xyz;
 
 	return output;
@@ -65,5 +65,9 @@ float4 PShader(VOut input) : SV_TARGET
 	float brightness = max(dot(normal, lightVector), 0.0);
 
 	float4 color = texture_.Sample(sampler_, input.texCoords);
-	return float4(color.z * brightness, color.y * brightness, color.x * brightness, color.w);
+	
+	return float4(color.xyz * brightness, color.w);
+
+	//float3 colorNormal = normal / 2 + 0.5;
+	//return float4(colorNormal, 1.0);
 }

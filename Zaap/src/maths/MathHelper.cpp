@@ -4,14 +4,15 @@
 
 namespace zaap { namespace math {
 	
-	Mat4 CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const float const &scale)
+	Mat4 CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale)
 	{
 		Mat4 mat;
-		mat.identity(scale);
+		mat.identity();
 
 		mat.rotate(toRadians(rotation.X), 1.0f, 0.0f, 0.0f);
 		mat.rotate(toRadians(rotation.Y), 0.0f, 1.0f, 0.0f);
 		mat.rotate(toRadians(rotation.Z), 0.0f, 0.0f, 1.0f);
+		mat.scale(scale);
 		mat.m41 = position.X;
 		mat.m42 = position.Y;
 		mat.m43 = position.Z;

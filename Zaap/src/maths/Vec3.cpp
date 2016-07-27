@@ -16,11 +16,32 @@ namespace zaap { namespace math {
 		Z = z;
 	}
 
+	String Vec3::toString()
+	{
+		return "Vec3(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ")";
+	}
+
+	//
+	// Operations
+	//
 	void Vec3::scale(float scale)
 	{
 		X *= scale;
 		Y *= scale;
 		Z *= scale;
+	}
+
+	float Vec3::getLength() const
+	{
+		return sqrtf(X * X + Y * Y + Z * Z);
+	}
+
+	void Vec3::normalize()
+	{
+		float d = getLength();
+		X /= d;
+		Y /= d;
+		Z /= d;
 	}
 
 	void Vec3::clamp(float min, float max)
@@ -43,9 +64,9 @@ namespace zaap { namespace math {
 		else if (Z > max) Z = max;
 	}
 
-	String Vec3::toString()
+	float Vec3::dot(const Vec3& v) const
 	{
-		return "Vec3(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ")";
+		return X * v.X + Y * v.Y + Z * v.Z;
 	}
 
 	//

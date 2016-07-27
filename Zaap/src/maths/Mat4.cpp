@@ -127,6 +127,18 @@ namespace zaap { namespace math {
 		*this = dest;
 	}
 
+	void Mat4::scale(const Vec3& scale)
+	{
+		this->scale(scale.X, scale.Y, scale.Z);
+	}
+
+	void Mat4::scale(const float x, const float y, const float z)
+	{
+		Row[0] *= x;
+		Row[1] *= y;
+		Row[2] *= z;
+	}
+
 	String Mat4::toString()
 	{
 		return "Mat4(" + Row[0].toString() + ",\n     " +
@@ -138,7 +150,7 @@ namespace zaap { namespace math {
 	//
 	// operators
 	//
-	bool Mat4::operator==(Mat4 &other) const
+	bool Mat4::operator==(const Mat4 &other) const
 	{
 		for (int i = 0; i < 16; i++)
 		{
@@ -147,33 +159,33 @@ namespace zaap { namespace math {
 		}
 		return true;
 	}
-	bool Mat4::operator!=(Mat4 &other) const
+	bool Mat4::operator!=(const Mat4 &other) const
 	{
 		return !(*this == other);
 	}
 
-	Mat4& Mat4::operator+=(Mat4& other)
+	Mat4& Mat4::operator+=(const Mat4& other)
 	{
 		*this = *this + other;
 		return *this;
 	}
-	Mat4& Mat4::operator-=(Mat4& other)
+	Mat4& Mat4::operator-=(const Mat4& other)
 	{
 		*this = *this - other;
 		return *this;
 	}
-	Mat4& Mat4::operator*=(Mat4& other)
+	Mat4& Mat4::operator*=(const Mat4& other)
 	{
 		*this = *this * other;
 		return *this;
 	}
-	Mat4& Mat4::operator*=(float &scale)
+	Mat4& Mat4::operator*=(const float &scale)
 	{
 		*this = *this * scale;
 		return *this;
 	}
 
-	Mat4 Mat4::operator+(Mat4 &other) const
+	Mat4 Mat4::operator+(const Mat4 &other) const
 	{
 		Mat4 mat;
 		for (int i = 0; i < 16; i++)
@@ -182,7 +194,7 @@ namespace zaap { namespace math {
 		}
 		return mat;
 	}
-	Mat4 Mat4::operator-(Mat4 &other) const
+	Mat4 Mat4::operator-(const Mat4 &other) const
 	{
 		Mat4 mat;
 		for (int i = 0; i < 16; i++)
@@ -191,7 +203,7 @@ namespace zaap { namespace math {
 		}
 		return mat;
 	}
-	Mat4 Mat4::operator*(Mat4 &other) const
+	Mat4 Mat4::operator*(const Mat4 &other) const
 	{
 		Mat4 mat4;
 
@@ -210,7 +222,7 @@ namespace zaap { namespace math {
 
 		return mat4;
 	}
-	Mat4 Mat4::operator*(float &scale) const
+	Mat4 Mat4::operator*(const float &scale) const
 	{
 		Mat4 mat;
 		for (int i = 0; i < 16; i++)

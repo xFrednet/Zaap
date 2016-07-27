@@ -6,7 +6,7 @@
 
 namespace zaap {
 
-	Entity::Entity(graphics::TexturedMesh& tMesh, math::Vec3& position, math::Vec3& rotation, float scale)
+	Entity::Entity(graphics::TexturedMesh &tMesh, math::Vec3 position, math::Vec3 rotation, math::Vec3 scale)
 		: BasicEntity(position),
 		m_TMesh(tMesh),
 		m_Rotation(rotation),
@@ -14,7 +14,7 @@ namespace zaap {
 	{
 	}
 	Entity::Entity()
-		: m_Scale(1.0f)
+		: m_Scale(1.0f, 1.0f, 1.0f)
 	{
 	}
 
@@ -43,15 +43,19 @@ namespace zaap {
 	//
 	void Entity::setScale(float scale)
 	{
+		setScale(math::Vec3(scale, scale, scale));
+	}
+	void Entity::setScale(math::Vec3 scale)
+	{
 		m_Scale = scale;
 	}
-	void Entity::addToScale(float scale)
+	void Entity::increaseScale(float scale)
+	{
+		increaseScale(math::Vec3(scale, scale, scale));
+	}
+	void Entity::increaseScale(math::Vec3 scale)
 	{
 		m_Scale += scale;
-	}
-	float Entity::getScale() const
-	{
-		return m_Scale;
 	}
 
 	//

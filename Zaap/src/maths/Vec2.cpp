@@ -1,4 +1,5 @@
 #include "Vec2.h"
+#include <util/Console.h>
 
 namespace zaap { namespace math {
 
@@ -13,11 +14,6 @@ namespace zaap { namespace math {
 		Y = y;
 	}
 
-	void Vec2::scale(float scale)
-	{
-		X *= scale;
-		Y *= scale;
-	}
 
 	String Vec2::toString()
 	{
@@ -25,7 +21,49 @@ namespace zaap { namespace math {
 	}
 
 	//
-	// operators
+	// Operations
+	//
+	void Vec2::scale(float scale)
+	{
+		X *= scale;
+		Y *= scale;
+	}
+
+	float Vec2::getLength() const
+	{
+		return sqrtf(X * X + Y * Y);
+	}
+
+	void Vec2::normalize()
+	{
+		float d = getLength();
+		X /= d;
+		Y /= d;
+	}
+
+	void Vec2::clamp(float min, float max)
+	{
+		if (min >= max)
+		{
+			ZAAP_ALERT("Vec2::clamp: The min Value has to be lower than the max Value");
+			return;
+		}
+		//X
+		if (X < min) X = min;
+		else if (X > max) X = max;
+
+		//Y
+		if (Y < min) Y = min;
+		else if (Y > max) Y = max;
+	}
+
+	float Vec2::dot(const Vec2& v) const
+	{
+		return X * v.X + Y * v.Y;
+	}
+
+	//
+	// Operators
 	//
 	bool Vec2::operator==(Vec2 &other) const
 	{

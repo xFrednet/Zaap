@@ -14,14 +14,20 @@ namespace zaap { namespace math	{
 		Vec3();
 		Vec3(float x, float y, float z);
 
+		String toString();
+		
+		// operations
 		void scale(float scale);
+		
+		float getLength(void) const;
+
+		void normalize(void);
+
 		void clamp(float min, float max);
 
-		String toString();
+		float dot(const Vec3 &v) const;
 
-		//
 		// operators
-		//
 		bool operator==(Vec3 &other) const;
 		bool operator!=(Vec3 &other) const;
 

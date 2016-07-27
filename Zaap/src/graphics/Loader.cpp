@@ -147,7 +147,7 @@ namespace zaap { namespace graphics {
 						indices.push_back(position_indices.size() - 1);
 					} else
 					{
-						if (normals_indices[currentIndex] == textureIndex)
+						if (texCoords_indices[currentIndex] == textureIndex && normals_unsorted[normals_indices[currentIndex]].dot(normals_unsorted[normalIndex]) >= 0.9f)
 						{
 							indices.push_back(currentIndex);
 						} else

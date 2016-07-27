@@ -33,7 +33,7 @@ namespace zaap { namespace math {
 		//
 		// util
 		//
-		void identity(float value);
+		void identity(float value = 1.0f);
 
 		void translate(Vec3 &vec);
 		void translate(float x, float y, float z);
@@ -41,21 +41,24 @@ namespace zaap { namespace math {
 		void rotate(float angle, Vec3 &axis);
 		void rotate(float angle, float x, float y, float z);
 
+		void scale(const Vec3& scale);
+		void scale(const float x, const float y, const float z);
+
 		String toString();
 
 		// operators
-		bool operator==(Mat4 &other) const;
-		bool operator!=(Mat4 &other) const;
+		bool operator==(const Mat4 &other) const;
+		bool operator!=(const Mat4 &other) const;
 
-		Mat4& operator+=(Mat4 &other);
-		Mat4& operator-=(Mat4 &other);
-		Mat4& operator*=(Mat4 &other);
-		Mat4& operator*=(float &scale);
+		Mat4& operator+=(const Mat4 &other);
+		Mat4& operator-=(const Mat4 &other);
+		Mat4& operator*=(const Mat4 &other);
+		Mat4& operator*=(const float &scale);
 
-		Mat4 operator+(Mat4 &other) const;
-		Mat4 operator-(Mat4 &other) const;
-		Mat4 operator*(Mat4 &other) const;
-		Mat4 operator*(float &scale) const;
+		Mat4 operator+(const Mat4 &other) const;
+		Mat4 operator-(const Mat4 &other) const;
+		Mat4 operator*(const Mat4 &other) const;
+		Mat4 operator*(const float &scale) const;
 	};
 
 }}

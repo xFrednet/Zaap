@@ -9,7 +9,8 @@ Scene* scene = nullptr;
 LightSetup *lightSetup = nullptr;
 Light* light = nullptr;
 Camera* camera = nullptr;
-Entity* m = nullptr;
+Entity* m1 = nullptr;
+Entity* m2 = nullptr;
 
 void loadEntitys()
 {
@@ -18,7 +19,7 @@ void loadEntitys()
 	{
 		lightSetup = new LightSetup();
 
-		light = new Light(Vec3(0.0f, 1.5f, 0.0f));
+		light = new Light(Vec3(0.0f, 10.0f, 0.0f));
 		lightSetup->add(light);
 
 		scene->setLightSetup(lightSetup);
@@ -35,8 +36,9 @@ void loadEntitys()
 		TMeshManager::AddTMesh(TexturedMesh("flor", mesh, (Texture2D*)TextureManager::GetTexture("flor")));
 
 		v = Vec3(0, -1, 0);
-
-		scene->addEntity(new Entity(TMeshManager::GetTMesh("flor"), v));
+		Entity* e = new Entity(TMeshManager::GetTMesh("flor"), v);
+		e->setScale(5.0f);
+		scene->addEntity(e);
 	}
 
 	//rock
@@ -56,17 +58,18 @@ void loadEntitys()
 	TexturedMesh tMesh("cube", mesh, (Texture2D*)TextureManager::GetTexture("cube"));
 	{
 		v = Vec3(0, 1, 5);
-		scene->addEntity(new Entity(tMesh, v));
+		m2 = new Entity(tMesh, v);
+		scene->addEntity(m2);
 	}
 
 	//Cube 2
 	{
 		v = Vec3(0, 1, -5);
-		m = new Entity(tMesh, v);
-		m->setScale(1.0f);
-		scene->addEntity(m);
+		m1 = new Entity(tMesh, v);
+		scene->addEntity(m1);
 	}
 }
+
 
 class Test : public Application
 {
@@ -74,11 +77,18 @@ public:
 	Test() : Application("Test", 800, 600, scene)
 	{}
 
+	float count = 0.0f;
+	
 	void update() override {
 		Application::update();
 
-		m->increaseRotation(Vec3(1.0f, 1.0f, 1.0f));
-		//m->addToScale(0.001f);
+		float rot = 0.5f;
+		m1->increaseRotation(Vec3(rot, rot, rot));
+		m2->increaseRotation(Vec3(rot, rot, rot));
+		count += 0.05f;
+		//m2->setScale(sinf(count) / 5 + 1.5f);
+		//m1->setScale(cosf(count) / 5 + 1.5f);
+		m1->setScale(Vec3(cosf(count) + 1.1f, sinf(count) + 1.1f, sinf(count) + 1.1f));
 
 		camera->update();
 		light->setPosition(camera->getPosition());

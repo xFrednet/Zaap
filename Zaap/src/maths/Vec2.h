@@ -7,20 +7,26 @@ namespace zaap { namespace math {
 		
 	struct ZAAP_API Vec2
 	{
-		
 		float X;
 		float Y;
 		
 		Vec2();
 		Vec2(float x, float y);
 
-		void scale(float scale);
-
 		String toString();
 
-		//
+		//operations
+		void scale(float scale);
+		
+		float getLength(void) const;
+		
+		void normalize(void);
+
+		void clamp(float min, float max);
+
+		float dot(const Vec2 &v) const;
+
 		// operators
-		//
 		bool operator==(Vec2 &other) const;
 		bool operator!=(Vec2 &other) const;
 		

@@ -1,4 +1,5 @@
 #include "Vec4.h"
+#include <util/Console.h>
 
 namespace zaap { namespace math {
 
@@ -17,6 +18,14 @@ namespace zaap { namespace math {
 		W = w;
 	}
 
+	String Vec4::toString()
+	{
+		return "Vec4(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ", W:" + StringUtil::to_string(W) + ")";
+	}
+
+	//
+	// Operations
+	//
 	void Vec4::scale(float scale)
 	{
 		X *= scale;
@@ -25,9 +34,47 @@ namespace zaap { namespace math {
 		W *= scale;
 	}
 
-	String Vec4::toString()
+	float Vec4::getLength() const
 	{
-		return "Vec4(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ", W:" + StringUtil::to_string(W) + ")";
+		return sqrtf(X * X + Y * Y + Z * Z + W * W);
+	}
+
+	void Vec4::normalize()
+	{
+		float d = getLength();
+		X /= d;
+		Y /= d;
+		Z /= d;
+		W /= d;
+	}
+
+	void Vec4::clamp(float min, float max)
+	{
+		if (min >= max)
+		{
+			ZAAP_ALERT("Vec4::clamp: The min Value has to be lower than the max Value");
+			return;
+		}
+		//X
+		if (X < min) X = min;
+		else if (X > max) X = max;
+
+		//Y
+		if (Y < min) Y = min;
+		else if (Y > max) Y = max;
+
+		//Z
+		if (Z < min) Z = min;
+		else if (Z > max) Z = max;
+
+		//W
+		if (W < min) W = min;
+		else if (W > max) W = max;
+	}
+
+	float Vec4::dot(const Vec4& v) const
+	{
+		return X * v.X + Y * v.Y + Z * v.Z + W * v.W;
 	}
 
 	//
