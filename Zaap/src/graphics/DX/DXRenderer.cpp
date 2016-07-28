@@ -14,18 +14,43 @@ namespace zaap { namespace graphics { namespace DX {
 		
 		resize(800, 600);
 
-		setupBlendState();
-		setupDepthBuffer();
+		initRasterizerState();
+		initBlendState();
+		initDepthBuffer();
 
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		m_Shader.loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
 	}
-	
+
 	//
-	//setup
+	//init
 	//
-	void DXRenderer::setupBlendState()
+	void DXRenderer::initRasterizerState()
+	{
+		D3D11_RASTERIZER_DESC rDesc;
+		ZeroMemory(&rDesc, sizeof(D3D11_RASTERIZER_DESC));
+
+		//draw options
+		rDesc.FillMode				= D3D11_FILL_SOLID;
+		rDesc.CullMode				= D3D11_CULL_NONE;
+		rDesc.FrontCounterClockwise = true;
+
+		//DepthBias
+		rDesc.DepthClipEnable		= false;
+
+		//other options
+		rDesc.ScissorEnable			= false;
+		rDesc.MultisampleEnable		= false;
+		rDesc.AntialiasedLineEnable = false;
+
+		m_Dev->CreateRasterizerState(&rDesc, &m_RasterizerState);
+		DXNAME(m_RasterizerState, "DXRenderer::m_RasterizerState");
+
+		m_Devcon->RSSetState(m_RasterizerState);
+
+	}
+	void DXRenderer::initBlendState()
 	{
 		//desc
 		D3D11_BLEND_DESC blendDesc;
@@ -46,8 +71,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		ZAAP_INFO("DXRenderer: created the BlendState");
 	}
-
-	void DXRenderer::setupDepthBuffer()
+	void DXRenderer::initDepthBuffer()
 	{
 		HRESULT hr;
 
@@ -168,22 +192,26 @@ namespace zaap { namespace graphics { namespace DX {
 
 	}
 
+	//
+	// Setters / Loaders
+	//
 	void DXRenderer::setCamera(Camera* camera)
 	{
 		m_Camera = camera;
 	}
-
 	void DXRenderer::setRenderTargets(ID3D11RenderTargetView* renderTargetView, ID3D11DepthStencilView* depthStencilView) const
 	{
 		m_Devcon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 		//m_Devcon->OMSetRenderTargets(1, &renderTargetView, NULL);
 	}
-
 	void DXRenderer::loadLight(Light* light)
 	{
 		m_Shader.loadLight(light);
 	}
 
+	//
+	// Render util
+	//
 	void DXRenderer::prepare()
 	{
 		DXContext::SwapBuffers();
@@ -195,12 +223,11 @@ namespace zaap { namespace graphics { namespace DX {
 		
 		//TODO Change Method
 	}
-
 	math::Mat4 matrix_;
 	void DXRenderer::render(Entity* entity)
 	{
 		//Texture
-		TexturedMesh tMesh = *(entity->getTexturedMesh());
+		TexturedMesh tMesh = *entity->getTexturedMesh();
 		tMesh.getTexture()->bind(0);
 
 		//Vertex Buffer
@@ -221,8 +248,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_Shader.cleanup();
 
+		//Rendering
 		DXRELEASE(m_RenderTargetView);
 		
+		//Rasterizer
+		DXRELEASE(m_RasterizerState);
+
 		//BlendState
 		DXRELEASE(m_BlendState);
 

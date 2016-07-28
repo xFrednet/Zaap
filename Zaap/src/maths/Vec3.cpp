@@ -16,6 +16,13 @@ namespace zaap { namespace math {
 		Z = z;
 	}
 
+	Vec3::Vec3(Vec2 vec2, float z)
+	{
+		X = vec2.X;
+		Y = vec2.Y;
+		Z = z;
+	}
+
 	String Vec3::toString()
 	{
 		return "Vec3(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ")";

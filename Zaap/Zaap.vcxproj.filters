@@ -165,6 +165,9 @@
     <ClCompile Include="src\graphics\light\LightSetup.cpp">
       <Filter>Source Files\src\graphics\light</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Color.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -298,6 +301,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\light\LightSetup.h">
       <Filter>Source Files\src\graphics\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Color.h">
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

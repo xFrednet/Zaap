@@ -27,7 +27,7 @@ namespace zaap
 		virtual void update();
 	public:
 		Application(char* title, int width, int height, graphics::Scene *scene);
-		~Application(void);
+		virtual ~Application(){}
 
 		void start();
 		void stop();

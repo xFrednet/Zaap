@@ -26,6 +26,8 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 
 		HRESULT result;
+		ID3D11Device *dev = DXContext::GetDevice();
+		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 
 		//
 		// Matrix Buffer
@@ -44,36 +46,64 @@ namespace zaap { namespace graphics { namespace DX {
 			initData.SysMemPitch		= 0;
 			initData.SysMemSlicePitch	= 0;
 
-			result = DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, &m_MarixBuffer);
+			result = dev->CreateBuffer(&bDesc, &initData, &m_MarixBuffer);
 			DXNAME(m_MarixBuffer, "DXStaticShader::m_MarixBuffer")
 
 			if (FAILED(result))
 				ZAAP_ERROR("DXStaticShader: Could not create m_MarixBuffer");
 
-			DXContext::GetDevContext()->VSSetConstantBuffers(0, 1, &m_MarixBuffer);
+			devcon->VSSetConstantBuffers(0, 1, &m_MarixBuffer);
 		}
 
+		//
+		// Light Buffer
+		//
 		{
 			D3D11_BUFFER_DESC bDesc;
-			bDesc.ByteWidth = sizeof(VS_LIGHT_BUFFER);
-			bDesc.Usage = D3D11_USAGE_DYNAMIC;
-			bDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-			bDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bDesc.MiscFlags = 0;
-			bDesc.StructureByteStride = 0;
+			bDesc.ByteWidth				= sizeof(VS_LIGHT_BUFFER);
+			bDesc.Usage					= D3D11_USAGE_DYNAMIC;
+			bDesc.BindFlags				= D3D11_BIND_CONSTANT_BUFFER;
+			bDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
+			bDesc.MiscFlags				= 0;
+			bDesc.StructureByteStride	= 0;
 
 			D3D11_SUBRESOURCE_DATA initData;
-			initData.pSysMem = &m_LightBufferStruct;
-			initData.SysMemPitch = 0;
-			initData.SysMemSlicePitch = 0;
+			initData.pSysMem			= &m_LightBufferStruct;
+			initData.SysMemPitch		= 0;
+			initData.SysMemSlicePitch	= 0;
 
-			result = DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, &m_LightBuffer);
+			result = dev->CreateBuffer(&bDesc, &initData, &m_LightBuffer);
 			DXNAME(m_LightBuffer, "DXStaticShader::m_LightBuffer");
 
 			if (FAILED(result))
 				ZAAP_ERROR("DXStaticShader: Could not create m_LightBuffer");
 
-			DXContext::GetDevContext()->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+			devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+		}
+
+		//
+		// Lightcolor Buffer
+		//
+		{
+			D3D11_BUFFER_DESC bDesc;
+			ZeroMemory(&bDesc, sizeof(D3D11_BUFFER_DESC));
+
+			bDesc.ByteWidth				= sizeof(PS_LIGHTCOLOR_BUFFER);
+			bDesc.Usage					= D3D11_USAGE_DYNAMIC;
+			bDesc.BindFlags				= D3D11_BIND_CONSTANT_BUFFER;
+			bDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
+			bDesc.MiscFlags				= 0;
+			bDesc.StructureByteStride	= 0;
+
+			D3D11_SUBRESOURCE_DATA initData;
+			initData.pSysMem			= &m_LightColorStruct;
+			initData.SysMemPitch		= 0;
+			initData.SysMemSlicePitch	= 0;
+
+			dev->CreateBuffer(&bDesc, &initData, &m_LightColorBuffer);
+			DXNAME(m_LightColorBuffer, "DXStaticShader::m_LightColorBuffer");
+
+			devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 		}
 	}
 
@@ -114,14 +144,29 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	void DXStaticShader::loadLight(const Light* light)
 	{
-		m_LightBufferStruct.LightPosition = ((BasicEntity*)light)->getPosition();
-
+		//
+		// Light position
+		//
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
-		D3D11_MAPPED_SUBRESOURCE ms;
+		{
+			m_LightBufferStruct.LightPosition = light->getPosition();
 
-		devcon->Map(m_LightBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &m_LightBufferStruct, sizeof(VS_LIGHT_BUFFER));
-		devcon->Unmap(m_LightBuffer, NULL);
+			D3D11_MAPPED_SUBRESOURCE ms;
+			devcon->Map(m_LightBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+			memcpy(ms.pData, &m_LightBufferStruct, sizeof(VS_LIGHT_BUFFER));
+			devcon->Unmap(m_LightBuffer, NULL);
+		}
+		//
+		// Light color
+		//
+		{
+			m_LightColorStruct.lightColor = light->getColor();
+
+			D3D11_MAPPED_SUBRESOURCE ms;
+			devcon->Map(m_LightColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+			memcpy(ms.pData, &m_LightColorStruct, sizeof(PS_LIGHTCOLOR_BUFFER));
+			devcon->Unmap(m_LightColorBuffer, NULL);
+		}
 	}
 
 	void DXStaticShader::cleanup()

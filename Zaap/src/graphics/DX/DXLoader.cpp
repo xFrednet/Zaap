@@ -59,8 +59,6 @@ namespace zaap { namespace graphics { namespace DX {
 		memcpy(ms2.pData, indexBufferData, sizeof(uint) * indexCount);
 		devcon->Unmap(indexBuffer, NULL);
 
-		console::Println("Loaded Mesh");
-
 		DXVertexBuffer* vBuffer = new DX::DXVertexBuffer(pVBuffer, indexBuffer, indexCount);
 		m_VertexBuffers.push_back(vBuffer);
 		return Mesh(vBuffer);

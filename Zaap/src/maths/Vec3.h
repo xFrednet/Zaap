@@ -3,6 +3,8 @@
 #include <Common.h>
 #include <Types.h>
 
+#include <maths/Vec2.h>
+
 namespace zaap { namespace math	{
 		
 	struct ZAAP_API Vec3
@@ -13,6 +15,7 @@ namespace zaap { namespace math	{
 		
 		Vec3();
 		Vec3(float x, float y, float z);
+		Vec3(Vec2 vec2, float z);
 
 		String toString();
 		

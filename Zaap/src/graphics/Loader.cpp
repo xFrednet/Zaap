@@ -171,6 +171,8 @@ namespace zaap { namespace graphics {
 			vertices[i] = VERTEX(position_unsorted[position_indices[i]], texCoords_unsorted[texCoords_indices[i]], normals_unsorted[normals_indices[i]]);
 		}
 
+		ZAAP_INFO(String("Loader: loaded ") + file);
+
 		return this->loadMesh(&vertices[0], vertices.size(), &indices[0], indices.size());
 	}
 }}

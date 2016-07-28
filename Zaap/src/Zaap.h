@@ -9,6 +9,7 @@
 #include <graphics/Scene.h>
 #include <graphics/Renderer.h>
 #include <graphics/Bitmap.h>
+#include <graphics/Color.h>
 
 #include <graphics/light/LightSetup.h>
 #include <graphics/light/Light.h>

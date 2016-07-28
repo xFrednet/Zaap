@@ -4,6 +4,7 @@
 
 #include <entity/BasicEntity.h>
 
+#include <graphics/Color.h>
 #include <maths/Maths.h>
 
 namespace zaap { namespace graphics {
@@ -11,15 +12,14 @@ namespace zaap { namespace graphics {
 	class ZAAP_API Light : public BasicEntity
 	{
 	protected:
-		math::Vec3 m_Color;
+		Color m_Color;
 	public:
-		Light(math::Vec3 position = math::Vec3(0, 0, 0), math::Vec3 color = math::Vec3(1, 1, 1));
+		Light(math::Vec3 position = math::Vec3(0, 0, 0), Color color = Color(1.0f, 1.0f, 1.0f));
 
 		//color
-		void setColor(math::Vec3 color);
-		void increaseColor(math::Vec3 color);
-		math::Vec3 getColor(void) const;
-		math::Vec3* getColorP(void);
+		void setColor(Color color);
+		Color getColor(void) const;
+		Color* getColorP(void);
 	};
 
 }}

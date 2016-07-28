@@ -11,6 +11,7 @@ Light* light = nullptr;
 Camera* camera = nullptr;
 Entity* m1 = nullptr;
 Entity* m2 = nullptr;
+Entity* lightCube = nullptr;
 
 void loadEntitys()
 {
@@ -19,12 +20,12 @@ void loadEntitys()
 	{
 		lightSetup = new LightSetup();
 
-		light = new Light(Vec3(0.0f, 10.0f, 0.0f));
+		light = new Light(Vec3(0.0f, 10.0f, 0.0f), Vec3(1.0f, 0.0f, 1.0f));
+		//light = new Light(Vec3(0.0f, 10.0f, 0.0f));
 		lightSetup->add(light);
 
 		scene->setLightSetup(lightSetup);
 	}
-
 
 	Mesh mesh;
 	Vec3 v;
@@ -52,6 +53,17 @@ void loadEntitys()
 		scene->addEntity(new Entity(TMeshManager::GetTMesh("rock"), v));
 	}
 
+	//bench
+	{
+		TextureManager::LoadTexture2D("wood", "res/bench.jpg");
+		mesh = API::Context::GetLoader()->loadOBJFile("res/bench.obj");
+		TMeshManager::AddTMesh(TexturedMesh("bench", mesh, (Texture2D*)TextureManager::GetTexture("wood")));
+
+		v = Vec3(-5, 1, 0);
+
+		scene->addEntity(new Entity(TMeshManager::GetTMesh("bench"), v));
+	}
+
 	//Cube 1
 	mesh = API::Context::GetLoader()->loadOBJFile("res/cube.obj");
 	TextureManager::LoadTexture2D("cube", "res/cube.png");
@@ -68,17 +80,37 @@ void loadEntitys()
 		m1 = new Entity(tMesh, v);
 		scene->addEntity(m1);
 	}
+
+	//Light Cube
+	{
+		
+		v = Vec3(0, -20, 0);
+		lightCube = new Entity(tMesh, v);
+		scene->addEntity(lightCube);
+	}
+
+	//Zaap frame
+
+	{
+		TextureManager::LoadTexture2D("zaap", "res/zaapLogo.png");
+		mesh = API::Context::GetLoader()->loadOBJFile("res/zaapFrame.obj");
+		TMeshManager::AddTMesh(TexturedMesh("zaap", mesh, (Texture2D*)TextureManager::GetTexture("zaap")));
+
+		v = Vec3(-7, 5, 0);
+		scene->addEntity(new Entity(TMeshManager::GetTMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));
+	}
 }
 
 
 class Test : public Application
 {
 public:
-	Test() : Application("Test", 800, 600, scene)
+	Test() : Application("Test", 852, 480, scene)
 	{}
 
 	float count = 0.0f;
-	
+	float count2 = 0.0f;
+
 	void update() override {
 		Application::update();
 
@@ -86,16 +118,21 @@ public:
 		m1->increaseRotation(Vec3(rot, rot, rot));
 		m2->increaseRotation(Vec3(rot, rot, rot));
 		count += 0.05f;
-		//m2->setScale(sinf(count) / 5 + 1.5f);
-		//m1->setScale(cosf(count) / 5 + 1.5f);
 		m1->setScale(Vec3(cosf(count) + 1.1f, sinf(count) + 1.1f, sinf(count) + 1.1f));
 
+		count2 += 0.0005f;
+		light->setColor(Color(Vec3(1.0f, 1.0f, 1.0f) * (sinf(count2) * 0.25f + 0.75f)));
+		
+		light->setPosition(Vec3(0.0f, 100.0f, 100.0f * sinf(count2)));
+
 		camera->update();
-		light->setPosition(camera->getPosition());
+		lightCube->setPosition(light->getPosition());
+
+		//light->setPosition(camera->getPosition());
 	}
 };
 
-int main()
+int main(void)
 {
 	scene = new Scene();
 	

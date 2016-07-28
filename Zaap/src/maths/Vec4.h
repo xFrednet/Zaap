@@ -3,8 +3,11 @@
 #include <Common.h>
 #include <Types.h>
 
+#include <maths/Vec2.h>
+#include <maths/Vec3.h>
+
 namespace zaap { namespace math {
-	
+
 	struct ZAAP_API Vec4
 	{
 		float X;
@@ -14,6 +17,8 @@ namespace zaap { namespace math {
 
 		Vec4();
 		Vec4(float x, float y, float z, float w);
+		Vec4(Vec2 vec2, float z, float w);
+		Vec4(Vec3 vec3, float w);
 
 		String toString();
 

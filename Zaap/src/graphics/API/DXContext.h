@@ -18,8 +18,6 @@ namespace zaap { namespace graphics	{ namespace DX {
 		
 		IDXGISwapChain *m_SwapChain;
 
-		ID3D11RasterizerState *m_RasterState;
-
 		DXLoader m_Loader;
 	protected:
 		void cleanup(void) override;

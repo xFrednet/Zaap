@@ -28,10 +28,6 @@ namespace zaap {
 		camera = new graphics::ControllableCamera(math::Vec3(0.4f, 2.8f, 9.3f));
 		graphics::Renderer::SetCamera(camera);
 	}
-	Application::~Application()
-	{
-		//cleanup();
-	}
 	void Application::cleanup() const
 	{
 		ImageLoader::Cleanup();

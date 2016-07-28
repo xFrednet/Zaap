@@ -20,6 +20,9 @@ namespace zaap { namespace graphics { namespace DX {
 		//Rendering
 		ID3D11RenderTargetView *m_RenderTargetView;
 
+		//Rasterstate
+		ID3D11RasterizerState *m_RasterizerState;
+
 		//BlendState
 		ID3D11BlendState *m_BlendState;
 
@@ -34,16 +37,19 @@ namespace zaap { namespace graphics { namespace DX {
 	protected:
 		void init() override;
 
-		//setup  
-		void setupBlendState();
-		void setupDepthBuffer();
+		//init  
+		void initRasterizerState();
+		void initBlendState();
+		void initDepthBuffer();
 
 		void resize(uint width, uint height) override;
 
+		//setters / loaders
 		void setCamera(Camera* camera) override;
 		void setRenderTargets(ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView) const;
 		void loadLight(Light* light) override;
 
+		//render util
 		void prepare() override;
 		void render(Entity* entity) override;
 

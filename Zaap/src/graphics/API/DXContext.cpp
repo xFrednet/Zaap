@@ -55,32 +55,6 @@ namespace zaap { namespace graphics { namespace DX {
 			DXNAME(m_Dev, "DXContext::m_Dev");
 			DXNAME(m_Devcon, "DXContext::m_Devcon");
 		}
-
-		//
-		// Rasterizer State
-		//
-		{
-			D3D11_RASTERIZER_DESC rasterDesc;
-			ZeroMemory(&rasterDesc, sizeof(D3D11_RASTERIZER_DESC));
-
-			//draw options
-			rasterDesc.FillMode = D3D11_FILL_SOLID;// to debug D3D11_FILL_WIREFRAME //TODO add debug switch
-			rasterDesc.CullMode = D3D11_CULL_NONE;
-			rasterDesc.FrontCounterClockwise = true;
-			//DepthBias
-			rasterDesc.DepthClipEnable = false;
-			rasterDesc.DepthBias = 0;
-			rasterDesc.DepthBiasClamp = 0.0f;
-			
-			rasterDesc.ScissorEnable = false;
-			rasterDesc.MultisampleEnable = false; //right ?
-			rasterDesc.AntialiasedLineEnable = false;
-
-			m_Dev->CreateRasterizerState(&rasterDesc, &m_RasterState);
-			DXNAME(m_RasterState, "DXContext::m_RasterState");
-
-			m_Devcon->RSSetState(m_RasterState);
-		}
 		
 	}
 
@@ -93,7 +67,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_Loader.cleanup();
 
-		DXRELEASE(m_RasterState);
 		DXRELEASE(m_SwapChain);
 
 		ReportLiveObjects();

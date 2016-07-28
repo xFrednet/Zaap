@@ -17,6 +17,20 @@ namespace zaap { namespace math {
 		Z = z;
 		W = w;
 	}
+	Vec4::Vec4(Vec2 vec2, float z, float w)
+	{
+		X = vec2.X;
+		Y = vec2.Y;
+		Z = z;
+		W = w;
+	}
+	Vec4::Vec4(Vec3 vec3, float w)
+	{
+		X = vec3.X;
+		Y = vec3.Y;
+		Z = vec3.Z;
+		W = w;
+	}
 
 	String Vec4::toString()
 	{

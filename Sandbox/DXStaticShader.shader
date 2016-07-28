@@ -54,6 +54,11 @@ VOut VShader(VSInput input)
 Texture2D texture_;
 SamplerState sampler_;
 
+cbuffer lightColor : register(b0)
+{
+	float4 lightColor;
+}
+
 /////////////////
 // PixelShader //
 /////////////////
@@ -62,12 +67,9 @@ float4 PShader(VOut input) : SV_TARGET
 	float3 normal = normalize(input.surfaceNormal);
 	float3 lightVector = normalize(input.toLightVector);
 	
-	float brightness = max(dot(normal, lightVector), 0.0);
-
+	float brightness = max(dot(normal, lightVector), 0.1);
+	float3 diffuse = brightness * lightColor.xyz;
 	float4 color = texture_.Sample(sampler_, input.texCoords);
 	
-	return float4(color.xyz * brightness, color.w);
-
-	//float3 colorNormal = normal / 2 + 0.5;
-	//return float4(colorNormal, 1.0);
+	return float4(color.xyz * diffuse, color.w);
 }
