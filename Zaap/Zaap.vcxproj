@@ -162,6 +162,7 @@
     <ClCompile Include="src\graphics\light\Light.cpp" />
     <ClCompile Include="src\graphics\light\LightSetup.cpp" />
     <ClCompile Include="src\graphics\Loader.cpp" />
+    <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="src\graphics\light\Light.h" />
     <ClInclude Include="src\graphics\light\LightSetup.h" />
     <ClInclude Include="src\graphics\Loader.h" />
+    <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Mesh.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Scene.h" />

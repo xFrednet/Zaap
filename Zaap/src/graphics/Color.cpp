@@ -25,14 +25,17 @@ namespace zaap { namespace graphics {
 	Color::Color(float r, float g, float b, float a)
 		: R(r), G(g), B(b), A(a)
 	{
+		RGBA.clamp(0.0f, 1.0f);
 	}
 	Color::Color(math::Vec4 color)
 		: RGBA(color)
 	{
+		RGBA.clamp(0.0f, 1.0f);
 	}
 	Color::Color(math::Vec3 color, float a)
 		: RGBA(color, a)
 	{
+		RGBA.clamp(0.0f, 1.0f);
 	}
 	Color::Color(int intR, int intG, int intB, int intA)
 	{

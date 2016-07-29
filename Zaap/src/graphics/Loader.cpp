@@ -1,6 +1,7 @@
 #include "Loader.h"
 
 #include <util/Console.h>
+#include <graphics/Material.h>
 
 namespace zaap { namespace graphics {
 
@@ -70,6 +71,9 @@ namespace zaap { namespace graphics {
 		}
 		return -1;
 	}
+	
+	
+
 	Mesh Loader::loadOBJFile(String file)
 	{
 		std::ifstream fileStream;
@@ -174,5 +178,63 @@ namespace zaap { namespace graphics {
 		ZAAP_INFO(String("Loader: loaded ") + file);
 
 		return this->loadMesh(&vertices[0], vertices.size(), &indices[0], indices.size());
+	}
+
+	void Loader::loadMTLFile(String file)
+	{
+	/*	newmtl Material
+		Ns 96.078431
+		Ka 0.000000 0.000000 0.000000
+		Kd 0.597895 0.597895 0.597895 //Color
+		Ks 0.666000 0.666000 0.666000 //Specular
+		Ni 1.000000
+		d 1.000000
+		illum 2
+		*/
+
+		std::ifstream fileStream;
+		fileStream.open(file);
+
+		//error check
+		if (!fileStream.is_open())
+		{
+			ZAAP_ERROR(String("Loader: could not open: " + file));
+			return;
+		}
+
+		Material material;
+		String name;
+		bool commit = false;
+		String line;
+		std::vector<std::string> str;
+		while (!fileStream.eof())
+		{
+			getline(fileStream, line);
+			if (startWith(line, "newmtl", 6))
+			{
+				if (commit)
+				{
+					//TODO commit Material to a Material Manager
+					material = Material();
+				} else commit = true;
+					
+				name = split(line, " ")[1];
+			}
+
+			if (startWith(line, "kd ", 3))
+			{
+				str = split(line, " ");
+				material.Color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
+			}
+
+			if (startWith(line, "kd ", 3))
+			{
+				str = split(line, " ");
+				material.Reflectivity = (float)atof(str[1].c_str());
+			}
+		}
+
+		//TODO commit Material to a Material Manager
+
 	}
 }}

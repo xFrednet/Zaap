@@ -33,6 +33,7 @@ namespace zaap { namespace graphics {
 		Loader(void);
 
 		Mesh loadOBJFile(String file);
+		void loadMTLFile(String file);
 
 		virtual Mesh loadMesh(VERTEX vertices[], uint vCount, uint indexBuffer[], uint indexCount) = 0;
 
