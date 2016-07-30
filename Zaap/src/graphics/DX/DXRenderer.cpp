@@ -4,6 +4,7 @@
 #include <graphics/API/VertexBuffer.h>
 #include <maths/MathHelper.h>
 #include <util/Console.h>
+#include <graphics/mesh/TexturedMesh.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -12,7 +13,7 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon = DXContext::GetDevContext();
 		m_Dev = DXContext::GetDevice();
 		
-		resize(800, 600);
+		resize(852, 480);
 
 		initRasterizerState();
 		initBlendState();
@@ -227,18 +228,18 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXRenderer::render(Entity* entity)
 	{
 		//Texture
-		TexturedMesh tMesh = *entity->getTexturedMesh();
+		TexturedMesh tMesh = *(TexturedMesh*)entity->getMesh();
 		tMesh.getTexture()->bind(0);
 
 		//Vertex Buffer
-		tMesh.getMesh()->getVertexBuffer()->bind(0);
+		tMesh.getVertexBuffer()->bind(0);
 
 		//Matrix
 		entity->getTransformationMatrix(matrix_);
 		m_Shader.loadTransformationMatrix(matrix_);
 
 		//rendering
-		m_Devcon->DrawIndexed(tMesh.getMesh()->getVertexCount(), 0, 0);
+		m_Devcon->DrawIndexed(tMesh.getVertexCount(), 0, 0);
 	}
 
 	void DXRenderer::cleanup()

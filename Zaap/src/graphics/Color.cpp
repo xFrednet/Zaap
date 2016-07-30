@@ -41,13 +41,21 @@ namespace zaap { namespace graphics {
 	{
 		setIntRGBA(intR, intG, intB, intA);
 	}
+	Color::Color(int hex)
+	{
+		R = ((hex >> 16) & 0xFF) / 255.0f;  // Extract the RR byte
+		G = ((hex >> 8) & 0xFF) / 255.0f;   // Extract the GG byte
+		B = ((hex) & 0xFF) / 255.0f;        // Extract the BB byte
+		A = 1.0f;
+		RGBA.clamp(0.0f, 1.0f);
+	}
 
 	//
 	// Setters
 	//
 	void Color::setRGB(float r, float g, float b)
 	{
-		setIntRGBA(r, g, b, A);
+		setRGBA(r, g, b, A);
 	}
 	void Color::setRGBA(float r, float g, float b, float a)
 	{
@@ -122,4 +130,11 @@ namespace zaap { namespace graphics {
 		return getAccordingUint(A);
 	}
 
+	String Color::toString() const
+	{
+		return "Color(R " + std::to_string(getIntR()) +
+			", G " + std::to_string(getIntG()) +
+			", B " + std::to_string(getIntB()) +
+			", A " + std::to_string(getIntA()) + ")";
+	}
 }}

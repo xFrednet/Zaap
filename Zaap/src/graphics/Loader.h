@@ -3,7 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <graphics/Mesh.h>
+#include <graphics/mesh/Mesh.h>
 #include <maths/Maths.h>
 
 namespace zaap { namespace graphics {
@@ -32,10 +32,10 @@ namespace zaap { namespace graphics {
 	public:
 		Loader(void);
 
-		Mesh loadOBJFile(String file);
+		API::VertexBuffer* loadOBJFile(String file);
 		void loadMTLFile(String file);
 
-		virtual Mesh loadMesh(VERTEX vertices[], uint vCount, uint indexBuffer[], uint indexCount) = 0;
+		virtual API::VertexBuffer* loadVBuffer(VERTEX vertices[], uint vCount, uint indexBuffer[], uint indexCount) = 0;
 
 		virtual void cleanup(void) const = 0;
 	};

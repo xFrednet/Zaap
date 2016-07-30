@@ -2,6 +2,7 @@
 
 #include <util/Console.h>
 #include <graphics/Material.h>
+#include <graphics/MaterialManager.h>
 
 namespace zaap { namespace graphics {
 
@@ -72,9 +73,7 @@ namespace zaap { namespace graphics {
 		return -1;
 	}
 	
-	
-
-	Mesh Loader::loadOBJFile(String file)
+	API::VertexBuffer* Loader::loadOBJFile(String file)
 	{
 		std::ifstream fileStream;
 		fileStream.open(file);
@@ -83,7 +82,7 @@ namespace zaap { namespace graphics {
 		if (!fileStream.is_open())
 		{
 			ZAAP_ERROR(String("Loader: could not open: " + file));
-			return Mesh();
+			return nullptr;
 		}
 
 		//util values
@@ -177,7 +176,7 @@ namespace zaap { namespace graphics {
 
 		ZAAP_INFO(String("Loader: loaded ") + file);
 
-		return this->loadMesh(&vertices[0], vertices.size(), &indices[0], indices.size());
+		return this->loadVBuffer(&vertices[0], vertices.size(), &indices[0], indices.size());
 	}
 
 	void Loader::loadMTLFile(String file)
@@ -202,7 +201,8 @@ namespace zaap { namespace graphics {
 			return;
 		}
 
-		Material material;
+		Color color;
+		float reflectivity = 0.0f;
 		String name;
 		bool commit = false;
 		String line;
@@ -214,8 +214,9 @@ namespace zaap { namespace graphics {
 			{
 				if (commit)
 				{
-					//TODO commit Material to a Material Manager
-					material = Material();
+					if (!MaterialManager::Contains(name))
+						MaterialManager::Add(name, new Material(color, reflectivity));
+
 				} else commit = true;
 					
 				name = split(line, " ")[1];
@@ -224,17 +225,18 @@ namespace zaap { namespace graphics {
 			if (startWith(line, "kd ", 3))
 			{
 				str = split(line, " ");
-				material.Color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
+				color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
 			}
 
 			if (startWith(line, "kd ", 3))
 			{
 				str = split(line, " ");
-				material.Reflectivity = (float)atof(str[1].c_str());
+				reflectivity = (float)atof(str[1].c_str());
 			}
 		}
 
-		//TODO commit Material to a Material Manager
+		if (!MaterialManager::Contains(name))
+			MaterialManager::Add(name, new Material(color, reflectivity));
 
 	}
 }}

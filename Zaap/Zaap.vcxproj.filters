@@ -52,6 +52,9 @@
     <Filter Include="Source Files\src\graphics\light">
       <UniqueIdentifier>{e146fc29-9ed3-416b-a68e-00ccfdabb270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\graphics\mesh">
+      <UniqueIdentifier>{8b7407c5-aec1-4099-aa91-f777b148a15d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -67,9 +70,6 @@
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Loader.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Mesh.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Renderer.cpp">
@@ -123,9 +123,6 @@
     <ClCompile Include="src\app\Window.cpp">
       <Filter>Source Files\src\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\TexturedMesh.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\maths\MathHelper.cpp">
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
@@ -150,9 +147,6 @@
     <ClCompile Include="src\graphics\DX\DXVertexBuffer.cpp">
       <Filter>Source Files\src\graphics\DX</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\TMeshManager.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\entity\Entity.cpp">
       <Filter>Source Files\src\entity</Filter>
     </ClCompile>
@@ -170,6 +164,18 @@
     </ClCompile>
     <ClCompile Include="src\graphics\Material.cpp">
       <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\MaterialManager.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh\Mesh.cpp">
+      <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh\TexturedMesh.cpp">
+      <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh\MeshManager.cpp">
+      <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -192,9 +198,6 @@
       <Filter>Source Files\src\util</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Loader.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Mesh.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Renderer.h">
@@ -260,9 +263,6 @@
     <ClInclude Include="src\Zaap.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\TexturedMesh.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\maths\MathHelper.h">
       <Filter>Source Files\src\maths</Filter>
     </ClInclude>
@@ -290,9 +290,6 @@
     <ClInclude Include="src\graphics\DX\DXVertexBuffer.h">
       <Filter>Source Files\src\graphics\DX</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\TMeshManager.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\entity\Entity.h">
       <Filter>Source Files\src\entity</Filter>
     </ClInclude>
@@ -310,6 +307,18 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Material.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\MaterialManager.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\mesh\Mesh.h">
+      <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\mesh\TexturedMesh.h">
+      <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\mesh\MeshManager.h">
+      <Filter>Source Files\src\graphics\mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

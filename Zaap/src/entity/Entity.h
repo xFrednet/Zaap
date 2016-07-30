@@ -4,7 +4,7 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <graphics/TexturedMesh.h>
+#include <graphics/mesh/Mesh.h>
 #include <maths/Maths.h>
 
 namespace zaap
@@ -12,11 +12,11 @@ namespace zaap
 	class ZAAP_API Entity : public BasicEntity
 	{
 	protected:
-		graphics::TexturedMesh m_TMesh;
+		graphics::Mesh* m_Mesh;
 		math::Vec3 m_Rotation;
 		math::Vec3 m_Scale;
 	public:
-		Entity(graphics::TexturedMesh &tMesh, math::Vec3 position, math::Vec3 rotation = math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3 scale = math::Vec3(1.0f, 1.0f, 1.0f));
+		Entity(graphics::Mesh *mesh, math::Vec3 position, math::Vec3 rotation = math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3 scale = math::Vec3(1.0f, 1.0f, 1.0f));
 		Entity();
 
 		//rotation
@@ -34,7 +34,7 @@ namespace zaap
 		math::Vec3* getScaleP(void);
 
 		//Getters
-		graphics::TexturedMesh* getTexturedMesh(void);
+		graphics::Mesh* getMesh(void);
 		void getTransformationMatrix(math::Mat4& result) const;
 		
 		//util

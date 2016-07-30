@@ -30,6 +30,7 @@ namespace zaap { namespace graphics {
 		Color(math::Vec4 color);
 		Color(math::Vec3 color, float a = 1.0f);
 		Color(int intR, int intG, int intB, int intA = 255);
+		Color(int hex);
 
 		//setters
 		void setRGB(float r, float g, float b);
@@ -54,7 +55,7 @@ namespace zaap { namespace graphics {
 		int getIntB(void) const;
 		int getIntA(void) const;
 
-		
+		String toString(void) const;
 	};
 
 }}

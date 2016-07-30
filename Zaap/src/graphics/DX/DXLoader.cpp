@@ -5,7 +5,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
-	Mesh DXLoader::loadMesh(VERTEX vertices[], uint vCount, uint indexBufferData[], uint indexCount)
+	API::VertexBuffer* DXLoader::loadVBuffer(VERTEX vertices[], uint vCount, uint indexBufferData[], uint indexCount)
 	{
 		/*
 		Vertex Buffer
@@ -61,7 +61,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		DXVertexBuffer* vBuffer = new DX::DXVertexBuffer(pVBuffer, indexBuffer, indexCount);
 		m_VertexBuffers.push_back(vBuffer);
-		return Mesh(vBuffer);
+		return vBuffer;
 	}
 
 	void DXLoader::cleanup() const

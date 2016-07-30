@@ -13,10 +13,10 @@
 #include "events/Input.h"
 
 #include <time.h>
+#include <graphics/MaterialManager.h>
+#include <graphics/mesh/MeshManager.h>
 
 namespace zaap {
-
-	graphics::Camera* camera;
 
 	Application::Application(char* title, int width, int height, graphics::Scene *scene)
 		: m_Window(title, width, height),
@@ -24,15 +24,13 @@ namespace zaap {
 	{
 		graphics::API::Context::Create(m_Window);
 		graphics::Renderer::Init();
-
-		camera = new graphics::ControllableCamera(math::Vec3(0.4f, 2.8f, 9.3f));
-		graphics::Renderer::SetCamera(camera);
 	}
 	void Application::cleanup() const
 	{
 		ImageLoader::Cleanup();
+		graphics::MeshManager::Cleanup();
 		graphics::TextureManager::Cleanup();
-		delete camera;
+		graphics::MaterialManager::Cleanup();
 		delete m_Scene;
 		graphics::Renderer::Cleanup();
 		graphics::API::Context::Cleanup();
@@ -130,16 +128,7 @@ namespace zaap {
 	}
 	void Application::update()
 	{
-
-		camera->update();
-
-		/*std::cout << events::Input::IsButtonPressed(0) << " " <<
-			events::Input::IsButtonPressed(1) << " " <<
-			events::Input::IsButtonPressed(2) << std::endl;*/
-
-		//std::cout << events::Input::GetMouseMotion().toString() << std::endl;;
-
-		//model.addToRotation(math::Vec3(0.0f, 0.5f, 0.0f));
+		m_Scene->update();
 	}
 
 	MSG msg_;

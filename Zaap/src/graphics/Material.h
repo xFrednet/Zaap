@@ -14,6 +14,8 @@ namespace zaap { namespace graphics {
 
 		Material();
 		Material(graphics::Color color, float reflectivity);
+
+		String toString(void) const;
 	};
 
 }}

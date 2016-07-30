@@ -1,6 +1,7 @@
 #include "ControllableCamera.h"
 
 #include <events/Input.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 	
@@ -36,6 +37,22 @@ namespace zaap { namespace graphics {
 		m_Position.Z += v.X * sin(angle);
 
 		m_Position.Y += v.Y;
+
+		//info
+		if (events::Input::IsKeyPressed(ZAAP_VK_I))
+		{
+			ZAAP_INFO("ControllableCamera: Position: " + m_Position.toString());
+			ZAAP_INFO("ControllableCamera: Yaw:      " + std::to_string(m_Yaw));
+			ZAAP_INFO("ControllableCamera: Pitch:    " + std::to_string(m_Pitch));
+		}
+
+		//reset
+		if (events::Input::IsKeyPressed(ZAAP_VK_R))
+		{
+			m_Position = math::Vec3(12.0f, 12.0f, -1.0f);
+			m_Yaw = -90.0;
+			m_Pitch = 30.0;
+		}
 	}
 
 	float ControllableCamera::getSpeed() const

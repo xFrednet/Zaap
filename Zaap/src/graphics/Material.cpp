@@ -13,4 +13,8 @@ namespace zaap { namespace graphics {
 	{
 	}
 
+	String Material::toString() const
+	{
+		return "Material(" + Color.toString() + ", Reflectivity: " + std::to_string(Reflectivity) + ")";
+	}
 }}

@@ -6,9 +6,9 @@
 
 namespace zaap {
 
-	Entity::Entity(graphics::TexturedMesh &tMesh, math::Vec3 position, math::Vec3 rotation, math::Vec3 scale)
+	Entity::Entity(graphics::Mesh *mesh, math::Vec3 position, math::Vec3 rotation, math::Vec3 scale)
 		: BasicEntity(position),
-		m_TMesh(tMesh),
+		m_Mesh(mesh),
 		m_Rotation(rotation),
 		m_Scale(scale)
 	{
@@ -58,12 +58,22 @@ namespace zaap {
 		m_Scale += scale;
 	}
 
+	math::Vec3 Entity::getScale() const
+	{
+		return m_Scale;
+	}
+
+	math::Vec3* Entity::getScaleP()
+	{
+		return &m_Scale;
+	}
+
 	//
 	// Getters
 	//
-	graphics::TexturedMesh* Entity::getTexturedMesh()
+	graphics::Mesh* Entity::getMesh()
 	{
-		return &m_TMesh;
+		return m_Mesh;
 	}
 	void Entity::getTransformationMatrix(math::Mat4 &result) const
 	{

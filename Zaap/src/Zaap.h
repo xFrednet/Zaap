@@ -10,6 +10,7 @@
 #include <graphics/Renderer.h>
 #include <graphics/Bitmap.h>
 #include <graphics/Color.h>
+#include <graphics/Material.h>
 
 #include <graphics/light/LightSetup.h>
 #include <graphics/light/Light.h>
@@ -17,11 +18,14 @@
 #include <graphics/camera/ControllableCamera.h>
 #include <graphics/camera/Camera.h>
 
-#include <graphics/TexturedMesh.h>
-#include <graphics/TMeshManager.h>
+#include <graphics/mesh/TexturedMesh.h>
+#include <graphics/mesh/MeshManager.h>
 #include <graphics/TextureManager.h>
+#include <graphics/MaterialManager.h>
 #include <graphics/API/Context.h>
 
 #include <events/Input.h>
 
 #include <maths/Maths.h>
+
+#pragma warning(pop)
