@@ -115,7 +115,6 @@ namespace zaap { namespace graphics {
 				
 				str = split(line, " ");
 				materials[materialCount] = *MaterialManager::Get(str[1]);
-				materials[materialCount].Color.R = 1.0f;
 				if (&materials[materialCount] == nullptr)
 				{
 					ZAAP_ALERT("Loader: requested material is null name: \"" + str[1] + "\" current file: " + file);
@@ -240,13 +239,13 @@ namespace zaap { namespace graphics {
 				name = split(line, " ")[1];
 			}
 
-			if (startWith(line, "kd ", 3))
+			if (startWith(line, "Kd ", 3))
 			{
 				str = split(line, " ");
 				color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
 			}
 
-			if (startWith(line, "kd ", 3))
+			if (startWith(line, "Ks ", 3))
 			{
 				str = split(line, " ");
 				reflectivity = (float)atof(str[1].c_str());

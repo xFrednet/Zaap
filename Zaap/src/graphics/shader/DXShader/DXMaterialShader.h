@@ -67,7 +67,7 @@ namespace zaap { namespace graphics { namespace DX {
 		void loadLight(const Light* light);
 
 		//material loader
-		void loadMaterials(Material materials[], uint count);
+		void loadMaterials(Material const* materials, uint count);
 
 		void start() const override;
 		void cleanup() override;

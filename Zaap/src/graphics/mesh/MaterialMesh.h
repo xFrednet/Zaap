@@ -11,14 +11,14 @@ namespace zaap { namespace graphics {
 	class ZAAP_API MaterialMesh : public Mesh
 	{
 	private:
-		Material* m_Materials;
+		Material m_Materials[8];
 		uint m_MaterialCount;
 	public:
 		MaterialMesh();
-		MaterialMesh(String name, API::VertexBuffer *vertexBuffer, Material* materials, uint materialCount);
+		MaterialMesh(String name, API::VertexBuffer *vertexBuffer, Material materials[], uint materialCount);
 
 		//getters
-		Material* getMaterials(void) const;
+		Material const* getMaterials(void) const;
 		uint getMaterialCount() const;
 
 	};

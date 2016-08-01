@@ -37,12 +37,10 @@ VOut VShader(VSInput input)
 	VOut output;
 
 	float4 worldPosition = mul(TransformationMatrix, input.position);
-	//float4 worldPosition = input.position;
 
 	output.position = mul(ViewMatrix, worldPosition);
 	output.position = mul(ProjectionMatrix, output.position);
 	
-
 	output.surfaceNormal = mul(TransformationMatrix, input.normal.xyz);
 	output.toLightVector = lightPosition.xyz - worldPosition.xyz;
 
@@ -82,6 +80,5 @@ float4 PShader(VOut input) : SV_TARGET
 	float3 diffuse = brightness * lightColor.xyz;
 	float4 color = float4(materials[input.material].Color.xyz, 1.0f);
 
-	//return float4(color.xyz, color.w);
-	return float4(1.0f, 1.0f, 1.0f, 1.0f);
+	return float4(color.xyz * diffuse, brightness);
 }

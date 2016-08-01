@@ -100,7 +100,7 @@ namespace zaap { namespace graphics { namespace DX {
 		D3D11_MAPPED_SUBRESOURCE ms;
 
 		DXContext::GetDevContext()->Map(m_MatrixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER));
+		memcpy(ms.pData, &m_MatrixStruct, sizeof(VS_MATRIX_BUFFER));
 		DXContext::GetDevContext()->Unmap(m_MatrixBuffer, NULL);
 	}
 
@@ -137,7 +137,7 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Material buffer
 	//
-	void DXMaterialShader::loadMaterials(Material materials[], uint count)
+	void DXMaterialShader::loadMaterials(Material const* materials, uint count)
 	{
 		if (count > MAX_MATERIAL_COUNT)
 		{
@@ -150,9 +150,6 @@ namespace zaap { namespace graphics { namespace DX {
 			m_MaterialStruct.Materials[i].Color = materials[i].Color.getRGB();
 			m_MaterialStruct.Materials[i].Reflectivity = materials[i].Reflectivity;
 		}
-
-		m_MaterialStruct.Materials[0].Color.X = 1.0f;
-		m_MaterialStruct.Materials[1].Color.Y = 1.0f;
 
 		loadMaterialBuffer();
 

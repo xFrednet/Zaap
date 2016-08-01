@@ -32,13 +32,11 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11Texture2D *m_DepthStencil;
 		ID3D11DepthStencilView *m_DepthStencilView;
 
-		DXMaterialShader m_MaterialShader;
-		DXTextureShader m_TextureShader;
+		DXMaterialShader *m_MaterialShader;
+		DXTextureShader *m_TextureShader;
 
 		Camera* m_Camera;
 	protected:
-		DXRenderer();
-		
 		void init() override;
 
 		//init  

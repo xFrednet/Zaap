@@ -31,12 +31,12 @@ void loadEntitys()
 	
 	//Test Model
 	{
-		API::Context::GetLoader()->loadMTLFile("res/Test.mtl");
+		API::Context::GetLoader()->loadMTLFile("res/oakTree.mtl");
 		
-		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("Test", "res/Test.obj", false));
+		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("oakTree", "res/oakTree.obj", false));
 		
-		v = Vec3(0, 0, 0);
-		scene->addEntity(new Entity(MeshManager::GetMesh("Test"), v));
+		v = Vec3(10, 0, 10);
+		scene->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
 	}
 	
 	//Flor
