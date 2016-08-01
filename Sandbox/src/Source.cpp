@@ -27,11 +27,25 @@ void loadEntitys()
 	}
 
 	Vec3 v;
+	TexturedMesh *mesh = nullptr;
+	
+	//Test Model
+	{
+		API::Context::GetLoader()->loadMTLFile("res/Test.mtl");
+		
+		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("Test", "res/Test.obj", false));
+		
+		v = Vec3(0, 0, 0);
+		scene->addEntity(new Entity(MeshManager::GetMesh("Test"), v));
+	}
 	
 	//Flor
 	{
 		TextureManager::LoadTexture2D("flor", "res/flor.jpg");
-		MeshManager::AddMesh(new TexturedMesh("flor", API::Context::GetLoader()->loadOBJFile("res/flor.obj"), (Texture2D*)TextureManager::GetTexture("flor")));
+		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("flor", "res/flor.obj");
+		mesh->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
+		//((TexturedMesh*)MeshManager::GetMesh("Test"))->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
+		MeshManager::AddMesh(mesh);
 
 		v = Vec3(0, -1, 0);
 		Entity* e = new Entity(MeshManager::GetMesh("flor"), v);
@@ -42,7 +56,9 @@ void loadEntitys()
 	//rock
 	{
 		TextureManager::LoadTexture2D("rock", "res/rock.png");
-		MeshManager::AddMesh(new TexturedMesh("rock", API::Context::GetLoader()->loadOBJFile("res/rock.obj"), (Texture2D*)TextureManager::GetTexture("rock")));
+		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("rock", "res/rock.obj");
+		mesh->setTexture((Texture2D*)TextureManager::GetTexture("rock"));
+		MeshManager::AddMesh(mesh);
 	
 		v = Vec3(0, 1, 0);
 
@@ -52,7 +68,9 @@ void loadEntitys()
 	//bench
 	{
 		TextureManager::LoadTexture2D("wood", "res/bench.jpg");
-		MeshManager::AddMesh(new TexturedMesh("bench", API::Context::GetLoader()->loadOBJFile("res/bench.obj"), (Texture2D*)TextureManager::GetTexture("wood")));
+		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("bench", "res/bench.obj");
+		mesh->setTexture((Texture2D*)TextureManager::GetTexture("wood"));
+		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-5, 1, 0);
 
@@ -61,7 +79,9 @@ void loadEntitys()
 
 	//Cube 1
 	TextureManager::LoadTexture2D("cube", "res/cube.png");
-	MeshManager::AddMesh(new TexturedMesh("cube", API::Context::GetLoader()->loadOBJFile("res/cube.obj"), (Texture2D*)TextureManager::GetTexture("cube")));
+	mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("cube", "res/cube.obj");
+	mesh->setTexture((Texture2D*)TextureManager::GetTexture("cube"));
+	MeshManager::AddMesh(mesh);
 	Mesh* tMesh = MeshManager::GetMesh("cube");
 	{
 		v = Vec3(0, 1, 5);
@@ -85,10 +105,11 @@ void loadEntitys()
 	}
 
 	//Zaap frame
-
 	{
 		TextureManager::LoadTexture2D("zaap", "res/zaapLogo.png");
-		MeshManager::AddMesh(new TexturedMesh("zaap", API::Context::GetLoader()->loadOBJFile("res/zaapFrame.obj"), (Texture2D*)TextureManager::GetTexture("zaap")));
+		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("zaap", "res/zaapFrame.obj");
+		mesh->setTexture((Texture2D*)TextureManager::GetTexture("zaap"));
+		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-7, 5, 0);
 		scene->addEntity(new Entity(MeshManager::GetMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));

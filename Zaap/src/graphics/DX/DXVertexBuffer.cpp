@@ -21,7 +21,10 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXVertexBuffer::bind(uint slot)
 	{
 		DXContext::GetDevContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		UINT stride = sizeof(VERTEX);
+		UINT stride = sizeof(TEXTURE_VERTEX);
+		if (slot != 0)  
+			stride = sizeof(MATERIAL_VERTEX);
+		
 		UINT offset = 0;
 		DXContext::GetDevContext()->IASetVertexBuffers(0, 1, &m_VBuffer, &stride, &offset);
 	}

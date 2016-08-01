@@ -164,11 +164,13 @@
     <ClCompile Include="src\graphics\Loader.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\MaterialManager.cpp" />
+    <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\mesh\TexturedMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshManager.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
+    <ClCompile Include="src\graphics\shader\DXShader\DXMaterialShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
@@ -209,11 +211,13 @@
     <ClInclude Include="src\graphics\Loader.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\MaterialManager.h" />
+    <ClInclude Include="src\graphics\mesh\MaterialMesh.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\mesh\TexturedMesh.h" />
     <ClInclude Include="src\graphics\mesh\MeshManager.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Scene.h" />
+    <ClInclude Include="src\graphics\shader\DXShader\DXMaterialShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
@@ -231,6 +235,7 @@
     <ClInclude Include="src\Zaap.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Sandbox\DXMaterialShader.shader" />
     <None Include="..\Sandbox\DXTextureShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

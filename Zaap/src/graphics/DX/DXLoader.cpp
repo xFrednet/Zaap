@@ -5,7 +5,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
-	API::VertexBuffer* DXLoader::loadVBuffer(VERTEX vertices[], uint vCount, uint indexBufferData[], uint indexCount)
+	API::VertexBuffer* DXLoader::loadVBuffer(void* vertices, uint vertexSize, uint vCount, uint indexBufferData[], uint indexCount)
 	{
 		/*
 		Vertex Buffer
@@ -19,7 +19,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 
 		bd.Usage			= D3D11_USAGE_DYNAMIC;
-		bd.ByteWidth		= sizeof(VERTEX) * vCount;
+		bd.ByteWidth		= vertexSize * vCount;
 		bd.BindFlags		= D3D11_BIND_VERTEX_BUFFER;
 		bd.CPUAccessFlags	= D3D11_CPU_ACCESS_WRITE;
 
@@ -27,11 +27,12 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11Buffer *pVBuffer;
 		dev->CreateBuffer(&bd, NULL, &pVBuffer);
 		m_Buffers.push_back(pVBuffer);
+		DXNAME(pVBuffer, "DXLoader::loadVBuffer::pVBuffer")
 
 		D3D11_MAPPED_SUBRESOURCE ms;
 
 		devcon->Map(pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, vertices, sizeof(VERTEX) * vCount);
+		memcpy(ms.pData, vertices, vertexSize * vCount);
 		devcon->Unmap(pVBuffer, NULL);
 
 		/*
@@ -51,15 +52,16 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//
 		ID3D11Buffer *indexBuffer;
-		HRESULT hr = dev->CreateBuffer(&iBufferDesc, &initData, &indexBuffer);
+		dev->CreateBuffer(&iBufferDesc, &initData, &indexBuffer);
 		m_Buffers.push_back(indexBuffer);
+		DXNAME(pVBuffer, "DXLoader::loadVBuffer::indexBuffer")
 
 		D3D11_MAPPED_SUBRESOURCE ms2;
 		devcon->Map(indexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms2);
 		memcpy(ms2.pData, indexBufferData, sizeof(uint) * indexCount);
 		devcon->Unmap(indexBuffer, NULL);
 
-		DXVertexBuffer* vBuffer = new DX::DXVertexBuffer(pVBuffer, indexBuffer, indexCount);
+		DXVertexBuffer* vBuffer = new DXVertexBuffer(pVBuffer, indexBuffer, indexCount);
 		m_VertexBuffers.push_back(vBuffer);
 		return vBuffer;
 	}

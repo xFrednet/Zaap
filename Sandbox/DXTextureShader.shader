@@ -18,8 +18,8 @@ cbuffer light : register(b1)
 //////////////
 struct VSInput {
 	float4 position : POSITION;
-	float2 texCoords : TEXCOORD;
 	float4 normal : NORMAL;
+	float2 texCoords : TEXCOORD;
 };
 struct VOut
 {
@@ -47,7 +47,7 @@ VOut VShader(VSInput input)
 
 	return output;
 }
-
+/*-----------------------------------------------------------------------------------------------------------------------------------*/
 /////////////
 // GLOBALS //
 /////////////

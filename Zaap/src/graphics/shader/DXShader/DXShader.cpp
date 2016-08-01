@@ -38,8 +38,8 @@ namespace zaap { namespace graphics { namespace DX {
 		dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_PShader);
 		DXNAME(m_PShader, "DXShader::m_PShader");
 
-		devcon->VSSetShader(m_VShader, 0, 0);
-		devcon->PSSetShader(m_PShader, 0, 0);
+		devcon->VSSetShader(m_VShader, nullptr, 0);
+		devcon->PSSetShader(m_PShader, nullptr, 0);
 
 		dev->CreateInputLayout(ied, eCount, VS->GetBufferPointer(), VS->GetBufferSize(), &m_Layout);
 		if (m_Layout) 
@@ -53,17 +53,33 @@ namespace zaap { namespace graphics { namespace DX {
 		DXRELEASE(VS);
 		DXRELEASE(PS);
 		DXRELEASE(errorMessage);
-		dev = nullptr;
-		devcon = nullptr;
 
 		return true;
+	}
+
+	bool DXShader::CreateConstBuffer(ID3D11Buffer* &buffer, uint size, void* data)
+	{
+		D3D11_BUFFER_DESC bDesc;
+		bDesc.ByteWidth = size;
+		bDesc.Usage = D3D11_USAGE_DYNAMIC;
+		bDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+		bDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		bDesc.MiscFlags = 0;
+		bDesc.StructureByteStride = 0;
+
+		D3D11_SUBRESOURCE_DATA initData;
+		initData.pSysMem = &data;
+		initData.SysMemPitch = 0;
+		initData.SysMemSlicePitch = 0;
+
+		return !FAILED(DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, &buffer));
 	}
 
 	void DXShader::start(void) const
 	{
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
-		devcon->VSSetShader(m_VShader, 0, 0);
-		devcon->PSSetShader(m_PShader, 0, 0);
+		devcon->VSSetShader(m_VShader, nullptr, 0);
+		devcon->PSSetShader(m_PShader, nullptr, 0);
 		devcon->IASetInputLayout(m_Layout);
 	}
 	void DXShader::stop() const

@@ -18,7 +18,7 @@ namespace zaap { namespace math {
 		Vec4();
 		Vec4(float x, float y, float z, float w);
 		Vec4(Vec2 vec2, float z, float w);
-		Vec4(Vec3 vec3, float w);
+		Vec4(Vec3 vec3, float w = 0);
 
 		String toString();
 

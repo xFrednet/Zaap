@@ -159,9 +159,6 @@
     <ClCompile Include="src\graphics\Color.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Material.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\MaterialManager.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
@@ -176,6 +173,15 @@
     </ClCompile>
     <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DXShader\DXMaterialShader.cpp">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Material.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp">
+      <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -320,9 +326,18 @@
     <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\shader\DXShader\DXMaterialShader.h">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\mesh\MaterialMesh.h">
+      <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Sandbox\DXTextureShader.shader">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
+    <None Include="..\Sandbox\DXMaterialShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </None>
   </ItemGroup>

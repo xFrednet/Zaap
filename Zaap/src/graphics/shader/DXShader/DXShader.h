@@ -5,6 +5,7 @@
 
 #include <graphics/shader/Shader.h>
 #include <graphics/API/DXCommon.h>
+#include <graphics/API/DXContext.h>
 
 
 namespace zaap { namespace graphics { namespace DX {
@@ -17,12 +18,13 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11InputLayout *m_Layout;
 
 		bool loadShaders(LPCTSTR vShaderFile, LPCTSTR pShaderFile, D3D11_INPUT_ELEMENT_DESC *ied, uint eCount, LPCTSTR vSMain = "VShader", LPCTSTR pSMain = "PShader");
-	
+		static bool CreateConstBuffer(ID3D11Buffer* &buffer, uint size, void* data);
+
 		void cleanDXShader();
 	public:
 
-		void start(void) const override;
-		void stop(void) const override;
+		virtual void start(void) const override;
+		virtual void stop(void) const override;
 	};
 
 }}}

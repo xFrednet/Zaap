@@ -16,7 +16,7 @@ namespace zaap { namespace graphics	{ namespace DX {
 		std::vector<ID3D11Buffer*> m_Buffers;
 		std::vector<DXVertexBuffer*> m_VertexBuffers;
 	public: 
-		API::VertexBuffer* loadVBuffer(VERTEX vertices[], uint vCount, uint indexBuffer[], uint indexCount) override;
+		API::VertexBuffer* loadVBuffer(void* vertices, uint vertexSize, uint vCount, uint indexBuffer[], uint indexCount) override;
 		
 		void cleanup(void) const override;
 	};

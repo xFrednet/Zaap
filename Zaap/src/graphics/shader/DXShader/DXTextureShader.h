@@ -12,13 +12,6 @@ namespace zaap { namespace graphics { namespace DX {
 	
 	class ZAAP_API DXTextureShader : public DXShader
 	{
-		struct VS_MATRIX_BUFFER
-		{
-			math::Mat4 ProjectionMatrix;
-			math::Mat4 TransformationMatrix;
-			math::Mat4 ViewMatrix;
-		};
-
 		struct VS_LIGHT_BUFFER
 		{
 			math::Vec3 LightPosition;
@@ -32,7 +25,7 @@ namespace zaap { namespace graphics { namespace DX {
 		};
 
 	protected:
-		ID3D11Buffer *m_MarixBuffer;
+		ID3D11Buffer *m_MatrixBuffer;
 		VS_MATRIX_BUFFER m_MatrixBufferStruct;
 		void loadMarixBuffer() const;
 
@@ -41,6 +34,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		ID3D11Buffer *m_LightColorBuffer;
 		PS_LIGHTCOLOR_BUFFER m_LightColorStruct;
+		void loadLightBuffers() const;
 	public:
 		DXTextureShader(void);
 
@@ -52,6 +46,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//light loader
 		void loadLight(const Light* light);
 
+		void start() const override;
 		void cleanup() override;
 	};
 

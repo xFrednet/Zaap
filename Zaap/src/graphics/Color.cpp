@@ -68,7 +68,7 @@ namespace zaap { namespace graphics {
 
 	void Color::setRGB(math::Vec3 rgb)
 	{
-		setIntRGBA(rgb.X, rgb.Y, rgb.Z, A);
+		setRGBA(rgb.X, rgb.Y, rgb.Z, A);
 	}
 	void Color::setRGBA(math::Vec4 rgba)
 	{

@@ -5,18 +5,18 @@
 #include <util/Console.h>
 #include <entity/BasicEntity.h>
 
-D3D11_INPUT_ELEMENT_DESC ied[] = {
+D3D11_INPUT_ELEMENT_DESC ied2[] = {
 	{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, 0					, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT	, 0, sizeof(float) * 3	, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	{"NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, sizeof(float) * 5	, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	{"NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, sizeof(float) * 3	, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT	, 0, sizeof(float) * 6	, D3D11_INPUT_PER_VERTEX_DATA, 0}
 };
 
 namespace zaap { namespace graphics { namespace DX {
 
-	DXTextureShader::DXTextureShader(void)
+	DXTextureShader::DXTextureShader()
 		: DXShader()
 	{
-		if (loadShaders("DXTextureShader.shader", "DXTextureShader.shader", ied, 3))
+		if (loadShaders("DXTextureShader.shader", "DXTextureShader.shader", ied2, 3))
 		{
 			ZAAP_INFO("DXTextureShader: compiled successfully");
 		} else
@@ -25,85 +25,44 @@ namespace zaap { namespace graphics { namespace DX {
 			system("pause"); //TODO remove Debugcode
 		}
 
-		HRESULT result;
-		ID3D11Device *dev = DXContext::GetDevice();
-		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
-
 		//
 		// Matrix Buffer
 		//
 		{
-			D3D11_BUFFER_DESC bDesc;
-			bDesc.ByteWidth				= sizeof(VS_MATRIX_BUFFER);
-			bDesc.Usage					= D3D11_USAGE_DYNAMIC;
-			bDesc.BindFlags				= D3D11_BIND_CONSTANT_BUFFER;
-			bDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
-			bDesc.MiscFlags				= 0;
-			bDesc.StructureByteStride	= 0;
-
-			D3D11_SUBRESOURCE_DATA initData;
-			initData.pSysMem			= &m_MatrixBufferStruct;
-			initData.SysMemPitch		= 0;
-			initData.SysMemSlicePitch	= 0;
-
-			result = dev->CreateBuffer(&bDesc, &initData, &m_MarixBuffer);
-			DXNAME(m_MarixBuffer, "DXTextureShader::m_MarixBuffer")
-
-			if (FAILED(result))
+			if (CreateConstBuffer(m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER), &m_MatrixBufferStruct))
+			{
+				DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer")
+			} else
+			{
 				ZAAP_ERROR("DXTextureShader: Could not create m_MarixBuffer");
-
-			devcon->VSSetConstantBuffers(0, 1, &m_MarixBuffer);
+			}
 		}
 
 		//
 		// Light Buffer
 		//
 		{
-			D3D11_BUFFER_DESC bDesc;
-			bDesc.ByteWidth				= sizeof(VS_LIGHT_BUFFER);
-			bDesc.Usage					= D3D11_USAGE_DYNAMIC;
-			bDesc.BindFlags				= D3D11_BIND_CONSTANT_BUFFER;
-			bDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
-			bDesc.MiscFlags				= 0;
-			bDesc.StructureByteStride	= 0;
-
-			D3D11_SUBRESOURCE_DATA initData;
-			initData.pSysMem			= &m_LightBufferStruct;
-			initData.SysMemPitch		= 0;
-			initData.SysMemSlicePitch	= 0;
-
-			result = dev->CreateBuffer(&bDesc, &initData, &m_LightBuffer);
-			DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
-
-			if (FAILED(result))
+			if (CreateConstBuffer(m_LightBuffer, sizeof(VS_LIGHT_BUFFER), &m_LightBufferStruct))
+			{
+				DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
+			} else
+			{
 				ZAAP_ERROR("DXTextureShader: Could not create m_LightBuffer");
-
-			devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+			}
 		}
 
 		//
 		// Lightcolor Buffer
 		//
 		{
-			D3D11_BUFFER_DESC bDesc;
-			ZeroMemory(&bDesc, sizeof(D3D11_BUFFER_DESC));
+			if (CreateConstBuffer(m_LightColorBuffer, sizeof(PS_LIGHTCOLOR_BUFFER), &m_LightColorStruct))
+			{
+				DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
+			} else
+			{
+				ZAAP_ERROR("DXTextureShader: Could not create m_LightColorBuffer");
+			}
 
-			bDesc.ByteWidth				= sizeof(PS_LIGHTCOLOR_BUFFER);
-			bDesc.Usage					= D3D11_USAGE_DYNAMIC;
-			bDesc.BindFlags				= D3D11_BIND_CONSTANT_BUFFER;
-			bDesc.CPUAccessFlags		= D3D11_CPU_ACCESS_WRITE;
-			bDesc.MiscFlags				= 0;
-			bDesc.StructureByteStride	= 0;
-
-			D3D11_SUBRESOURCE_DATA initData;
-			initData.pSysMem			= &m_LightColorStruct;
-			initData.SysMemPitch		= 0;
-			initData.SysMemSlicePitch	= 0;
-
-			dev->CreateBuffer(&bDesc, &initData, &m_LightColorBuffer);
-			DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
-
-			devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 		}
 	}
 
@@ -131,12 +90,13 @@ namespace zaap { namespace graphics { namespace DX {
 	
 	void DXTextureShader::loadMarixBuffer() const
 	{
+		if (!m_MatrixBuffer) return;
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 		D3D11_MAPPED_SUBRESOURCE ms;
 
-		devcon->Map(m_MarixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		devcon->Map(m_MatrixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 		memcpy(ms.pData, &m_MatrixBufferStruct, sizeof(VS_MATRIX_BUFFER));
-		devcon->Unmap(m_MarixBuffer, NULL);
+		devcon->Unmap(m_MatrixBuffer, NULL);
 	}
 
 	//
@@ -144,14 +104,16 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	void DXTextureShader::loadLight(const Light* light)
 	{
-		//
-		// Light position
-		//
+		m_LightBufferStruct.LightPosition = light->getPosition();
+		m_LightColorStruct.lightColor = light->getColor();
+		
+		loadLightBuffers();
+	}
+	void DXTextureShader::loadLightBuffers() const
+	{
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
+		D3D11_MAPPED_SUBRESOURCE ms;
 		{
-			m_LightBufferStruct.LightPosition = light->getPosition();
-
-			D3D11_MAPPED_SUBRESOURCE ms;
 			devcon->Map(m_LightBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 			memcpy(ms.pData, &m_LightBufferStruct, sizeof(VS_LIGHT_BUFFER));
 			devcon->Unmap(m_LightBuffer, NULL);
@@ -160,19 +122,31 @@ namespace zaap { namespace graphics { namespace DX {
 		// Light color
 		//
 		{
-			m_LightColorStruct.lightColor = light->getColor();
-
-			D3D11_MAPPED_SUBRESOURCE ms;
 			devcon->Map(m_LightColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 			memcpy(ms.pData, &m_LightColorStruct, sizeof(PS_LIGHTCOLOR_BUFFER));
 			devcon->Unmap(m_LightColorBuffer, NULL);
 		}
 	}
 
+	void DXTextureShader::start() const
+	{
+		DXShader::start();
+
+		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
+
+		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
+		devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+		devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
+
+		loadMarixBuffer();
+		loadLightBuffers();
+	}
+
 	void DXTextureShader::cleanup()
 	{
-		DXRELEASE(m_MarixBuffer);
+		DXRELEASE(m_MatrixBuffer);
 		DXRELEASE(m_LightBuffer);
+		DXRELEASE(m_LightColorBuffer);
 		cleanDXShader();
 		ZAAP_CLEANUP_LOG("DXTextureShader");
 	}

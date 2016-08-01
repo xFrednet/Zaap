@@ -17,5 +17,6 @@ namespace zaap { namespace graphics {
 		TexturedMesh(void);
 
 		Texture2D* getTexture(void) const;
+		void setTexture(Texture2D *texture);
 	};
 }}

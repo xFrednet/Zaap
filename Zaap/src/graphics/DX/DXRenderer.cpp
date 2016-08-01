@@ -5,9 +5,15 @@
 #include <maths/MathHelper.h>
 #include <util/Console.h>
 #include <graphics/mesh/TexturedMesh.h>
+#include <graphics/mesh/MaterialMesh.h>
 
 namespace zaap { namespace graphics { namespace DX {
-	
+	DXRenderer::DXRenderer()
+		: m_MaterialShader(), 
+		m_TextureShader()
+	{
+	}
+
 	void DXRenderer::init()
 	{
 		m_Devcon = DXContext::GetDevContext();
@@ -21,7 +27,9 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		m_Shader.loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
+		m_MaterialShader.loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
+		m_TextureShader.loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
+
 	}
 
 	//
@@ -207,7 +215,8 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 	void DXRenderer::loadLight(Light* light)
 	{
-		m_Shader.loadLight(light);
+		m_TextureShader.loadLight(light);
+		m_MaterialShader.loadLight(light);
 	}
 
 	//
@@ -220,26 +229,46 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		m_Shader.loadViewMatrix(m_Camera->getViewMatrix());
+		m_TextureShader.loadViewMatrix(m_Camera->getViewMatrix());
+		m_MaterialShader.loadViewMatrix(m_Camera->getViewMatrix());
 		
 		//TODO Change Method
 	}
 	math::Mat4 matrix_;
 	void DXRenderer::render(Entity* entity)
 	{
-		//Texture
-		TexturedMesh tMesh = *(TexturedMesh*)entity->getMesh();
-		tMesh.getTexture()->bind(0);
-
-		//Vertex Buffer
-		tMesh.getVertexBuffer()->bind(0);
-
+		Mesh* mesh = entity->getMesh();
+		
 		//Matrix
 		entity->getTransformationMatrix(matrix_);
-		m_Shader.loadTransformationMatrix(matrix_);
+
+		//Texture
+		if (mesh->getType() == MeshType::TEXTURED_MESH)
+		{
+			m_TextureShader.start();
+
+			((TexturedMesh*)mesh)->getTexture()->bind(0);
+
+			m_TextureShader.loadTransformationMatrix(matrix_);
+
+			mesh->getVertexBuffer()->bind(0);
+		} else if (mesh->getType() == MeshType::MATERIAL_MESH)
+		{
+			m_MaterialShader.start();
+			MaterialMesh* mMesh = (MaterialMesh*)mesh;
+
+			m_MaterialShader.loadTransformationMatrix(matrix_);
+			
+			m_MaterialShader.loadMaterials(mMesh->getMaterials(), mMesh->getMaterialCount());
+
+			mesh->getVertexBuffer()->bind(1);
+		} else
+		{
+			return;
+		}
 
 		//rendering
-		m_Devcon->DrawIndexed(tMesh.getVertexCount(), 0, 0);
+		m_Devcon->DrawIndexed(mesh->getVertexCount(), 0, 0);
 	}
 
 	void DXRenderer::cleanup()
@@ -247,7 +276,8 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon = nullptr;
 		m_Dev = nullptr;
 
-		m_Shader.cleanup();
+		m_TextureShader.cleanup();
+		m_MaterialShader.cleanup();
 
 		//Rendering
 		DXRELEASE(m_RenderTargetView);
