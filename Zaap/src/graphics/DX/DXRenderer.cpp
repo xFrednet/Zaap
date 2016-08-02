@@ -228,7 +228,7 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		m_TextureShader->loadViewMatrix(m_Camera->getViewMatrix());
-		m_MaterialShader->loadViewMatrix(m_Camera->getViewMatrix());
+		m_MaterialShader->loadCamera(m_Camera);
 		
 		//TODO Change Method
 	}

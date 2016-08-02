@@ -26,10 +26,23 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER), &m_MatrixStruct))
 			{
-				DXNAME(m_MaterialBuffer, "DXMaterialShader::m_MatrixBuffer");
+				DXNAME(m_MatrixBuffer, "DXMaterialShader::m_MatrixBuffer");
 			} else
 			{
 				ZAAP_ERROR("DXMaterialShader: failed to create the m_MatrixBuffer");
+			}
+		}
+
+		//
+		// Scene Buffer
+		//
+		{
+			if (CreateConstBuffer(m_SceneBuffer, sizeof(VS_SCENE_BUFFER), &m_SceneStruct))
+			{
+				DXNAME(m_SceneBuffer, "DXMaterialShader::m_SceneBuffer");
+			} else
+			{
+				ZAAP_ERROR("DXMaterialShader: failed to create the m_SceneBuffer");
 			}
 		}
 
@@ -76,25 +89,24 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Matrix buffer
 	//
-	void DXMaterialShader::loadTransformationMatrix(math::Mat4& matrix)
+	void DXMaterialShader::loadTransformationMatrix(math::Mat4 matrix)
 	{
 		m_MatrixStruct.TransformationMatrix = matrix;
 
 		loadMatrixBuffer();
 	}
-	void DXMaterialShader::loadProjectionMatrix(math::Mat4& matrix)
+	void DXMaterialShader::loadProjectionMatrix(math::Mat4 matrix)
 	{
 		m_MatrixStruct.ProjectionMatrix = matrix;
 
 		loadMatrixBuffer();
 	}
-	void DXMaterialShader::loadViewMatrix(math::Mat4& matrix)
+	void DXMaterialShader::loadViewMatrix(math::Mat4 matrix)
 	{
 		m_MatrixStruct.ViewMatrix = matrix;
 
 		loadMatrixBuffer();
 	}
-
 	void DXMaterialShader::loadMatrixBuffer() const
 	{
 		D3D11_MAPPED_SUBRESOURCE ms;
@@ -102,6 +114,26 @@ namespace zaap { namespace graphics { namespace DX {
 		DXContext::GetDevContext()->Map(m_MatrixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 		memcpy(ms.pData, &m_MatrixStruct, sizeof(VS_MATRIX_BUFFER));
 		DXContext::GetDevContext()->Unmap(m_MatrixBuffer, NULL);
+	}
+
+	//
+	// Scene Buffer
+	//
+	void DXMaterialShader::loadCamera(Camera* camera)
+	{
+		loadViewMatrix(camera->getViewMatrix());
+
+		m_SceneStruct.CameraPosition = camera->getPosition();
+
+		loadSceneBuffer();
+	}
+	void DXMaterialShader::loadSceneBuffer() const
+	{
+		D3D11_MAPPED_SUBRESOURCE ms;
+
+		DXContext::GetDevContext()->Map(m_SceneBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		memcpy(ms.pData, &m_SceneStruct, sizeof(VS_SCENE_BUFFER));
+		DXContext::GetDevContext()->Unmap(m_SceneBuffer, NULL);
 	}
 
 	//
@@ -139,10 +171,10 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	void DXMaterialShader::loadMaterials(Material const* materials, uint count)
 	{
-		if (count > MAX_MATERIAL_COUNT)
+		if (count > 8)
 		{
-			ZAAP_ALERT("DXMaterialShader: Too many materials! This shader only supports " + std::to_string(MAX_MATERIAL_COUNT) + " materials");
-			count = MAX_MATERIAL_COUNT;
+			ZAAP_ALERT("DXMaterialShader: Too many materials! This shader only supports 8 materials");
+			count = 8;
 		}
 
 		for (uint i = 0; i < count; i++)
@@ -170,11 +202,13 @@ namespace zaap { namespace graphics { namespace DX {
 
 		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
 		devcon->VSSetConstantBuffers(1, 1, &m_LightPositionBuffer);
+		devcon->VSSetConstantBuffers(2, 1, &m_SceneBuffer);
 
 		devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 		devcon->PSSetConstantBuffers(1, 1, &m_MaterialBuffer);
 
 		loadMatrixBuffer();
+		loadSceneBuffer();
 		loadLightBuffers();
 		loadMaterialBuffer();
 	}
