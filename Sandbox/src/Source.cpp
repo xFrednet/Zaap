@@ -22,6 +22,8 @@ void loadEntitys()
 
 		light = new Light(Vec3(0.0f, 10.0f, 0.0f), Vec3(1.0f, 0.0f, 1.0f));
 		lightSetup->add(light);
+		lightSetup->add(new Light());
+		lightSetup->setAmbientColor(Color(0.2f, 0.2f, 0.2f));
 
 		scene->setLightSetup(lightSetup);
 	}

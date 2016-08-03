@@ -50,9 +50,9 @@ namespace zaap { namespace graphics { namespace DX {
 		// LightPosition buffer
 		//
 		{
-			if (CreateConstBuffer(m_LightPositionBuffer, sizeof(VS_LIGHTPOSITION_BUFFER), &m_LightPositionStruct))
+			if (CreateConstBuffer(m_VSLightBuffer, sizeof(VS_LIGHT_BUFFER), &m_VSLightStruct))
 			{
-				DXNAME(m_LightPositionBuffer, "DXMaterialShader::m_LightPositionBuffer");
+				DXNAME(m_VSLightBuffer, "DXMaterialShader::m_LightPositionBuffer");
 			} else
 			{
 				ZAAP_ERROR("DXMaterialShader: failed to create the m_LightPositionBuffer");
@@ -63,9 +63,9 @@ namespace zaap { namespace graphics { namespace DX {
 		// LightColor buffer
 		//
 		{
-			if (CreateConstBuffer(m_LightColorBuffer, sizeof(PS_LIGHTCOLOR_BUFFER), &m_LightColorStruct))
+			if (CreateConstBuffer(m_PSLightBuffer, sizeof(PS_LIGHT_BUFFER), &m_PSLightStruct))
 			{
-				DXNAME(m_LightColorBuffer, "DXMaterialShader::m_LightColorBuffer");
+				DXNAME(m_PSLightBuffer, "DXMaterialShader::m_LightColorBuffer");
 			}else
 			{
 				ZAAP_ERROR("DXMaterialShader: failed to create the m_LightColorBuffer");
@@ -139,13 +139,33 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Light buffer
 	//
-	void DXMaterialShader::loadLight(const Light* light)
+	void DXMaterialShader::loadLightSetup(const LightSetup* lightSetup)
 	{
-		m_LightPositionStruct.Position = math::Vec4(light->getPosition());
-		m_LightColorStruct.lightColor = light->getColor();
+		uint count = lightSetup->getSize();
+		if (count >= SUPPORTET_LIGHT_COUNT)
+		{
+			ZAAP_ALERT("DXMaterialShader: The submitted LightSetup has to many lights. " + std::to_string(count) + "/" + std::to_string(SUPPORTET_LIGHT_COUNT));
+			count = SUPPORTET_LIGHT_COUNT;
+		}
+
+		Light const *light;
+		for (uint i = 0; i < count; i++)
+		{
+			light = lightSetup->getConstLight(i);
+
+			m_VSLightStruct.Position[i] = math::Vec4(light->getPosition());
+			m_VSLightStruct.LightCount = count;
+
+			m_PSLightStruct.LightColor[i] = light->getColor();
+			m_PSLightStruct.LightCount = count;
+		}
+
+		m_PSLightStruct.AmbientLightColor = lightSetup->getAmbientColor();
 
 		loadLightBuffers();
 	}
+
+
 	void DXMaterialShader::loadLightBuffers() const
 	{
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
@@ -153,16 +173,16 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//Light position
 		{
-			devcon->Map(m_LightPositionBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-			memcpy(ms.pData, &m_LightPositionStruct, sizeof(VS_LIGHTPOSITION_BUFFER));
-			devcon->Unmap(m_LightPositionBuffer, NULL);
+			devcon->Map(m_VSLightBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+			memcpy(ms.pData, &m_VSLightStruct, sizeof(VS_LIGHT_BUFFER));
+			devcon->Unmap(m_VSLightBuffer, NULL);
 		}
 
 		//Light color
 		{
-			devcon->Map(m_LightColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-			memcpy(ms.pData, &m_LightColorStruct, sizeof(PS_LIGHTCOLOR_BUFFER));
-			devcon->Unmap(m_LightColorBuffer, NULL);
+			devcon->Map(m_PSLightBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+			memcpy(ms.pData, &m_PSLightStruct, sizeof(PS_LIGHT_BUFFER));
+			devcon->Unmap(m_PSLightBuffer, NULL);
 		}
 	}
 
@@ -201,10 +221,10 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 
 		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
-		devcon->VSSetConstantBuffers(1, 1, &m_LightPositionBuffer);
+		devcon->VSSetConstantBuffers(1, 1, &m_VSLightBuffer);
 		devcon->VSSetConstantBuffers(2, 1, &m_SceneBuffer);
 
-		devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
+		devcon->PSSetConstantBuffers(0, 1, &m_PSLightBuffer);
 		devcon->PSSetConstantBuffers(1, 1, &m_MaterialBuffer);
 
 		loadMatrixBuffer();
@@ -219,10 +239,10 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//Vertex shader buffer
 		DXRELEASE(m_MatrixBuffer);
-		DXRELEASE(m_LightPositionBuffer);
+		DXRELEASE(m_VSLightBuffer);
 
 		//Pixel shader buffer
-		DXRELEASE(m_LightColorBuffer);
+		DXRELEASE(m_PSLightBuffer);
 		DXRELEASE(m_MaterialBuffer);
 	}
 }}}

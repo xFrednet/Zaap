@@ -211,10 +211,10 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 		//m_Devcon->OMSetRenderTargets(1, &renderTargetView, NULL);
 	}
-	void DXRenderer::loadLight(Light* light)
+	void DXRenderer::loadLightSetup(LightSetup* lightSetup)
 	{
-		m_TextureShader->loadLight(light);
-		m_MaterialShader->loadLight(light);
+		m_TextureShader->loadLight(lightSetup->getLight(0));
+		m_MaterialShader->loadLightSetup(lightSetup);
 	}
 
 	//

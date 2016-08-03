@@ -13,15 +13,21 @@ namespace zaap { namespace graphics {
 	{
 	private:
 		std::vector<Light*> m_Lights;
+
+		Color m_AmbientLightColor;
 	public:
 		~LightSetup(void);
 
 		//util
-		virtual void add(Light *light);
-		virtual void remove(Light *light);
+		void add(Light *light);
+		void remove(Light *light);
 
-		virtual void update(void);
-		virtual void render(void);
+		void update(void);
+		void render(void);
+
+		//Ambient lighting
+		void setAmbientColor(Color color);
+		Color getAmbientColor(void) const;
 
 		//getters
 		uint getSize() const;

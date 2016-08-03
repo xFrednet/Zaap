@@ -3,9 +3,9 @@
 #include "Common.h"
 #include "graphics/camera/Camera.h"
 #include <entity/Entity.h>
+#include <graphics/light/LightSetup.h>
 
 namespace zaap { namespace graphics {
-	class Light;
 
 	class ZAAP_API Renderer
 	{
@@ -20,7 +20,7 @@ namespace zaap { namespace graphics {
 
 		//Setters
 		virtual void setCamera(Camera* camera) = 0;
-		virtual void loadLight(Light* light) = 0;
+		virtual void loadLightSetup(LightSetup* lightSetup) = 0;
 
 		//Util
 		virtual void prepare() = 0;
@@ -37,7 +37,7 @@ namespace zaap { namespace graphics {
 		
 		//Setters
 		static void SetCamera(Camera* camera);
-		static void LoadLight(Light* light);
+		static void LoadLightSetup(LightSetup* lightSetup);
 
 		//Util
 		static void Prepare();

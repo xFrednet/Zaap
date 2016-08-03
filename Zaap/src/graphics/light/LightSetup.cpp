@@ -39,6 +39,18 @@ namespace zaap { namespace graphics {
 	}
 
 	//
+	// Ambient lighting
+	//
+	void LightSetup::setAmbientColor(Color color)
+	{
+		m_AmbientLightColor = color;
+	}
+	Color LightSetup::getAmbientColor() const
+	{
+		return m_AmbientLightColor;
+	}
+
+	//
 	// Getters
 	//
 	uint LightSetup::getSize() const

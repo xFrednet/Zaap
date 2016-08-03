@@ -28,7 +28,7 @@ namespace zaap { namespace graphics {
 		if (m_LightSetup)
 		{
 			m_LightSetup->render();
-			Renderer::LoadLight(m_LightSetup->getLight(0));
+			Renderer::LoadLightSetup(m_LightSetup);
 		}
 		for (uint i = 0; i < m_Entities.size(); i++)
 		{
@@ -50,7 +50,7 @@ namespace zaap { namespace graphics {
 	void Scene::setLightSetup(LightSetup* lightSetup)
 	{
 		m_LightSetup = lightSetup;
-		Renderer::LoadLight(lightSetup->getLight(0));
+		Renderer::LoadLightSetup(lightSetup);
 	}
 	LightSetup* Scene::getLightSetup()
 	{
