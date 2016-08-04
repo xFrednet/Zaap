@@ -2,12 +2,13 @@
 
 #include <Common.h>
 #include <Types.h>
+#include "Color.h"
 
 namespace zaap
 {
 	namespace graphics
 	{
-		struct ZAAP_API BITMAP
+		struct ZAAP_API Bitmap
 		{
 		public:
 			byte* Bytes;
@@ -15,15 +16,18 @@ namespace zaap
 			uint Height;
 			uint BitsPerPixel;
 
-			BITMAP(char *file);
-			BITMAP(String &file);
+			Bitmap();
+			Bitmap(char *file);
+			Bitmap(String &file);
 
-			~BITMAP();
+			~Bitmap();
 
 			uint getR(uint x, uint y) const;
 			uint getG(uint x, uint y) const;
 			uint getB(uint x, uint y) const;
 			uint getA(uint x, uint y) const;
+
+			Color getColor(uint x, uint y) const;
 
 		};
 	}

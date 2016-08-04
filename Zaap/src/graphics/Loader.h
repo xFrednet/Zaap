@@ -18,7 +18,7 @@ namespace zaap { namespace graphics {
 
 		virtual API::VertexBuffer* loadVBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount) = 0;
 
-		virtual void cleanup(void) const = 0;
+		virtual void cleanup(void) = 0;
 	};
 
 }}

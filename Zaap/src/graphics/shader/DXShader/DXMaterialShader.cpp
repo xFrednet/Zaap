@@ -235,14 +235,18 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXMaterialShader::cleanup()
 	{
-		cleanDXShader();
 
 		//Vertex shader buffer
 		DXRELEASE(m_MatrixBuffer);
 		DXRELEASE(m_VSLightBuffer);
+		DXRELEASE(m_SceneBuffer);
 
 		//Pixel shader buffer
 		DXRELEASE(m_PSLightBuffer);
 		DXRELEASE(m_MaterialBuffer);
+		
+		cleanDXShader();
+
+		ZAAP_CLEANUP_LOG("DXMaterialShader");
 	}
 }}}

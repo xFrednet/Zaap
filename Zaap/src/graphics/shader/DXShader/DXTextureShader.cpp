@@ -147,7 +147,9 @@ namespace zaap { namespace graphics { namespace DX {
 		DXRELEASE(m_MatrixBuffer);
 		DXRELEASE(m_LightBuffer);
 		DXRELEASE(m_LightColorBuffer);
+		
 		cleanDXShader();
+
 		ZAAP_CLEANUP_LOG("DXTextureShader");
 	}
 }}}

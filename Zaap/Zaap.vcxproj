@@ -179,6 +179,8 @@
     <ClCompile Include="src\maths\Vec2.cpp" />
     <ClCompile Include="src\maths\Vec3.cpp" />
     <ClCompile Include="src\maths\Vec4.cpp" />
+    <ClCompile Include="src\scene\terrain\Terrain.cpp" />
+    <ClCompile Include="src\scene\terrain\TerrainTile.cpp" />
     <ClCompile Include="src\util\Console.cpp" />
     <ClCompile Include="src\util\ImageLoader.cpp" />
     <ClCompile Include="src\util\StringUtil.cpp" />
@@ -228,6 +230,8 @@
     <ClInclude Include="src\maths\Vec2.h" />
     <ClInclude Include="src\maths\Vec3.h" />
     <ClInclude Include="src\maths\Vec4.h" />
+    <ClInclude Include="src\scene\terrain\Terrain.h" />
+    <ClInclude Include="src\scene\terrain\TerrainTile.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\Console.h" />
     <ClInclude Include="src\util\ImageLoader.h" />

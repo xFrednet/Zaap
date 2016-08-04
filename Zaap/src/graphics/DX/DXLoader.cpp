@@ -66,12 +66,12 @@ namespace zaap { namespace graphics { namespace DX {
 		return vBuffer;
 	}
 
-	void DXLoader::cleanup() const
+	void DXLoader::cleanup()
 	{
 		uint i;
 		for (i = 0; i < m_Buffers.size(); i++)
 		{
-			DXRELEASE_(m_Buffers[i]);
+			DXRELEASE(m_Buffers[i]);
 		}
 
 		for (i = 0; i < m_VertexBuffers.size(); i++)

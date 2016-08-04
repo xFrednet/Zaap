@@ -55,6 +55,12 @@
     <Filter Include="Source Files\src\graphics\mesh">
       <UniqueIdentifier>{8b7407c5-aec1-4099-aa91-f777b148a15d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\scene">
+      <UniqueIdentifier>{df045561-db33-4ef1-b7f5-6f25476eb842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\scene\terrain">
+      <UniqueIdentifier>{017c9b12-69c4-4e59-a093-efaad5082d0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -182,6 +188,12 @@
     </ClCompile>
     <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp">
       <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\terrain\Terrain.cpp">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\terrain\TerrainTile.cpp">
+      <Filter>Source Files\src\scene\terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +343,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\mesh\MaterialMesh.h">
       <Filter>Source Files\src\graphics\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\terrain\Terrain.h">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\terrain\TerrainTile.h">
+      <Filter>Source Files\src\scene\terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

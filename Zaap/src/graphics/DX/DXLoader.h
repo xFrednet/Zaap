@@ -18,7 +18,7 @@ namespace zaap { namespace graphics	{ namespace DX {
 	public: 
 		API::VertexBuffer* loadVBuffer(void* vertices, uint vertexSize, uint vCount, uint indexBuffer[], uint indexCount) override;
 		
-		void cleanup(void) const override;
+		void cleanup(void) override;
 	};
 
 }}}
