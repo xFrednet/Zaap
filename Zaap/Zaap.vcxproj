@@ -172,6 +172,7 @@
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXMaterialShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
+    <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXMaterialShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />
+    <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />

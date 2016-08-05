@@ -88,7 +88,7 @@ namespace zaap { namespace graphics { namespace DX {
 		void loadCamera(Camera* camera);
 
 		//light loader
-		void loadLightSetup(const LightSetup* lightSetup);
+		void loadLightSetup(const LightSetup const* lightSetup);
 
 		//material loader
 		void loadMaterials(Material const* materials, uint count);

@@ -17,6 +17,11 @@ namespace zaap { namespace graphics {
 		s_Instance->init();
 	}
 
+	void Renderer::Render(const scene::TerrainTile const *terrainTile)
+	{
+		s_Instance->render(terrainTile);
+	}
+
 	//
 	//Render
 	//

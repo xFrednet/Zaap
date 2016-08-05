@@ -139,7 +139,7 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	// Light buffer
 	//
-	void DXMaterialShader::loadLightSetup(const LightSetup* lightSetup)
+	void DXMaterialShader::loadLightSetup(const LightSetup const* lightSetup)
 	{
 		uint count = lightSetup->getSize();
 		if (count >= SUPPORTET_LIGHT_COUNT)

@@ -4,6 +4,7 @@
 #include "graphics/camera/Camera.h"
 #include <entity/Entity.h>
 #include <graphics/light/LightSetup.h>
+#include <scene/terrain/TerrainTile.h>
 
 namespace zaap { namespace graphics {
 
@@ -16,6 +17,7 @@ namespace zaap { namespace graphics {
 		virtual void init() = 0;
 
 		//Render
+		virtual void render(const scene::TerrainTile const *terrainTile);
 		virtual void render(Entity* model) = 0;
 
 		//Setters
@@ -32,6 +34,7 @@ namespace zaap { namespace graphics {
 		static void Init();
 
 		//Render
+		static void Render(const scene::TerrainTile const *terrainTile);
 		static void Render(Entity* model);
 		static void RenderEntityArray(const std::vector<Entity*>& models);
 		

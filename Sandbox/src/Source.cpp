@@ -150,10 +150,6 @@ public:
 
 int main(void)
 {
-	float fill = 20;
-	float *f = new float[10];
-	memset(f, fill, 10 * sizeof(float));
-	cout << f[5] << " " << f[9] << endl;
 	
 	scene = new Scene();
 	

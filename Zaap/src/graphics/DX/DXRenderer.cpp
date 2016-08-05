@@ -9,6 +9,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
+	math::Mat4 matrix_;
 	void DXRenderer::init()
 	{
 		m_Devcon = DXContext::GetDevContext();
@@ -232,7 +233,14 @@ namespace zaap { namespace graphics { namespace DX {
 		
 		//TODO Change Method
 	}
-	math::Mat4 matrix_;
+
+	void DXRenderer::render(const scene::TerrainTile* terrinTile)
+	{
+		matrix_ = terrinTile->getTransformationMatrix();
+
+
+	}
+
 	void DXRenderer::render(Entity* entity)
 	{
 		Mesh* mesh = entity->getMesh();
