@@ -242,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Sandbox\DXMaterialShader.shader" />
+    <None Include="..\Sandbox\DXTerrainShader.shader" />
     <None Include="..\Sandbox\DXTextureShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

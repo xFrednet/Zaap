@@ -25,10 +25,11 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_TextureShader = new DXTextureShader();
 		m_MaterialShader = new DXMaterialShader();
+		m_TerrainShader = new DXTerrainShader();
 
 		m_MaterialShader->loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
 		m_TextureShader->loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
-
+		m_TerrainShader->loadProjectionMatrix(math::CreateProjectionMatrix(0.1f, 1000.0f, 90.0f, 90.0f));
 	}
 
 	//
@@ -216,6 +217,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_TextureShader->loadLight(lightSetup->getLight(0));
 		m_MaterialShader->loadLightSetup(lightSetup);
+		m_TerrainShader->loadLightSetup(lightSetup);
 	}
 
 	//
@@ -230,14 +232,24 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_TextureShader->loadViewMatrix(m_Camera->getViewMatrix());
 		m_MaterialShader->loadCamera(m_Camera);
+		m_TerrainShader->loadViewMatrix(m_Camera->getViewMatrix());
 		
 		//TODO Change Method
 	}
 
-	void DXRenderer::render(const scene::TerrainTile* terrinTile)
+	void DXRenderer::render(const scene::TerrainTile const* terrainTile)
 	{
-		matrix_ = terrinTile->getTransformationMatrix();
+		m_TerrainShader->start();
 
+		m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
+
+		terrainTile->getTexture()->bind(0);
+
+		API::VertexBuffer* vBuffer = terrainTile->getVertexBuffer();
+		vBuffer->bind(0);
+
+		//rendering
+		m_Devcon->DrawIndexed(vBuffer->getVertexCount(), 0, 0);
 
 	}
 
@@ -284,9 +296,11 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_TextureShader->cleanup();
 		m_MaterialShader->cleanup();
+		m_TerrainShader->cleanup();
 
 		delete m_TextureShader;
 		delete m_MaterialShader;
+		delete m_TerrainShader;
 
 		//Rendering
 		DXRELEASE(m_RenderTargetView);

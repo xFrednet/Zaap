@@ -117,9 +117,11 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	void DXContext::ReportLiveObjects()
 	{
+#ifdef ZAAP_DEBUG
 		ID3D11Debug *debug;
 		GetContext()->m_Dev->QueryInterface(__uuidof(ID3D11Debug), (void**)&debug);
 		debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 		DXRELEASE(debug);
+#endif
 	}
 }}}

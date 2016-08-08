@@ -63,6 +63,7 @@ namespace zaap { namespace graphics { namespace DX {
 		resDesc.Texture2D.MipLevels			= -1;
 		
 		result = dev->CreateShaderResourceView(m_Texture, &resDesc, &m_TextureView);
+		DXNAME(m_TextureView, String("DXTexture2D::m_TextureView(" + name + ")"))
 		//TODO add devcon->GenerateMips(m_TextureView);
 
 		if (FAILED(result))
@@ -90,6 +91,7 @@ namespace zaap { namespace graphics { namespace DX {
 		m_SamplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
 
 		result = dev->CreateSamplerState(&m_SamplerDesc, &m_SamplerState);
+		DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + name + ")"))
 		if (FAILED(result))
 		{
 			ZAAP_ERROR("3");

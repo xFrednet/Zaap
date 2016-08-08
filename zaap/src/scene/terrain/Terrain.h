@@ -16,7 +16,7 @@ namespace zaap { namespace scene {
 		uint VerticesPerLine;
 
 		TERRAIN_DESC();
-		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float meshSize, float verticesPerLine);
+		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float meshSize, uint verticesPerLine);
 
 		void setupForLowPoly();
 

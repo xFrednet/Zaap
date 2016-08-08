@@ -4,6 +4,7 @@
 #include <util/Console.h>
 #include <graphics/mesh/Mesh.h>
 #include <graphics/API/Context.h>
+#include <graphics/Renderer.h>
 
 namespace zaap { namespace scene {
 
@@ -23,10 +24,14 @@ namespace zaap { namespace scene {
 
 		uint size = m_TerrainDesc->VerticesPerLine;
 		m_HightMap = new float[size * size];
+
+		std::vector<graphics::Color> colors(size * size);
 		for (uint y = 0; y < size; y++)
 		{
 			for (uint x = 0; x < size; x++) {
 				m_HightMap[x + y * size] = calculateHeight(heightMap.getColor(x, y));
+				colors[x + y * size] = heightMap.getColor(x, y);
+				//m_HightMap[x + y * size] = calculateHeight(heightMap.getColor(x, y));
 			}
 		}
 
@@ -47,7 +52,7 @@ namespace zaap { namespace scene {
 
 	TerrainTile::~TerrainTile()
 	{
-		if (m_HightMap)
+		if (m_HightMap) //TODO REMOVE THIS
 			delete[] m_HightMap;
 	}
 
@@ -56,12 +61,28 @@ namespace zaap { namespace scene {
 	//
 	void TerrainTile::render()
 	{
-
+		graphics::Renderer::Render(this);
 	}
 
 	math::Mat4 TerrainTile::getTransformationMatrix() const
 	{
-		return math::CreateTransformationMatrix(math::Vec3(0, 0, 0), math::Vec3(0, 0, 0), math::Vec3(1, 1, 1));
+		return math::CreateTransformationMatrix(math::Vec3(m_Position.X, 0, m_Position.Y), math::Vec3(0, 0, 0), math::Vec3(1, 1, 1));
+	}
+	graphics::Texture2D* TerrainTile::getTexture() const
+	{
+		return m_Texture;
+	}
+	graphics::API::VertexBuffer* TerrainTile::getVertexBuffer() const
+	{
+		return m_VBuffer;
+	}
+
+	//
+	//
+	// Setter
+	void TerrainTile::setTexture(graphics::Texture2D* texture)
+	{
+		m_Texture = texture;
 	}
 
 	//
@@ -83,6 +104,8 @@ namespace zaap { namespace scene {
 		float total = color.getR() + color.getG() + color.getB();
 		total /= 3.0f;
 		float distance = m_TerrainDesc->HeightMax - m_TerrainDesc->HeightMin;
+		if (total >= 0.5)
+			total = total;
 		return distance * total + m_TerrainDesc->HeightMin;
 	}
 	void TerrainTile::createVertexBuffer()
@@ -107,7 +130,8 @@ namespace zaap { namespace scene {
 			{
 				xa = x * distance;
 				position = math::Vec3(xa, m_HightMap[x + y * verticesPerLine], ya);
-				vertices.push_back(graphics::TEXTURE_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), math::Vec2(x % 2, y % 2)));
+				graphics::TEXTURE_VERTEX v = graphics::TEXTURE_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), math::Vec2((float)(x % 2), (float)(y % 2)));
+				vertices[x + y * verticesPerLine] = v;
 			}
 		}
 		

@@ -28,19 +28,19 @@ namespace zaap { namespace graphics { namespace DX {
 		private:
 			math::Vec3 padding;
 		public:
-			math::Vec4 LightPosition[SUPPORTET_LIGHT_COUNT];
+			Color LightColor[SUPPORTET_LIGHT_COUNT];
 		};
 	protected:
 		VS_MATRIX_BUFFER m_MatrixStruct;
 		ID3D11Buffer *m_MatrixBuffer;
-		void loadMatrixBuffer();
+		void loadMatrixBuffer() const;
 
 		VS_LIGHT_BUFFER m_VSLightStruct;
 		ID3D11Buffer *m_VSLightBuffer;
 		
 		PS_LIGHT_BUFFER m_PSLightStruct;
 		ID3D11Buffer *m_PSLightBuffer;
-		void loadLightBuffers();
+		void loadLightBuffers() const;
 
 	public:
 		DXTerrainShader();

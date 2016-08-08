@@ -8,6 +8,7 @@
 #include <graphics/shader/DXShader/DXTextureShader.h>
 #include <graphics/camera/Camera.h>
 #include <graphics/shader/DXShader/DXMaterialShader.h>
+#include <graphics/shader/DXShader/DXTerrainShader.h>
 
 namespace zaap { namespace graphics { namespace DX {
 
@@ -34,6 +35,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		DXMaterialShader *m_MaterialShader;
 		DXTextureShader *m_TextureShader;
+		DXTerrainShader *m_TerrainShader;
 
 		Camera* m_Camera;
 	protected:

@@ -6,6 +6,7 @@
 #include <maths/Maths.h>
 #include <graphics/Color.h>
 #include <graphics/API/VertexBuffer.h>
+#include <graphics/API/Texture2D.h>
 
 namespace zaap { namespace scene {
 	
@@ -18,7 +19,7 @@ namespace zaap { namespace scene {
 		TERRAIN_DESC const *m_TerrainDesc;
 		float *m_HightMap = nullptr;
 		graphics::API::VertexBuffer *m_VBuffer;
-
+		graphics::Texture2D *m_Texture;
 	public:
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Bitmap heightMap);
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc);
@@ -28,7 +29,12 @@ namespace zaap { namespace scene {
 		void render();
 
 		//getter
-		math::Mat4 getTransformationMatrix() const;
+		math::Mat4 getTransformationMatrix(void) const;
+		graphics::Texture2D* getTexture(void) const;
+		graphics::API::VertexBuffer* getVertexBuffer(void) const;
+
+		//setter
+		void setTexture(graphics::Texture2D* texture);
 
 		//Util
 		void makeFlat(float height);

@@ -364,5 +364,8 @@
     <None Include="..\Sandbox\DXMaterialShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </None>
+    <None Include="..\Sandbox\DXTerrainShader.shader">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
   </ItemGroup>
 </Project>

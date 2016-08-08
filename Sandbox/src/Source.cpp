@@ -3,15 +3,18 @@
 using namespace zaap;
 using namespace math;
 using namespace graphics;
+using namespace scene;
 using namespace std;
 
-Scene* scene = nullptr;
+Scene* scene_ = nullptr;
 LightSetup *lightSetup = nullptr;
 Light* light = nullptr;
+Light* light2 = nullptr;
 Camera* camera = nullptr;
 Entity* m1 = nullptr;
 Entity* m2 = nullptr;
 Entity* lightCube = nullptr;
+TerrainTile* terrainTile_;
 
 void loadEntitys()
 {
@@ -22,10 +25,11 @@ void loadEntitys()
 
 		light = new Light(Vec3(0.0f, 10.0f, 0.0f), Vec3(1.0f, 0.0f, 1.0f));
 		lightSetup->add(light);
-		lightSetup->add(new Light());
+		light2 = new Light();
+		lightSetup->add(light2);
 		lightSetup->setAmbientColor(Color(0.2f, 0.2f, 0.2f));
 
-		scene->setLightSetup(lightSetup);
+		scene_->setLightSetup(lightSetup);
 	}
 
 	Vec3 v;
@@ -38,9 +42,27 @@ void loadEntitys()
 		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("oakTree", "res/oakTree.obj", false));
 		
 		v = Vec3(10, 0, 10);
-		scene->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+		scene_->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
 	}
 	
+	{
+		API::Context::GetLoader()->loadMTLFile("res/spear.mtl");
+
+		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("spear", "res/spear.obj", false));
+
+		v = Vec3(10, 0, -10);
+		scene_->addEntity(new Entity(MeshManager::GetMesh("spear"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+	}
+	{
+		API::Context::GetLoader()->loadMTLFile("res/bush.mtl");
+
+		MeshManager::AddMesh(API::Context::GetLoader()->loadOBJFile("bush", "res/bush.obj", false));
+
+		v = Vec3(-10, 0, 10);
+		scene_->addEntity(new Entity(MeshManager::GetMesh("bush"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+	}
+
+
 	//Flor
 	{
 		TextureManager::LoadTexture2D("flor", "res/flor.jpg");
@@ -52,7 +74,7 @@ void loadEntitys()
 		v = Vec3(0, -1, 0);
 		Entity* e = new Entity(MeshManager::GetMesh("flor"), v);
 		e->setScale(5.0f);
-		scene->addEntity(e);
+		scene_->addEntity(e);
 	}
 
 	//rock
@@ -64,7 +86,7 @@ void loadEntitys()
 	
 		v = Vec3(0, 1, 0);
 
-		scene->addEntity(new Entity(MeshManager::GetMesh("rock"), v));
+		scene_->addEntity(new Entity(MeshManager::GetMesh("rock"), v));
 	}
 
 	//bench
@@ -76,7 +98,7 @@ void loadEntitys()
 
 		v = Vec3(-5, 1, 0);
 
-		scene->addEntity(new Entity(MeshManager::GetMesh("bench"), v));
+		scene_->addEntity(new Entity(MeshManager::GetMesh("bench"), v));
 	}
 
 	//Cube 1
@@ -88,14 +110,14 @@ void loadEntitys()
 	{
 		v = Vec3(0, 1, 5);
 		m2 = new Entity(tMesh, v);
-		scene->addEntity(m2);
+		scene_->addEntity(m2);
 	}
 
 	//Cube 2
 	{
 		v = Vec3(0, 1, -5);
 		m1 = new Entity(tMesh, v);
-		scene->addEntity(m1);
+		scene_->addEntity(m1);
 	}
 
 	//Light Cube
@@ -103,7 +125,7 @@ void loadEntitys()
 		
 		v = Vec3(0, -20, 0);
 		lightCube = new Entity(tMesh, v);
-		scene->addEntity(lightCube);
+		scene_->addEntity(lightCube);
 	}
 
 	//Zaap frame
@@ -114,23 +136,33 @@ void loadEntitys()
 		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-7, 5, 0);
-		scene->addEntity(new Entity(MeshManager::GetMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));
+		scene_->addEntity(new Entity(MeshManager::GetMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));
+	}
+	
+	//Terrain
+	{
+		scene::TERRAIN_DESC tDesc;
+		tDesc.setupForLowPoly();
+		Bitmap bitmap = Bitmap("res\\scene\\heightMap.png");
+		terrainTile_ = new TerrainTile(Vec2(-10.0f, -10.0f), &tDesc, bitmap.getSubMap(0, 0, 50, 50));
+		terrainTile_->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
+
 	}
 }
 
 class Test : public Application
 {
 public:
-	Test() : Application("Test", 852, 480, scene)
+	Test() : Application("Test", 852, 480, scene_)
 	{}
 
 	float count = 0.0f;
 	float count2 = 0.0f;
+	float rot = 1.5f;
 
 	void update() override {
 		Application::update();
 
-		float rot = 0.5f;
 		m1->increaseRotation(Vec3(rot, rot, rot));
 		m2->increaseRotation(Vec3(rot, rot, rot));
 		count += 0.05f;
@@ -144,14 +176,20 @@ public:
 		camera->update();
 		lightCube->setPosition(light->getPosition());
 
-		//light->setPosition(camera->getPosition());
+		light2->setPosition(camera->getPosition());
+	}
+
+	void render() override 
+	{
+		Application::render();
+
+		terrainTile_->render();
 	}
 };
 
 int main(void)
 {
-	
-	scene = new Scene();
+	scene_ = new Scene();
 	
 	Test t;
 	loadEntitys();
@@ -159,6 +197,8 @@ int main(void)
 	t.start();
 
 	t.cleanup();
+
+	delete terrainTile_;
 
 	return 0;
 }

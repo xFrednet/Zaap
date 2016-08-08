@@ -17,7 +17,7 @@ namespace zaap { namespace graphics {
 		virtual void init() = 0;
 
 		//Render
-		virtual void render(const scene::TerrainTile const *terrainTile);
+		virtual void render(const scene::TerrainTile const *terrainTile) = 0;
 		virtual void render(Entity* model) = 0;
 
 		//Setters

@@ -136,6 +136,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
 		devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+
 		devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 
 		loadMarixBuffer();
