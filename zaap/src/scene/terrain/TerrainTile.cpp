@@ -8,22 +8,20 @@
 
 namespace zaap { namespace scene {
 
-	TerrainTile::TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Bitmap heightMap)
+	TerrainTile::TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Image heightMap)
 		: m_Position(position),
 		m_TerrainDesc(terrainDesc),
-		m_HightMap(nullptr)
+		m_HightMap(m_TerrainDesc->VerticesPerLine * m_TerrainDesc->VerticesPerLine)
 	{
-		if (heightMap.Width != m_TerrainDesc->VerticesPerLine || 
-			heightMap.Height != m_TerrainDesc->VerticesPerLine)
+		if (heightMap.getWidth() != m_TerrainDesc->VerticesPerLine || 
+			heightMap.getHeight() != m_TerrainDesc->VerticesPerLine)
 		{
 			ZAAP_ALERT("TerrainTile: given heightMap has a different size than specified in the TERRAIN_DESC");
 			makeFlat(m_TerrainDesc->DefaultHeight);
 			return;
 		}
 
-
 		uint size = m_TerrainDesc->VerticesPerLine;
-		m_HightMap = new float[size * size];
 
 		std::vector<graphics::Color> colors(size * size);
 		for (uint y = 0; y < size; y++)
@@ -31,7 +29,6 @@ namespace zaap { namespace scene {
 			for (uint x = 0; x < size; x++) {
 				m_HightMap[x + y * size] = calculateHeight(heightMap.getColor(x, y));
 				colors[x + y * size] = heightMap.getColor(x, y);
-				//m_HightMap[x + y * size] = calculateHeight(heightMap.getColor(x, y));
 			}
 		}
 
@@ -40,21 +37,14 @@ namespace zaap { namespace scene {
 	TerrainTile::TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc)
 		: m_Position(position),
 		m_TerrainDesc(m_TerrainDesc),
-		m_HightMap(nullptr)
+		m_HightMap(m_TerrainDesc->VerticesPerLine * m_TerrainDesc->VerticesPerLine)
 	{
-		uint size = m_TerrainDesc->getVertexCount();
-		m_HightMap = new float[size];
-
 		makeFlat(m_TerrainDesc->DefaultHeight);
 		
 		createVertexBuffer();
 	}
 
-	TerrainTile::~TerrainTile()
-	{
-		if (m_HightMap) //TODO REMOVE THIS
-			delete[] m_HightMap;
-	}
+	TerrainTile::~TerrainTile() {}
 
 	//
 	// GameLoop
@@ -91,7 +81,6 @@ namespace zaap { namespace scene {
 	void TerrainTile::makeFlat(float height)
 	{
 		uint size = m_TerrainDesc->getVertexCount();
-		if (!m_HightMap) m_HightMap = new float[size];
 
 		for (uint i = 0; i < size; i++)
 		{
@@ -110,11 +99,6 @@ namespace zaap { namespace scene {
 	}
 	void TerrainTile::createVertexBuffer()
 	{
-		if (!m_HightMap)
-		{
-			ZAAP_ALERT("TerrainTile: Unable to create a VertexBuffer from a undefined HightMap");
-			return;
-		}
 		uint verticesPerLine = m_TerrainDesc->VerticesPerLine;
 		float distance = m_TerrainDesc->MeshSize / verticesPerLine;
 

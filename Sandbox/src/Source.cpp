@@ -143,7 +143,7 @@ void loadEntitys()
 	{
 		scene::TERRAIN_DESC tDesc;
 		tDesc.setupForLowPoly();
-		Bitmap bitmap = Bitmap("res\\scene\\heightMap.png");
+		Image bitmap("res\\scene\\heightMap.png");
 		terrainTile_ = new TerrainTile(Vec2(-10.0f, -10.0f), &tDesc, bitmap.getSubMap(0, 0, 50, 50));
 		terrainTile_->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
 

@@ -69,9 +69,6 @@
     <ClCompile Include="src\util\StringUtil.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Bitmap.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\ImageLoader.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
@@ -198,6 +195,9 @@
     <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Image.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -211,9 +211,6 @@
     </ClInclude>
     <ClInclude Include="src\util\StringUtil.h">
       <Filter>Source Files\src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Bitmap.h">
-      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\util\ImageLoader.h">
       <Filter>Source Files\src\util</Filter>
@@ -355,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Image.h">
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

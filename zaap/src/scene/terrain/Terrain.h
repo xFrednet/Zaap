@@ -2,7 +2,7 @@
 
 #include <Common.h>
 #include <Types.h>
-#include <graphics/Bitmap.h>
+#include <graphics/Image.h>
 #include "TerrainTile.h"
 
 namespace zaap { namespace scene {

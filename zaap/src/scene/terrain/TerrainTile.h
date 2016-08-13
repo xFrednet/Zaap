@@ -2,7 +2,7 @@
 
 #include <Common.h>
 
-#include <graphics/Bitmap.h>
+#include <graphics/Image.h>
 #include <maths/Maths.h>
 #include <graphics/Color.h>
 #include <graphics/API/VertexBuffer.h>
@@ -17,11 +17,11 @@ namespace zaap { namespace scene {
 	private:
 		math::Vec2 m_Position;
 		TERRAIN_DESC const *m_TerrainDesc;
-		float *m_HightMap = nullptr;
+		std::vector<float> m_HightMap;
 		graphics::API::VertexBuffer *m_VBuffer;
 		graphics::Texture2D *m_Texture;
 	public:
-		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Bitmap heightMap);
+		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Image heightMap);
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc);
 		~TerrainTile(void);
 
