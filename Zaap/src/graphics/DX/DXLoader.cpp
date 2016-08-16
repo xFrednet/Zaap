@@ -61,7 +61,7 @@ namespace zaap { namespace graphics { namespace DX {
 		memcpy(ms2.pData, indexBufferData, sizeof(uint) * indexCount);
 		devcon->Unmap(indexBuffer, NULL);
 
-		DXVertexBuffer* vBuffer = new DXVertexBuffer(pVBuffer, indexBuffer, indexCount);
+		DXVertexBuffer* vBuffer = new DXVertexBuffer(pVBuffer, indexBuffer, indexCount, vertexSize);
 		m_VertexBuffers.push_back(vBuffer);
 		return vBuffer;
 	}

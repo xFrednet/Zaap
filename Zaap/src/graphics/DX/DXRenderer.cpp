@@ -243,7 +243,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
 
-		terrainTile->getTexture()->bind(0);
+		terrainTile->getTextureMap()->bind(0);
 
 		API::VertexBuffer* vBuffer = terrainTile->getVertexBuffer();
 		vBuffer->bind(0);

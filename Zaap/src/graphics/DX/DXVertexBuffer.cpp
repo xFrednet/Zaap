@@ -4,10 +4,11 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
-	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount)
+	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount, uint stride)
 		: VertexBuffer(vertexCount),
 		m_VBuffer(vertexBuffer),
-		m_IndexBuffer(indexBuffer)
+		m_IndexBuffer(indexBuffer),
+		m_Stride(stride)
 	{
 
 	}
@@ -21,12 +22,9 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXVertexBuffer::bind(uint slot)
 	{
 		DXContext::GetDevContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
-		UINT stride = sizeof(TEXTURE_VERTEX);
-		if (slot != 0)  
-			stride = sizeof(MATERIAL_VERTEX);
 		
 		UINT offset = 0;
-		DXContext::GetDevContext()->IASetVertexBuffers(0, 1, &m_VBuffer, &stride, &offset);
+		DXContext::GetDevContext()->IASetVertexBuffers(0, 1, &m_VBuffer, &m_Stride, &offset);
 	}
 
 	void DXVertexBuffer::unbind(uint slot)

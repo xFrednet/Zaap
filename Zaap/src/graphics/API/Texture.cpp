@@ -2,15 +2,9 @@
 
 namespace zaap { namespace graphics {
 	
-	Texture::Texture(String &textureName, String &filePath)
+	Texture::Texture(String &textureName)
+		: m_TextureName(textureName)
 	{
-		m_TextureName = textureName;
-		m_FilePath = filePath;
-	}
-
-	String Texture::getFilePath() const
-	{
-		return m_FilePath;
 	}
 
 	String Texture::getTextureName() const

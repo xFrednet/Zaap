@@ -13,12 +13,10 @@ namespace zaap { namespace graphics {
 	class ZAAP_API Texture
 	{
 	protected:
-		String m_FilePath;
 		String m_TextureName;
 	public:
-		Texture(String &textureName, String &filePath);
+		Texture(String &textureNameh);
 
-		String getFilePath() const;
 		String getTextureName() const;
 
 		/*This Method must be called to free up memory that may be used by a subclass*/

@@ -3,14 +3,16 @@
 //////////////////////
 struct VS_IN
 {
-	float4 Position : POSITION;
-	float4 Normal	: NORMAL;
-	float2 TexCoord : TEXCOORD;
+	float4 Position			: POSITION;
+	float4 Normal			: NORMAL;
+	float2 TexMapCoord		: TEXMAPCOORD;
+	float2 TexCoord			: TEXCOORD;
 };
 struct VS_OUT
 {
 	float4 Position			: SV_POSITION;
-	float2 TexCoord			: TEXCOORD0;
+	float2 TexMapCoord		: TEXMAPCOORD;
+	float2 TexCoord			: TEXCOORD;
 	float4 SurfaceNormal	: SURFACE_NORMAL;
 	float3 ToLightVector	: TO_LIGHT_VECTOR;
 };
@@ -46,6 +48,7 @@ VS_OUT VShader(VS_IN input)
 	output.Position = mul(ProjectionMatrix, output.Position);
 
 	//Texture Coord
+	output.TexMapCoord = input.TexMapCoord;
 	output.TexCoord = input.TexCoord;
 
 	//Surface Normal
@@ -62,8 +65,23 @@ VS_OUT VShader(VS_IN input)
 /////////////
 // Globals //
 /////////////
-Texture2D texture_;
-SamplerState sampler_;
+//TextureMap
+Texture2D texMap			: register(t0);
+SamplerState texMapSampler	: register(s0);
+
+//Textures
+Texture2D defaultTex			: register(t1);
+SamplerState defaultTexSampler	: register(s1);
+
+Texture2D tex0					: register(t2);
+SamplerState texSampler0		: register(s2);
+
+Texture2D tex1					: register(t3);
+SamplerState texSampler1		: register(s3);
+
+Texture2D tex2					: register(t4);
+SamplerState texSampler2		: register(s4);
+
 
 cbuffer PSLightBuffer : register(b0)
 {
@@ -78,7 +96,7 @@ cbuffer PSLightBuffer : register(b0)
 float4 PShader(VS_OUT input) : SV_TARGET
 {
 	float3 normal = normalize(input.SurfaceNormal.xyz);
-	float4 color = texture_.Sample(sampler_, input.TexCoord);
+	float4 color = texMap.Sample(texMapSampler, input.TexMapCoord);
 	
 	float3 lightVector = normalize(input.ToLightVector);
 	float t = dot(normal, lightVector);

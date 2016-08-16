@@ -23,12 +23,10 @@ namespace zaap { namespace scene {
 
 		uint size = m_TerrainDesc->VerticesPerLine;
 
-		std::vector<graphics::Color> colors(size * size);
 		for (uint y = 0; y < size; y++)
 		{
 			for (uint x = 0; x < size; x++) {
 				m_HightMap[x + y * size] = calculateHeight(heightMap.getColor(x, y));
-				colors[x + y * size] = heightMap.getColor(x, y);
 			}
 		}
 
@@ -58,21 +56,31 @@ namespace zaap { namespace scene {
 	{
 		return math::CreateTransformationMatrix(math::Vec3(m_Position.X, 0, m_Position.Y), math::Vec3(0, 0, 0), math::Vec3(1, 1, 1));
 	}
-	graphics::Texture2D* TerrainTile::getTexture() const
-	{
-		return m_Texture;
-	}
 	graphics::API::VertexBuffer* TerrainTile::getVertexBuffer() const
 	{
 		return m_VBuffer;
 	}
 
 	//
+	// Texture Stuff
 	//
-	// Setter
-	void TerrainTile::setTexture(graphics::Texture2D* texture)
+	void TerrainTile::setTexture(graphics::Texture2D* texture, uint index)
 	{
-		m_Texture = texture;
+		if (index >= 4) return;
+		m_Textures[index] = texture;
+	}
+	graphics::Texture2D* TerrainTile::getTexture(uint index) const
+	{
+		if (index >= 4) return nullptr;
+		return m_Textures[index];
+	}
+	void TerrainTile::setTextureMap(graphics::Texture2D* textureMap)
+	{
+		m_TextureMap = textureMap;
+	}
+	graphics::Texture2D* TerrainTile::getTextureMap() const
+	{
+		return m_TextureMap;
 	}
 
 	//
@@ -100,21 +108,31 @@ namespace zaap { namespace scene {
 	void TerrainTile::createVertexBuffer()
 	{
 		uint verticesPerLine = m_TerrainDesc->VerticesPerLine;
-		float distance = m_TerrainDesc->MeshSize / verticesPerLine;
 
-		std::vector<graphics::TEXTURE_VERTEX> vertices(verticesPerLine * verticesPerLine);
+		std::vector<graphics::TERRAIN_VERTEX> vertices(verticesPerLine * verticesPerLine);
 
+		//Position
 		math::Vec3 position;
-		float xa, ya;
+		float distance = m_TerrainDesc->MeshSize / (verticesPerLine - 1);
+		
+		//TexMap
+		math::Vec2 texMapCoord;
+		float texMapDistance = 1.0f / verticesPerLine;
+
+		//TexCoord
+		math::Vec2 texCoord;
+		float ya;
 		uint x;
 		for (uint y = 0; y < verticesPerLine; y++)
 		{
 			ya = y * distance;
 			for (x = 0; x < verticesPerLine; x++)
 			{
-				xa = x * distance;
-				position = math::Vec3(xa, m_HightMap[x + y * verticesPerLine], ya);
-				graphics::TEXTURE_VERTEX v = graphics::TEXTURE_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), math::Vec2((float)(x % 2), (float)(y % 2)));
+				position = math::Vec3(x * distance, m_HightMap[x + y * verticesPerLine], ya);
+				texMapCoord = math::Vec2(x * texMapDistance, y * texMapDistance);
+				texCoord = math::Vec2((float)(x % 2), (float)(y % 2));
+
+				graphics::TERRAIN_VERTEX v = graphics::TERRAIN_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), texMapCoord, texCoord);
 				vertices[x + y * verticesPerLine] = v;
 			}
 		}
@@ -146,6 +164,6 @@ namespace zaap { namespace scene {
 		}
 
 		m_VBuffer = graphics::API::Context::GetLoader()->loadVBuffer(
-			&vertices[0], sizeof(graphics::TEXTURE_VERTEX), vertices.size(), &indices[0], indices.size());
+			&vertices[0], sizeof(graphics::TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size());
 	}
 }}

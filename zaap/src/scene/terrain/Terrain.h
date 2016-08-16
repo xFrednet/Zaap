@@ -28,10 +28,23 @@ namespace zaap { namespace scene {
 	{
 	private:
 		String m_Folder;
+		
+		graphics::Image m_HeightMap;
+		graphics::Image m_TextureMap;
+
 		TERRAIN_DESC m_TerrainDesc;
-		std::vector<TerrainTile*> m_TerrainTiles;
+		std::vector<TerrainTile> m_TerrainTiles;
 	public:
 		Terrain(String folder, TERRAIN_DESC terrainDesc);
+
+		//util
+		void loadTerrainTile(uint tileX, uint tileY);
+
+		//game loop methods
+		void update();
+		void render();
+
+		//TODO add cleanup Method
 	};
 
 }}

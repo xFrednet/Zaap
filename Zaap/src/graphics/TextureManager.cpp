@@ -23,13 +23,26 @@ namespace zaap { namespace graphics {
 		return nullptr;
 	}
 
+	Texture2D* TextureManager::LoadTexture2D(String textureName, char const* texturePath)
+	{
+		return LoadTexture2D(textureName, String(texturePath));
+	}
 	Texture2D* TextureManager::LoadTexture2D(String textureName, String texturePath)
 	{
 		Texture2D* texture;
-		texture = new graphics::DX::DXTexture2D(textureName, texturePath);
+		texture = new DX::DXTexture2D(textureName, texturePath);
 		
 		AddTexture(texture);
 		
+		return texture;
+	}
+	Texture2D* TextureManager::LoadTexture2D(String textureName, Image image)
+	{
+		Texture2D* texture;
+		texture = new DX::DXTexture2D(textureName, image);
+
+		AddTexture(texture);
+
 		return texture;
 	}
 

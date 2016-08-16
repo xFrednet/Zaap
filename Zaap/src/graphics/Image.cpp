@@ -32,8 +32,9 @@ namespace zaap { namespace graphics {
 		m_BitsPerPixel(bitsPerPixel)
 	{
 	}
-	Image::Image(char* file)
+	Image::Image(const char* file)
 	{
+		ZAAP_INFO("Start");
 		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &m_BitsPerPixel);
 
 		uint size = m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3);
@@ -46,6 +47,8 @@ namespace zaap { namespace graphics {
 		}
 
 		delete[] bytes;
+		ZAAP_INFO("stop");
+
 	}
 
 	//
@@ -130,6 +133,15 @@ namespace zaap { namespace graphics {
 	{
 		return m_Height;
 	}
+	uint Image::getBitsPerPixel() const
+	{
+		return m_BitsPerPixel;
+	}
+
+	byte const* Image::getPixelArray() const
+	{
+		return &m_Bytes[0];
+	}
 
 	Image Image::getSubMap(uint x, uint y, uint width, uint height) const
 	{
@@ -138,29 +150,15 @@ namespace zaap { namespace graphics {
 		uint copyWidth = ((x + width) < m_Width) ? width : m_Width - x;
 		uint copyHeight = ((y + height) < m_Height) ? height : m_Height - y;
 
-		for (uint i = 0; i < copyHeight; i++)
-		{
-			//memcpy(&b.Bytes[i * b.Width * bitMultiplier], &Bytes[getIndex(x, y + i)], copyWidth * bitMultiplier);
-		}
-
-		std::vector<slor> colors(width * height);
-		Color color;
 		for (uint yl = 0; yl < copyHeight; yl++)
 		{
 			for (uint xl = 0; xl < copyWidth; xl++)
 			{
-				color = getColor(x + xl, y + yl);
-				b.setColor(xl, yl, color);
-				//colors[xl + yl * width] = b.getColor(xl, yl);
+				b.setColor(xl, yl, getColor(x + xl, y + yl));
 			}
 		}
 
 		return b;
 	}
 
-	//
-	// Setters
-	//
-	
-	
 }}

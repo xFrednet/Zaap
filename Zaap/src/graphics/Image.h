@@ -20,7 +20,7 @@ namespace zaap
 		public:
 			Image();
 			Image(uint width, uint height, uint bitsPerPixel);
-			Image(char *file);
+			Image(const char *file);
 
 			//color
 			uint getR(uint x, uint y) const;
@@ -41,6 +41,8 @@ namespace zaap
 
 			uint getWidth(void) const;
 			uint getHeight(void) const;
+			uint getBitsPerPixel() const;
+			byte const* getPixelArray() const;
 
 			Image getSubMap(uint x, uint y, uint width, uint height) const;
 			

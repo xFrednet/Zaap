@@ -14,7 +14,9 @@ namespace zaap { namespace graphics {
 	public:
 		static Texture* AddTexture(Texture* texture);
 		static Texture* GetTexture(String textureName);
+		static Texture2D* LoadTexture2D(String textureName, char const *texturePath);
 		static Texture2D* LoadTexture2D(String textureName, String texturePath);
+		static Texture2D* LoadTexture2D(String textureName, Image image);
 
 		static void Cleanup();
 	};

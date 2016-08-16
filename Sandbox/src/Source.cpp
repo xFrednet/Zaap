@@ -14,7 +14,7 @@ Camera* camera = nullptr;
 Entity* m1 = nullptr;
 Entity* m2 = nullptr;
 Entity* lightCube = nullptr;
-TerrainTile* terrainTile_;
+Terrain* terrain_;
 
 void loadEntitys()
 {
@@ -141,11 +141,9 @@ void loadEntitys()
 	
 	//Terrain
 	{
-		scene::TERRAIN_DESC tDesc;
+		TERRAIN_DESC tDesc;
 		tDesc.setupForLowPoly();
-		Image bitmap("res\\scene\\heightMap.png");
-		terrainTile_ = new TerrainTile(Vec2(-10.0f, -10.0f), &tDesc, bitmap.getSubMap(0, 0, 50, 50));
-		terrainTile_->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
+		terrain_ = new Terrain("res\\scene", tDesc);
 
 	}
 }
@@ -183,7 +181,7 @@ public:
 	{
 		Application::render();
 
-		terrainTile_->render();
+		terrain_->render();
 	}
 };
 
@@ -198,7 +196,7 @@ int main(void)
 
 	t.cleanup();
 
-	delete terrainTile_;
+	delete terrain_;
 
 	return 0;
 }

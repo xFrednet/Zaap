@@ -6,9 +6,10 @@
 namespace zaap { namespace graphics { namespace DX {
 	
 	D3D11_INPUT_ELEMENT_DESC terrainShader_IED[] {
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, 0					, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"NORMAL"  , 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, sizeof(float) * 3	, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT	, 0, sizeof(float) * 6	, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"POSITION"		, 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, 0					, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"NORMAL"		, 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, sizeof(float) * 3	, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXMAPCOORD"	, 0, DXGI_FORMAT_R32G32_FLOAT		, 0, sizeof(float) * 6	, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"TEXCOORD"		, 0, DXGI_FORMAT_R32G32_FLOAT		, 0, sizeof(float) * 8	, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	void DXTerrainShader::loadMatrixBuffer() const
@@ -37,7 +38,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXTerrainShader::DXTerrainShader()
 	{
-		if (loadShaders("DXTerrainShader.shader", "DXTerrainShader.shader", terrainShader_IED, 3))
+		if (loadShaders("DXTerrainShader.shader", "DXTerrainShader.shader", terrainShader_IED, 4))
 		{
 			ZAAP_INFO("DXTerrainShader: compiled successfully");
 		} else

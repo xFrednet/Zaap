@@ -15,8 +15,10 @@ namespace zaap { namespace graphics { namespace DX {
 	private:
 		ID3D11Buffer *m_VBuffer;
 		ID3D11Buffer *m_IndexBuffer;
+
+		uint m_Stride;
 	public:
-		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount);
+		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount, uint stride);
 
 		ID3D11Buffer* const* getVBuffer() const;
 		ID3D11Buffer* getIBuffer() const;

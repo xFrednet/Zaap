@@ -19,7 +19,10 @@ namespace zaap { namespace scene {
 		TERRAIN_DESC const *m_TerrainDesc;
 		std::vector<float> m_HightMap;
 		graphics::API::VertexBuffer *m_VBuffer;
-		graphics::Texture2D *m_Texture;
+
+		//textures
+		graphics::Texture2D *m_TextureMap;
+		graphics::Texture2D *m_Textures[4];
 	public:
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Image heightMap);
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc);
@@ -30,11 +33,13 @@ namespace zaap { namespace scene {
 
 		//getter
 		math::Mat4 getTransformationMatrix(void) const;
-		graphics::Texture2D* getTexture(void) const;
 		graphics::API::VertexBuffer* getVertexBuffer(void) const;
 
-		//setter
-		void setTexture(graphics::Texture2D* texture);
+		//texture stuff
+		void setTexture(graphics::Texture2D* texture, uint index);
+		graphics::Texture2D* getTexture(uint index) const;
+		void setTextureMap(graphics::Texture2D* textureMap);
+		graphics::Texture2D* getTextureMap() const;
 
 		//Util
 		void makeFlat(float height);
