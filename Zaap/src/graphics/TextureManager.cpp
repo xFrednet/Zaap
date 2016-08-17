@@ -46,6 +46,11 @@ namespace zaap { namespace graphics {
 		return texture;
 	}
 
+	bool TextureManager::Contains(String textureName)
+	{
+		return (GetTexture(textureName) == nullptr);
+	}
+
 	void TextureManager::Cleanup()
 	{
 		for (Texture* texture : s_Textures)

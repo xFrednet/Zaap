@@ -1,6 +1,8 @@
 //////////////////////
 // Type definitions //
 //////////////////////
+#define SUPPORTET_LIGHT_COUNT 8
+
 struct VS_IN
 {
 	float4 Position			: POSITION;
@@ -14,14 +16,12 @@ struct VS_OUT
 	float2 TexMapCoord		: TEXMAPCOORD;
 	float2 TexCoord			: TEXCOORD;
 	float4 SurfaceNormal	: SURFACE_NORMAL;
-	float3 ToLightVector	: TO_LIGHT_VECTOR;
+	float3 ToLightVector[SUPPORTET_LIGHT_COUNT]	: TO_LIGHT_VECTOR;
 };
 
 /////////////
 // Globals //
 /////////////
-#define SUPPORTET_LIGHT_COUNT 8
-
 cbuffer MatrixBuffer : register(b0)
 {
 	float4x4 ProjectionMatrix;
@@ -44,6 +44,7 @@ VS_OUT VShader(VS_IN input)
 
 	//Position
 	float4 worldPosition = mul(TransformationMatrix, input.Position);
+
 	output.Position = mul(ViewMatrix, worldPosition);
 	output.Position = mul(ProjectionMatrix, output.Position);
 
@@ -55,7 +56,8 @@ VS_OUT VShader(VS_IN input)
 	output.SurfaceNormal = mul(TransformationMatrix, input.Normal.xyz);
 
 	//To Light Vector
-	output.ToLightVector = LightPosition[0].xyz - worldPosition.xyz;
+	for (uint i = 0; i < VSLightCount; i++)
+		output.ToLightVector[i] = LightPosition[i].xyz - worldPosition.xyz;
 
 	return output;
 }
@@ -95,14 +97,24 @@ cbuffer PSLightBuffer : register(b0)
 //////////////////
 float4 PShader(VS_OUT input) : SV_TARGET
 {
+	float4 texMapColor = texMap.Sample(texMapSampler, input.TexMapCoord);
 	float3 normal = normalize(input.SurfaceNormal.xyz);
-	float4 color = texMap.Sample(texMapSampler, input.TexMapCoord);
 	
-	float3 lightVector = normalize(input.ToLightVector);
-	float t = dot(normal, lightVector);
-	float brightness = saturate(max(t, 0.0));
-
-	float3 diffuse = brightness * LightColor[0];
+	float4 color = defaultTex.Sample(defaultTexSampler, input.TexCoord) * (1.0 - texMapColor.x - texMapColor.y - texMapColor.z);
+	color += tex0.Sample(texSampler0, input.TexCoord) * texMapColor.x;
+	color += tex1.Sample(texSampler1, input.TexCoord) * texMapColor.y;
+	color += tex2.Sample(texSampler2, input.TexCoord) * texMapColor.z;
+	
+	//Light
+	float3 lightVector;
+	float brightness;
+	float3 diffuse = float3(0.0, 0.0, 0.0);
+	for (uint i = 0; i < PSLightCount; i++)
+	{
+		lightVector = normalize(input.ToLightVector[i]);
+		brightness = saturate(max(dot(normal, lightVector), 0.0));
+		diffuse += brightness * LightColor[i];
+	}
 
 	color.xyz *= diffuse;
 

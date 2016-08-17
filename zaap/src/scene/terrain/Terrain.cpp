@@ -86,7 +86,18 @@ namespace zaap { namespace scene {
 		TerrainTile tile(position, &m_TerrainDesc, m_HeightMap.getSubMap(imageX, imageY, imageSize, imageSize));
 
 		tile.setTextureMap(graphics::TextureManager::LoadTexture2D("Temp", m_TextureMap.getSubMap(tileX * 100, tileY * 100, 100, 100)));
-		tile.setTexture((graphics::Texture2D*)graphics::TextureManager::GetTexture("flor"), 0);
+
+		if (graphics::TextureManager::Contains("terrainTexture0"))
+		{
+			graphics::TextureManager::LoadTexture2D("terrainTexture0", String(m_Folder + "\\texture_0.jpg"));
+			graphics::TextureManager::LoadTexture2D("terrainTexture1", String(m_Folder + "\\texture_1.jpg"));
+			graphics::TextureManager::LoadTexture2D("terrainTexture2", String(m_Folder + "\\texture_2.jpg"));
+			graphics::TextureManager::LoadTexture2D("terrainTexture3", String(m_Folder + "\\texture_3.jpg"));
+		}
+		tile.setTexture((graphics::Texture2D*)graphics::TextureManager::GetTexture("terrainTexture0"), 0);
+		tile.setTexture((graphics::Texture2D*)graphics::TextureManager::GetTexture("terrainTexture1"), 1);
+		tile.setTexture((graphics::Texture2D*)graphics::TextureManager::GetTexture("terrainTexture2"), 2);
+		tile.setTexture((graphics::Texture2D*)graphics::TextureManager::GetTexture("terrainTexture3"), 3);
 
 		m_TerrainTiles.push_back(tile);
 	}
