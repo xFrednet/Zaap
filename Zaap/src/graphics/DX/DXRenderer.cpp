@@ -227,7 +227,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		DXContext::SwapBuffers();
 
-		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
+		//m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		m_TextureShader->loadViewMatrix(m_Camera->getViewMatrix());
@@ -244,7 +244,7 @@ namespace zaap { namespace graphics { namespace DX {
 		m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
 
 		//Textures
-		terrainTile->getTextureMap()->bind(0);
+		terrainTile->getBlendMap()->bind(0);
 		for (uint i = 0; i < 4; i++)
 			terrainTile->getTexture(i)->bind(i + 1);
 

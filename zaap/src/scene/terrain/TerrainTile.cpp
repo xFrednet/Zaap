@@ -11,17 +11,17 @@ namespace zaap { namespace scene {
 	TerrainTile::TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Image heightMap)
 		: m_Position(position),
 		m_TerrainDesc(terrainDesc),
-		m_HightMap(m_TerrainDesc->VerticesPerLine * m_TerrainDesc->VerticesPerLine)
+		m_HightMap((m_TerrainDesc->VerticesPerLine + 1) * (m_TerrainDesc->VerticesPerLine + 1))
 	{
-		if (heightMap.getWidth() != m_TerrainDesc->VerticesPerLine || 
-			heightMap.getHeight() != m_TerrainDesc->VerticesPerLine)
+		if ((heightMap.getWidth() - 1) != m_TerrainDesc->VerticesPerLine || 
+			(heightMap.getHeight() - 1) != m_TerrainDesc->VerticesPerLine)
 		{
 			ZAAP_ALERT("TerrainTile: given heightMap has a different size than specified in the TERRAIN_DESC");
 			makeFlat(m_TerrainDesc->DefaultHeight);
 			return;
 		}
 
-		uint size = m_TerrainDesc->VerticesPerLine;
+		uint size = m_TerrainDesc->VerticesPerLine + 1;
 
 		for (uint y = 0; y < size; y++)
 		{
@@ -74,13 +74,13 @@ namespace zaap { namespace scene {
 		if (index >= 4) return nullptr;
 		return m_Textures[index];
 	}
-	void TerrainTile::setTextureMap(graphics::Texture2D* textureMap)
+	void TerrainTile::setBlendMap(graphics::Texture2D* blendMap)
 	{
-		m_TextureMap = textureMap;
+		m_BlendMap = blendMap;
 	}
-	graphics::Texture2D* TerrainTile::getTextureMap() const
+	graphics::Texture2D* TerrainTile::getBlendMap() const
 	{
-		return m_TextureMap;
+		return m_BlendMap;
 	}
 
 	//
@@ -101,23 +101,23 @@ namespace zaap { namespace scene {
 		float total = color.getR() + color.getG() + color.getB();
 		total /= 3.0f;
 		float distance = m_TerrainDesc->HeightMax - m_TerrainDesc->HeightMin;
-		if (total >= 0.5)
-			total = total;
 		return distance * total + m_TerrainDesc->HeightMin;
 	}
 	void TerrainTile::createVertexBuffer()
 	{
 		uint verticesPerLine = m_TerrainDesc->VerticesPerLine;
 
-		std::vector<graphics::TERRAIN_VERTEX> vertices(verticesPerLine * verticesPerLine);
+		std::vector<graphics::TERRAIN_VERTEX> vertices((verticesPerLine + 1) * (verticesPerLine + 1));
 
 		//Position
 		math::Vec3 position;
-		float distance = m_TerrainDesc->MeshSize / (verticesPerLine - 1);
+		float distance = m_TerrainDesc->MeshSize / verticesPerLine;
 		
+		verticesPerLine++;
 		//TexMap
 		math::Vec2 texMapCoord;
 		float texMapDistance = 1.0f / verticesPerLine;
+		float texDistance = 1.0f / 5.0f;
 
 		//TexCoord
 		math::Vec2 texCoord;
@@ -130,10 +130,10 @@ namespace zaap { namespace scene {
 			{
 				position = math::Vec3(x * distance, m_HightMap[x + y * verticesPerLine], ya);
 				texMapCoord = math::Vec2(x * texMapDistance, y * texMapDistance);
-				texCoord = math::Vec2((float)(x % 2), (float)(y % 2));
+				texCoord = math::Vec2((float)(x * texDistance), (float)(y * texDistance));
 
-				graphics::TERRAIN_VERTEX v = graphics::TERRAIN_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), texMapCoord, texCoord);
-				vertices[x + y * verticesPerLine] = v;
+				vertices[x + y * verticesPerLine] =
+					graphics::TERRAIN_VERTEX(position, math::Vec3(0.0f, 1.0f, 0.0f), texMapCoord, texCoord);
 			}
 		}
 		

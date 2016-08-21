@@ -19,6 +19,7 @@ Terrain* terrain_;
 void loadEntitys()
 {
 	camera = new ControllableCamera(Vec3(12.0f, 12.0f, -1.0f), -90.0f, 30.0f);
+	((ControllableCamera*)camera)->setSpeed(0.25f);
 	Renderer::SetCamera(camera);
 	{
 		lightSetup = new LightSetup();
@@ -169,7 +170,7 @@ public:
 		count2 += 0.0005f;
 		light->setColor(Color(Vec3(1.0f, 1.0f, 1.0f) * (sinf(count2) * 0.25f + 0.75f)));
 		
-		light->setPosition(Vec3(0.0f, 100.0f, 100.0f * sinf(count2)));
+		light->setPosition(Vec3(0.0f, 1000.0f, 1000.0f * sinf(count2)));
 
 		camera->update();
 		lightCube->setPosition(light->getPosition());

@@ -7,13 +7,13 @@ struct VS_IN
 {
 	float4 Position			: POSITION;
 	float4 Normal			: NORMAL;
-	float2 TexMapCoord		: TEXMAPCOORD;
+	float2 BlendMapCoord	: BLENDMAPCOORD;
 	float2 TexCoord			: TEXCOORD;
 };
 struct VS_OUT
 {
 	float4 Position			: SV_POSITION;
-	float2 TexMapCoord		: TEXMAPCOORD;
+	float2 BlendMapCoord	: BLENDMAPCOORD;
 	float2 TexCoord			: TEXCOORD;
 	float4 SurfaceNormal	: SURFACE_NORMAL;
 	float3 ToLightVector[SUPPORTET_LIGHT_COUNT]	: TO_LIGHT_VECTOR;
@@ -49,7 +49,7 @@ VS_OUT VShader(VS_IN input)
 	output.Position = mul(ProjectionMatrix, output.Position);
 
 	//Texture Coord
-	output.TexMapCoord = input.TexMapCoord;
+	output.BlendMapCoord = input.BlendMapCoord;
 	output.TexCoord = input.TexCoord;
 
 	//Surface Normal
@@ -68,8 +68,8 @@ VS_OUT VShader(VS_IN input)
 // Globals //
 /////////////
 //TextureMap
-Texture2D texMap			: register(t0);
-SamplerState texMapSampler	: register(s0);
+Texture2D blendMap				: register(t0);
+SamplerState blendMapSampler	: register(s0);
 
 //Textures
 Texture2D defaultTex			: register(t1);
@@ -97,13 +97,14 @@ cbuffer PSLightBuffer : register(b0)
 //////////////////
 float4 PShader(VS_OUT input) : SV_TARGET
 {
-	float4 texMapColor = texMap.Sample(texMapSampler, input.TexMapCoord);
+	float4 blendMapColor = blendMap.Sample(blendMapSampler, input.BlendMapCoord);
 	float3 normal = normalize(input.SurfaceNormal.xyz);
 	
-	float4 color = defaultTex.Sample(defaultTexSampler, input.TexCoord) * (1.0 - texMapColor.x - texMapColor.y - texMapColor.z);
-	color += tex0.Sample(texSampler0, input.TexCoord) * texMapColor.x;
-	color += tex1.Sample(texSampler1, input.TexCoord) * texMapColor.y;
-	color += tex2.Sample(texSampler2, input.TexCoord) * texMapColor.z;
+	float defaultColorFactor = (1.0 - blendMapColor.x - blendMapColor.y - blendMapColor.z);
+	float4 color = defaultTex.Sample(defaultTexSampler, input.TexCoord) * max(defaultColorFactor, 0.0);
+	color += tex0.Sample(texSampler0, input.TexCoord) * blendMapColor.x;
+	color += tex1.Sample(texSampler1, input.TexCoord) * blendMapColor.y;
+	color += tex2.Sample(texSampler2, input.TexCoord) * blendMapColor.z;
 	
 	//Light
 	float3 lightVector;
@@ -118,5 +119,5 @@ float4 PShader(VS_OUT input) : SV_TARGET
 
 	color.xyz *= diffuse;
 
-	return float4(color.xyz, 1.0f);
+	return float4(color.xyz, 1.0);
 }

@@ -27,7 +27,7 @@ namespace zaap { namespace graphics {
 		if (events::Input::IsKeyDown(ZAAP_VK_D))		v.X += m_Speed;
 		if (events::Input::IsKeyDown(ZAAP_VK_SPACE))	v.Y += m_Speed;
 		if (events::Input::IsKeyDown(ZAAP_VK_SHIFT))	v.Y -= m_Speed;
-		if (events::Input::IsKeyDown(ZAAP_VK_E))		v *= 3;
+		if (events::Input::IsKeyDown(ZAAP_VK_E))		v *= 4;
 
 		float angle = (PI / 180.0f) * m_Yaw;
 

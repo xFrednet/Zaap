@@ -21,7 +21,7 @@ namespace zaap { namespace scene {
 		graphics::API::VertexBuffer *m_VBuffer;
 
 		//textures
-		graphics::Texture2D *m_TextureMap;
+		graphics::Texture2D *m_BlendMap;
 		graphics::Texture2D *m_Textures[4];
 	public:
 		TerrainTile(math::Vec2 position, const TERRAIN_DESC const *terrainDesc, graphics::Image heightMap);
@@ -38,8 +38,8 @@ namespace zaap { namespace scene {
 		//texture stuff
 		void setTexture(graphics::Texture2D* texture, uint index);
 		graphics::Texture2D* getTexture(uint index) const;
-		void setTextureMap(graphics::Texture2D* textureMap);
-		graphics::Texture2D* getTextureMap() const;
+		void setBlendMap(graphics::Texture2D* blendMap);
+		graphics::Texture2D* getBlendMap() const;
 
 		//Util
 		void makeFlat(float height);

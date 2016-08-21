@@ -5,9 +5,7 @@
 namespace zaap { namespace scene {
 	
 	//
-
 	// Terrain Desc
-
 	//
 	TERRAIN_DESC::TERRAIN_DESC()
 		: HeightMin(0.0f),
@@ -60,14 +58,14 @@ namespace zaap { namespace scene {
 			ZAAP_ALERT("Terrain: the given folder has no heightMap.");
 		}
 
-		String texMapPath = String(m_Folder + "\\textureMap.png");
+		String texMapPath = String(m_Folder + "\\blendMap.png");
 		if (FILE *file = fopen(heightMapPath.c_str(), "r"))
 		{
 			fclose(file);
-			m_TextureMap = graphics::Image(texMapPath.c_str());
+			m_BlendMap = graphics::Image(texMapPath.c_str());
 		} else
 		{
-			ZAAP_ALERT("Terrain: the given folder has no TextureMap.");
+			ZAAP_ALERT("Terrain: the given folder has no BlendMap.");
 		}
 
 		loadTerrainTile(0, 0);
@@ -83,9 +81,9 @@ namespace zaap { namespace scene {
 		uint imageY = tileY * imageSize;
 
 		math::Vec2 position(tileX * m_TerrainDesc.MeshSize, tileY * m_TerrainDesc.MeshSize);
-		TerrainTile tile(position, &m_TerrainDesc, m_HeightMap.getSubMap(imageX, imageY, imageSize, imageSize));
+		TerrainTile tile(position, &m_TerrainDesc, m_HeightMap.getSubMap(imageX, imageY, imageSize + 1, imageSize + 1));
 
-		tile.setTextureMap(graphics::TextureManager::LoadTexture2D("Temp", m_TextureMap.getSubMap(tileX * 100, tileY * 100, 100, 100)));
+		tile.setBlendMap(graphics::TextureManager::LoadTexture2D("Temp", m_BlendMap.getSubMap(tileX * 256, tileY * 256, 256, 256)));
 
 		if (graphics::TextureManager::Contains("terrainTexture0"))
 		{

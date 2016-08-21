@@ -30,7 +30,7 @@ namespace zaap { namespace scene {
 		String m_Folder;
 		
 		graphics::Image m_HeightMap;
-		graphics::Image m_TextureMap;
+		graphics::Image m_BlendMap;
 
 		TERRAIN_DESC m_TerrainDesc;
 		std::vector<TerrainTile> m_TerrainTiles;
@@ -43,8 +43,6 @@ namespace zaap { namespace scene {
 		//game loop methods
 		void update();
 		void render();
-
-		//TODO add cleanup Method
 	};
 
 }}
