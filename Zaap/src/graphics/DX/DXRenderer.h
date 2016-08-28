@@ -55,7 +55,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//render util
 		void prepare() override;
-		void render(const scene::TerrainTile const *terrinTile) override;
+		void render(const scene::Terrain const *terrinTile) override;
 		void render(Entity* entity) override;
 
 		void cleanup() override;

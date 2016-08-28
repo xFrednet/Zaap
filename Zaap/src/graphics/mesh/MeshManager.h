@@ -15,7 +15,7 @@ namespace zaap { namespace graphics {
 		inline MeshManager(void) {};
 	
 	public:
-		static Mesh* AddMesh(String name, API::VertexBuffer* vertexBuffer, Texture2D* texture);
+		static Mesh* AddMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture);
 		static Mesh* AddMesh(Mesh* mesh);
 		static Mesh* GetMesh(String name);
 

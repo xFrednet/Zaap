@@ -10,13 +10,13 @@ namespace zaap { namespace graphics {
 	class ZAAP_API TexturedMesh : public Mesh
 	{
 	private:
-		Texture2D *m_Texture;
+		API::Texture2D *m_Texture;
 
 	public:
-		TexturedMesh(String name, API::VertexBuffer* vertexBuffer, Texture2D* texture);
+		TexturedMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture);
 		TexturedMesh(void);
 
-		Texture2D* getTexture(void) const;
-		void setTexture(Texture2D *texture);
+		API::Texture2D* getTexture(void) const;
+		void setTexture(API::Texture2D *texture);
 	};
 }}

@@ -9,7 +9,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
-	class ZAAP_API DXTexture2D : public Texture2D
+	class ZAAP_API DXTexture2D : public API::Texture2D
 	{
 	protected:
 		D3D11_TEXTURE2D_DESC m_TextureDesc;

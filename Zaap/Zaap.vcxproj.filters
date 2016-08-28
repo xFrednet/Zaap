@@ -189,9 +189,6 @@
     <ClCompile Include="src\scene\terrain\Terrain.cpp">
       <Filter>Source Files\src\scene\terrain</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\terrain\TerrainTile.cpp">
-      <Filter>Source Files\src\scene\terrain</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </ClCompile>
@@ -345,9 +342,6 @@
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\terrain\Terrain.h">
-      <Filter>Source Files\src\scene\terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="src\scene\terrain\TerrainTile.h">
       <Filter>Source Files\src\scene\terrain</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h">

@@ -41,6 +41,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ZeroMemory(&rDesc, sizeof(D3D11_RASTERIZER_DESC));
 
 		//draw options
+		rDesc.FillMode				= D3D11_FILL_WIREFRAME;
 		rDesc.FillMode				= D3D11_FILL_SOLID;
 		rDesc.CullMode				= D3D11_CULL_NONE;
 		rDesc.FrontCounterClockwise = true;
@@ -227,7 +228,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		DXContext::SwapBuffers();
 
-		//m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
+		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		m_TextureShader->loadViewMatrix(m_Camera->getViewMatrix());
@@ -237,19 +238,17 @@ namespace zaap { namespace graphics { namespace DX {
 		//TODO Change Method
 	}
 
-	void DXRenderer::render(const scene::TerrainTile const* terrainTile)
+	void DXRenderer::render(const scene::Terrain const* terrain)
 	{
 		m_TerrainShader->start();
 
-		m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
+		//m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
+		m_TerrainShader->loadTransformationMatrix(math::Mat4(1.0f));
 
-		//Textures
-		terrainTile->getBlendMap()->bind(0);
-		for (uint i = 0; i < 4; i++)
-			terrainTile->getTexture(i)->bind(i + 1);
-
-		API::VertexBuffer* vBuffer = terrainTile->getVertexBuffer();
+		API::VertexBuffer* vBuffer = terrain->getVertexBuffer();
 		vBuffer->bind(0);
+
+		terrain->getTexture()->bind(0);
 
 		//rendering
 		m_Devcon->DrawIndexed(vBuffer->getVertexCount(), 0, 0);

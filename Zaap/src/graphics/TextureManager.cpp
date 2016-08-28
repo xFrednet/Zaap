@@ -5,17 +5,17 @@
 
 namespace zaap { namespace graphics {
 	
-	std::vector<Texture*> TextureManager::s_Textures;
+	std::vector<API::Texture*> TextureManager::s_Textures;
 
-	Texture* TextureManager::AddTexture(Texture* texture)
+	API::Texture* TextureManager::AddTexture(API::Texture* texture)
 	{
 		s_Textures.push_back(texture);
 		return texture;
 	}
 
-	Texture* TextureManager::GetTexture(String textureName)
+	API::Texture* TextureManager::GetTexture(String textureName)
 	{
-		for (Texture* texture : s_Textures)
+		for (API::Texture* texture : s_Textures)
 		{
 			if (texture->getTextureName() == textureName)
 				return texture;
@@ -23,22 +23,24 @@ namespace zaap { namespace graphics {
 		return nullptr;
 	}
 
-	Texture2D* TextureManager::LoadTexture2D(String textureName, char const* texturePath)
+	API::Texture2D* TextureManager::LoadTexture2D(String textureName, char const* texturePath)
 	{
 		return LoadTexture2D(textureName, String(texturePath));
 	}
-	Texture2D* TextureManager::LoadTexture2D(String textureName, String texturePath)
+
+	API::Texture2D* TextureManager::LoadTexture2D(String textureName, String texturePath)
 	{
-		Texture2D* texture;
+		API::Texture2D* texture;
 		texture = new DX::DXTexture2D(textureName, texturePath);
 		
 		AddTexture(texture);
 		
 		return texture;
 	}
-	Texture2D* TextureManager::LoadTexture2D(String textureName, Image image)
+
+	API::Texture2D* TextureManager::LoadTexture2D(String textureName, Image image)
 	{
-		Texture2D* texture;
+		API::Texture2D* texture;
 		texture = new DX::DXTexture2D(textureName, image);
 
 		AddTexture(texture);
@@ -53,7 +55,7 @@ namespace zaap { namespace graphics {
 
 	void TextureManager::Cleanup()
 	{
-		for (Texture* texture : s_Textures)
+		for (API::Texture* texture : s_Textures)
 		{
 			texture->cleanup();
 			delete texture;

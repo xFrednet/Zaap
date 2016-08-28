@@ -1,7 +1,7 @@
 #include "Texture.h"
 
-namespace zaap { namespace graphics {
-	
+namespace zaap { namespace graphics { namespace API {
+
 	Texture::Texture(String &textureName)
 		: m_TextureName(textureName)
 	{
@@ -12,4 +12,4 @@ namespace zaap { namespace graphics {
 		return m_TextureName;
 	}
 
-}}
+}}}

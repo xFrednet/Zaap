@@ -72,4 +72,5 @@ float4 PShader(VOut input) : SV_TARGET
 	float4 color = texture_.Sample(sampler_, input.texCoords);
 	
 	return float4(color.xyz * diffuse, color.w);
+
 }

@@ -68,7 +68,7 @@ void loadEntitys()
 	{
 		TextureManager::LoadTexture2D("flor", "res/flor.jpg");
 		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("flor", "res/flor.obj");
-		mesh->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
+		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("flor"));
 		//((TexturedMesh*)MeshManager::GetMesh("Test"))->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
 		MeshManager::AddMesh(mesh);
 
@@ -82,7 +82,7 @@ void loadEntitys()
 	{
 		TextureManager::LoadTexture2D("rock", "res/rock.png");
 		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("rock", "res/rock.obj");
-		mesh->setTexture((Texture2D*)TextureManager::GetTexture("rock"));
+		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("rock"));
 		MeshManager::AddMesh(mesh);
 	
 		v = Vec3(0, 1, 0);
@@ -94,7 +94,7 @@ void loadEntitys()
 	{
 		TextureManager::LoadTexture2D("wood", "res/bench.jpg");
 		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("bench", "res/bench.obj");
-		mesh->setTexture((Texture2D*)TextureManager::GetTexture("wood"));
+		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("wood"));
 		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-5, 1, 0);
@@ -105,7 +105,7 @@ void loadEntitys()
 	//Cube 1
 	TextureManager::LoadTexture2D("cube", "res/cube.png");
 	mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("cube", "res/cube.obj");
-	mesh->setTexture((Texture2D*)TextureManager::GetTexture("cube"));
+	mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("cube"));
 	MeshManager::AddMesh(mesh);
 	Mesh* tMesh = MeshManager::GetMesh("cube");
 	{
@@ -133,7 +133,7 @@ void loadEntitys()
 	{
 		TextureManager::LoadTexture2D("zaap", "res/zaapLogo.png");
 		mesh = (TexturedMesh*)API::Context::GetLoader()->loadOBJFile("zaap", "res/zaapFrame.obj");
-		mesh->setTexture((Texture2D*)TextureManager::GetTexture("zaap"));
+		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("zaap"));
 		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-7, 5, 0);
@@ -144,7 +144,8 @@ void loadEntitys()
 	{
 		TERRAIN_DESC tDesc;
 		tDesc.setupForLowPoly();
-		terrain_ = new Terrain("res\\scene", tDesc);
+		tDesc.VerticesPerLine = 100;
+		terrain_ = new Terrain("res//scene//", tDesc);
 
 	}
 }
@@ -175,7 +176,7 @@ public:
 		camera->update();
 		lightCube->setPosition(light->getPosition());
 
-		light2->setPosition(camera->getPosition());
+		//light2->setPosition(camera->getPosition());
 	}
 
 	void render() override 
@@ -188,6 +189,7 @@ public:
 
 int main(void)
 {
+
 	scene_ = new Scene();
 	
 	Test t;

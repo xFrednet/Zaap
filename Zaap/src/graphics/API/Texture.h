@@ -5,7 +5,7 @@
 
 #pragma warning( disable : 4251)
 
-namespace zaap { namespace graphics {
+namespace zaap { namespace graphics { namespace API {
 	
 	/*This class is a Polymorphic class for the Representation in Graphic Ram.
 	For direct Texture Representation and the ability to read Image parts use zaap::graphics::BITMAP
@@ -23,4 +23,4 @@ namespace zaap { namespace graphics {
 		virtual void cleanup() = 0;
 	};
 
-}}
+}}}

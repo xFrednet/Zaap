@@ -34,7 +34,6 @@ namespace zaap { namespace graphics {
 	}
 	Image::Image(const char* file)
 	{
-		ZAAP_INFO("Start");
 		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &m_BitsPerPixel);
 
 		uint size = m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3);
@@ -47,7 +46,7 @@ namespace zaap { namespace graphics {
 		}
 
 		delete[] bytes;
-		ZAAP_INFO("stop");
+		
 
 	}
 

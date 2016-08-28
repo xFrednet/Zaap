@@ -7,7 +7,6 @@
 #include <util/ImageLoader.h>
 
 #include <scene/terrain/Terrain.h>
-#include <scene/terrain/TerrainTile.h>
 
 #include <graphics/Scene.h>
 #include <graphics/Renderer.h>
