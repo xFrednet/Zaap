@@ -3,9 +3,9 @@
 #include <Common.h>
 #include <Types.h>
 
+#include <graphics/Image.h>
 #include <graphics/API/Texture2D.h>
 #include <graphics/API/DXContext.h>
-#include <graphics/Image.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	

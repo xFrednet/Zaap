@@ -23,43 +23,31 @@ namespace zaap { namespace graphics {
 		return nullptr;
 	}
 
-	API::Texture2D* TextureManager::LoadTexture2D(String textureName, char const* texturePath)
+	void TextureManager::RemoveTexture(API::Texture* texture)
 	{
-		return LoadTexture2D(textureName, String(texturePath));
+		for (uint i = 0; i < s_Textures.size(); i++)
+		{
+			if (texture == s_Textures[i])
+				s_Textures.erase(s_Textures.begin() + i);
+		}
 	}
 
-	API::Texture2D* TextureManager::LoadTexture2D(String textureName, String texturePath)
+	void TextureManager::RemoveTexture(String textureName)
 	{
-		API::Texture2D* texture;
-		texture = new DX::DXTexture2D(textureName, texturePath);
-		
-		AddTexture(texture);
-		
-		return texture;
+		for (uint i = 0; i < s_Textures.size(); i++)
+		{
+			if (textureName == s_Textures[i]->getTextureName())
+				s_Textures.erase(s_Textures.begin() + i);
+		}
 	}
 
-	API::Texture2D* TextureManager::LoadTexture2D(String textureName, Image image)
+	void TextureManager::ClearTextures()
 	{
-		API::Texture2D* texture;
-		texture = new DX::DXTexture2D(textureName, image);
-
-		AddTexture(texture);
-
-		return texture;
+		s_Textures.clear();
 	}
 
 	bool TextureManager::Contains(String textureName)
 	{
-		return (GetTexture(textureName) == nullptr);
-	}
-
-	void TextureManager::Cleanup()
-	{
-		for (API::Texture* texture : s_Textures)
-		{
-			texture->cleanup();
-			delete texture;
-		}
-		ZAAP_CLEANUP_LOG("TextureManager");
+		return (GetTexture(textureName) != nullptr);
 	}
 }}

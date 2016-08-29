@@ -14,10 +14,11 @@ Camera* camera = nullptr;
 Entity* m1 = nullptr;
 Entity* m2 = nullptr;
 Entity* lightCube = nullptr;
-Terrain* terrain_;
+Terrain* terrain_ = nullptr;
 
 void loadEntitys()
 {
+	clock_t timer = clock();
 	camera = new ControllableCamera(Vec3(12.0f, 12.0f, -1.0f), -90.0f, 30.0f);
 	((ControllableCamera*)camera)->setSpeed(0.25f);
 	Renderer::SetCamera(camera);
@@ -66,7 +67,7 @@ void loadEntitys()
 
 	//Flor
 	{
-		TextureManager::LoadTexture2D("flor", "res/flor.jpg");
+		API::Texture::CreateTexture2D("flor", "res/flor.jpg");
 		mesh = (TexturedMesh*)Loader::LoadOBJFile("flor", "res/flor.obj");
 		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("flor"));
 		//((TexturedMesh*)MeshManager::GetMesh("Test"))->setTexture((Texture2D*)TextureManager::GetTexture("flor"));
@@ -80,7 +81,7 @@ void loadEntitys()
 
 	//rock
 	{
-		TextureManager::LoadTexture2D("rock", "res/rock.png");
+		API::Texture::CreateTexture2D("rock", "res/rock.png");
 		mesh = (TexturedMesh*)Loader::LoadOBJFile("rock", "res/rock.obj");
 		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("rock"));
 		MeshManager::AddMesh(mesh);
@@ -92,7 +93,7 @@ void loadEntitys()
 
 	//bench
 	{
-		TextureManager::LoadTexture2D("wood", "res/bench.jpg");
+		API::Texture::CreateTexture2D("wood", "res/bench.jpg");
 		mesh = (TexturedMesh*)Loader::LoadOBJFile("bench", "res/bench.obj");
 		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("wood"));
 		MeshManager::AddMesh(mesh);
@@ -103,7 +104,7 @@ void loadEntitys()
 	}
 
 	//Cube 1
-	TextureManager::LoadTexture2D("cube", "res/cube.png");
+	API::Texture::CreateTexture2D("cube", "res/cube.png");
 	mesh = (TexturedMesh*)Loader::LoadOBJFile("cube", "res/cube.obj");
 	mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("cube"));
 	MeshManager::AddMesh(mesh);
@@ -131,7 +132,7 @@ void loadEntitys()
 
 	//Zaap frame
 	{
-		TextureManager::LoadTexture2D("zaap", "res/zaapLogo.png");
+		API::Texture::CreateTexture2D("zaap", "res/zaapLogo.png");
 		mesh = (TexturedMesh*)Loader::LoadOBJFile("zaap", "res/zaapFrame.obj");
 		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("zaap"));
 		MeshManager::AddMesh(mesh);
@@ -148,6 +149,9 @@ void loadEntitys()
 		terrain_ = new Terrain("res//scene//", tDesc);
 
 	}
+
+	long time = clock() - timer;
+	ZAAP_INFO("Source: Scene init took " + std::to_string(time) + "ms");
 }
 
 class Test : public Application

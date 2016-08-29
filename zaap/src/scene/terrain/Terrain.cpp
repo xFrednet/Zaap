@@ -71,7 +71,7 @@ namespace zaap { namespace scene {
 
 	void Terrain::initTexture(String folder)
 	{
-		m_Texture = graphics::TextureManager::LoadTexture2D("terrainTexture", folder + "texture_3.jpg");
+		m_Texture = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
 	}
 
 	//HeightMap

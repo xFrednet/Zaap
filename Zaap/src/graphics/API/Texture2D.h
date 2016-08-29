@@ -6,7 +6,6 @@
 #include "Texture.h"
 
 namespace zaap { namespace graphics { namespace API {
-	class Image;
 
 	class ZAAP_API Texture2D : public Texture
 	{

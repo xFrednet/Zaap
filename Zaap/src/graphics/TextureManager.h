@@ -12,17 +12,17 @@ namespace zaap { namespace graphics {
 	{
 	private:
 		static std::vector<API::Texture*> s_Textures;
+
 	public:
 		static API::Texture* AddTexture(API::Texture* texture);
 		static API::Texture* GetTexture(String textureName);
+		
+		static void RemoveTexture(API::Texture* texture);
+		static void RemoveTexture(String textureName);
 
-		static API::Texture2D* LoadTexture2D(String textureName, char const *texturePath);
-		static API::Texture2D* LoadTexture2D(String textureName, String texturePath);
-		static API::Texture2D* LoadTexture2D(String textureName, Image image);
+		static void ClearTextures();
 		
 		static bool Contains(String textureName);
-
-		static void Cleanup();
 	};
 
 }}

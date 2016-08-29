@@ -29,11 +29,11 @@ namespace zaap {
 	{
 		ImageLoader::Cleanup();
 		graphics::MeshManager::Cleanup();
-		graphics::TextureManager::Cleanup();
 		graphics::MaterialManager::Cleanup();
 		delete m_Scene;
 		graphics::Renderer::Cleanup();
 		graphics::API::Context::Cleanup();
+		graphics::API::Texture::Cleanup();
 		graphics::API::VertexBuffer::Cleanup();
 
 		ZAAP_CLEANUP_LOG("Application");
