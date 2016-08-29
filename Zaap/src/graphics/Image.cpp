@@ -33,17 +33,15 @@ namespace zaap { namespace graphics {
 	{
 	}
 	Image::Image(const char* file)
+		: m_Bytes(0)
 	{
 		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &m_BitsPerPixel);
 
 		uint size = m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3);
 
-		m_Bytes.reserve(size);
+		m_Bytes = std::vector<byte>(m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3));
 
-		for (uint i = 0; i < size; i++)
-		{
-			m_Bytes.push_back(bytes[i]);
-		}
+		memcpy(&m_Bytes[0], bytes, m_Bytes.size());
 
 		delete[] bytes;
 		

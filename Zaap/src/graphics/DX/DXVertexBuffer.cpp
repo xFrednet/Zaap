@@ -4,6 +4,67 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
+	DXVertexBuffer::DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount)
+		: VertexBuffer(indexCount)
+	{
+		/*
+		Vertex Buffer
+		*/
+
+		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
+		ID3D11Device *dev = DXContext::GetDevice();
+
+		//Buffer desc
+		D3D11_BUFFER_DESC bd;
+		ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+
+		bd.Usage = D3D11_USAGE_DYNAMIC;
+		bd.ByteWidth = vertexSize * vCount;
+		bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		//create Buffer
+		ID3D11Buffer *pVBuffer;
+		dev->CreateBuffer(&bd, NULL, &pVBuffer);
+		DXNAME(pVBuffer, "DXLoader::loadVBuffer::pVBuffer")
+
+			D3D11_MAPPED_SUBRESOURCE ms;
+
+		devcon->Map(pVBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		memcpy(ms.pData, vertices, vertexSize * vCount);
+		devcon->Unmap(pVBuffer, NULL);
+
+		/*
+		IndexBuffer
+		*/
+		D3D11_BUFFER_DESC iBufferDesc;
+		iBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+		iBufferDesc.ByteWidth = sizeof(uint) * indexCount;
+		iBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+		iBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+		iBufferDesc.MiscFlags = 0;
+
+		D3D11_SUBRESOURCE_DATA initData;
+		initData.pSysMem = indices;
+		initData.SysMemPitch = 0;
+		initData.SysMemSlicePitch = 0;
+
+		//
+		ID3D11Buffer *indexBuffer;
+		dev->CreateBuffer(&iBufferDesc, &initData, &indexBuffer);
+		DXNAME(pVBuffer, "DXLoader::loadVBuffer::indexBuffer")
+
+		D3D11_MAPPED_SUBRESOURCE ms2;
+		devcon->Map(indexBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms2);
+		memcpy(ms2.pData, indices, sizeof(uint) * indexCount);
+		devcon->Unmap(indexBuffer, NULL);
+
+		m_VBuffer = pVBuffer;
+		m_IndexBuffer = indexBuffer;
+		m_Stride = vertexSize;
+		
+	}
+
 	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount, uint stride)
 		: VertexBuffer(vertexCount),
 		m_VBuffer(vertexBuffer),
@@ -29,6 +90,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXVertexBuffer::unbind(uint slot)
 	{
+	}
+
+	void DXVertexBuffer::cleanup()
+	{
+		DXRELEASE(m_VBuffer);
+		DXRELEASE(m_IndexBuffer);
 	}
 }}}
 

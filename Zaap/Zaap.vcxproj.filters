@@ -96,9 +96,6 @@
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\DX\DXLoader.cpp">
-      <Filter>Source Files\src\graphics\DX</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\DX\DXRenderer.cpp">
       <Filter>Source Files\src\graphics\DX</Filter>
     </ClCompile>
@@ -241,9 +238,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\VertexBuffer.h">
       <Filter>Source Files\src\graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\DX\DXLoader.h">
-      <Filter>Source Files\src\graphics\DX</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\DX\DXRenderer.h">
       <Filter>Source Files\src\graphics\DX</Filter>

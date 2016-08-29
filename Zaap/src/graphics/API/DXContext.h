@@ -5,7 +5,6 @@
 
 #include <graphics/API/DXCommon.h>
 #include <app/Window.h>
-#include <graphics/DX/DXLoader.h>
 #include <graphics/API/Context.h>
 
 namespace zaap { namespace graphics	{ namespace DX {
@@ -17,11 +16,8 @@ namespace zaap { namespace graphics	{ namespace DX {
 		ID3D11DeviceContext *m_Devcon;
 		
 		IDXGISwapChain *m_SwapChain;
-
-		DXLoader m_Loader;
 	protected:
 		void cleanup(void) override;
-		Loader* getLoader() override;
 
 		//Buffer stuff
 		void swapBuffers(void) override;

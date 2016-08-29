@@ -185,7 +185,7 @@ namespace zaap { namespace scene {
 			}
 		}
 
-		m_VBuffer = graphics::API::Context::GetLoader()->loadVBuffer(&vertices[0], sizeof(graphics::TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size());
+		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size());
 
 	}
 

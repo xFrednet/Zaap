@@ -34,6 +34,7 @@ namespace zaap {
 		delete m_Scene;
 		graphics::Renderer::Cleanup();
 		graphics::API::Context::Cleanup();
+		graphics::API::VertexBuffer::Cleanup();
 
 		ZAAP_CLEANUP_LOG("Application");
 	}
