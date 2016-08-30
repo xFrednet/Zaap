@@ -120,8 +120,8 @@ float4 PShader(VS_OUT input) : SV_TARGET
 	color = blendMap.Sample(blendMapSampler, input.TexCoord);
 	color.xyz *= diffuse;
 
-	return float4(color.xyz, 1.0);
+	//return float4(color.xyz, 1.0);
 	//return float4(1.0, 1.0, 1.0, 1.0);
-	//return float4(normal, 1.0);
+	return float4(normal, 1.0);
 
 }

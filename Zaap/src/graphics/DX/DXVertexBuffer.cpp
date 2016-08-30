@@ -88,6 +88,13 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 	}
 
+	void DXVertexBuffer::draw()
+	{
+		bind(0);
+
+		DXContext::GetDevContext()->DrawIndexed(m_VertexCount, 0, 0);
+	}
+
 	void DXVertexBuffer::cleanup()
 	{
 		DXRELEASE(m_VBuffer);

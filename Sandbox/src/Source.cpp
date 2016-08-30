@@ -145,7 +145,6 @@ void loadEntitys()
 	{
 		TERRAIN_DESC tDesc;
 		tDesc.setupForLowPoly();
-		tDesc.VerticesPerLine = 100;
 		terrain_ = new Terrain("res//scene//", tDesc);
 
 	}
@@ -205,6 +204,7 @@ int main(void)
 
 	t.cleanup();
 
+	terrain_->cleanup();
 	delete terrain_;
 
 	return 0;

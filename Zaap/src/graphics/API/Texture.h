@@ -8,9 +8,7 @@
 namespace zaap { namespace graphics { 
 	
 	class Image;
-	
 	namespace API {
-
 	class Texture2D;
 
 	enum class ZAAP_API TextureType

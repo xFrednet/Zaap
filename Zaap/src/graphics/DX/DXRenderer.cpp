@@ -245,14 +245,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
 		m_TerrainShader->loadTransformationMatrix(math::Mat4(1.0f));
 
-		API::VertexBuffer* vBuffer = terrain->getVertexBuffer();
-		vBuffer->bind(0);
-
 		terrain->getTexture()->bind(0);
-
-		//rendering
-		m_Devcon->DrawIndexed(vBuffer->getVertexCount(), 0, 0);
-
 	}
 
 	void DXRenderer::render(Entity* entity)
@@ -281,7 +274,7 @@ namespace zaap { namespace graphics { namespace DX {
 			
 			m_MaterialShader->loadMaterials(mMesh->getMaterials(), mMesh->getMaterialCount());
 
-			mesh->getVertexBuffer()->bind(1);
+			mesh->getVertexBuffer()->bind(0);
 		} else
 		{
 			return;

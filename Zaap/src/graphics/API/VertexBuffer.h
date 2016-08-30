@@ -8,11 +8,12 @@ namespace zaap { namespace graphics { namespace API {
 	class ZAAP_API VertexBuffer
 	{
 	private:
-		uint m_VertexCount;
 	
 		static std::vector<VertexBuffer*> s_VertexBuffers;
 
 	protected:
+		uint m_VertexCount;
+		
 		VertexBuffer(uint vertexCount);
 
 	public:
@@ -25,6 +26,8 @@ namespace zaap { namespace graphics { namespace API {
 		
 		virtual void bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;
+
+		virtual void draw() = 0;
 
 		virtual void cleanup() = 0;
 	};

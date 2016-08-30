@@ -192,6 +192,9 @@
     <ClCompile Include="src\graphics\Image.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\terrain\TerrainPart.cpp">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Image.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\terrain\TerrainPart.h">
+      <Filter>Source Files\src\scene\terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

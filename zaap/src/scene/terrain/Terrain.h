@@ -5,6 +5,8 @@
 #include <graphics/Image.h>
 #include <graphics/API/VertexBuffer.h>
 #include <graphics/API/Texture2D.h>
+#include <graphics/mesh/Mesh.h>
+#include <scene/terrain/TerrainPart.h>
 
 namespace zaap { namespace scene {
 	
@@ -13,33 +15,38 @@ namespace zaap { namespace scene {
 		float HeightMin;
 		float HeightMax;
 		float DefaultHeight;
-		float MeshSize;
-		uint VerticesPerLine;
+		float VertexSpacing;
 		uint VerticesPerTexture;
+		uint MaxVerticesPerTerrainTile;
 
 		TERRAIN_DESC();
-		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float meshSize, uint verticesPerLine, uint verticesPerTexture);
+		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float vertexSpacing, uint verticesPerTexture);
 
 		void setupForLowPoly();
-
-		uint getVertexCount(void) const;
-
 	};
 
 	class ZAAP_API Terrain
 	{
+		friend class TerrainPart;
+		friend class TerrainTreePart;
+		friend class TerrainTreeEndPart;
 	private:
 		TERRAIN_DESC m_TerrainDesc;
 
 		//Mesh
-		std::vector<float> m_HeightMap;
+		uint m_VCountHorizontal;
+		uint m_VCountVertical;
+		std::vector<graphics::TERRAIN_VERTEX> m_Vertices;
 		graphics::API::VertexBuffer *m_VBuffer;
 		graphics::API::Texture2D *m_Texture;
 
-		void initHeightMap(String heightMapFile);
-		float getHeight(graphics::Color color) const;
+		//Heightmap
+		void initVertices(String heightMapFile);
+		float calculateHeightFromColor(graphics::Color color) const;
 		math::Vec3 calcualteNormal(uint vertexX, uint vertexY) const;
 
+		//Rendering
+		TerrainPart* m_ParrentNode;
 	public:
 		Terrain(String folder, TERRAIN_DESC terrainDesc);
 		~Terrain();
@@ -47,7 +54,6 @@ namespace zaap { namespace scene {
 		//Util
 		void init(String folder);
 		void initTexture(String folder);
-		void initBuffers();
 		void cleanup();
 
 		//getters
@@ -55,6 +61,12 @@ namespace zaap { namespace scene {
 		graphics::API::VertexBuffer* getVertexBuffer() const;
 		graphics::API::Texture2D* getTexture() const;
 
+		float getWidth() const;
+		float getHeight() const;
+		uint getVCountHorizontal() const;
+		uint getVCountVertical() const;
+
+		//Heightmap
 		float getVertexHeight(uint vertexX, uint vertexY) const;
 
 		//game loop methods
