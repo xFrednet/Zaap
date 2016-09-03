@@ -13,6 +13,7 @@ Light* light2 = nullptr;
 Camera* camera = nullptr;
 Entity* m1 = nullptr;
 Entity* m2 = nullptr;
+Entity* m3 = nullptr;
 Entity* lightCube = nullptr;
 Terrain* terrain_ = nullptr;
 
@@ -121,6 +122,12 @@ void loadEntitys()
 		m1 = new Entity(tMesh, v);
 		scene_->addEntity(m1);
 	}
+	//test frame
+	{
+		v = Vec3(0, 1, 0);
+		m3 = new Entity(tMesh, v);
+		scene_->addEntity(m3);
+	}
 
 	//Light Cube
 	{
@@ -162,6 +169,8 @@ public:
 	float count = 0.0f;
 	float count2 = 0.0f;
 	float rot = 1.5f;
+	uint log = 0;
+	bool val;
 
 	void update() override {
 		Application::update();
@@ -178,6 +187,28 @@ public:
 
 		camera->update();
 		lightCube->setPosition(light->getPosition());
+
+		log++;
+		if (log % 10 == 0)
+		if (camera->getViewFrustum().isVisible(math::Vec3(0.0f, 1.0f, 0.0f)))
+		{
+			if (!val)
+			{
+				m3->setPosition(Vec3(0.0f, 1.0f, 0.0f));
+				ZAAP_INFO("true 1");
+				val = true;
+			}
+		}
+		else
+		{
+			if (val)
+			{
+				m3->setPosition(Vec3(0.0f, -50.0f, 0.0f));
+				ZAAP_INFO("false -50");
+				val = false;
+			}
+		}
+
 
 		//light2->setPosition(camera->getPosition());
 	}

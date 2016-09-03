@@ -195,6 +195,12 @@
     <ClCompile Include="src\scene\terrain\TerrainPart.cpp">
       <Filter>Source Files\src\scene\terrain</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\camera\ViewFrustum.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Plane3D.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -349,6 +355,12 @@
     </ClInclude>
     <ClInclude Include="src\scene\terrain\TerrainPart.h">
       <Filter>Source Files\src\scene\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\ViewFrustum.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Plane3D.h">
+      <Filter>Source Files\src\maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

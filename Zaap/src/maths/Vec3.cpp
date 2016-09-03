@@ -33,57 +33,37 @@ namespace zaap { namespace math {
 	//
 	void Vec3::scale(float scale)
 	{
-		X *= scale;
-		Y *= scale;
-		Z *= scale;
+		*this = Scale(*this, scale);
 	}
 
 	float Vec3::getLength() const
 	{
-		return sqrtf(X * X + Y * Y + Z * Z);
+		return GetLength(*this);
 	}
 
 	void Vec3::normalize()
 	{
-		float d = getLength();
-		X /= d;
-		Y /= d;
-		Z /= d;
+		*this = Normalize(*this);
 	}
 
 	void Vec3::clamp(float min, float max)
 	{
-		if (min >= max)
-		{
-			ZAAP_ALERT("Vec3::clamp: The min Value has to be lower than the max Value");
-			return;
-		}
-		//X
-		if (X < min) X = min;
-		else if (X > max) X = max;
-
-		//Y
-		if (Y < min) Y = min;
-		else if (Y > max) Y = max;
-
-		//Z
-		if (Z < min) Z = min;
-		else if (Z > max) Z = max;
+		*this = Clamp(*this, min, max);
 	}
 
 	float Vec3::dot(const Vec3& v) const
 	{
-		return X * v.X + Y * v.Y + Z * v.Z;
+		return Dot(*this, v);
 	}
 
 	//
 	// operators
 	//
-	bool Vec3::operator==(Vec3 &other) const
+	bool Vec3::operator==(const Vec3 &other) const
 	{
 		return (X == other.X) && (Y == other.Y) && (Z == other.Z);
 	}
-	bool Vec3::operator!=(Vec3 &other) const
+	bool Vec3::operator!=(const Vec3 &other) const
 	{
 		return (X != other.X) || (Y != other.Y) || (Z != other.Z);
 	}
@@ -136,5 +116,73 @@ namespace zaap { namespace math {
 	Vec3 Vec3::operator*(float scale) const
 	{
 		return Vec3(X * scale, Y * scale, Z * scale);
+	}
+
+	
+}}
+
+//
+// Util Methods
+//
+namespace zaap { namespace math {
+	
+	Vec3 Scale(const Vec3& vec, float scale)
+	{
+		return vec * scale;
+	}
+
+	float GetLength(const Vec3& vec)
+	{
+		return sqrtf(vec.X * vec.X +
+			vec.Y * vec.Y + 
+			vec.Z * vec.Z);
+	}
+
+	Vec3 Normalize(const Vec3& vec)
+	{
+		float d = GetLength(vec);
+		return Vec3(vec.X / d, vec.Y / d, vec.Z / d);
+	}
+
+	Vec3 Cross(const Vec3& a, const Vec3& b)
+	{
+		return Vec3(((a.Y * b.Z) - (a.Z * b.Y)),
+			((a.Z * b.X) - (a.X * b.Z)),
+			((a.X * b.Y) - (a.Y * b.X)));
+	}
+
+	Vec3 Clamp(const Vec3& vec, float min, float max)
+	{
+		Vec3 rVec(vec);
+		if (min > max)
+		{
+			ZAAP_ALERT("Vec3::clamp: The min Value has to be lower than the max Value");
+			
+			//switch values
+			float t = min;
+			min = max;
+			max = t;
+		}
+
+		//X
+		if (rVec.X < min) rVec.X = min;
+		else if (rVec.X > max) rVec.X = max;
+
+		//Y
+		if (rVec.Y < min) rVec.X = min;
+		else if (rVec.Y > max) rVec.X = max;
+
+		//Z
+		if (rVec.Z < min) rVec.X = min;
+		else if (rVec.Z > max) rVec.X = max;
+
+		return rVec;
+	}
+
+	float Dot(const Vec3& vec1, const Vec3& vec2)
+	{
+		return (vec1.X * vec2.X) +
+			(vec1.Y * vec2.Y) +
+			(vec1.Z * vec2.Z);
 	}
 }}

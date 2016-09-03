@@ -151,6 +151,7 @@
     <ClCompile Include="src\graphics\API\Texture.cpp" />
     <ClCompile Include="src\graphics\API\Texture2D.cpp" />
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp" />
+    <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Image.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
@@ -176,6 +177,7 @@
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathHelper.cpp" />
+    <ClCompile Include="src\maths\Plane3D.cpp" />
     <ClCompile Include="src\maths\Vec2.cpp" />
     <ClCompile Include="src\maths\Vec3.cpp" />
     <ClCompile Include="src\maths\Vec4.cpp" />
@@ -200,6 +202,7 @@
     <ClInclude Include="src\graphics\API\Texture.h" />
     <ClInclude Include="src\graphics\API\Texture2D.h" />
     <ClInclude Include="src\graphics\API\VertexBuffer.h" />
+    <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
     <ClInclude Include="src\graphics\Image.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
@@ -227,6 +230,7 @@
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\maths\MathHelper.h" />
     <ClInclude Include="src\maths\Maths.h" />
+    <ClInclude Include="src\maths\Plane3D.h" />
     <ClInclude Include="src\maths\Vec2.h" />
     <ClInclude Include="src\maths\Vec3.h" />
     <ClInclude Include="src\maths\Vec4.h" />

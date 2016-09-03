@@ -20,15 +20,16 @@ namespace zaap { namespace math {
 		return mat;
 	}
 
-	Mat4 CreateProjectionMatrix(float nearPlane, float farPlane, float fovX, float fovY)
+	Mat4 CreateProjectionMatrix(float fovY, float aspect, float nearPlane, float farPlane)//60
 	{
 		Mat4 mat;
 		mat.identity(1.0f);
 
 		float difference = farPlane - nearPlane;
-		
-		mat.m11 = atan(fovX / 2);
-		mat.m22 = atan(fovY / 2);
+		float f = atan(fovY / 2.0f);
+
+		mat.m11 = f / aspect;
+		mat.m22 = f;
 		mat.m33 = -((farPlane + nearPlane) / difference);
 		mat.m34 = -1;
 		mat.m43 = -((2 * nearPlane * farPlane) / difference);
@@ -46,6 +47,20 @@ namespace zaap { namespace math {
 		mat.translate(position * -1);
 
 		return mat;
+	}
+
+	Mat4 CreateViewMatrix(Vec3& position, Vec3& lookAt, Vec3& up)
+	{
+		Vec3 zAxis = Normalize(position - lookAt);
+		Vec3 xAxis = Normalize(Cross(up, zAxis));
+		Vec3 yAxis = Cross(zAxis, xAxis);
+
+		return Mat4(
+			Vec4(xAxis.X, yAxis.X, zAxis.X, 0.0f),
+			Vec4(xAxis.Y, yAxis.Y, zAxis.Y, 0.0f),
+			Vec4(xAxis.Z, yAxis.Z, zAxis.Z, 0.0f),
+			Vec4(-Dot(xAxis, position), -Dot(yAxis, position), -Dot(zAxis, position), 1.0f)
+		);
 	}
 
 	float toRadians(float angdeg)

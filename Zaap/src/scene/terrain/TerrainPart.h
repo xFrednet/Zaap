@@ -57,4 +57,12 @@ namespace zaap { namespace scene {
 
 		void render() override;
 	};
+
+	class ZAAP_API TerrainNullPart : public TerrainPart
+	{
+	public:
+		TerrainNullPart();
+
+		void render() override;
+	};
 }}

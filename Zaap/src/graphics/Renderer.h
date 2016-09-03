@@ -28,6 +28,7 @@ namespace zaap { namespace graphics {
 		virtual void prepare() = 0;
 		virtual void cleanup() = 0;
 		virtual void resize(uint width, uint height) = 0;
+		virtual bool isVisible(const math::Vec3 &point) = 0;
 
 	public:
 		//Init
@@ -46,6 +47,7 @@ namespace zaap { namespace graphics {
 		static void Prepare();
 		static void Cleanup();
 		static void Resize(uint width, uint height);
+		static bool IsVisible(const math::Vec3 &point);
 	};
 
 }}

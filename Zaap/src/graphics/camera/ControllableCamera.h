@@ -12,9 +12,10 @@ namespace zaap { namespace graphics {
 	{
 	private:
 		float m_Speed = 0.1f;
-		float m_MouseSensitivity = 0.2f;
+		float m_MouseSensitivity = 0.05f;
+
 	public:
-		ControllableCamera(math::Vec3 &position = math::Vec3(), float yaw = 0, float pitch = 0, float fovX = DEFAULT_FOV, float fovY = DEFAULT_FOV);
+		ControllableCamera(math::Vec3 &position = math::Vec3(), float yaw = 0, float pitch = 0, float fov = DEFAULT_FOV, float fovRatio = 1.775f);
 
 		void update() override;
 

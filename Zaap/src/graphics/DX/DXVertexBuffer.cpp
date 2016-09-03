@@ -93,6 +93,8 @@ namespace zaap { namespace graphics { namespace DX {
 		bind(0);
 
 		DXContext::GetDevContext()->DrawIndexed(m_VertexCount, 0, 0);
+
+		s_TotalDrawCount += m_VertexCount;
 	}
 
 	void DXVertexBuffer::cleanup()

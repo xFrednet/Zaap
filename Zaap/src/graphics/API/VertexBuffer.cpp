@@ -7,6 +7,8 @@ namespace zaap { namespace graphics { namespace API {
 
 	std::vector<VertexBuffer*> VertexBuffer::s_VertexBuffers;
 
+	uint VertexBuffer::s_TotalDrawCount = 0;
+
 	VertexBuffer::VertexBuffer(uint vertexCount)
 		: m_VertexCount(vertexCount)
 	{
@@ -32,6 +34,21 @@ namespace zaap { namespace graphics { namespace API {
 		ZAAP_CLEANUP_LOG("VertexBuffer");
 	}
 
+	//
+	// Total Draw Count
+	//
+	uint VertexBuffer::getTotalDrawCount()
+	{
+		return s_TotalDrawCount;
+	}
+	void VertexBuffer::clearTotalDrawCount()
+	{
+		s_TotalDrawCount = 0;
+	}
+
+	//
+	// Class methods
+	//
 	uint VertexBuffer::getVertexCount(void) const
 	{
 		return m_VertexCount;

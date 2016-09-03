@@ -11,17 +11,23 @@ namespace zaap { namespace graphics { namespace API {
 	
 		static std::vector<VertexBuffer*> s_VertexBuffers;
 
+
 	protected:
+		static uint s_TotalDrawCount;
 		uint m_VertexCount;
 		
 		VertexBuffer(uint vertexCount);
 
 	public:
 		
-		//VertexBuffer management
+		//Static values
 		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount);
 		static void Cleanup();
+		//drawcount
+		static uint getTotalDrawCount();
+		static void clearTotalDrawCount();
 
+		//class methods
 		uint getVertexCount(void) const;
 		
 		virtual void bind(uint slot) = 0;

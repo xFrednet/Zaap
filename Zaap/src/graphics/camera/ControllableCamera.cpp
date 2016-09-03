@@ -5,20 +5,21 @@
 
 namespace zaap { namespace graphics {
 	
-	ControllableCamera::ControllableCamera(math::Vec3& position, float yaw, float pitch, float fovX, float fovY)
-		: Camera(position, yaw, pitch, fovX, fovY)
+	ControllableCamera::ControllableCamera(math::Vec3& position, float yaw, float pitch, float fov, float fovRatio)
+		: Camera(position, yaw, pitch, fov, fovRatio)
 	{
-		
 	}
 
+	uint i = 0;
 	void ControllableCamera::update()
 	{
 		if (events::Input::IsButtonPressed(ZAAP_MOUSE_LEFT))
 		{
 			math::Vec2 m = events::Input::GetMouseMotion();
 			addToYaw(m.X * m_MouseSensitivity);
-			addToPitch(m.Y * m_MouseSensitivity); 
+			addToPitch(m.Y * m_MouseSensitivity);
 		}
+
 		math::Vec3 v(0.0f, 0.0f, 0.0f);
 
 		if (events::Input::IsKeyDown(ZAAP_VK_W))		v.Z -= m_Speed;
@@ -43,8 +44,6 @@ namespace zaap { namespace graphics {
 		if (events::Input::IsKeyPressed(ZAAP_VK_I))
 		{
 			ZAAP_INFO("ControllableCamera: Position: " + m_Position.toString());
-			ZAAP_INFO("ControllableCamera: Yaw:      " + std::to_string(m_Yaw));
-			ZAAP_INFO("ControllableCamera: Pitch:    " + std::to_string(m_Pitch));
 		}
 
 		//reset

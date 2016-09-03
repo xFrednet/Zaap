@@ -1,6 +1,8 @@
 ﻿#include "TerrainPart.h"
 
 #include "Terrain.h"
+#include <graphics/Renderer.h>
+#include <util/Console.h>
 
 //
 // Terrain
@@ -24,12 +26,10 @@ namespace zaap { namespace scene {
 	{
 		uint vCount = width * height;
 		if (vCount > terrain->getTerrainDesc().MaxVerticesPerTerrainTile)
-		{
 			return new TerrainTreePart(vertexX, vertexY, width, height, terrain);
-		} else
-		{
+		else
 			return new TerrainTreeEndPart(vertexX, vertexY, width, height, terrain);
-		}
+		
 	}
 
 	//
@@ -100,8 +100,8 @@ namespace zaap { namespace scene {
 
 	void TerrainTreePart::render()
 	{
-		for (uint i = 0; i < 4; i++)
-			if (m_Members[i])
+		if (graphics::Renderer::IsVisible(math::Vec3(m_VertexX, 0.0f, m_VertexY)))
+			for (uint i = 0; i < 4; i++)
 				m_Members[i]->render();
 	}
 }}
@@ -167,6 +167,24 @@ namespace zaap { namespace scene{
 
 	void TerrainTreeEndPart::render()
 	{
-		m_VBuffer->draw();
+		if (graphics::Renderer::IsVisible(math::Vec3(m_VertexX, 0.0f, m_VertexY)))
+		{
+			m_VBuffer->draw();
+		}
+		
 	}
+
+	
+}}
+
+//
+//
+//
+namespace zaap { namespace scene {
+	TerrainNullPart::TerrainNullPart()
+		: TerrainPart(0, 0, 0, 0)
+	{
+	}
+
+	void TerrainNullPart::render() {}
 }}
