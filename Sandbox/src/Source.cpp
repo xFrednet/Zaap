@@ -190,7 +190,7 @@ public:
 
 		log++;
 		if (log % 10 == 0)
-		if (camera->getViewFrustum().isVisible(math::Vec3(0.0f, 1.0f, 0.0f)))
+		if (camera->getViewFrustum().isVisible(Vec3(0.0f, 1.0f, 0.0f)))
 		{
 			if (!val)
 			{
@@ -223,9 +223,30 @@ public:
 
 int main(void)
 {
-	ZAAP_INFO("Start");
-	Image i("res//scene//texture_0.jpg");
-	ZAAP_INFO("Stop");
+	Plane3D plane(1.0f, 1.0f, 0.0f, -1.0f);
+	plane.normalize();
+
+	cout << plane.isPointOnPlane(Vec3(0.0f, -1.0f, 0.0f)) << " " << plane.isPointOnPlane(Vec3(78216.0f, 1212.0f, 22.0f)) << endl;
+
+	Vec3 point = Vec3(0.0f, 0.0f, 0.0f);
+	Vec3 p = plane.getClosestPoint(point);
+	uint8 r = plane.getRelation(p);
+	float d = plane.getSignedDistance(point);
+	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << " " << true << endl;
+
+	point = Vec3(20.0f, 15.0f, 90.0f);
+	p = plane.getClosestPoint(point);
+	r = plane.getRelation(p);
+	d = plane.getSignedDistance(point);
+	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << " " << false << endl;
+
+	point = Vec3(56.0f, -15.0f, 8574894564564564.0f);
+	p = plane.getClosestPoint(point);
+	r = plane.getRelation(p);
+	d = plane.getSignedDistance(point);
+	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << endl;
+
+
 	scene_ = new Scene();
 	
 	Test t;

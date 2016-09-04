@@ -32,9 +32,23 @@ namespace zaap { namespace math {
 	{
 		*this = Normalize(*this);
 	}
+	Vec3 Plane3D::getClosestPoint(const Vec3& point) const
+	{
+		return GetClosestPoint(*this, point);
+	}
+	float Plane3D::getSignedDistance(const Vec3& point) const
+	{
+		return GetSignedDistance(*this, point);
+	}
+
 	uint8 Plane3D::getRelation(const Vec3& point) const
 	{
 		return GetRelation(*this, point);
+	}
+
+	bool Plane3D::isPointOnPlane(const Vec3 &point) const
+	{
+		return IsPointOnPlane(*this, point);
 	}
 
 	//
@@ -63,6 +77,36 @@ namespace zaap { namespace math {
 		b.D = a.D / distance;
 
 		return b;
+	}
+
+	Vec3 GetClosestPoint(const Plane3D& a, const Vec3& p)
+	{
+		if (IsPointOnPlane(a, p)) return p;
+		
+		Vec3 d = a.N;
+		// l=Adx+Bdy+Cdz!=0
+		if (((a.A * d.X * p.X) + (a.B * d.Y * p.Y) + (a.C * d.Z * p.Z)) == 0)
+			if (a.N != Vec3(0.0f, 1.0f, 0.0f))
+				d = Vec3(0.0f, 1.0f, 0.0f);
+			else 
+				d = Vec3(1.0f, 0.0f, 0.0f);
+		
+		Vec3 b(p);
+		b.X -= a.A * (a.A * p.X);
+		b.Y -= a.B * (a.B * p.Y);
+		b.Z -= a.C * (a.C * p.Z);
+		return b;
+		//return (p - (a.N * GetSignedDistance(a, p)));
+	}
+
+	float GetSignedDistance(const Plane3D& a, const Vec3& p)
+	{
+		return (a.A * p.X + a.B * p.Y + a.C * p.Z - a.D) / sqrtf(a.A * a.A + a.B * a.B + a.C * a.C);
+	}
+
+	bool IsPointOnPlane(const Plane3D& a, const Vec3& p)
+	{
+		return ((a.A * p.X + a.B * p.Y + a.C * p.Z + a.D) == 0);
 	}
 
 	uint8 GetRelation(const Plane3D& plane, const Vec3& point)

@@ -30,10 +30,13 @@ namespace zaap { namespace math {
 
 		//methods
 		void normalize();
+		Vec3 getClosestPoint(const Vec3 &point) const;
+		float getSignedDistance(const Vec3 &point) const;
 		// above   = ZAAP_POINT_ABOVE   = 0
 		// below   = ZAAP_POINT_BELOW   = 1
 		// onPlane = ZAAP_POINT_ONPLANE = 2
 		uint8 getRelation(const Vec3 &point) const;
+		bool isPointOnPlane(const Vec3 &point) const;
 
 		//operators
 		bool operator==(const Plane3D &other) const;
@@ -41,7 +44,10 @@ namespace zaap { namespace math {
 	};
 
 	ZAAP_API Plane3D Normalize(const Plane3D &a);
-	
+	ZAAP_API Vec3 GetClosestPoint(const Plane3D &a, const Vec3 &p);
+	ZAAP_API float GetSignedDistance(const Plane3D &a, const Vec3 &p);
+	ZAAP_API bool IsPointOnPlane(const Plane3D &a, const Vec3 &p);
+
 #define ZAAP_POINT_ABOVE 0
 #define ZAAP_POINT_BELOW 1
 #define ZAAP_POINT_ONPLANE 2

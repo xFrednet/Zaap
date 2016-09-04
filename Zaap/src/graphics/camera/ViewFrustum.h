@@ -10,19 +10,7 @@ namespace zaap { namespace graphics {
 	class ZAAP_API ViewFrustum
 	{
 	private:
-		//		near plane		fare plane
-		//		ntl---ntr		ftl---ftr
-		//		|		|		|		|
-		//		|		|		|		|
-		//		nbl---nbr		fbl---fbr
-		//
-		//Name
-		//   Near:          n;
-		//   Far:           f;
-		//      Top:        t;
-		//      Bottom:     b;
-		//   Right:         r;
-		//   Left:          l;
+		
 		
 		enum
 		{
