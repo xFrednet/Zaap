@@ -163,14 +163,17 @@ void loadEntitys()
 class Test : public Application
 {
 public:
-	Test() : Application("Test", 852, 480, scene_)
-	{}
 
 	float count = 0.0f;
 	float count2 = 0.0f;
 	float rot = 1.5f;
 	uint log = 0;
 	bool val;
+	Plane3D plane;
+
+	Test() : Application("Test", 852, 480, scene_),
+		plane(0.0f, 1.0f, 0.0f, 1.0f)
+	{}
 
 	void update() override {
 		Application::update();
@@ -188,14 +191,14 @@ public:
 		camera->update();
 		lightCube->setPosition(light->getPosition());
 
+		//ZAAP_INFO(to_string(plane.getRelation(camera->getPosition())));
 		log++;
 		if (log % 10 == 0)
-		if (camera->getViewFrustum().isVisible(Vec3(0.0f, 1.0f, 0.0f)))
+		if (plane.getRelation(camera->getPosition()) == ZAAP_POINT_ABOVE)
 		{
 			if (!val)
 			{
-				m3->setPosition(Vec3(0.0f, 1.0f, 0.0f));
-				ZAAP_INFO("true 1");
+				ZAAP_INFO("above");
 				val = true;
 			}
 		}
@@ -203,8 +206,7 @@ public:
 		{
 			if (val)
 			{
-				m3->setPosition(Vec3(0.0f, -50.0f, 0.0f));
-				ZAAP_INFO("false -50");
+				ZAAP_INFO("below");
 				val = false;
 			}
 		}

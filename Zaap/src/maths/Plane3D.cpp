@@ -111,7 +111,15 @@ namespace zaap { namespace math {
 
 	uint8 GetRelation(const Plane3D& plane, const Vec3& point)
 	{
-		float temp = Dot(plane.N, point) - plane.D;
+		Vec3 p;
+		if (plane.A != 0)
+			p = Vec3(plane.D / plane.A, 0.0f, 0.0f);
+		else if (plane.B != 0)
+			p = Vec3(0.0f, plane.D / plane.B, 0.0f);
+		else
+			p = Vec3(0.0f, 0.0f, plane.D / plane.C);
+
+		float temp = Dot(Normalize(p), Normalize(point));
 		
 		if (temp > 0) return ZAAP_POINT_ABOVE;
 		if (temp < 0) return ZAAP_POINT_BELOW;
