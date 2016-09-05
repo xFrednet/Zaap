@@ -26,6 +26,8 @@ namespace zaap { namespace scene {
 		//creation
 		static TerrainPart* CreateTerrainPart(uint vertexX, uint vertexY, uint width, uint height, Terrain* terrain);
 
+		bool isVisible() const;
+
 		//getters
 		uint getVCountHorizontal() const;
 		uint getVCountVertical() const;

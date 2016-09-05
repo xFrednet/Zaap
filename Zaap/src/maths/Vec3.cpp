@@ -23,7 +23,7 @@ namespace zaap { namespace math {
 		Z = z;
 	}
 
-	String Vec3::toString()
+	String Vec3::toString() const
 	{
 		return "Vec3(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ")";
 	}

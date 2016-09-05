@@ -1,6 +1,7 @@
 ﻿#include "ViewFrustum.h"
 
 #include <graphics/camera/Camera.h>
+#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 	
@@ -40,72 +41,64 @@ namespace zaap { namespace graphics {
 		m_FarPlaneHeight = tang * m_FarPlane;
 		m_FarPlaneWidth = m_FarPlaneHeight * m_Ratio;
 	}
-
+	uint log = 0;
 	void ViewFrustum::calculateFrustum(math::Mat4 projectionMatrix, math::Mat4 viewMatrix)
 	{
-		float zMinimum, r;
-		math::Mat4 matrix;
+		//Source: http://gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 
-		// Calculate the minimum Z distance in the frustum.
-		float screenDepth = m_FarPlane - m_NearPlane;
-		zMinimum = -projectionMatrix.m43 / projectionMatrix.m33;
-		r = screenDepth / (screenDepth - zMinimum);
-		projectionMatrix.m33 = r;
-		projectionMatrix.m43 = -r * zMinimum;
+		// comboMatrix
+		math::Mat4 matrix = viewMatrix * projectionMatrix;
 
-		// Create the frustum matrix from the view matrix and updated projection matrix.
-		matrix = viewMatrix * projectionMatrix;
-
-		// Calculate near plane of frustum.
-		m_Sides[FRONT].A = matrix.m14 + matrix.m13;
-		m_Sides[FRONT].B = matrix.m24 + matrix.m23;
-		m_Sides[FRONT].C = matrix.m34 + matrix.m33;
-		m_Sides[FRONT].D = matrix.m44 + matrix.m43;
-		m_Sides[FRONT].normalize();
-
-		// Calculate far plane of frustum.
-		m_Sides[BACK].A = matrix.m14 - matrix.m13;
-		m_Sides[BACK].B = matrix.m24 - matrix.m23;
-		m_Sides[BACK].C = matrix.m34 - matrix.m33;
-		m_Sides[BACK].D = matrix.m44 - matrix.m43;
-		m_Sides[BACK].normalize();
-
-		// Calculate left plane of frustum.
+		//Left
 		m_Sides[LEFT].A = matrix.m14 + matrix.m11;
 		m_Sides[LEFT].B = matrix.m24 + matrix.m21;
 		m_Sides[LEFT].C = matrix.m34 + matrix.m31;
 		m_Sides[LEFT].D = matrix.m44 + matrix.m41;
-		m_Sides[LEFT].normalize();
 
-		// Calculate right plane of frustum.
+		//Right
 		m_Sides[RIGHT].A = matrix.m14 - matrix.m11;
 		m_Sides[RIGHT].B = matrix.m24 - matrix.m21;
 		m_Sides[RIGHT].C = matrix.m34 - matrix.m31;
 		m_Sides[RIGHT].D = matrix.m44 - matrix.m41;
-		m_Sides[RIGHT].normalize();
 
-		// Calculate top plane of frustum.
+		//Top
 		m_Sides[TOP].A = matrix.m14 - matrix.m12;
 		m_Sides[TOP].B = matrix.m24 - matrix.m22;
 		m_Sides[TOP].C = matrix.m34 - matrix.m32;
 		m_Sides[TOP].D = matrix.m44 - matrix.m42;
-		m_Sides[TOP].normalize();
 
-		// Calculate bottom plane of frustum.
+		//Bottom
 		m_Sides[BOTTOM].A = matrix.m14 + matrix.m12;
 		m_Sides[BOTTOM].B = matrix.m24 + matrix.m22;
 		m_Sides[BOTTOM].C = matrix.m34 + matrix.m32;
 		m_Sides[BOTTOM].D = matrix.m44 + matrix.m42;
-		m_Sides[BOTTOM].normalize();
+
+		//Near
+		m_Sides[FRONT].A = matrix.m13;
+		m_Sides[FRONT].B = matrix.m13;
+		m_Sides[FRONT].C = matrix.m13;
+		m_Sides[FRONT].D = matrix.m13;
+
+		//Far
+		m_Sides[BACK].A = matrix.m14 - matrix.m13;
+		m_Sides[BACK].B = matrix.m24 - matrix.m23;
+		m_Sides[BACK].C = matrix.m34 - matrix.m33;
+		m_Sides[BACK].D = matrix.m44 - matrix.m43;
+		
+		for (uint i = 0; i < 6; i++)
+			m_Sides[i].normalize();
 	}
 
 	bool ViewFrustum::isVisible(const math::Vec3& point) const
 	{
-		for (uint i = 0; i < 6; i++)
+		//add far and near plane
+		float d;
+		for (uint i = 0; i < 4; i++)
 		{
-			if (m_Sides[i].getRelation(point) == ZAAP_POINT_BELOW)
-				return true;
+			d = m_Sides[i].A * point.X + m_Sides[i].B * point.Y + m_Sides[i].C * point.Z + m_Sides[i].D;
+			if (d < 0)
+				return false;
 		}
-		return false;
+		return true;
 	}
 }}

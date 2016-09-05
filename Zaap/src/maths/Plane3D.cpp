@@ -25,9 +25,14 @@ namespace zaap { namespace math {
 	{
 	}
 
+
 	//
 	// Util
 	//
+	String Plane3D::toString() const
+	{
+		return "Plane3D(N: " + N.toString() + ", D: " + std::to_string(D) + ")";
+	}
 	void Plane3D::normalize()
 	{
 		*this = Normalize(*this);
@@ -119,7 +124,7 @@ namespace zaap { namespace math {
 		else
 			p = Vec3(0.0f, 0.0f, plane.D / plane.C);
 
-		float temp = Dot(Normalize(p), Normalize(point));
+		float temp = Dot(Normalize(plane.N), Normalize(point - p));
 		
 		if (temp > 0) return ZAAP_POINT_ABOVE;
 		if (temp < 0) return ZAAP_POINT_BELOW;

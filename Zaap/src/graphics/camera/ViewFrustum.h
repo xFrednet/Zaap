@@ -10,13 +10,10 @@ namespace zaap { namespace graphics {
 	class ZAAP_API ViewFrustum
 	{
 	private:
-		
-		
-		enum
-		{
-			FRONT = 0, BACK,
-			LEFT, RIGHT,
-			TOP, BOTTOM
+		enum {
+			LEFT = 0, RIGHT,
+			TOP, BOTTOM,
+			FRONT, BACK
 		};
 
 		math::Plane3D m_Sides[6];

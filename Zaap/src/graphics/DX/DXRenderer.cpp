@@ -287,9 +287,9 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->DrawIndexed(mesh->getVertexCount(), 0, 0);
 	}
 
-	bool DXRenderer::isVisible(const math::Vec3 &point)
+	ViewFrustum DXRenderer::getViewFrustum()
 	{
-		return m_Camera->getViewFrustum().isVisible(point);
+		return m_Camera->getViewFrustum();
 	}
 
 	void DXRenderer::cleanup()

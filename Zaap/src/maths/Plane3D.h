@@ -28,7 +28,8 @@ namespace zaap { namespace math {
 		Plane3D(Vec3 n, float d);
 		Plane3D(Vec4 p);
 
-		//methods
+		//util
+		String toString() const;
 		void normalize();
 		Vec3 getClosestPoint(const Vec3 &point) const;
 		float getSignedDistance(const Vec3 &point) const;

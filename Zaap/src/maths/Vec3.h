@@ -17,7 +17,7 @@ namespace zaap { namespace math	{
 		Vec3(float x, float y, float z);
 		Vec3(Vec2 vec2, float z);
 
-		String toString();
+		String toString() const;
 		
 		// operations
 		void scale(float scale);

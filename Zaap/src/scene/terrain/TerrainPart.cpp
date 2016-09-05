@@ -32,6 +32,27 @@ namespace zaap { namespace scene {
 		
 	}
 
+	bool TerrainPart::isVisible() const
+	{
+		graphics::ViewFrustum view = graphics::Renderer::GetViewFrustum();
+
+		// 3   4
+		//
+		// 1   2
+		float height = 10.0f;
+
+		if (view.isVisible(math::Vec3((float)m_VertexX, height, (float)m_VertexY)))
+			return true;
+		if (view.isVisible(math::Vec3((float)(m_VertexX + m_VCountHorizontal), height, (float)m_VertexY)))
+			return true;
+		if (view.isVisible(math::Vec3((float)m_VertexX, height, (float)(m_VertexY + m_VCountVertical))))
+			return true;
+		if (view.isVisible(math::Vec3((float)(m_VertexX + m_VCountHorizontal), height, (float)(m_VertexY + m_VCountVertical))))
+			return true;
+
+		return false;
+	}
+
 	//
 	// Getters
 	//
@@ -100,7 +121,7 @@ namespace zaap { namespace scene {
 
 	void TerrainTreePart::render()
 	{
-		if (graphics::Renderer::IsVisible(math::Vec3(m_VertexX, 0.0f, m_VertexY)))
+		if (isVisible())
 			for (uint i = 0; i < 4; i++)
 				m_Members[i]->render();
 	}
@@ -167,7 +188,7 @@ namespace zaap { namespace scene{
 
 	void TerrainTreeEndPart::render()
 	{
-		if (graphics::Renderer::IsVisible(math::Vec3(m_VertexX, 0.0f, m_VertexY)))
+		if (isVisible())
 		{
 			m_VBuffer->draw();
 		}

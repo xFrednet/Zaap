@@ -62,8 +62,8 @@ namespace zaap { namespace graphics {
 		if (s_Instance) s_Instance->resize(width, height);
 	}
 
-	bool Renderer::IsVisible(const math::Vec3 &point)
+	ViewFrustum Renderer::GetViewFrustum()
 	{
-		return s_Instance->isVisible(point);
+		return s_Instance->getViewFrustum();
 	}
 }}

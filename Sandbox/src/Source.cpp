@@ -192,13 +192,14 @@ public:
 		lightCube->setPosition(light->getPosition());
 
 		//ZAAP_INFO(to_string(plane.getRelation(camera->getPosition())));
+		//if (plane.getRelation(camera->getPosition()) == ZAAP_POINT_ABOVE)
 		log++;
 		if (log % 10 == 0)
-		if (plane.getRelation(camera->getPosition()) == ZAAP_POINT_ABOVE)
+		if (camera->getViewFrustum().isVisible(Vec3(0.0f, 1.0f, 0.0f)))
 		{
 			if (!val)
 			{
-				ZAAP_INFO("above");
+				ZAAP_INFO("visible");
 				val = true;
 			}
 		}
@@ -206,7 +207,7 @@ public:
 		{
 			if (val)
 			{
-				ZAAP_INFO("below");
+				ZAAP_INFO("not visible");
 				val = false;
 			}
 		}

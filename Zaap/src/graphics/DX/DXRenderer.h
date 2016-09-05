@@ -59,7 +59,7 @@ namespace zaap { namespace graphics { namespace DX {
 		void render(Entity* entity) override;
 
 		//util
-		bool isVisible(const math::Vec3 &point) override;
+		ViewFrustum getViewFrustum() override;
 
 		void cleanup() override;
 	};
