@@ -152,6 +152,7 @@ void loadEntitys()
 	{
 		TERRAIN_DESC tDesc;
 		tDesc.setupForLowPoly();
+		tDesc.MaxVerticesPerTerrainTile = 2000;
 		terrain_ = new Terrain("res//scene//", tDesc);
 
 	}
@@ -195,7 +196,7 @@ public:
 		//if (plane.getRelation(camera->getPosition()) == ZAAP_POINT_ABOVE)
 		log++;
 		if (log % 10 == 0)
-		if (camera->getViewFrustum().isVisible(Vec3(0.0f, 1.0f, 0.0f)))
+		if (camera->getViewFrustum().isVisible(m3->getPosition()))
 		{
 			if (!val)
 			{
@@ -212,7 +213,7 @@ public:
 			}
 		}
 
-
+		if (events::Input::IsKeyDown(ZAAP_VK_T)) m3->setPosition(camera->getPosition());
 		//light2->setPosition(camera->getPosition());
 	}
 

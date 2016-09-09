@@ -41,7 +41,6 @@ namespace zaap { namespace graphics {
 		m_FarPlaneHeight = tang * m_FarPlane;
 		m_FarPlaneWidth = m_FarPlaneHeight * m_Ratio;
 	}
-	uint log = 0;
 	void ViewFrustum::calculateFrustum(math::Mat4 projectionMatrix, math::Mat4 viewMatrix)
 	{
 		//Source: http://gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
@@ -75,9 +74,9 @@ namespace zaap { namespace graphics {
 
 		//Near
 		m_Sides[FRONT].A = matrix.m13;
-		m_Sides[FRONT].B = matrix.m13;
-		m_Sides[FRONT].C = matrix.m13;
-		m_Sides[FRONT].D = matrix.m13;
+		m_Sides[FRONT].B = matrix.m23;
+		m_Sides[FRONT].C = matrix.m33;
+		m_Sides[FRONT].D = matrix.m43;
 
 		//Far
 		m_Sides[BACK].A = matrix.m14 - matrix.m13;
@@ -92,13 +91,92 @@ namespace zaap { namespace graphics {
 	bool ViewFrustum::isVisible(const math::Vec3& point) const
 	{
 		//add far and near plane
-		float d;
 		for (uint i = 0; i < 4; i++)
 		{
-			d = m_Sides[i].A * point.X + m_Sides[i].B * point.Y + m_Sides[i].C * point.Z + m_Sides[i].D;
-			if (d < 0)
+			if (GetRelation(m_Sides[i], point) == ZAAP_POINT_BELOW)
 				return false;
 		}
+		return true;
+	}
+
+	bool ViewFrustum::isCuboidVisible(math::Vec3 min, math::Vec3 max) const
+	{
+
+		float middle = (min.Y + max.Y) / 2;
+		bool isVisible = false;
+		uint i, j;
+		
+		// Layer 1 | Layer 2 |
+		//  0   1  |  4   5  |
+		//         |         |
+		//  2   3  |  6   7  |
+		math::Vec3 tPoints[]{
+			math::Vec3(min.X, min.Y, min.Z), math::Vec3(max.X, min.Y, min.Z),
+			math::Vec3(min.X, min.Y, max.Z), math::Vec3(max.X, min.Y, max.Z),
+			math::Vec3(min.X, max.Y, min.Z), math::Vec3(max.X, max.Y, min.Z),
+			math::Vec3(min.X, max.Y, max.Z), math::Vec3(max.X, max.Y, max.Z)
+		};
+
+
+		//in front
+		{
+			for (i = 0; i < 8; i++)
+			{
+				if (GetRelation(m_Sides[FRONT], tPoints[i]) != ZAAP_POINT_BELOW)
+				{
+					isVisible = true;
+					break;
+				}
+			}
+			
+			if (!isVisible)
+				return false; // behind the camera
+		}
+
+		isVisible = false;
+
+		
+		//left right test
+		{
+			//diagonal Test
+			// Test 1 | Test 2 
+			//        |        
+			// i      |     i  
+			//   \    |   /    
+			//     j  | j      
+
+			//first test
+			for (i = 0; i < 4; i++)
+			{
+				j = 7 - i;
+
+				//test if point is to the left
+				if (GetRelation(m_Sides[LEFT], tPoints[i]) == ZAAP_POINT_BELOW)
+				{
+					// 1 \ view  2
+					if (GetRelation(m_Sides[LEFT], tPoints[j]) == ZAAP_POINT_ABOVE)
+					{
+						isVisible = true;
+						break;
+					}
+
+					//else test if point is to the right
+				} else if (GetRelation(m_Sides[RIGHT], tPoints[i]) == ZAAP_POINT_ABOVE)
+				{
+					isVisible = true;
+					break;
+				} else if (GetRelation(m_Sides[RIGHT], tPoints[j]) == ZAAP_POINT_ABOVE)
+				{
+					isVisible = true;
+					break;
+				}
+				
+			}
+		
+			if (!isVisible) 
+				return false; //
+		}
+
 		return true;
 	}
 }}

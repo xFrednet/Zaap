@@ -34,6 +34,8 @@ namespace zaap { namespace scene {
 		TERRAIN_DESC m_TerrainDesc;
 
 		//Mesh
+		float m_MinHeight;
+		float m_MaxHeight;
 		uint m_VCountHorizontal;
 		uint m_VCountVertical;
 		std::vector<graphics::TERRAIN_VERTEX> m_Vertices;
@@ -61,8 +63,11 @@ namespace zaap { namespace scene {
 		graphics::API::VertexBuffer* getVertexBuffer() const;
 		graphics::API::Texture2D* getTexture() const;
 
-		float getWidth() const;
-		float getHeight() const;
+		float getMinHeight() const;
+		float getMaxHeight() const;
+
+		float getHorizontalSize() const;
+		float getVerticalSize() const;
 		uint getVCountHorizontal() const;
 		uint getVCountVertical() const;
 

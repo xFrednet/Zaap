@@ -98,13 +98,22 @@ namespace zaap { namespace scene {
 		if (m_Vertices.size() != m_VCountHorizontal * m_VCountVertical)
 			m_Vertices = std::vector<graphics::TERRAIN_VERTEX>(m_VCountHorizontal * m_VCountVertical);
 
+		//height
+		float height = calculateHeightFromColor(heightMap.getColor(0, 0));
+		m_MinHeight = m_MaxHeight = height;
 		uint x, y;
 		float vSpacing = m_TerrainDesc.VertexSpacing;
 		for (y = 0; y < m_VCountVertical; y++)
 		{
 			for (x = 0; x < m_VCountHorizontal; x++)
 			{
-				m_Vertices[x + y * m_VCountVertical].Position = math::Vec3((float)x * vSpacing, calculateHeightFromColor(heightMap.getColor(x, y)), (float)y * vSpacing);
+				height = calculateHeightFromColor(heightMap.getColor(x, y));
+				m_Vertices[x + y * m_VCountVertical].Position = math::Vec3((float)x * vSpacing, height, (float)y * vSpacing);
+
+				if (height < m_MinHeight)
+					m_MinHeight = height;
+				else if (height > m_MaxHeight)
+					m_MaxHeight = height;
 			}
 		}
 		float texIncrease = 1.0f / m_TerrainDesc.VerticesPerTexture;
@@ -175,11 +184,20 @@ namespace zaap { namespace scene {
 		return m_Texture;
 	}
 
-	float Terrain::getWidth() const
+	float Terrain::getMinHeight() const
+	{
+		return m_MinHeight;
+	}
+	float Terrain::getMaxHeight() const
+	{
+		return m_MaxHeight;
+	}
+
+	float Terrain::getHorizontalSize() const
 	{
 		return m_VCountHorizontal * m_TerrainDesc.VertexSpacing;
 	}
-	float Terrain::getHeight() const
+	float Terrain::getVerticalSize() const
 	{
 		return m_VCountVertical * m_TerrainDesc.VertexSpacing;
 	}
@@ -188,7 +206,6 @@ namespace zaap { namespace scene {
 	{
 		return m_VCountHorizontal;
 	}
-
 	uint Terrain::getVCountVertical() const
 	{
 		return m_VCountVertical;

@@ -97,9 +97,9 @@ namespace zaap { namespace math {
 				d = Vec3(1.0f, 0.0f, 0.0f);
 		
 		Vec3 b(p);
-		b.X -= a.A * (a.A * p.X);
-		b.Y -= a.B * (a.B * p.Y);
-		b.Z -= a.C * (a.C * p.Z);
+		b.X -= a.A * (a.A * d.X);
+		b.Y -= a.B * (a.B * d.Y);
+		b.Z -= a.C * (a.C * d.Z);
 		return b;
 		//return (p - (a.N * GetSignedDistance(a, p)));
 	}
@@ -116,18 +116,10 @@ namespace zaap { namespace math {
 
 	uint8 GetRelation(const Plane3D& plane, const Vec3& point)
 	{
-		Vec3 p;
-		if (plane.A != 0)
-			p = Vec3(plane.D / plane.A, 0.0f, 0.0f);
-		else if (plane.B != 0)
-			p = Vec3(0.0f, plane.D / plane.B, 0.0f);
-		else
-			p = Vec3(0.0f, 0.0f, plane.D / plane.C);
-
-		float temp = Dot(Normalize(plane.N), Normalize(point - p));
+		float d = plane.A * point.X + plane.B * point.Y + plane.C * point.Z + plane.D;
 		
-		if (temp > 0) return ZAAP_POINT_ABOVE;
-		if (temp < 0) return ZAAP_POINT_BELOW;
+		if (d > 0) return ZAAP_POINT_ABOVE;
+		if (d < 0) return ZAAP_POINT_BELOW;
 		return ZAAP_POINT_ONPLANE;
 	}
 }}

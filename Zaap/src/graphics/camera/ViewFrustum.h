@@ -13,7 +13,8 @@ namespace zaap { namespace graphics {
 		enum {
 			LEFT = 0, RIGHT,
 			TOP, BOTTOM,
-			FRONT, BACK
+			FRONT, //near
+			BACK // far
 		};
 
 		math::Plane3D m_Sides[6];
@@ -29,6 +30,7 @@ namespace zaap { namespace graphics {
 		void calculateFrustum(math::Mat4 projectionMatrix, math::Mat4 viewMatrix);
 
 		bool isVisible(const math::Vec3 &point) const;
+		bool isCuboidVisible(math::Vec3 min, math::Vec3 max) const;
 	};
 
 }}

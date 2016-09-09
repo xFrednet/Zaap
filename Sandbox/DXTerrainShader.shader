@@ -43,7 +43,7 @@ VS_OUT VShader(VS_IN input)
 	VS_OUT output;
 
 	//Position
-	float4 worldPosition = mul(TransformationMatrix, input.Position);
+	float4 worldPosition = input.Position;
 
 	output.Position = mul(ViewMatrix, worldPosition);
 	output.Position = mul(ProjectionMatrix, output.Position);

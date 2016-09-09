@@ -3,18 +3,32 @@
 #include "Terrain.h"
 #include <graphics/Renderer.h>
 #include <util/Console.h>
+#include <graphics/API/DXContext.h>
 
 //
 // Terrain
 //
 namespace zaap { namespace scene {
 
-	TerrainPart::TerrainPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical)
+	std::vector<math::Vec3> v_;
+	graphics::API::VertexBuffer* vBuffer;
+
+	TerrainPart::TerrainPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain const* terrain)
 		: m_VertexX(vertexX),
 		m_VertexY(vertexY),
 		m_VCountHorizontal(vCountHorizontal),
 		m_VCountVertical(vCountVertical)
 	{
+		TERRAIN_DESC tDesc = terrain->getTerrainDesc();
+		m_MinX = m_VertexX * tDesc.VertexSpacing;
+		m_MinZ = m_VertexY * tDesc.VertexSpacing;
+
+		m_MaxX = (m_VertexX + m_VCountHorizontal) * tDesc.VertexSpacing;
+		m_MaxZ = (m_VertexY + m_VCountVertical) * tDesc.VertexSpacing;
+
+		m_MinHeight = terrain->getMinHeight();
+		m_MaxHeight = terrain->getMaxHeight();
+		
 	}
 
 	TerrainPart::~TerrainPart() {}
@@ -24,33 +38,40 @@ namespace zaap { namespace scene {
 	//
 	TerrainPart* TerrainPart::CreateTerrainPart(uint vertexX, uint vertexY, uint width, uint height, Terrain* terrain)
 	{
+		TerrainPart* t;
 		uint vCount = width * height;
 		if (vCount > terrain->getTerrainDesc().MaxVerticesPerTerrainTile)
-			return new TerrainTreePart(vertexX, vertexY, width, height, terrain);
-		else
-			return new TerrainTreeEndPart(vertexX, vertexY, width, height, terrain);
-		
+			t = new TerrainTreePart(vertexX, vertexY, width, height, terrain);
+		else 
+			t = new TerrainTreeEndPart(vertexX, vertexY, width, height, terrain);
+	
+		if (width == 200 && height == 200)
+		{
+			uint size = v_.size();
+			
+			std::vector<uint> indices(size);
+			std::vector<graphics::TERRAIN_VERTEX> vertices(size);
+
+			for (uint i = 0; i < size; i++)
+			{
+				indices[i] = i;
+				vertices[i].Position = v_[i];
+			}
+			
+			vBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::TERRAIN_VERTEX), size, &indices[0], size);
+
+		}
+
+		return t;
 	}
 
 	bool TerrainPart::isVisible() const
 	{
 		graphics::ViewFrustum view = graphics::Renderer::GetViewFrustum();
+		//Terrain wrong orentaion ?
+		//return view.isVisible(math::Vec3(m_MinX, (m_MinHeight + m_MaxHeight) / 2, m_MinZ));
+		return view.isCuboidVisible(math::Vec3(m_MinX, m_MinHeight, m_MinZ), math::Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
 
-		// 3   4
-		//
-		// 1   2
-		float height = 10.0f;
-
-		if (view.isVisible(math::Vec3((float)m_VertexX, height, (float)m_VertexY)))
-			return true;
-		if (view.isVisible(math::Vec3((float)(m_VertexX + m_VCountHorizontal), height, (float)m_VertexY)))
-			return true;
-		if (view.isVisible(math::Vec3((float)m_VertexX, height, (float)(m_VertexY + m_VCountVertical))))
-			return true;
-		if (view.isVisible(math::Vec3((float)(m_VertexX + m_VCountHorizontal), height, (float)(m_VertexY + m_VCountVertical))))
-			return true;
-
-		return false;
 	}
 
 	//
@@ -78,7 +99,7 @@ namespace zaap { namespace scene {
 namespace zaap { namespace scene {
 
 	TerrainTreePart::TerrainTreePart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain* terrain)
-		: TerrainPart(vertexX, vertexY, vCountHorizontal, vCountVertical)
+		: TerrainPart(vertexX, vertexY, vCountHorizontal, vCountVertical, terrain)
 	{
 		uint horizontal = m_VCountHorizontal;
 		uint vertical = m_VCountVertical;
@@ -91,18 +112,34 @@ namespace zaap { namespace scene {
 		for (ly = 0; ly < 2; ly++)
 		{
 			//height && vy Value
-			vy = m_VertexX + (centerY * (ly == 1));
+			vy = m_VertexY + (centerY * (ly == 1));
 			height = vertical / 2 + ((vertical % 2) * (ly == 1)); //Adds 1 if ((ly == 1) && (m_VCountVertical % 2 == 1)) 
 
 			for (lx = 0; lx < 2; lx++)
 			{
 				//width && vx
-				vx = m_VertexY + (centerX * (lx == 1));
+				vx = m_VertexX + (centerX * (lx == 1));
 				width = horizontal / 2 + ((horizontal % 2) * (lx == 1));
 
 				m_Members[lx + ly * 2] = CreateTerrainPart(vx, vy, width, height, terrain);
 			}
 		}
+
+		math::Vec3 min_(m_MinX, m_MinHeight, m_MinZ);
+		math::Vec3 max_(m_MaxX, m_MaxHeight, m_MaxZ);
+
+		math::Vec3 tPoints[]{
+			math::Vec3(min_.X, min_.Y, min_.Z), math::Vec3(max_.X, min_.Y, min_.Z),
+			math::Vec3(min_.X, min_.Y, max_.Z), math::Vec3(max_.X, min_.Y, max_.Z),
+			math::Vec3(min_.X, max_.Y, min_.Z), math::Vec3(max_.X, max_.Y, min_.Z),
+			math::Vec3(min_.X, max_.Y, max_.Z), math::Vec3(max_.X, max_.Y, max_.Z)
+		};
+
+		for (uint i = 0; i < 8; i++)
+			v_.push_back(tPoints[i]);
+			
+		
+
 	}
 
 	void TerrainTreePart::cleanup()
@@ -124,18 +161,25 @@ namespace zaap { namespace scene {
 		if (isVisible())
 			for (uint i = 0; i < 4; i++)
 				m_Members[i]->render();
+
+		if (m_VCountHorizontal == 200 && m_VCountVertical == 200)
+		{
+			graphics::DX::DXContext::GetDevContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+			vBuffer->draw();
+			graphics::DX::DXContext::GetDevContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		}
 	}
 }}
 
 //
 // TerrainTreeEndPart
 //
-namespace zaap { namespace scene{
+namespace zaap { namespace scene {
 
 	TerrainTreeEndPart::TerrainTreeEndPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain* terrain)
 		: TerrainPart(vertexX, vertexY, 
 			((vertexX + vCountHorizontal + 1) < terrain->getVCountHorizontal()) ? (vCountHorizontal + 1) : vCountHorizontal,
-			((vertexY + vCountVertical + 1) < terrain->getVCountVertical()) ? (vCountVertical + 1) : vCountVertical)
+			((vertexY + vCountVertical + 1) < terrain->getVCountVertical()) ? (vCountVertical + 1) : vCountVertical, terrain)
 		//Adds one to the width and height because the End tiles have to overlap. 
 		//However the values are kept the same if they reach the edge because there is no tile to overlap.
 	{
@@ -145,8 +189,10 @@ namespace zaap { namespace scene{
 		uint height = m_VCountVertical;
 		uint terrainWidth = terrain->getVCountHorizontal();
 
+		m_MinHeight = m_MaxHeight = terrain->getVertexHeight(m_VertexX, m_VertexY);
 		uint x, y;
 		uint xa, ya;
+		float vertexHeight;
 		for (y = 0; y < height; y++)
 		{
 			ya = m_VertexY + y;
@@ -154,6 +200,13 @@ namespace zaap { namespace scene{
 			{
 				xa = m_VertexX + x;
 				vertices[x + y * width] = terrain->m_Vertices[xa + ya * terrainWidth];
+
+				vertexHeight = vertices[x + y * width].Position.Y;
+
+				if (vertexHeight < m_MinHeight)
+					m_MinHeight = vertexHeight;
+				else if (vertexHeight > m_MaxHeight)
+					m_MaxHeight = vertexHeight;
 			}
 		}
 
@@ -203,7 +256,7 @@ namespace zaap { namespace scene{
 //
 namespace zaap { namespace scene {
 	TerrainNullPart::TerrainNullPart()
-		: TerrainPart(0, 0, 0, 0)
+		: TerrainPart(0, 0, 0, 0, nullptr)
 	{
 	}
 

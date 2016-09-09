@@ -5,6 +5,7 @@
 #include <graphics/API/VertexBuffer.h>
 
 namespace zaap { namespace scene {
+	struct TERRAIN_DESC;
 	class Terrain;
 
 	class ZAAP_API TerrainPart
@@ -17,8 +18,12 @@ namespace zaap { namespace scene {
 		uint m_VertexY;
 		uint m_VCountHorizontal;
 		uint m_VCountVertical;
-	
-		TerrainPart(uint VertexX, uint VertexY, uint vCountHorizontal, uint vCountVertical);
+		
+		float m_MinX, m_MinZ;
+		float m_MaxX, m_MaxZ;
+		float m_MinHeight, m_MaxHeight;
+
+		TerrainPart(uint VertexX, uint VertexY, uint vCountHorizontal, uint vCountVertical, Terrain const* terrain);
 
 	public:
 		virtual ~TerrainPart();
