@@ -63,6 +63,7 @@ namespace zaap { namespace scene {
 		graphics::API::VertexBuffer* getVertexBuffer() const;
 		graphics::API::Texture2D* getTexture() const;
 
+		
 		float getMinHeight() const;
 		float getMaxHeight() const;
 
@@ -73,6 +74,7 @@ namespace zaap { namespace scene {
 
 		//Heightmap
 		float getVertexHeight(uint vertexX, uint vertexY) const;
+		float getHeight(math::Vec2 point);
 
 		//game loop methods
 		void update();

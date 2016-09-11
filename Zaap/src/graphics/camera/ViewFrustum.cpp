@@ -101,8 +101,6 @@ namespace zaap { namespace graphics {
 
 	bool ViewFrustum::isCuboidVisible(math::Vec3 min, math::Vec3 max) const
 	{
-
-		float middle = (min.Y + max.Y) / 2;
 		bool isVisible = false;
 		uint i, j;
 		
@@ -116,7 +114,6 @@ namespace zaap { namespace graphics {
 			math::Vec3(min.X, max.Y, min.Z), math::Vec3(max.X, max.Y, min.Z),
 			math::Vec3(min.X, max.Y, max.Z), math::Vec3(max.X, max.Y, max.Z)
 		};
-
 
 		//in front
 		{
@@ -132,12 +129,10 @@ namespace zaap { namespace graphics {
 			if (!isVisible)
 				return false; // behind the camera
 		}
-
-		isVisible = false;
-
 		
 		//left right test
 		{
+			isVisible = false;
 			//diagonal Test
 			// Test 1 | Test 2 
 			//        |        
@@ -177,6 +172,58 @@ namespace zaap { namespace graphics {
 				return false; //
 		}
 
+		//top bottom test
+		{
+			//diagonal Test
+			isVisible = false;
+			
+			for (i = 0; i < 4; i++)
+			{
+				j = 7 - i;
+
+				//test if point is to the left
+				if (GetRelation(m_Sides[TOP], tPoints[i]) == ZAAP_POINT_BELOW)
+				{
+					// 1 \ view  2
+					if (GetRelation(m_Sides[TOP], tPoints[j]) == ZAAP_POINT_ABOVE)
+					{
+						isVisible = true;
+						break;
+					}
+
+					//else test if point is to the right
+				} else if (GetRelation(m_Sides[BOTTOM], tPoints[i]) == ZAAP_POINT_ABOVE)
+				{
+					isVisible = true;
+					break;
+				} else if (GetRelation(m_Sides[BOTTOM], tPoints[j]) == ZAAP_POINT_ABOVE)
+				{
+					isVisible = true;
+					break;
+				}
+
+			}
+
+			if (!isVisible)
+				return false; //
+		}
+
+		//far plane test
+		{
+			isVisible = false;
+
+			for (i = 0; i < 8; i++)
+			{
+				if (GetRelation(m_Sides[BACK], tPoints[i]) != ZAAP_POINT_BELOW)
+				{
+					isVisible = true;
+					break;
+				}
+			}
+
+			if (!isVisible)
+				return false; // behind the camera
+		}
 		return true;
 	}
 }}

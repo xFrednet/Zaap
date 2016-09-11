@@ -2,16 +2,12 @@
 
 #include "Terrain.h"
 #include <graphics/Renderer.h>
-#include <util/Console.h>
 #include <graphics/API/DXContext.h>
 
 //
 // Terrain
 //
 namespace zaap { namespace scene {
-
-	std::vector<math::Vec3> v_;
-	graphics::API::VertexBuffer* vBuffer;
 
 	TerrainPart::TerrainPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain const* terrain)
 		: m_VertexX(vertexX),
@@ -38,31 +34,12 @@ namespace zaap { namespace scene {
 	//
 	TerrainPart* TerrainPart::CreateTerrainPart(uint vertexX, uint vertexY, uint width, uint height, Terrain* terrain)
 	{
-		TerrainPart* t;
 		uint vCount = width * height;
 		if (vCount > terrain->getTerrainDesc().MaxVerticesPerTerrainTile)
-			t = new TerrainTreePart(vertexX, vertexY, width, height, terrain);
-		else 
-			t = new TerrainTreeEndPart(vertexX, vertexY, width, height, terrain);
-	
-		if (width == 200 && height == 200)
-		{
-			uint size = v_.size();
-			
-			std::vector<uint> indices(size);
-			std::vector<graphics::TERRAIN_VERTEX> vertices(size);
+			return new TerrainTreePart(vertexX, vertexY, width, height, terrain);
 
-			for (uint i = 0; i < size; i++)
-			{
-				indices[i] = i;
-				vertices[i].Position = v_[i];
-			}
-			
-			vBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::TERRAIN_VERTEX), size, &indices[0], size);
+		return new TerrainTreeEndPart(vertexX, vertexY, width, height, terrain);
 
-		}
-
-		return t;
 	}
 
 	bool TerrainPart::isVisible() const
@@ -135,11 +112,6 @@ namespace zaap { namespace scene {
 			math::Vec3(min_.X, max_.Y, max_.Z), math::Vec3(max_.X, max_.Y, max_.Z)
 		};
 
-		for (uint i = 0; i < 8; i++)
-			v_.push_back(tPoints[i]);
-			
-		
-
 	}
 
 	void TerrainTreePart::cleanup()
@@ -161,13 +133,6 @@ namespace zaap { namespace scene {
 		if (isVisible())
 			for (uint i = 0; i < 4; i++)
 				m_Members[i]->render();
-
-		if (m_VCountHorizontal == 200 && m_VCountVertical == 200)
-		{
-			graphics::DX::DXContext::GetDevContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
-			vBuffer->draw();
-			graphics::DX::DXContext::GetDevContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		}
 	}
 }}
 
@@ -193,13 +158,13 @@ namespace zaap { namespace scene {
 		uint x, y;
 		uint xa, ya;
 		float vertexHeight;
-		for (y = 0; y < height; y++)
+		for (y = 0; y < height; y++) 
 		{
 			ya = m_VertexY + y;
 			for (x = 0; x < width; x++)
 			{
 				xa = m_VertexX + x;
-				vertices[x + y * width] = terrain->m_Vertices[xa + ya * terrainWidth];
+				vertices[x + y * width] = terrain->m_Vertices[xa + ya * terrainWidth]; // memcpy does not seem to be faster
 
 				vertexHeight = vertices[x + y * width].Position.Y;
 
@@ -248,7 +213,6 @@ namespace zaap { namespace scene {
 		
 	}
 
-	
 }}
 
 //

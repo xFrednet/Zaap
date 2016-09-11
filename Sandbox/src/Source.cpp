@@ -170,10 +170,8 @@ public:
 	float rot = 1.5f;
 	uint log = 0;
 	bool val;
-	Plane3D plane;
 
-	Test() : Application("Test", 852, 480, scene_),
-		plane(0.0f, 1.0f, 0.0f, 1.0f)
+	Test() : Application("Test", 852, 480, scene_)
 	{}
 
 	void update() override {
@@ -192,10 +190,6 @@ public:
 		camera->update();
 		lightCube->setPosition(light->getPosition());
 
-		//ZAAP_INFO(to_string(plane.getRelation(camera->getPosition())));
-		//if (plane.getRelation(camera->getPosition()) == ZAAP_POINT_ABOVE)
-		log++;
-		if (log % 10 == 0)
 		if (camera->getViewFrustum().isVisible(m3->getPosition()))
 		{
 			if (!val)
@@ -213,8 +207,17 @@ public:
 			}
 		}
 
-		if (events::Input::IsKeyDown(ZAAP_VK_T)) m3->setPosition(camera->getPosition());
-		//light2->setPosition(camera->getPosition());
+		if (events::Input::IsKeyDown(ZAAP_VK_T))
+		{
+			Vec3 p = camera->getPosition();
+			p.Y = terrain_->getHeight(Vec2(p.X, p.Y));
+			m3->setPosition(p);
+			log++;
+			if (log % 10 == 0)
+				ZAAP_INFO(std::to_string(p.Y));
+		}
+
+		light2->setPosition(camera->getPosition());
 	}
 
 	void render() override 
@@ -227,30 +230,6 @@ public:
 
 int main(void)
 {
-	Plane3D plane(1.0f, 1.0f, 0.0f, -1.0f);
-	plane.normalize();
-
-	cout << plane.isPointOnPlane(Vec3(0.0f, -1.0f, 0.0f)) << " " << plane.isPointOnPlane(Vec3(78216.0f, 1212.0f, 22.0f)) << endl;
-
-	Vec3 point = Vec3(0.0f, 0.0f, 0.0f);
-	Vec3 p = plane.getClosestPoint(point);
-	uint8 r = plane.getRelation(p);
-	float d = plane.getSignedDistance(point);
-	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << " " << true << endl;
-
-	point = Vec3(20.0f, 15.0f, 90.0f);
-	p = plane.getClosestPoint(point);
-	r = plane.getRelation(p);
-	d = plane.getSignedDistance(point);
-	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << " " << false << endl;
-
-	point = Vec3(56.0f, -15.0f, 8574894564564564.0f);
-	p = plane.getClosestPoint(point);
-	r = plane.getRelation(p);
-	d = plane.getSignedDistance(point);
-	cout << p.toString() << " " << to_string(r) << " " << d << " " << plane.isPointOnPlane(p) << endl;
-
-
 	scene_ = new Scene();
 	
 	Test t;

@@ -4,6 +4,9 @@
 
 namespace zaap { namespace math {
 	
+	//
+	// Matrix math
+	//
 	Mat4 CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale)
 	{
 		Mat4 mat;
@@ -63,8 +66,21 @@ namespace zaap { namespace math {
 		);
 	}
 
+	//
+	// Util
+	//
 	float toRadians(float angdeg)
 	{
 		return angdeg / 180.0f * PI;
 	}
+
+	float BarycentricY(const Vec3& a, const Vec3& b, const Vec3& c, const Vec2 &point)
+	{
+		float det = (b.Z - c.Z) * (a.X - c.X) + (c.X - b.X) * (a.Z - c.Z);
+		float l1 = ((b.Z - c.Z) * (point.X - c.X) + (c.X - b.X) * (point.Y - c.Z)) / det;
+		float l2 = ((c.Z - a.Z) * (point.X - c.X) + (a.X - c.X) * (point.Y - c.Z)) / det;
+		float l3 = 1.0f - l1 - l2;
+		return l1 * a.Y + l2 * b.Y + l3 * c.Y;
+	}
+
 }}

@@ -140,6 +140,8 @@ namespace zaap { namespace scene {
 
 		return m_Vertices[vertexX + vertexY * m_VCountVertical].Position.Y;
 	}
+
+
 	math::Vec3 Terrain::calcualteNormal(uint vX, uint vY) const
 	{
 		math::Vec3 normal(0.0f, 2.0f, 0.0f);
@@ -209,6 +211,34 @@ namespace zaap { namespace scene {
 	uint Terrain::getVCountVertical() const
 	{
 		return m_VCountVertical;
+	}
+
+	float Terrain::getHeight(math::Vec2 point)
+	{
+		uint vX = (uint)(point.X / m_TerrainDesc.VertexSpacing);
+		uint vY = (uint)(point.Y / m_TerrainDesc.VertexSpacing);
+		if (vX >= m_VCountHorizontal || vY >= m_VCountVertical)
+			return 0.0f;
+
+
+		// true    | false  
+		// v0   v2 |      v2
+		//         |        
+		// v1      | v3   v0
+		math::Vec3 v0, v1, v2;
+		if ((point.X - vX) <= (1 - (point.Y - vY)))
+		{
+			v0 = m_Vertices[(vX    ) + (vY    ) * m_VCountHorizontal].Position;
+			v1 = m_Vertices[(vX    ) + (vY + 1) * m_VCountHorizontal].Position;
+			v2 = m_Vertices[(vX + 1) + (vY    ) * m_VCountHorizontal].Position;
+		} else
+		{
+			v0 = m_Vertices[(vX + 1) + (vY + 1) * m_VCountHorizontal].Position;
+			v1 = m_Vertices[(vX + 1) + (vY    ) * m_VCountHorizontal].Position;
+			v2 = m_Vertices[(vX    ) + (vY + 1) * m_VCountHorizontal].Position;
+		}
+		float height = BarycentricY(v0, v1, v2, math::Vec2(point.X, point.Y));
+		return height;
 	}
 
 	//
