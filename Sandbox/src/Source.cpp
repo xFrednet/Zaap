@@ -34,6 +34,16 @@ void loadEntitys()
 
 		scene_->setLightSetup(lightSetup);
 	}
+	
+	//Terrain
+	{
+		TERRAIN_DESC tDesc;
+		tDesc.setupForLowPoly();
+		tDesc.VerticesPerTexture = 5;
+		tDesc.MaxVerticesPerTerrainTile = 2000;
+		terrain_ = new Terrain("res//scene//", tDesc);
+
+	}
 
 	Vec3 v;
 	TexturedMesh *mesh = nullptr;
@@ -44,8 +54,16 @@ void loadEntitys()
 		
 		MeshManager::AddMesh(Loader::LoadOBJFile("oakTree", "res/oakTree.obj", false));
 		
-		v = Vec3(10, 0, 10);
-		scene_->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+		uint x, y;
+		for (uint i = 0; i < 50; i++)
+		{
+			x = rand() % 200;
+			y = rand() % 200;
+			v = Vec3((float)x, 0, (float)y);
+			v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
+			scene_->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+			
+		}
 	}
 	
 	{
@@ -54,6 +72,7 @@ void loadEntitys()
 		MeshManager::AddMesh(Loader::LoadOBJFile("spear", "res/spear.obj", false));
 
 		v = Vec3(10, 0, -10);
+		v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
 		scene_->addEntity(new Entity(MeshManager::GetMesh("spear"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
 	}
 	{
@@ -61,8 +80,15 @@ void loadEntitys()
 
 		MeshManager::AddMesh(Loader::LoadOBJFile("bush", "res/bush.obj", false));
 
-		v = Vec3(-10, 0, 10);
-		scene_->addEntity(new Entity(MeshManager::GetMesh("bush"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+		uint x, y;
+		for (uint i = 0; i < 100; i++)
+		{
+			x = rand() % 200;
+			y = rand() % 200;
+			v = Vec3((float)x, 0, (float)y);
+			v.Y = terrain_->getHeight(Vec2(v.X, v.Z)) + 0.2f;
+			scene_->addEntity(new Entity(MeshManager::GetMesh("bush"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+		}
 	}
 
 
@@ -88,7 +114,7 @@ void loadEntitys()
 		MeshManager::AddMesh(mesh);
 	
 		v = Vec3(0, 1, 0);
-
+		v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
 		scene_->addEntity(new Entity(MeshManager::GetMesh("rock"), v));
 	}
 
@@ -100,7 +126,7 @@ void loadEntitys()
 		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-5, 1, 0);
-
+		v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
 		scene_->addEntity(new Entity(MeshManager::GetMesh("bench"), v));
 	}
 
@@ -112,6 +138,8 @@ void loadEntitys()
 	Mesh* tMesh = MeshManager::GetMesh("cube");
 	{
 		v = Vec3(0, 1, 5);
+		v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
+
 		m2 = new Entity(tMesh, v);
 		scene_->addEntity(m2);
 	}
@@ -119,6 +147,8 @@ void loadEntitys()
 	//Cube 2
 	{
 		v = Vec3(0, 1, -5);
+		v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
+
 		m1 = new Entity(tMesh, v);
 		scene_->addEntity(m1);
 	}
@@ -148,14 +178,6 @@ void loadEntitys()
 		scene_->addEntity(new Entity(MeshManager::GetMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));
 	}
 	
-	//Terrain
-	{
-		TERRAIN_DESC tDesc;
-		tDesc.setupForLowPoly();
-		tDesc.MaxVerticesPerTerrainTile = 2000;
-		terrain_ = new Terrain("res//scene//", tDesc);
-
-	}
 
 	long time = clock() - timer;
 	ZAAP_INFO("Source: Scene init took " + std::to_string(time) + "ms");
@@ -210,11 +232,17 @@ public:
 		if (events::Input::IsKeyDown(ZAAP_VK_T))
 		{
 			Vec3 p = camera->getPosition();
-			p.Y = terrain_->getHeight(Vec2(p.X, p.Y));
+			p.Y = terrain_->getHeight(Vec2(p.X, p.Z));
 			m3->setPosition(p);
 			log++;
 			if (log % 10 == 0)
 				ZAAP_INFO(std::to_string(p.Y));
+		}
+		if (events::Input::IsKeyDown(ZAAP_VK_X))
+		{
+			Vec3 p = camera->getPosition();
+			p.Y = terrain_->getHeight(Vec2(p.X, p.Z)) + 1.9f;
+			camera->setPosition(p);
 		}
 
 		light2->setPosition(camera->getPosition());

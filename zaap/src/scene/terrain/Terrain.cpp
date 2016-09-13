@@ -35,7 +35,7 @@ namespace zaap { namespace scene {
 		DefaultHeight = 0.0f;
 		VertexSpacing = 1.0f;
 		VerticesPerTexture = 10;
-		MaxVerticesPerTerrainTile = 1000;
+		MaxVerticesPerTerrainTile = 2500;
 	}
 
 }}
@@ -60,7 +60,7 @@ namespace zaap { namespace scene {
 	//
 	void Terrain::init(String folder)
 	{
-		initVertices(String(folder + "heightMap.png"));
+		initVertices(String(folder + "heightMap.png"), String(folder + "textureMap.png"));
 		initTexture(folder);
 
 		m_ParrentNode = TerrainPart::CreateTerrainPart(0, 0, m_VCountHorizontal, m_VCountVertical, this);
@@ -68,7 +68,10 @@ namespace zaap { namespace scene {
 
 	void Terrain::initTexture(String folder)
 	{
-		m_Texture = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
+		m_Textures[0] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_0.jpg");
+		m_Textures[1] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_1.jpg");
+		m_Textures[2] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_2.jpg");
+		m_Textures[3] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
 	}
 	void Terrain::cleanup()
 	{
@@ -81,7 +84,7 @@ namespace zaap { namespace scene {
 	//
 	// HeightMap
 	//
-	void Terrain::initVertices(String heightMapFile)
+	void Terrain::initVertices(String heightMapFile, String texMapFile)
 	{
 
 		graphics::Image heightMap(heightMapFile.c_str());
@@ -99,31 +102,42 @@ namespace zaap { namespace scene {
 			m_Vertices = std::vector<graphics::TERRAIN_VERTEX>(m_VCountHorizontal * m_VCountVertical);
 
 		//height
-		float height = calculateHeightFromColor(heightMap.getColor(0, 0));
-		m_MinHeight = m_MaxHeight = height;
 		uint x, y;
-		float vSpacing = m_TerrainDesc.VertexSpacing;
-		for (y = 0; y < m_VCountVertical; y++)
 		{
-			for (x = 0; x < m_VCountHorizontal; x++)
-			{
-				height = calculateHeightFromColor(heightMap.getColor(x, y));
-				m_Vertices[x + y * m_VCountVertical].Position = math::Vec3((float)x * vSpacing, height, (float)y * vSpacing);
+			float height = calculateHeightFromColor(heightMap.getColor(0, 0));
+			m_MinHeight = m_MaxHeight = height;
+			float vSpacing = m_TerrainDesc.VertexSpacing;
 
-				if (height < m_MinHeight)
-					m_MinHeight = height;
-				else if (height > m_MaxHeight)
-					m_MaxHeight = height;
+			for (y = 0; y < m_VCountVertical; y++)
+			{
+				for (x = 0; x < m_VCountHorizontal; x++)
+				{
+					height = calculateHeightFromColor(heightMap.getColor(x, y));
+					m_Vertices[x + y * m_VCountVertical].Position = math::Vec3((float)x * vSpacing, height, (float)y * vSpacing);
+
+					if (height < m_MinHeight)
+						m_MinHeight = height;
+					else if (height > m_MaxHeight)
+						m_MaxHeight = height;
+				}
 			}
 		}
-		float texIncrease = 1.0f / m_TerrainDesc.VerticesPerTexture;
-		for (y = 0; y < m_VCountVertical; y++)
+
+		//other Vertex Data
 		{
-			for (x = 0; x < m_VCountHorizontal; x++)
+			graphics::Image texMap(texMapFile.c_str());
+
+			float texIncrease = 1.0f / m_TerrainDesc.VerticesPerTexture;
+			for (y = 0; y < m_VCountVertical; y++)
 			{
-				m_Vertices[x + y * m_VCountVertical].Normal = calcualteNormal(x, y);
-				m_Vertices[x + y * m_VCountVertical].TexCoord = math::Vec2(x * texIncrease, y * texIncrease);
+				for (x = 0; x < m_VCountHorizontal; x++)
+				{
+					m_Vertices[x + y * m_VCountVertical].Normal = calcualteNormal(x, y);
+					m_Vertices[x + y * m_VCountVertical].TexMapColor = texMap.getColor(x, y).getRGB();
+					m_Vertices[x + y * m_VCountVertical].TexCoord = math::Vec2(x * texIncrease, y * texIncrease);
+				}
 			}
+			
 		}
 	}
 	float Terrain::calculateHeightFromColor(graphics::Color color) const
@@ -140,7 +154,6 @@ namespace zaap { namespace scene {
 
 		return m_Vertices[vertexX + vertexY * m_VCountVertical].Position.Y;
 	}
-
 
 	math::Vec3 Terrain::calcualteNormal(uint vX, uint vY) const
 	{
@@ -177,13 +190,12 @@ namespace zaap { namespace scene {
 	{
 		return m_TerrainDesc;
 	}
-	graphics::API::VertexBuffer* Terrain::getVertexBuffer() const
+	graphics::API::Texture2D* Terrain::getTexture(uint texture) const
 	{
-		return m_VBuffer;
-	}
-	graphics::API::Texture2D* Terrain::getTexture() const
-	{
-		return m_Texture;
+		if (texture >= 4) 
+			return m_Textures[0];
+
+		return m_Textures[texture];
 	}
 
 	float Terrain::getMinHeight() const
@@ -217,7 +229,7 @@ namespace zaap { namespace scene {
 	{
 		uint vX = (uint)(point.X / m_TerrainDesc.VertexSpacing);
 		uint vY = (uint)(point.Y / m_TerrainDesc.VertexSpacing);
-		if (vX >= m_VCountHorizontal || vY >= m_VCountVertical)
+		if (vX >= m_VCountHorizontal - 1 || vY >= m_VCountVertical - 1)
 			return 0.0f;
 
 
@@ -249,9 +261,16 @@ namespace zaap { namespace scene {
 	}
 	void Terrain::render()
 	{
+		bindTextures();
 		graphics::Renderer::Render(this);
 
 		m_ParrentNode->render();
+	}
+
+	void Terrain::bindTextures() const
+	{
+		for (uint i = 0; i < 4; i++)
+			m_Textures[i]->bind(i);
 	}
 }}
 

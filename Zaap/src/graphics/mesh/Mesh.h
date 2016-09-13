@@ -32,10 +32,10 @@ namespace zaap { namespace graphics {
 	{
 		math::Vec3 Position;
 		math::Vec3 Normal;
-		math::Vec2 TexMapCoord;
+		math::Vec3 TexMapColor;
 		math::Vec2 TexCoord;
 
-		TERRAIN_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec2 texMapCoord, math::Vec2 texCoord);
+		TERRAIN_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec3 texMapColor, math::Vec2 texCoord);
 		TERRAIN_VERTEX();
 	};
 

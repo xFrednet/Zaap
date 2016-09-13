@@ -245,10 +245,8 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_TerrainShader->start();
 
-		//m_TerrainShader->loadTransformationMatrix(terrainTile->getTransformationMatrix());
 		m_TerrainShader->loadTransformationMatrix(math::Mat4(1.0f));
 
-		terrain->getTexture()->bind(0);
 	}
 
 	void DXRenderer::render(Entity* entity)
