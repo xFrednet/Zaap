@@ -6,17 +6,23 @@
 #include <graphics/API/Texture2D.h>
 
 namespace zaap { namespace graphics {
-	
+	class Image;
+
 	class ZAAP_API TextureManager
 	{
 	private:
-		static std::vector<Texture*> s_Textures;
-	public:
-		static Texture* AddTexture(Texture* texture);
-		static Texture* GetTexture(String textureName);
-		static Texture2D* LoadTexture2D(String textureName, String texturePath);
+		static std::vector<API::Texture*> s_Textures;
 
-		static void Cleanup();
+	public:
+		static API::Texture* AddTexture(API::Texture* texture);
+		static API::Texture* GetTexture(String textureName);
+		
+		static void RemoveTexture(API::Texture* texture);
+		static void RemoveTexture(String textureName);
+
+		static void ClearTextures();
+		
+		static bool Contains(String textureName);
 	};
 
 }}

@@ -1,20 +1,20 @@
-#include "util/ImageLoader.h"
-
 #include "Application.h"
 
-#include "util/Console.h"
-#include "util/StringUtil.h"
+#include <util/ImageLoader.h>
 
-#include "graphics/Renderer.h"
-#include "graphics/API/Context.h"
-#include "graphics/camera/ControllableCamera.h"
-#include "graphics/TextureManager.h"
+#include <util/Console.h>
+#include <util/StringUtil.h>
 
-#include "events/Input.h"
-
-#include <time.h>
+#include <graphics/Renderer.h>
+#include <graphics/API/Context.h>
+#include <graphics/camera/ControllableCamera.h>
+#include <graphics/TextureManager.h>
 #include <graphics/MaterialManager.h>
 #include <graphics/mesh/MeshManager.h>
+
+#include <events/Input.h>
+
+#include <time.h>
 
 namespace zaap {
 
@@ -29,11 +29,12 @@ namespace zaap {
 	{
 		ImageLoader::Cleanup();
 		graphics::MeshManager::Cleanup();
-		graphics::TextureManager::Cleanup();
 		graphics::MaterialManager::Cleanup();
 		delete m_Scene;
 		graphics::Renderer::Cleanup();
 		graphics::API::Context::Cleanup();
+		graphics::API::Texture::Cleanup();
+		graphics::API::VertexBuffer::Cleanup();
 
 		ZAAP_CLEANUP_LOG("Application");
 	}

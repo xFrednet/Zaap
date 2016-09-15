@@ -17,6 +17,11 @@ namespace zaap { namespace graphics {
 		s_Instance->init();
 	}
 
+	void Renderer::Render(const scene::Terrain const *terrainTile)
+	{
+		s_Instance->render(terrainTile);
+	}
+
 	//
 	//Render
 	//
@@ -36,9 +41,9 @@ namespace zaap { namespace graphics {
 	void Renderer::SetCamera(Camera* camera)
 	{ s_Instance->setCamera(camera); }
 
-	void Renderer::LoadLight(Light* light)
+	void Renderer::LoadLightSetup(LightSetup* lightSetup)
 	{
-		s_Instance->loadLight(light);
+		s_Instance->loadLightSetup(lightSetup);
 	}
 
 	//
@@ -57,4 +62,8 @@ namespace zaap { namespace graphics {
 		if (s_Instance) s_Instance->resize(width, height);
 	}
 
+	ViewFrustum Renderer::GetViewFrustum()
+	{
+		return s_Instance->getViewFrustum();
+	}
 }}

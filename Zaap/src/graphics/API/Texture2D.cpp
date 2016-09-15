@@ -2,10 +2,10 @@
 
 #include <graphics/API/DXContext.h>
 
-namespace zaap { namespace graphics {
+namespace zaap { namespace graphics { namespace API {
 	
-	Texture2D::Texture2D(String& textureName, String& filePath)
-		: Texture(textureName, filePath)
+	Texture2D::Texture2D(String& textureName)
+		: Texture(textureName, TextureType::Texture2D)
 	{
 		m_Width = 0;
 		m_Height = 0;
@@ -26,6 +26,6 @@ namespace zaap { namespace graphics {
 		return (m_TextureName == texture2D.m_TextureName) &&
 			(m_Width == texture2D.m_Width) && 
 			(m_Height == texture2D.m_Height);
-		//m_BitsPerPixel are not teste
+		//m_BitsPerPixel are not tested
 	}
-}}
+}}}

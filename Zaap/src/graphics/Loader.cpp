@@ -12,9 +12,6 @@ namespace zaap { namespace graphics {
 	//
 	// Loader
 	//
-	Loader::Loader(void)
-	{}
-
 	bool startWith(std::string str, std::string str2, int count)
 	{
 		for (int i = 0; i < count; i++)
@@ -45,7 +42,7 @@ namespace zaap { namespace graphics {
 		return -1;
 	}
 	
-	Mesh* Loader::loadOBJFile(String name, String file, bool isTMesh)
+	Mesh* Loader::LoadOBJFile(String name, String file, bool isTMesh)
 	{
 		Mesh* rMesh = nullptr;
 		Material materials[8];
@@ -174,7 +171,7 @@ namespace zaap { namespace graphics {
 				vertices[i] = TEXTURE_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], texCoords_unsorted[texCoords_indices[i]]);
 			}
 			
-			vBuffer = this->loadVBuffer(&vertices[0], sizeof(TEXTURE_VERTEX), size, &indices[0], indices.size());
+			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(TEXTURE_VERTEX), size, &indices[0], indices.size());
 
 			rMesh = new TexturedMesh(name, vBuffer, nullptr);
 		} else
@@ -186,8 +183,8 @@ namespace zaap { namespace graphics {
 				vertices[i] = MATERIAL_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], material[i]);
 			}
 
-			vBuffer = this->loadVBuffer(&vertices[0], sizeof(MATERIAL_VERTEX), size, &indices[0], indices.size());
-
+			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(MATERIAL_VERTEX), size, &indices[0], indices.size());
+			
 			rMesh = new MaterialMesh(name, vBuffer, materials, materialCount);
 		}
 
@@ -196,7 +193,7 @@ namespace zaap { namespace graphics {
 		return rMesh;
 	}
 
-	void Loader::loadMTLFile(String file) const
+	void Loader::LoadMTLFile(String file)
 	{
 	/*	newmtl Material
 		Ns 96.078431

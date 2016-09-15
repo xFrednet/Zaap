@@ -6,7 +6,7 @@ namespace zaap { namespace graphics {
 	
 	std::vector<Mesh*> MeshManager::s_Meshs;
 
-	Mesh* MeshManager::AddMesh(String name, API::VertexBuffer* vertexBuffer, Texture2D* texture)
+	Mesh* MeshManager::AddMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture)
 	{
 		return AddMesh(new TexturedMesh(name, vertexBuffer, texture));
 	}

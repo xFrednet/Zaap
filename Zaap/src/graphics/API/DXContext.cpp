@@ -6,8 +6,7 @@
 namespace zaap { namespace graphics { namespace DX {
 
 	DXContext::DXContext(Window &window)
-		: Context(),
-		m_Loader()
+		: Context()
 	{
 		SIZE *size = window.getSize();
 		//
@@ -65,8 +64,6 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXContext::cleanup(void)
 	{
-		m_Loader.cleanup();
-
 		DXRELEASE(m_SwapChain);
 
 		ReportLiveObjects();
@@ -89,10 +86,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		return (DXContext*)s_Context;
 	}
-	Loader* DXContext::getLoader()
-	{
-		return &m_Loader;
-	}
 	ID3D11Device* DXContext::GetDevice()
 	{
 		return GetContext()->m_Dev;
@@ -107,19 +100,16 @@ namespace zaap { namespace graphics { namespace DX {
 		return GetContext()->m_SwapChain;
 	}
 
-	Loader* DXContext::GetLoader()
-	{
-		return &GetContext()->m_Loader;
-	}
-
 	//
 	// debug util
 	//
 	void DXContext::ReportLiveObjects()
 	{
+#ifdef ZAAP_DEBUG
 		ID3D11Debug *debug;
 		GetContext()->m_Dev->QueryInterface(__uuidof(ID3D11Debug), (void**)&debug);
 		debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
 		DXRELEASE(debug);
+#endif
 	}
 }}}

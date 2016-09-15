@@ -2,7 +2,7 @@
 
 namespace zaap { namespace graphics {
 	
-	TexturedMesh::TexturedMesh(String name, API::VertexBuffer* vertexBuffer, Texture2D* texture)
+	TexturedMesh::TexturedMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture)
 		: Mesh(name, vertexBuffer, MeshType::TEXTURED_MESH),
 		m_Texture(texture)
 	{}
@@ -11,12 +11,12 @@ namespace zaap { namespace graphics {
 		: m_Texture(nullptr)
 	{}
 
-	Texture2D* TexturedMesh::getTexture() const
+	API::Texture2D* TexturedMesh::getTexture() const
 	{
 		return m_Texture;
 	}
 
-	void TexturedMesh::setTexture(Texture2D* texture)
+	void TexturedMesh::setTexture(API::Texture2D* texture)
 	{
 		m_Texture = texture;
 	}

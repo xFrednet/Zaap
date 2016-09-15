@@ -36,6 +36,25 @@ namespace zaap { namespace graphics {
 	{
 	}
 
+	//////////////////////////////////////////////////////////////////////////////
+	// TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  //
+	//////////////////////////////////////////////////////////////////////////////
+	TERRAIN_VERTEX::TERRAIN_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec3 texMapColor, math::Vec2 texCoord)
+		: Position(position),
+		Normal(normal),
+		TexMapColor(texMapColor),
+		TexCoord(texCoord)
+	{
+	}
+
+	TERRAIN_VERTEX::TERRAIN_VERTEX()
+		: Position(),
+		Normal(),
+		TexMapColor(),
+		TexCoord()
+	{
+	}
+
 	//////////////////////////////////////////////////////////
 	// Mesh // Mesh // Mesh // Mesh // Mesh // Mesh // Mesh //
 	//////////////////////////////////////////////////////////

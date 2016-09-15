@@ -2,7 +2,7 @@
 
 using namespace zaap;
 
-String StringUtil::to_string(float &f)
+String StringUtil::to_string(const float &f)
 {
 	return std::to_string(f);
 }

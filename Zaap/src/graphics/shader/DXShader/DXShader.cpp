@@ -42,10 +42,13 @@ namespace zaap { namespace graphics { namespace DX {
 		devcon->PSSetShader(m_PShader, nullptr, 0);
 
 		dev->CreateInputLayout(ied, eCount, VS->GetBufferPointer(), VS->GetBufferSize(), &m_Layout);
-		if (m_Layout) 
-			DXNAME(m_Layout, "DXShader::m_Layout")
-		else 
+		if (m_Layout)
+		{
+			DXNAME(m_Layout, "DXShader::m_Layout");
+		} else
+		{
 			ZAAP_ERROR_(m_Layout, "DXShader: InputLayout creation failed");
+		}
 
 		devcon->IASetInputLayout(m_Layout);
 

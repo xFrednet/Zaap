@@ -23,11 +23,6 @@ namespace zaap { namespace graphics { namespace API {
 		ZAAP_CLEANUP_LOG("Context");
 	}
 
-	Loader* Context::GetLoader()
-	{
-		return s_Context->getLoader();
-	}
-
 	void Context::Resize(uint width, uint height)
 	{
 		if (s_Context) s_Context->resize(width, height);

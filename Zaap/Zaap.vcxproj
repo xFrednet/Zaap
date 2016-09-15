@@ -151,11 +151,11 @@
     <ClCompile Include="src\graphics\API\Texture.cpp" />
     <ClCompile Include="src\graphics\API\Texture2D.cpp" />
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp" />
-    <ClCompile Include="src\graphics\Bitmap.cpp" />
+    <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
+    <ClCompile Include="src\graphics\Image.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
-    <ClCompile Include="src\graphics\DX\DXLoader.cpp" />
     <ClCompile Include="src\graphics\DX\DXRenderer.cpp" />
     <ClCompile Include="src\graphics\DX\DXTexture2D.cpp" />
     <ClCompile Include="src\graphics\DX\DXVertexBuffer.cpp" />
@@ -172,13 +172,17 @@
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXMaterialShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
+    <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathHelper.cpp" />
+    <ClCompile Include="src\maths\Plane3D.cpp" />
     <ClCompile Include="src\maths\Vec2.cpp" />
     <ClCompile Include="src\maths\Vec3.cpp" />
     <ClCompile Include="src\maths\Vec4.cpp" />
+    <ClCompile Include="src\scene\terrain\Terrain.cpp" />
+    <ClCompile Include="src\scene\terrain\TerrainPart.cpp" />
     <ClCompile Include="src\util\Console.cpp" />
     <ClCompile Include="src\util\ImageLoader.cpp" />
     <ClCompile Include="src\util\StringUtil.cpp" />
@@ -198,11 +202,11 @@
     <ClInclude Include="src\graphics\API\Texture.h" />
     <ClInclude Include="src\graphics\API\Texture2D.h" />
     <ClInclude Include="src\graphics\API\VertexBuffer.h" />
-    <ClInclude Include="src\graphics\Bitmap.h" />
+    <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
+    <ClInclude Include="src\graphics\Image.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Color.h" />
-    <ClInclude Include="src\graphics\DX\DXLoader.h" />
     <ClInclude Include="src\graphics\DX\DXRenderer.h" />
     <ClInclude Include="src\graphics\DX\DXTexture2D.h" />
     <ClInclude Include="src\graphics\DX\DXVertexBuffer.h" />
@@ -219,15 +223,19 @@
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXMaterialShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />
+    <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\maths\MathHelper.h" />
     <ClInclude Include="src\maths\Maths.h" />
+    <ClInclude Include="src\maths\Plane3D.h" />
     <ClInclude Include="src\maths\Vec2.h" />
     <ClInclude Include="src\maths\Vec3.h" />
     <ClInclude Include="src\maths\Vec4.h" />
+    <ClInclude Include="src\scene\terrain\Terrain.h" />
+    <ClInclude Include="src\scene\terrain\TerrainPart.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\Console.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
@@ -236,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Sandbox\DXMaterialShader.shader" />
+    <None Include="..\Sandbox\DXTerrainShader.shader" />
     <None Include="..\Sandbox\DXTextureShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

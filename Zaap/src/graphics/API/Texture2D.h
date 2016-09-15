@@ -5,8 +5,8 @@
 
 #include "Texture.h"
 
-namespace zaap { namespace graphics {
-		
+namespace zaap { namespace graphics { namespace API {
+
 	class ZAAP_API Texture2D : public Texture
 	{
 	protected:
@@ -14,7 +14,7 @@ namespace zaap { namespace graphics {
 		uint m_Height;
 		uint m_BitsPerPixel;
 	public:
-		Texture2D(String &textureName, String &filePath);
+		Texture2D(String &textureName);
 
 		uint getWidth(void) const;
 		uint getHeight(void) const;
@@ -26,4 +26,4 @@ namespace zaap { namespace graphics {
 
 	};
 
-}}
+}}}

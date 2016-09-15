@@ -7,9 +7,7 @@
 #	define ZAAP_API __declspec(dllexport)
 #endif
 
-#ifndef ZAAP_DEBUG
 #	define ZAAP_DEBUG 1
-#endif
 
 // TODO remove __WIN32__ definition
 #ifndef __WIN32__ 

@@ -55,6 +55,12 @@
     <Filter Include="Source Files\src\graphics\mesh">
       <UniqueIdentifier>{8b7407c5-aec1-4099-aa91-f777b148a15d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\scene">
+      <UniqueIdentifier>{df045561-db33-4ef1-b7f5-6f25476eb842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\scene\terrain">
+      <UniqueIdentifier>{017c9b12-69c4-4e59-a093-efaad5082d0f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -62,9 +68,6 @@
     </ClCompile>
     <ClCompile Include="src\util\StringUtil.cpp">
       <Filter>Source Files\src\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Bitmap.cpp">
-      <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\util\ImageLoader.cpp">
       <Filter>Source Files\src\util</Filter>
@@ -92,9 +95,6 @@
     </ClCompile>
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\DX\DXLoader.cpp">
-      <Filter>Source Files\src\graphics\DX</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\DX\DXRenderer.cpp">
       <Filter>Source Files\src\graphics\DX</Filter>
@@ -183,6 +183,24 @@
     <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\terrain\Terrain.cpp">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Image.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\terrain\TerrainPart.cpp">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\ViewFrustum.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Plane3D.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -196,9 +214,6 @@
     </ClInclude>
     <ClInclude Include="src\util\StringUtil.h">
       <Filter>Source Files\src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Bitmap.h">
-      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\util\ImageLoader.h">
       <Filter>Source Files\src\util</Filter>
@@ -232,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\VertexBuffer.h">
       <Filter>Source Files\src\graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\DX\DXLoader.h">
-      <Filter>Source Files\src\graphics\DX</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\DX\DXRenderer.h">
       <Filter>Source Files\src\graphics\DX</Filter>
@@ -332,12 +344,33 @@
     <ClInclude Include="src\graphics\mesh\MaterialMesh.h">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClInclude>
+    <ClInclude Include="src\scene\terrain\Terrain.h">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Image.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\terrain\TerrainPart.h">
+      <Filter>Source Files\src\scene\terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\ViewFrustum.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Plane3D.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Sandbox\DXTextureShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </None>
     <None Include="..\Sandbox\DXMaterialShader.shader">
+      <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
+    <None Include="..\Sandbox\DXTerrainShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </None>
   </ItemGroup>

@@ -5,27 +5,44 @@
 #include <graphics/shader/DXShader/DXShader.h>
 
 #include <graphics/Material.h>
-#include <graphics/mesh/Mesh.h>
+#include <graphics/camera/Camera.h>
 #include <maths/Maths.h>
-#include <graphics/light/Light.h>
+#include <graphics/light/LightSetup.h>
 
 namespace zaap { namespace graphics { namespace DX {
 
 	class ZAAP_API DXMaterialShader : public DXShader
 	{
 	private:
-		
-		struct VS_LIGHTPOSITION_BUFFER
+		static const uint SUPPORTET_LIGHT_COUNT = 8;
+
+		struct VS_LIGHT_BUFFER
 		{
-			math::Vec4 Position;
+		public:
+			uint LightCount;
+		private:
+			math::Vec3 padding;
+		public:
+			math::Vec4 Position[SUPPORTET_LIGHT_COUNT];
 		};
 
-		struct PS_LIGHTCOLOR_BUFFER
+		struct VS_SCENE_BUFFER
 		{
-			Color lightColor;
+			math::Vec3 CameraPosition;
+			float padding;
 		};
 
-		static const uint MAX_MATERIAL_COUNT = 8;
+		struct PS_LIGHT_BUFFER
+		{
+		public:
+			uint LightCount;
+		private:
+			math::Vec3 padding;
+		public:
+			Color AmbientLightColor;
+			Color LightColor[SUPPORTET_LIGHT_COUNT];
+		};
+
 		struct PS_MATERIAL
 		{
 			math::Vec3 Color;
@@ -33,21 +50,25 @@ namespace zaap { namespace graphics { namespace DX {
 		};
 		struct PS_MATERIAL_BUFFER
 		{
-			PS_MATERIAL Materials[MAX_MATERIAL_COUNT];
+			PS_MATERIAL Materials[8];
 		};
-
 	protected:
 		//Matrix buffer
 		VS_MATRIX_BUFFER m_MatrixStruct;
 		ID3D11Buffer *m_MatrixBuffer;
 		void loadMatrixBuffer() const;
 
-		//Light buffers
-		VS_LIGHTPOSITION_BUFFER m_LightPositionStruct;
-		ID3D11Buffer *m_LightPositionBuffer;
+		//Scene buffer
+		VS_SCENE_BUFFER m_SceneStruct;
+		ID3D11Buffer *m_SceneBuffer;
+		void loadSceneBuffer() const;
 
-		PS_LIGHTCOLOR_BUFFER m_LightColorStruct;
-		ID3D11Buffer *m_LightColorBuffer;
+		//Light buffers
+		VS_LIGHT_BUFFER m_VSLightStruct;
+		ID3D11Buffer *m_VSLightBuffer;
+
+		PS_LIGHT_BUFFER m_PSLightStruct;
+		ID3D11Buffer *m_PSLightBuffer;
 		void loadLightBuffers() const;
 
 		//Material buffer
@@ -59,19 +80,21 @@ namespace zaap { namespace graphics { namespace DX {
 		DXMaterialShader();
 
 		//matrix loader
-		void loadTransformationMatrix(math::Mat4 &matrix);
-		void loadProjectionMatrix(math::Mat4 &matrix);
-		void loadViewMatrix(math::Mat4 &matrix);
+		void loadTransformationMatrix(math::Mat4 matrix);
+		void loadProjectionMatrix(math::Mat4 matrix);
+		void loadViewMatrix(math::Mat4 matrix);
+
+		//camera
+		void loadCamera(Camera* camera);
 
 		//light loader
-		void loadLight(const Light* light);
+		void loadLightSetup(const LightSetup const* lightSetup);
 
 		//material loader
 		void loadMaterials(Material const* materials, uint count);
 
 		void start() const override;
 		void cleanup() override;
-
 	};
 
 }}}

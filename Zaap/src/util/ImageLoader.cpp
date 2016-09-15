@@ -39,6 +39,10 @@ namespace zaap
 			Init();
 		}
 
+		*width = 0;
+		*height = 0;
+		*bits = 0;
+
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		FIBITMAP *bitmap(0);
 		byte *data = nullptr;

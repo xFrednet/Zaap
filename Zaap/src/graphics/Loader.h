@@ -11,14 +11,9 @@ namespace zaap { namespace graphics {
 	class ZAAP_API Loader
 	{
 	public:
-		Loader(void);
+		static Mesh* LoadOBJFile(String name, String file, bool texturedMesh = true);
+		static void LoadMTLFile(String file);
 
-		Mesh* loadOBJFile(String name, String file, bool texturedMesh = true);
-		void loadMTLFile(String file) const;
-
-		virtual API::VertexBuffer* loadVBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount) = 0;
-
-		virtual void cleanup(void) const = 0;
 	};
 
 }}

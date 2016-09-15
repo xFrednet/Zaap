@@ -136,6 +136,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
 		devcon->VSSetConstantBuffers(1, 1, &m_LightBuffer);
+
 		devcon->PSSetConstantBuffers(0, 1, &m_LightColorBuffer);
 
 		loadMarixBuffer();
@@ -147,7 +148,9 @@ namespace zaap { namespace graphics { namespace DX {
 		DXRELEASE(m_MatrixBuffer);
 		DXRELEASE(m_LightBuffer);
 		DXRELEASE(m_LightColorBuffer);
+		
 		cleanDXShader();
+
 		ZAAP_CLEANUP_LOG("DXTextureShader");
 	}
 }}}

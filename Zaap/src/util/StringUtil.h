@@ -13,7 +13,7 @@ namespace zaap {
 	class ZAAP_API StringUtil
 	{
 	public:
-		static String to_string(float &f);
+		static String to_string(const float &f);
 		static String getDateString(const time_t const time = time(0));
 	};
 
