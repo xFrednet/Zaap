@@ -38,9 +38,7 @@ void loadEntitys()
 	//Terrain
 	{
 		TERRAIN_DESC tDesc;
-		tDesc.setupForLowPoly();
-		tDesc.VerticesPerTexture = 5;
-		tDesc.MaxVerticesPerTerrainTile = 2000;
+		tDesc.setup();
 		terrain_ = new Terrain("res//scene//", tDesc);
 
 	}
@@ -57,12 +55,11 @@ void loadEntitys()
 		uint x, y;
 		for (uint i = 0; i < 50; i++)
 		{
-			x = rand() % 200;
-			y = rand() % 200;
+			x = rand() % 299;
+			y = rand() % 299;
 			v = Vec3((float)x, 0, (float)y);
 			v.Y = terrain_->getHeight(Vec2(v.X, v.Z));
 			scene_->addEntity(new Entity(MeshManager::GetMesh("oakTree"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
-			
 		}
 	}
 	
@@ -83,11 +80,17 @@ void loadEntitys()
 		uint x, y;
 		for (uint i = 0; i < 100; i++)
 		{
-			x = rand() % 200;
-			y = rand() % 200;
-			v = Vec3((float)x, 0, (float)y);
-			v.Y = terrain_->getHeight(Vec2(v.X, v.Z)) + 0.2f;
-			scene_->addEntity(new Entity(MeshManager::GetMesh("bush"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+			x = rand() % 299;
+			y = rand() % 299;
+			uint loop = rand() % 3;
+			for (uint j = 0; j < loop; j++)
+			{
+				x += rand() % 10 - 5;
+				y += rand() % 10 - 5;
+				v = Vec3((float)x, 0, (float)y);
+				v.Y = terrain_->getHeight(Vec2(v.X, v.Z)) + 0.2f;
+				scene_->addEntity(new Entity(MeshManager::GetMesh("bush"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
+			}
 		}
 	}
 
@@ -266,9 +269,6 @@ int main(void)
 	t.start();
 
 	t.cleanup();
-
-	terrain_->cleanup();
-	delete terrain_;
 
 	return 0;
 }

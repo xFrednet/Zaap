@@ -22,7 +22,7 @@ namespace zaap { namespace scene {
 		TERRAIN_DESC();
 		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float vertexSpacing, uint verticesPerTexture);
 
-		void setupForLowPoly();
+		void setup();
 	};
 
 	class ZAAP_API Terrain

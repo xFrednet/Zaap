@@ -6,7 +6,13 @@ namespace zaap { namespace graphics {
 	{
 		for (uint i = 0; i < m_Entities.size(); i++)
 			delete m_Entities[i];
-		if (!m_LightSetup) delete m_LightSetup;
+
+		if (m_LightSetup) delete m_LightSetup;
+		if (m_Terrain)
+		{
+			m_Terrain->cleanup();
+			delete m_Terrain;
+		}
 	}
 
 	void Scene::addEntity(BasicEntity* entity)
@@ -29,6 +35,10 @@ namespace zaap { namespace graphics {
 		{
 			m_LightSetup->render();
 			Renderer::LoadLightSetup(m_LightSetup);
+		}
+		if (m_Terrain)
+		{
+			m_Terrain->render();
 		}
 		for (uint i = 0; i < m_Entities.size(); i++)
 		{
@@ -56,4 +66,17 @@ namespace zaap { namespace graphics {
 	{
 		return m_LightSetup;
 	}
+
+	//
+	// Terrain
+	//
+	void Scene::setTerrain(scene::Terrain* terrain)
+	{
+		m_Terrain = terrain;
+	}
+	scene::Terrain* Scene::getTerrain()
+	{
+		return m_Terrain;
+	}
+
 }}

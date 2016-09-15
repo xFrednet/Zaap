@@ -28,10 +28,10 @@ namespace zaap { namespace scene {
 	{
 	}
 
-	void TERRAIN_DESC::setupForLowPoly()
+	void TERRAIN_DESC::setup()
 	{
 		HeightMin = -10.0f;
-		HeightMax = 50.0f;
+		HeightMax = 20.0f;
 		DefaultHeight = 0.0f;
 		VertexSpacing = 1.0f;
 		VerticesPerTexture = 10;
@@ -70,8 +70,8 @@ namespace zaap { namespace scene {
 	{
 		m_Textures[0] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_0.jpg");
 		m_Textures[1] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_1.jpg");
-		m_Textures[2] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_2.jpg");
-		m_Textures[3] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
+		m_Textures[2] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
+		m_Textures[3] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_2.jpg");
 	}
 	void Terrain::cleanup()
 	{

@@ -5,6 +5,7 @@
 
 #include <entity/Entity.h>
 #include <graphics/light/LightSetup.h>
+#include <scene/terrain/Terrain.h>
 
 namespace zaap { namespace graphics {
 	
@@ -14,7 +15,8 @@ namespace zaap { namespace graphics {
 	protected:
 		std::vector<BasicEntity*> m_Entities;
 
-		LightSetup* m_LightSetup = nullptr;
+		LightSetup *m_LightSetup = nullptr;
+		scene::Terrain *m_Terrain;
 	public:
 		~Scene(void);
 
@@ -27,5 +29,9 @@ namespace zaap { namespace graphics {
 		//lightSetup
 		virtual void setLightSetup(LightSetup* lightSetup);
 		virtual LightSetup* getLightSetup(void);
+
+		//terrain
+		virtual void setTerrain(scene::Terrain* terrain);
+		virtual scene::Terrain* getTerrain(void);
 	};
 }}
