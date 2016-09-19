@@ -7,12 +7,24 @@ namespace zaap { namespace graphics {
 		
 	Renderer* Renderer::s_Instance = nullptr;
 
+	void Renderer::caluclateProjectionMatrix()
+	{
+		if (m_Size.Y == 0) //TODO add Error Message and get the size from the window
+		{
+			m_Size.X = 16;
+			m_Size.Y = 9;
+		}
+		m_ProjectionMatrix = math::CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
+	}
+
 	//
 	//Init
 	//
 	void Renderer::Init()
 	{
 		s_Instance = new DX::DXRenderer();
+
+		s_Instance->caluclateProjectionMatrix();
 
 		s_Instance->init();
 	}
@@ -59,11 +71,25 @@ namespace zaap { namespace graphics {
 	}
 	void Renderer::Resize(uint width, uint height)
 	{
-		if (s_Instance) s_Instance->resize(width, height);
+		if (s_Instance)
+		{
+			s_Instance->m_Size = math::Vec2(width, height); //TODO add a seperate option to set the Size
+			s_Instance->caluclateProjectionMatrix();
+
+			s_Instance->resize(width, height);
+		}
 	}
 
 	ViewFrustum Renderer::GetViewFrustum()
 	{
 		return s_Instance->getViewFrustum();
+	}
+
+	math::Mat4 Renderer::GetProjectionMatrix()
+	{
+		if (s_Instance)
+			return s_Instance->m_ProjectionMatrix;
+
+		return math::Mat4();
 	}
 }}

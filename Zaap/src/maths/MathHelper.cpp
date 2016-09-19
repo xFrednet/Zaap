@@ -23,13 +23,13 @@ namespace zaap { namespace math {
 		return mat;
 	}
 
-	Mat4 CreateProjectionMatrix(float fovY, float aspect, float nearPlane, float farPlane)//60
+	Mat4 CreateProjectionMatrix(float fov, float aspect, float nearPlane, float farPlane)//60
 	{
 		Mat4 mat;
 		mat.identity(1.0f);
 
 		float difference = farPlane - nearPlane;
-		float f = atan(fovY / 2.0f);
+		float f = atan(fov / 2.0f);
 
 		mat.m11 = f / aspect;
 		mat.m22 = f;

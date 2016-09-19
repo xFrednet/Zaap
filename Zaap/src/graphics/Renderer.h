@@ -14,6 +14,12 @@ namespace zaap { namespace graphics {
 	private:
 		static Renderer* s_Instance;
 	protected:
+		math::Vec2 m_Size;
+		float m_FOV = 90.0f;
+		float m_NearPlane = 0.1f;
+		float m_FarPlane = 1000.0f;
+		math::Mat4 m_ProjectionMatrix;
+
 		//Init
 		virtual void init() = 0;
 
@@ -30,6 +36,8 @@ namespace zaap { namespace graphics {
 		virtual void cleanup() = 0;
 		virtual void resize(uint width, uint height) = 0;
 		virtual ViewFrustum getViewFrustum(void) = 0;
+		
+		void caluclateProjectionMatrix();
 
 	public:
 		//Init
@@ -48,7 +56,10 @@ namespace zaap { namespace graphics {
 		static void Prepare();
 		static void Cleanup();
 		static void Resize(uint width, uint height);
+
+		//getters
 		static ViewFrustum GetViewFrustum();
+		static math::Mat4 GetProjectionMatrix();
 	};
 
 }}

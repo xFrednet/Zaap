@@ -12,7 +12,7 @@ namespace zaap { namespace math {
 	//Matrix Math
 	Mat4 ZAAP_API CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale);
 
-	Mat4 ZAAP_API CreateProjectionMatrix(float fovY, float aspect, float nearPlane, float farPlane);
+	Mat4 ZAAP_API CreateProjectionMatrix(float fov, float aspect, float nearPlane, float farPlane);
 
 	Mat4 ZAAP_API CreateViewMatrix(Vec3 &position, float yaw, float pitch);
 	Mat4 ZAAP_API CreateViewMatrix(Vec3 &position, Vec3 &lookAt, Vec3 &up);

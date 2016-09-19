@@ -1,6 +1,7 @@
 #include "Camera.h"
 #include <util/Console.h>
 #include <events/Input.h>
+#include <graphics/Renderer.h>
 
 namespace zaap { namespace graphics {
 	
@@ -29,7 +30,9 @@ namespace zaap { namespace graphics {
 	void Camera::calculateViewFrustum()
 	{
 		if (!events::Input::IsKeyDown(ZAAP_VK_V))
-			m_Frustum.calculateFrustum(math::CreateProjectionMatrix(90.0f, 852.0f / 480.0f, 1.0f, 1000.0f), getViewMatrix());
+			m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
+			//m_Frustum.calculateFrustum(math::CreateProjectionMatrix(90.0f, 852.0f / 480.0f, 1.0f, 1000.0f), getViewMatrix());
+
 		
 	}
 	ViewFrustum Camera::getViewFrustum() const

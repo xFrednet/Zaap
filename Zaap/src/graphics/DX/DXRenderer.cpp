@@ -27,10 +27,10 @@ namespace zaap { namespace graphics { namespace DX {
 		m_MaterialShader = new DXMaterialShader();
 		m_TerrainShader = new DXTerrainShader();
 
-		math::Mat4 mat = math::CreateProjectionMatrix(90.0f, 852.0f/480.0f, 1.0f, 1000.0f);
-		m_MaterialShader->loadProjectionMatrix(mat);
-		m_TextureShader->loadProjectionMatrix(mat);
-		m_TerrainShader->loadProjectionMatrix(mat);
+		caluclateProjectionMatrix();
+		m_MaterialShader->loadProjectionMatrix(m_ProjectionMatrix);
+		m_TextureShader->loadProjectionMatrix(m_ProjectionMatrix);
+		m_TerrainShader->loadProjectionMatrix(m_ProjectionMatrix);
 	}
 
 	//
@@ -127,6 +127,13 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXRenderer::resize(uint width, uint height)
 	{
+		//
+		// update Projectionmatrix
+		//
+		if (m_MaterialShader)m_MaterialShader->loadProjectionMatrix(m_ProjectionMatrix);
+		if (m_TextureShader)m_TextureShader->loadProjectionMatrix(m_ProjectionMatrix);
+		if (m_TerrainShader)m_TerrainShader->loadProjectionMatrix(m_ProjectionMatrix);
+
 		//
 		// release als renderRargetViews
 		//
