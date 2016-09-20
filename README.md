@@ -6,3 +6,7 @@ At the moment I focus my development Low-poly models and shader.
 Special thanks to:
 - [Leit2](https://github.com/leit2) for the awesome Zaap logo.
 - [Textures.com](http://www.textures.com/) for some textures.
+
+Credits:
+- Portions of this software are copyright © 2016 The FreeType
+  Project (www.freetype.org). All rights reserved.

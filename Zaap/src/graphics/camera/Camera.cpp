@@ -31,8 +31,6 @@ namespace zaap { namespace graphics {
 	{
 		if (!events::Input::IsKeyDown(ZAAP_VK_V))
 			m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
-			//m_Frustum.calculateFrustum(math::CreateProjectionMatrix(90.0f, 852.0f / 480.0f, 1.0f, 1000.0f), getViewMatrix());
-
 		
 	}
 	ViewFrustum Camera::getViewFrustum() const

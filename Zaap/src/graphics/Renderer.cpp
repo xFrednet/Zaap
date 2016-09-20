@@ -73,7 +73,7 @@ namespace zaap { namespace graphics {
 	{
 		if (s_Instance)
 		{
-			s_Instance->m_Size = math::Vec2(width, height); //TODO add a seperate option to set the Size
+			s_Instance->m_Size = math::Vec2((float)width, (float)height); //TODO add a seperate option to set the Size
 			s_Instance->caluclateProjectionMatrix();
 
 			s_Instance->resize(width, height);

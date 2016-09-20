@@ -201,6 +201,9 @@
     <ClCompile Include="src\maths\Plane3D.cpp">
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Font.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -361,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="src\maths\Plane3D.h">
       <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Font.h">
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
