@@ -2,7 +2,7 @@
 
 #include <Common.h>
 #include <Types.h>
-#include <graphics/Image.h>
+#include <graphics/Bitmap.h>
 #include <graphics/API/VertexBuffer.h>
 #include <graphics/API/Texture2D.h>
 #include <graphics/mesh/Mesh.h>

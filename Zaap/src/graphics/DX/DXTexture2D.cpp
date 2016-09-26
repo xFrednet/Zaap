@@ -11,12 +11,12 @@ namespace zaap { namespace graphics { namespace DX {
 		init(ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel));
 	}
 
-	DXTexture2D::DXTexture2D(String name, Image image)
+	DXTexture2D::DXTexture2D(String name, Bitmap image)
 		: Texture2D(name)
 	{
 		if (image.getBitsPerPixel() != 32)
 		{
-			ZAAP_ALERT("DXTexture2D: submitted Image has an unexpected bitrate");
+			ZAAP_ALERT("DXTexture2D: submitted Bitmap has an unexpected bitrate");
 		}
 
 		m_Width = image.getWidth();

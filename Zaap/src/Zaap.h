@@ -10,7 +10,7 @@
 
 #include <graphics/Scene.h>
 #include <graphics/Renderer.h>
-#include <graphics/Image.h>
+#include <graphics/Bitmap.h>
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 

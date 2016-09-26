@@ -4,7 +4,6 @@
 #include <Types.h>
 
 #include <graphics/Material.h>
-#include <map>
 
 namespace zaap { namespace graphics {
 	

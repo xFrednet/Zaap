@@ -189,9 +189,6 @@
     <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Image.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\scene\terrain\TerrainPart.cpp">
       <Filter>Source Files\src\scene\terrain</Filter>
     </ClCompile>
@@ -202,6 +199,9 @@
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Font.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Bitmap.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -353,9 +353,6 @@
     <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Image.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\scene\terrain\TerrainPart.h">
       <Filter>Source Files\src\scene\terrain</Filter>
     </ClInclude>
@@ -366,6 +363,9 @@
       <Filter>Source Files\src\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Font.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Bitmap.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>

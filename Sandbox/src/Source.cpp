@@ -1,4 +1,5 @@
 #include <Zaap.h>
+#include <graphics/Font.h>
 
 using namespace zaap;
 using namespace math;
@@ -174,7 +175,7 @@ void loadEntitys()
 	{
 		API::Texture::CreateTexture2D("zaap", "res/zaapLogo.png");
 		mesh = (TexturedMesh*)Loader::LoadOBJFile("zaap", "res/zaapFrame.obj");
-		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("zaap"));
+		mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("font"));
 		MeshManager::AddMesh(mesh);
 
 		v = Vec3(-7, 5, 0);
@@ -264,6 +265,7 @@ int main(void)
 	scene_ = new Scene();
 	
 	Test t;
+	Font f("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
 	loadEntitys();
 
 	t.start();

@@ -6,7 +6,7 @@
 #include <graphics/API/Texture2D.h>
 
 namespace zaap { namespace graphics {
-	class Image;
+	class Bitmap;
 
 	class ZAAP_API TextureManager
 	{

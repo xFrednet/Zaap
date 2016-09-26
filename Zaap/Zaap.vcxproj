@@ -156,7 +156,7 @@
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp" />
     <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Font.cpp" />
-    <ClCompile Include="src\graphics\Image.cpp" />
+    <ClCompile Include="src\graphics\Bitmap.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
@@ -208,7 +208,7 @@
     <ClInclude Include="src\graphics\API\VertexBuffer.h" />
     <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
     <ClInclude Include="src\graphics\Font.h" />
-    <ClInclude Include="src\graphics\Image.h" />
+    <ClInclude Include="src\graphics\Bitmap.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Color.h" />

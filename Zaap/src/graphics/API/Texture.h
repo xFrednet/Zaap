@@ -7,7 +7,7 @@
 
 namespace zaap { namespace graphics { 
 	
-	class Image;
+	class Bitmap;
 	namespace API {
 	class Texture2D;
 
@@ -20,7 +20,7 @@ namespace zaap { namespace graphics {
 	};
 
 	/*This class is a Polymorphic class for the representation of a texture in Graphic Ram.
-	For direct Texture Representation and the ability to read Image parts use zaap::graphics::Image
+	For direct Texture Representation and the ability to read Bitmap parts use zaap::graphics::Bitmap
 	*/
 	class ZAAP_API Texture
 	{
@@ -38,7 +38,7 @@ namespace zaap { namespace graphics {
 		// texture creation
 		static Texture2D* CreateTexture2D(char const* name, char const* filePath, bool addToTextureManager = true);
 		static Texture2D* CreateTexture2D(String name, String filePath, bool addToTextureManager = true);
-		static Texture2D* CreateTexture2D(String name, Image image, bool addToTextureManager = true);
+		static Texture2D* CreateTexture2D(String name, Bitmap bitmap, bool addToTextureManager = true);
 		
 		static void Cleanup();
 

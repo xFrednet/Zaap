@@ -3,7 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <graphics/Image.h>
+#include <graphics/Bitmap.h>
 #include <graphics/API/Texture2D.h>
 #include <graphics/API/DXContext.h>
 
@@ -22,7 +22,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	public:
 		DXTexture2D(String name, String filePath);
-		DXTexture2D(String name, Image image);
+		DXTexture2D(String name, Bitmap image);
 
 	protected:
 		void init(byte const *byte);

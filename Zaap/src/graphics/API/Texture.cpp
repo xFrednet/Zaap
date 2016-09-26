@@ -1,7 +1,7 @@
 #include "Texture.h"
 
 #include <graphics/DX/DXTexture2D.h>
-#include <graphics/Image.h>
+#include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
 #include <util/Console.h>
 
@@ -35,7 +35,7 @@ namespace zaap { namespace graphics { namespace API {
 
 		return texture;
 	}
-	Texture2D* Texture::CreateTexture2D(String name, Image image, bool addToTextureManager)
+	Texture2D* Texture::CreateTexture2D(String name, Bitmap image, bool addToTextureManager)
 	{
 		Texture2D* texture = new DX::DXTexture2D(name, image);
 

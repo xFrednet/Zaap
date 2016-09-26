@@ -87,7 +87,7 @@ namespace zaap { namespace scene {
 	void Terrain::initVertices(String heightMapFile, String texMapFile)
 	{
 
-		graphics::Image heightMap(heightMapFile.c_str());
+		graphics::Bitmap heightMap(heightMapFile.c_str());
 
 		//error check
 		m_VCountHorizontal = heightMap.getWidth();
@@ -125,7 +125,7 @@ namespace zaap { namespace scene {
 
 		//other Vertex Data
 		{
-			graphics::Image texMap(texMapFile.c_str());
+			graphics::Bitmap texMap(texMapFile.c_str());
 
 			float texIncrease = 1.0f / m_TerrainDesc.VerticesPerTexture;
 			for (y = 0; y < m_VCountVertical; y++)
