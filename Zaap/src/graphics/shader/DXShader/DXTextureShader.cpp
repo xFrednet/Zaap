@@ -22,7 +22,7 @@ namespace zaap { namespace graphics { namespace DX {
 		} else
 		{
 			ZAAP_ALERT("DXTextureShader: compiling failed");
-			system("pause"); //TODO remove Debugcode
+			system("pause"); //TODO remove DebugCode
 		}
 
 		//
@@ -31,7 +31,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER), &m_MatrixBufferStruct))
 			{
-				DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer")
+				DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer");
 			} else
 			{
 				ZAAP_ERROR("DXTextureShader: Could not create m_MarixBuffer");

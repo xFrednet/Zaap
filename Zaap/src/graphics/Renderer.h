@@ -6,6 +6,7 @@
 #include <graphics/light/LightSetup.h>
 #include <scene/terrain/Terrain.h>
 #include <graphics/camera/ViewFrustum.h>
+#include "shader/fontShader/FontShader2D.h"
 
 namespace zaap { namespace graphics {
 
@@ -19,6 +20,8 @@ namespace zaap { namespace graphics {
 		float m_NearPlane = 0.1f;
 		float m_FarPlane = 1000.0f;
 		math::Mat4 m_ProjectionMatrix;
+
+		FontShader2D* m_FontShader2D;
 
 		//Init
 		virtual void init() = 0;
@@ -42,6 +45,10 @@ namespace zaap { namespace graphics {
 	public:
 		//Init
 		static void Init();
+
+		//Shader stuff
+		static void StartFontShader2D();
+		static FontShader2D* GetFontShader2D();
 
 		//Render
 		static void Render(const scene::Terrain const *terrainTile);

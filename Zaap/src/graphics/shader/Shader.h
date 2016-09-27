@@ -8,6 +8,8 @@ namespace zaap { namespace graphics {
 	
 	class ZAAP_API Shader
 	{
+	private:
+		friend class FontShader2D;
 	protected:
 		struct VS_MATRIX_BUFFER
 		{

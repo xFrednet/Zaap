@@ -93,7 +93,7 @@ namespace zaap { namespace graphics { namespace DX {
 			D3D11_DEPTH_STENCIL_DESC dssDesc;
 
 			//Depth test
-			dssDesc.DepthEnable		= true;
+			dssDesc.DepthEnable		= false;
 			dssDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ALL;
 			dssDesc.DepthFunc		= D3D11_COMPARISON_LESS_EQUAL;
 			
@@ -135,7 +135,7 @@ namespace zaap { namespace graphics { namespace DX {
 		if (m_TerrainShader)m_TerrainShader->loadProjectionMatrix(m_ProjectionMatrix);
 
 		//
-		// release als renderRargetViews
+		// release all renderTargetViews
 		//
 		{
 			m_Devcon->OMGetRenderTargets(0, nullptr, nullptr);

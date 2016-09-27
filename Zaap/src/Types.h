@@ -4,7 +4,7 @@
 #include "util/StringUtil.h"
 
 
-typedef unsigned int uint;
+typedef unsigned int        uint;
 
 typedef signed char         int8;
 typedef signed short        int16;

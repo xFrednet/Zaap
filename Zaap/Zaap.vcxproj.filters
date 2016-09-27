@@ -61,6 +61,9 @@
     <Filter Include="Source Files\src\scene\terrain">
       <UniqueIdentifier>{017c9b12-69c4-4e59-a093-efaad5082d0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\graphics\shader\fontShader">
+      <UniqueIdentifier>{243454f3-9414-479e-9fa2-c621b05d4441}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -203,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="src\graphics\Bitmap.cpp">
       <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\fontShader\FontShader2D.cpp">
+      <Filter>Source Files\src\graphics\shader\fontShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\fontShader\DXFontShader2D.cpp">
+      <Filter>Source Files\src\graphics\shader\fontShader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,6 +377,12 @@
     <ClInclude Include="src\graphics\Bitmap.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\shader\fontShader\FontShader2D.h">
+      <Filter>Source Files\src\graphics\shader\fontShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\fontShader\DXFontShader2D.h">
+      <Filter>Source Files\src\graphics\shader\fontShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Sandbox\DXTextureShader.shader">
@@ -378,6 +393,9 @@
     </None>
     <None Include="..\Sandbox\DXTerrainShader.shader">
       <Filter>Source Files\src\graphics\shader\DXShader</Filter>
+    </None>
+    <None Include="..\Sandbox\DXFontShader2D.shader">
+      <Filter>Source Files\src\graphics\shader\fontShader</Filter>
     </None>
   </ItemGroup>
 </Project>

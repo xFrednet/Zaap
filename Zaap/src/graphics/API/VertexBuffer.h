@@ -5,12 +5,12 @@
 
 namespace zaap { namespace graphics { namespace API {
 	
+	//TODO add vertex buffer without a IndexBuffer
+
 	class ZAAP_API VertexBuffer
 	{
 	private:
-	
 		static std::vector<VertexBuffer*> s_VertexBuffers;
-
 
 	protected:
 		static uint s_TotalDrawCount;
@@ -23,7 +23,7 @@ namespace zaap { namespace graphics { namespace API {
 		//Static values
 		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount);
 		static void Cleanup();
-		//drawcount
+		//draw count
 		static uint getTotalDrawCount();
 		static void clearTotalDrawCount();
 
@@ -34,6 +34,8 @@ namespace zaap { namespace graphics { namespace API {
 		virtual void unbind(uint slot) = 0;
 
 		virtual void draw() = 0;
+		virtual void draw(const uint &count) = 0;
+		virtual void draw(const uint &start, const uint &count) = 0;
 
 		virtual void cleanup() = 0;
 	};

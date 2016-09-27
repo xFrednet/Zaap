@@ -2,6 +2,7 @@
 
 #include "DX/DXRenderer.h"
 #include "util/Console.h"
+#include "shader/fontShader/DXFontShader2D.h"
 
 namespace zaap { namespace graphics {
 		
@@ -23,10 +24,21 @@ namespace zaap { namespace graphics {
 	void Renderer::Init()
 	{
 		s_Instance = new DX::DXRenderer();
+		s_Instance->m_FontShader2D = new DX::DXFontShader2D();
 
 		s_Instance->caluclateProjectionMatrix();
 
 		s_Instance->init();
+	}
+
+	void Renderer::StartFontShader2D()
+	{
+		((DX::DXFontShader2D*)s_Instance->m_FontShader2D)->start();
+	}
+
+	FontShader2D* Renderer::GetFontShader2D()
+	{
+		return s_Instance->m_FontShader2D;
 	}
 
 	void Renderer::Render(const scene::Terrain const *terrainTile)
@@ -66,6 +78,11 @@ namespace zaap { namespace graphics {
 	void Renderer::Cleanup()
 	{
 		s_Instance->cleanup();
+		
+		//fontShader
+		((DX::DXFontShader2D*)s_Instance->m_FontShader2D)->cleanup();
+		delete ((DX::DXFontShader2D*)s_Instance->m_FontShader2D);
+
 		delete s_Instance;
 		ZAAP_CLEANUP_LOG("Renderer");
 	}

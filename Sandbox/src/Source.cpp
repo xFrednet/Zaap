@@ -17,6 +17,7 @@ Entity* m2 = nullptr;
 Entity* m3 = nullptr;
 Entity* lightCube = nullptr;
 Terrain* terrain_ = nullptr;
+Font font_;
 
 void loadEntitys()
 {
@@ -257,6 +258,8 @@ public:
 		Application::render();
 
 		terrain_->render();
+
+		font_.render("A");
 	}
 };
 
@@ -265,7 +268,7 @@ int main(void)
 	scene_ = new Scene();
 	
 	Test t;
-	Font f("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
+	font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
 	loadEntitys();
 
 	t.start();

@@ -29,6 +29,8 @@ namespace zaap { namespace graphics { namespace DX {
 		void unbind(uint slot) override;
 
 		void draw() override;
+		void draw(const uint& count) override;
+		void draw(const uint &start, const uint &count) override;
 
 		void cleanup() override;
 	};

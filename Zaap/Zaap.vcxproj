@@ -178,6 +178,8 @@
     <ClCompile Include="src\graphics\shader\DXShader\DXShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXTerrainShader.cpp" />
     <ClCompile Include="src\graphics\shader\DXShader\DXTextureShader.cpp" />
+    <ClCompile Include="src\graphics\shader\fontShader\DXFontShader2D.cpp" />
+    <ClCompile Include="src\graphics\shader\fontShader\FontShader2D.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathHelper.cpp" />
@@ -230,6 +232,8 @@
     <ClInclude Include="src\graphics\shader\DXShader\DXShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXTerrainShader.h" />
     <ClInclude Include="src\graphics\shader\DXShader\DXTextureShader.h" />
+    <ClInclude Include="src\graphics\shader\fontShader\DXFontShader2D.h" />
+    <ClInclude Include="src\graphics\shader\fontShader\FontShader2D.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
     <ClInclude Include="src\maths\Mat4.h" />
@@ -248,6 +252,7 @@
     <ClInclude Include="src\Zaap.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Sandbox\DXFontShader2D.shader" />
     <None Include="..\Sandbox\DXMaterialShader.shader" />
     <None Include="..\Sandbox\DXTerrainShader.shader" />
     <None Include="..\Sandbox\DXTextureShader.shader" />
