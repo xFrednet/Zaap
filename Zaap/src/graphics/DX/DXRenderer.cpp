@@ -211,12 +211,20 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 
 	//
-	// Setters / Loaders
+	// Camera
 	//
 	void DXRenderer::setCamera(Camera* camera)
 	{
 		m_Camera = camera;
 	}
+	Camera* DXRenderer::getCamera()
+	{
+		return m_Camera;
+	}
+
+	//
+	// Setters / Loaders
+	//
 	void DXRenderer::setRenderTargets(ID3D11RenderTargetView* renderTargetView, ID3D11DepthStencilView* depthStencilView) const
 	{
 		m_Devcon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);

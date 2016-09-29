@@ -5,13 +5,14 @@
 
 #include <maths/Mat4.h>
 #include <graphics/Color.h>
+#include <graphics/shader/Shader.h>
 
 namespace zaap { namespace graphics {
 	
 	class ZAAP_API FontShader2D
 	{
 	protected:
-		math::Mat4 m_TransformationMatrix;
+		Shader::VS_MATRIX_BUFFER m_TransformationMatrix;
 		virtual void loadMatrixBuffer() const  = 0;
 
 		Color m_TextColor;
@@ -21,7 +22,7 @@ namespace zaap { namespace graphics {
 		{
 		}
 
-		void setTransformationMatrix(math::Mat4 matrix);
+		void setTransformationMatrix(Shader::VS_MATRIX_BUFFER matrix);
 		void setColor(Color color);
 	};
 

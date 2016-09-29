@@ -30,8 +30,10 @@ namespace zaap { namespace graphics {
 		virtual void render(const scene::Terrain const *terrainTile) = 0;
 		virtual void render(Entity* model) = 0;
 
-		//Setters
+		//Camera
 		virtual void setCamera(Camera* camera) = 0;
+		virtual Camera* getCamera() = 0;
+		//Setters
 		virtual void loadLightSetup(LightSetup* lightSetup) = 0;
 
 		//Util
@@ -55,8 +57,11 @@ namespace zaap { namespace graphics {
 		static void Render(Entity* model);
 		static void RenderEntityArray(const std::vector<Entity*>& models);
 		
-		//Setters
+		//Camera
 		static void SetCamera(Camera* camera);
+		static Camera* GetCamera();
+
+		//Setters
 		static void LoadLightSetup(LightSetup* lightSetup);
 
 		//Util

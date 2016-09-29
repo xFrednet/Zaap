@@ -24,7 +24,7 @@ namespace zaap { namespace graphics { namespace DX {
 		// Matrix Buffer
 		//
 		{
-			if (CreateConstBuffer(m_MatrixBuffer, sizeof(math::Vec4), &m_TransformationMatrix))
+			if (CreateConstBuffer(m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER), &m_TransformationMatrix))
 			{
 				DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
 			} else
@@ -57,7 +57,7 @@ namespace zaap { namespace graphics { namespace DX {
 		D3D11_MAPPED_SUBRESOURCE ms;
 
 		devcon->Map(m_MatrixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &m_TransformationMatrix, sizeof(math::Mat4));
+		memcpy(ms.pData, &m_TransformationMatrix, sizeof(VS_MATRIX_BUFFER));
 		devcon->Unmap(m_MatrixBuffer, NULL);
 	}
 	void DXFontShader2D::loadTextColor() const

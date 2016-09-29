@@ -2,7 +2,7 @@
 
 namespace zaap { namespace graphics {
 	
-	void FontShader2D::setTransformationMatrix(math::Mat4 matrix)
+	void FontShader2D::setTransformationMatrix(Shader::VS_MATRIX_BUFFER matrix)
 	{
 		m_TransformationMatrix = matrix;
 

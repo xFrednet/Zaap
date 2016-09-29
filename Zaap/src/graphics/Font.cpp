@@ -335,14 +335,17 @@ namespace zaap { namespace graphics {
 		m_VertexBuffer->bind(0);
 		m_CharSheet->bind(0);
 
-		temp -= 0.01;
+		Shader::VS_MATRIX_BUFFER b;
+		b.TransformationMatrix = CreateTransformationMatrix(math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3(0.0f, 180, 0.0f), math::Vec3(0.1f, 0.1f, 0.1f));
+		b.ProjectionMatrix = Renderer::GetProjectionMatrix();
+		b.ViewMatrix = Renderer::GetCamera()->getViewMatrix();
 
 		for (uint i = 0; i < string.size(); i++)
 		{
-			shader->setTransformationMatrix(CreateFontTransformationMatrix(math::Vec3(0.0f, 0.0f, 0.0f), m_Size));
+			shader->setTransformationMatrix(b);
 			
-			m_VertexBuffer->draw(getCharIndex(string.at(i)), 6);
-			m_VertexBuffer->draw(0, getCharCount() * 6);
+			m_VertexBuffer->draw(getCharIndex(string.at(i)) * 6, 6);
+			//m_VertexBuffer->draw(0, getCharCount() * 6);
 		}
 	}
 

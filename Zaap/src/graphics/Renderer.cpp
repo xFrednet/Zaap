@@ -60,11 +60,19 @@ namespace zaap { namespace graphics {
 	}
 
 	//
-	//Setters
+	//Camera
 	//
 	void Renderer::SetCamera(Camera* camera)
 	{ s_Instance->setCamera(camera); }
 
+	Camera* Renderer::GetCamera()
+	{
+		return s_Instance->getCamera();
+	}
+
+	//
+	//Setters
+	//
 	void Renderer::LoadLightSetup(LightSetup* lightSetup)
 	{
 		s_Instance->loadLightSetup(lightSetup);

@@ -1,9 +1,11 @@
 /////////////
 // GLOBALS //
 /////////////
-cbuffer Matrices : register(b0)
+cbuffer matrices : register(b0)
 {
+	float4x4 ProjectionMatrix;
 	float4x4 TransformationMatrix;
+	float4x4 ViewMatrix;
 }
 
 //////////////
@@ -26,7 +28,8 @@ VSOut VShader(VSInput input)
 	VSOut output;
 
 	output.Position = mul(TransformationMatrix, input.Position);
-	output.Position = input.Position;
+	//output.Position = mul(ViewMatrix, output.Position);
+	//output.Position = mul(ProjectionMatrix, output.Position);
 	output.TexCoord = input.TexCoord;
 
 	return output;
@@ -49,7 +52,7 @@ float4 PShader(VSOut input) : SV_TARGET
 {
 	float4 color = charSheet.Sample(charSampler, input.TexCoord);
 	
-	return float4(0.0, 0.0, 0.0, 1.0);
+	//return float4(0.0, 0.0, 0.0, 1.0);
 	//returns nothing if the color is #ff000000
 	if (color.x == 0.0f && color.x == 0.0f && color.z == 0.0f) {
 		return float4(0.0, 0.0, 0.0, 0.0);

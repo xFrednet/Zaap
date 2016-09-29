@@ -11,13 +11,13 @@ namespace zaap { namespace graphics {
 	private:
 		friend class FontShader2D;
 	protected:
+	public:
 		struct VS_MATRIX_BUFFER
 		{
 			math::Mat4 ProjectionMatrix;
 			math::Mat4 TransformationMatrix;
 			math::Mat4 ViewMatrix;
 		};
-	public:
 		virtual void start() const = 0;
 		virtual void stop() const = 0;
 

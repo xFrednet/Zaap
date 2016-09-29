@@ -48,8 +48,11 @@ namespace zaap { namespace graphics { namespace DX {
 
 		void resize(uint width, uint height) override;
 
-		//setters / loaders
+		//Camera
 		void setCamera(Camera* camera) override;
+		Camera* getCamera() override;
+
+		//setters / loaders
 		void setRenderTargets(ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView) const;
 		void loadLightSetup(LightSetup* lightSetup) override;
 
