@@ -22,15 +22,6 @@ namespace zaap { namespace graphics { namespace DX {
 		initDepthBuffer();
 		
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		m_TextureShader = new DXTextureShader();
-		m_MaterialShader = new DXMaterialShader();
-		m_TerrainShader = new DXTerrainShader();
-
-		caluclateProjectionMatrix();
-		m_MaterialShader->loadProjectionMatrix(m_ProjectionMatrix);
-		m_TextureShader->loadProjectionMatrix(m_ProjectionMatrix);
-		m_TerrainShader->loadProjectionMatrix(m_ProjectionMatrix);
 	}
 
 	//
@@ -128,11 +119,11 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXRenderer::resize(uint width, uint height)
 	{
 		//
-		// update Projectionmatrix
+		// update ProjectionMatrix
 		//
-		if (m_MaterialShader)m_MaterialShader->loadProjectionMatrix(m_ProjectionMatrix);
-		if (m_TextureShader)m_TextureShader->loadProjectionMatrix(m_ProjectionMatrix);
-		if (m_TerrainShader)m_TerrainShader->loadProjectionMatrix(m_ProjectionMatrix);
+		if (m_MaterialShader)m_MaterialShader->setProjectionMatrix(m_ProjectionMatrix);
+		if (m_TextureShader)m_TextureShader->setProjectionMatrix(m_ProjectionMatrix);
+		if (m_TerrainShader)m_TerrainShader->setProjectionMatrix(m_ProjectionMatrix);
 
 		//
 		// release all renderTargetViews
@@ -232,7 +223,7 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 	void DXRenderer::loadLightSetup(LightSetup* lightSetup)
 	{
-		m_TextureShader->loadLight(lightSetup->getLight(0));
+		m_TextureShader->loadLightSetup(lightSetup);
 		m_MaterialShader->loadLightSetup(lightSetup);
 		m_TerrainShader->loadLightSetup(lightSetup);
 	}
@@ -247,9 +238,12 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		m_TextureShader->loadViewMatrix(m_Camera->getViewMatrix());
-		m_MaterialShader->loadCamera(m_Camera);
-		m_TerrainShader->loadViewMatrix(m_Camera->getViewMatrix());
+		math::Mat4 matrix = m_Camera->getViewMatrix();
+		m_TextureShader->setViewMatrix(matrix);
+		m_TerrainShader->setViewMatrix(matrix);
+		m_MaterialShader->setViewMatrix(matrix);
+
+		m_MaterialShader->setCameraPosition(m_Camera->getPosition());
 
 		m_Camera->calculateViewFrustum();
 
@@ -260,7 +254,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_TerrainShader->start();
 
-		m_TerrainShader->loadTransformationMatrix(math::Mat4(1.0f));
+		m_TerrainShader->setTransformationMatrix(math::Mat4(1.0f));
 
 	}
 
@@ -278,7 +272,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			((TexturedMesh*)mesh)->getTexture()->bind(0);
 
-			m_TextureShader->loadTransformationMatrix(matrix_);
+			m_TextureShader->setTransformationMatrix(matrix_);
 
 			mesh->getVertexBuffer()->bind(0);
 		} else if (mesh->getType() == MeshType::MATERIAL_MESH)
@@ -286,7 +280,7 @@ namespace zaap { namespace graphics { namespace DX {
 			m_MaterialShader->start();
 			MaterialMesh* mMesh = (MaterialMesh*)mesh;
 
-			m_MaterialShader->loadTransformationMatrix(matrix_);
+			m_MaterialShader->setTransformationMatrix(matrix_);
 			
 			m_MaterialShader->loadMaterials(mMesh->getMaterials(), mMesh->getMaterialCount());
 

@@ -2,6 +2,7 @@
 
 #include <Common.h>
 #include <Types.h>
+#include <util/UUID.h>
 
 namespace zaap { namespace graphics { namespace API {
 	
@@ -9,27 +10,33 @@ namespace zaap { namespace graphics { namespace API {
 
 	class ZAAP_API VertexBuffer
 	{
+		//Static values
 	private:
 		static std::vector<VertexBuffer*> s_VertexBuffers;
-
-	protected:
 		static uint s_TotalDrawCount;
-		uint m_VertexCount;
-		
-		VertexBuffer(uint vertexCount);
-
+		//Static methods
 	public:
-		
-		//Static values
 		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount);
+		static void Delete(VertexBuffer* vertexbuffer);
+		static void Delete(UUID uuid);
 		static void Cleanup();
+
 		//draw count
 		static uint getTotalDrawCount();
 		static void clearTotalDrawCount();
 
+	protected:
+		uint m_VertexCount;
+		UUID m_uuid;
+
+		VertexBuffer(uint vertexCount);
+
+	public:
+		
 		//class methods
 		uint getVertexCount(void) const;
-		
+		UUID getUUID(void) const;
+
 		virtual void bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;
 

@@ -23,12 +23,12 @@
 
 
 #ifdef ZAAP_DEBUG
-#define DXNAME(x, y) /*x is the DX object, y is the name*/ \
-	if (x) { /* nullptr == false */  \
-		String s(y); \
-		x->SetPrivateData(WKPDID_D3DDebugObjectName, s.size(), s.c_str()); \
+#define DXNAME(x, y) { /*x is the DX object, y is the name*/ \
+		if (x) { /* nullptr == false */  \
+			String s(y); \
+			x->SetPrivateData(WKPDID_D3DDebugObjectName, s.size(), s.c_str()); \
+		}\
 	}
-	
 #else // ZAAP_DEBUG
 #	define DXNAME(x, y)
 #endif // ZAAP_DEBUG

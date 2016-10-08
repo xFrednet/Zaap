@@ -3,7 +3,6 @@
 #include <util/Console.h>
 #include <graphics/Material.h>
 #include <graphics/MaterialManager.h>
-#include <graphics/shader/DXShader/DXMaterialShader.h>
 #include "mesh/TexturedMesh.h"
 #include "mesh/MaterialMesh.h"
 

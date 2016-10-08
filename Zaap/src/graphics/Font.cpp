@@ -213,7 +213,7 @@ namespace zaap { namespace graphics {
 			//filling charInfo
 			{
 				charInfo.TexMinCoords = font.getPixelCoord(bitMapX, bitmapY);
-				charInfo.TexMaxCoords = font.getPixelCoord(bitMapX + charMatirx.Width, bitmapY + charMatirx.Height);
+				charInfo.TexMaxCoords = font.getPixelCoord(bitMapX + uint(charMatirx.Width), bitmapY + uint(charMatirx.Height));
 			}
 
 			copyToBitmap(bitMapX, bitmapY, bitmap, font.m_Bitmap);
@@ -223,12 +223,11 @@ namespace zaap { namespace graphics {
 			//adding the char
 			font.m_CharInfo[i] = charInfo;
 
-			bitMapX += charMatirx.Width;
+			bitMapX += uint(charMatirx.Width);
 		}
 
 		// generate the texture
 		font.m_CharSheet = API::Texture::CreateTexture2D("font", font.m_Bitmap);
-		font.generateVertexBuffer();
 
 		//cleaning up the FreeType library
 		FT_Done_Face(face);
@@ -241,73 +240,12 @@ namespace zaap { namespace graphics {
 	}
 
 	//
-	// Private util methods
-	//
-	void Font::generateVertexBuffer()
-	{
-		using namespace math;
-
-		//every char has 4 vertices
-		std::vector<ZA_CharVertex> vertices(getCharCount() * 4);
-		//every char has 6 indices
-		std::vector<uint> indices(getCharCount() * 6);
-		float zValue = 0.0f;
-
-		// v0   v3
-		//
-		// v1   v2
-		uint iIndex = 0;
-		uint v0, v1, v2, v3;
-		ZA_CharMarix matrix;
-		ZA_CharacterInfo charInfo;
-		for (uint i = 0; i < getCharCount(); i++)
-		{
-			charInfo = m_CharInfo[i];
-			matrix = charInfo.CharMatirx;
-			v0 = i * 4;
-			v1 = v0 + 1;
-			v2 = v0 + 2;
-			v3 = v0 + 3;
-
-			// v0 v1 v2
-			indices[iIndex++] = v0;
-			indices[iIndex++] = v1;
-			indices[iIndex++] = v2;
-
-			// v0 v2 v3
-			indices[iIndex++] = v0;
-			indices[iIndex++] = v2;
-			indices[iIndex++] = v3;
-
-			// v0
-			vertices[v0].Position = Vec3(matrix.OrigenXOffset, matrix.OrigenYOffset, zValue);
-			vertices[v0].TexCoord = charInfo.TexMinCoords;
-
-			// v1
-			vertices[v1].Position = Vec3(matrix.OrigenXOffset, matrix.OrigenYOffset + matrix.Height, zValue);
-			vertices[v1].TexCoord = Vec2(charInfo.TexMinCoords.X, charInfo.TexMaxCoords.Y);
-
-			// v2
-			vertices[v2].Position = Vec3(matrix.OrigenXOffset + matrix.Width, matrix.OrigenYOffset + matrix.Height, zValue);
-			vertices[v2].TexCoord = charInfo.TexMaxCoords;
-
-			// v3
-			vertices[v3].Position = Vec3(matrix.OrigenXOffset + matrix.Width, matrix.OrigenYOffset, zValue);
-			vertices[v3].TexCoord = Vec2(charInfo.TexMaxCoords.X, charInfo.TexMinCoords.Y);
-		}
-
-		m_VertexBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size());
-	}
-
-	//
 	// Class Members
 	//
 	Font::Font()
 		: m_Size(11),
 		m_Chars(),
 		m_Bitmap(ZAAP_FONT_DEFAULT_BITMAP_SIZE, ZAAP_FONT_DEFAULT_BITMAP_SIZE, 32),
-		m_CharSheet(nullptr),
-		m_VertexBuffer(nullptr),
 		m_CharInfo(0)
 	{
 	}
@@ -316,37 +254,75 @@ namespace zaap { namespace graphics {
 		m_Chars(chars),
 		m_Bitmap(ZAAP_FONT_DEFAULT_BITMAP_SIZE, ZAAP_FONT_DEFAULT_BITMAP_SIZE, 32), 
 		m_CharSheet(nullptr),
-		m_VertexBuffer(nullptr),
 		m_CharInfo(chars.size())
 	{
 	}
 
-	//
-	// Render
-	//
-	float temp = 1.0f;
-	void Font::render(String string) const
+	API::VertexBuffer* Font::getVertexBuffer(String string)
 	{
-		Renderer::StartFontShader2D();
-		FontShader2D* shader = Renderer::GetFontShader2D();
+		using namespace std;
+		using namespace math;
 
-		shader->setColor(Color(1.0f, 1.0f, 1.0f, 1.0f));
+		vector<ZA_CharVertex> vertices(string.size() * 4);
+		vector<uint> indices(string.size() * 6);
 
-		m_VertexBuffer->bind(0);
-		m_CharSheet->bind(0);
+		float zValue = 0.0f;
 
-		Shader::VS_MATRIX_BUFFER b;
-		b.TransformationMatrix = CreateTransformationMatrix(math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3(0.0f, 180, 0.0f), math::Vec3(0.1f, 0.1f, 0.1f));
-		b.ProjectionMatrix = Renderer::GetProjectionMatrix();
-		b.ViewMatrix = Renderer::GetCamera()->getViewMatrix();
-
+		//the x value of the character
+		float drawX = 0.0f;
+		// v0  v3
+		// v1  v2
+		uint v0, v1, v2, v3;
+		//Index of the indices
+		uint iIndex = 0;
+		//the current character
+		char c;
+		ZA_CharacterInfo cInfo;
+		ZA_CharMarix cMatrix;
 		for (uint i = 0; i < string.size(); i++)
 		{
-			shader->setTransformationMatrix(b);
+			c = string.at(i);
+			cInfo = m_CharInfo[getCharIndex(c)];
+			cMatrix = cInfo.CharMatirx;
+			v0 = i * 4;
+			v1 = i * 4 + 1;
+			v2 = i * 4 + 2;
+			v3 = i * 4 + 3;
 			
-			m_VertexBuffer->draw(getCharIndex(string.at(i)) * 6, 6);
-			//m_VertexBuffer->draw(0, getCharCount() * 6);
+			//setting indices
+			{
+				// v0, v1, v2
+				indices[iIndex++] = v0;
+				indices[iIndex++] = v1;
+				indices[iIndex++] = v2;
+
+				// v0, v3, v2
+				indices[iIndex++] = v0;
+				indices[iIndex++] = v2;
+				indices[iIndex++] = v3;
+			}
+
+			//v0
+			vertices[v0].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset, zValue);
+			vertices[v0].TexCoord = cInfo.TexMinCoords;
+
+			//v1
+			vertices[v1].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
+			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
+
+			//v2
+			vertices[v2].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
+			vertices[v2].TexCoord = cInfo.TexMaxCoords;
+
+
+			//v3
+			vertices[v3].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset, zValue);
+			vertices[v1].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
+
+			drawX += cMatrix.TotalWidth;
 		}
+
+		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size());
 	}
 
 	//

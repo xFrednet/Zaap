@@ -3,6 +3,9 @@
 #include "DX/DXRenderer.h"
 #include "util/Console.h"
 #include "shader/fontShader/DXFontShader2D.h"
+#include "shader/textureShader/DXTextureShader.h"
+#include "shader/materialShader/DXMaterialShader.h"
+#include "shader/terrainShader/DXTerrainShader.h"
 
 namespace zaap { namespace graphics {
 		
@@ -24,7 +27,12 @@ namespace zaap { namespace graphics {
 	void Renderer::Init()
 	{
 		s_Instance = new DX::DXRenderer();
+
+		//Shader init
 		s_Instance->m_FontShader2D = new DX::DXFontShader2D();
+		s_Instance->m_TextureShader = new DX::DXTextureShader();
+		s_Instance->m_MaterialShader = new DX::DXMaterialShader();
+		s_Instance->m_TerrainShader = new DX::DXTerrainShader();
 
 		s_Instance->caluclateProjectionMatrix();
 
@@ -33,7 +41,7 @@ namespace zaap { namespace graphics {
 
 	void Renderer::StartFontShader2D()
 	{
-		((DX::DXFontShader2D*)s_Instance->m_FontShader2D)->start();
+		s_Instance->m_FontShader2D->start();
 	}
 
 	FontShader2D* Renderer::GetFontShader2D()
@@ -88,8 +96,8 @@ namespace zaap { namespace graphics {
 		s_Instance->cleanup();
 		
 		//fontShader
-		((DX::DXFontShader2D*)s_Instance->m_FontShader2D)->cleanup();
-		delete ((DX::DXFontShader2D*)s_Instance->m_FontShader2D);
+		s_Instance->m_FontShader2D->cleanup();
+		delete s_Instance->m_FontShader2D;
 
 		delete s_Instance;
 		ZAAP_CLEANUP_LOG("Renderer");

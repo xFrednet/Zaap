@@ -259,21 +259,27 @@ public:
 
 		terrain_->render();
 
-		font_.render("A");
 	}
 };
 
 int main(void)
 {
-	scene_ = new Scene();
-	
-	Test t;
-	font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
-	loadEntitys();
+	zaap::UUID id;
+	RandomUUID(&id);
+	cout << "RandomUUID: " << id.toString() << endl;
 
-	t.start();
+	//source
+	{
+		scene_ = new Scene();
 
-	t.cleanup();
+		Test t;
+		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
+		loadEntitys();
 
-	return 0;
+		t.start();
+
+		t.cleanup();
+
+		return 0;
+	}
 }

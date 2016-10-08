@@ -7,6 +7,9 @@
 #include <scene/terrain/Terrain.h>
 #include <graphics/camera/ViewFrustum.h>
 #include "shader/fontShader/FontShader2D.h"
+#include "shader/terrainShader/TerrainShader.h"
+#include "shader/textureShader/TextureShader.h"
+#include "shader/materialShader/MaterialShader.h"
 
 namespace zaap { namespace graphics {
 
@@ -22,6 +25,9 @@ namespace zaap { namespace graphics {
 		math::Mat4 m_ProjectionMatrix;
 
 		FontShader2D* m_FontShader2D;
+		MaterialShader *m_MaterialShader;
+		TextureShader *m_TextureShader;
+		TerrainShader *m_TerrainShader;
 
 		//Init
 		virtual void init() = 0;

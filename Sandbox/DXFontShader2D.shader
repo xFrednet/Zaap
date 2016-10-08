@@ -3,9 +3,7 @@
 /////////////
 cbuffer matrices : register(b0)
 {
-	float4x4 ProjectionMatrix;
 	float4x4 TransformationMatrix;
-	float4x4 ViewMatrix;
 }
 
 //////////////
@@ -28,8 +26,6 @@ VSOut VShader(VSInput input)
 	VSOut output;
 
 	output.Position = mul(TransformationMatrix, input.Position);
-	//output.Position = mul(ViewMatrix, output.Position);
-	//output.Position = mul(ProjectionMatrix, output.Position);
 	output.TexCoord = input.TexCoord;
 
 	return output;

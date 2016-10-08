@@ -9,10 +9,10 @@
 
 namespace zaap { namespace graphics {
 	
-	class ZAAP_API FontShader2D
+	class ZAAP_API FontShader2D : public Shader
 	{
 	protected:
-		Shader::VS_MATRIX_BUFFER m_TransformationMatrix;
+		ZA_VS_MATRIX_BUFFER m_TransformationMatrix;
 		virtual void loadMatrixBuffer() const  = 0;
 
 		Color m_TextColor;
@@ -22,7 +22,7 @@ namespace zaap { namespace graphics {
 		{
 		}
 
-		void setTransformationMatrix(Shader::VS_MATRIX_BUFFER matrix);
+		void setTransformationMatrix(ZA_VS_MATRIX_BUFFER matrix);
 		void setColor(Color color);
 	};
 

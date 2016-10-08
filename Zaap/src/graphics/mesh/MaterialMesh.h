@@ -5,13 +5,14 @@
 
 #include <graphics/mesh/Mesh.h>
 #include <graphics/Material.h>
+#include <graphics/shader/Shader.h>
 
 namespace zaap { namespace graphics {
 	
 	class ZAAP_API MaterialMesh : public Mesh
 	{
 	private:
-		Material m_Materials[8];
+		Material m_Materials[ZAAP_SHADER_MATERIAL_COUNT];
 		uint m_MaterialCount;
 	public:
 		MaterialMesh();

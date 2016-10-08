@@ -1,44 +1,45 @@
-//////////////
-// TYPEDEFS //
-//////////////
-#define SUPPORTET_LIGHT_COUNT 8
-
-struct VSInput
-{
-	float4 position : POSITION;
-	float4 normal : NORMAL;
-	uint material : MATERIAL;
-};
-struct VOut
-{
-	float4 position : SV_POSITION;
-	float3 surfaceNormal : SURFACE_NORMAL;
-	float3 toLightVector[SUPPORTET_LIGHT_COUNT] : TO_LIGHT_VECTOR;
-	float3 viewDirection : VIEW_DIRECTION;
-	uint material : MATERIAL;
-};
-
+#define ZAAP_SHADER_LIGHT_COUNT 4
+#define ZAAP_SHADER_MATERIAL_COUNT 8
 ////////////////
 // VS GLOBALS //
 ////////////////
-cbuffer matrices : register(b0)
+cbuffer VSMatrixBuffer : register(b0)
 {
 	float4x4 ProjectionMatrix;
 	float4x4 TransformationMatrix;
 	float4x4 ViewMatrix;
 }
-cbuffer light : register(b1)
+cbuffer VSLightBuffer : register(b1)
 {
 	uint VSLightCount;
-	float3 padding1;
+	float3 VSLightPadding;
 	
-	float4 lightPosition[SUPPORTET_LIGHT_COUNT];
+	float4 lightPosition[ZAAP_SHADER_LIGHT_COUNT];
 }
-cbuffer scene : register(b2)
+cbuffer VSSceneBuffer : register(b2)
 {
 	float3 cameraPosition;
-	float padding2;
+	float VSScenePadding;
 }
+
+//////////////
+// TYPEDEFS //
+//////////////
+struct VSInput
+{
+	float4 position : POSITION;
+	float4 normal   : NORMAL;
+	uint material   : MATERIAL;
+};
+struct VOut
+{
+	float4 position            : SV_POSITION;
+	float3 surfaceNormal       : SURFACE_NORMAL;
+	uint material              : MATERIAL;
+	float3 viewDirection       : VIEW_DIRECTION;
+	float3 toLightVector[ZAAP_SHADER_LIGHT_COUNT] : TO_LIGHT_VECTOR;
+};
+
 
 //////////////////
 // VertexShader //
@@ -55,18 +56,17 @@ VOut VShader(VSInput input)
 	//Normal
 	output.surfaceNormal = mul(TransformationMatrix, input.normal.xyz);
 	
+	//Material
+	output.material = input.material;
+	
+	//View direction
+	output.viewDirection = worldPosition.xyz - cameraPosition;
+	
 	//Light
 	for (uint i = 0; i < VSLightCount; i++)
 	{
 		output.toLightVector[i] = lightPosition[i].xyz - worldPosition.xyz;
 	}
-	
-
-	//View direction
-	output.viewDirection = worldPosition.xyz - cameraPosition;
-
-	//Material
-	output.material = input.material;
 
 	return output;
 }
@@ -75,24 +75,21 @@ VOut VShader(VSInput input)
 /////////////
 // GLOBALS //
 /////////////
-struct Material
+cbuffer PSLightBuffer : register(b0)
+{
+	uint PSLightCount;
+	float3 AmbientLight;
+	
+	float4 LightColors[ZAAP_SHADER_LIGHT_COUNT];
+}
+struct PSMaterial
 {
 	float3 Color;
 	float Reflectivity;
 };
-
-cbuffer lightColor : register(b0)
+cbuffer PSMaterialBuffer : register(b1)
 {
-	uint PSLightCount;
-	float3 padding;
-
-	float4 ambientLightColor;
-	
-	float4 lightColor[SUPPORTET_LIGHT_COUNT];
-}
-cbuffer materials : register(b1)
-{
-	Material materials[8];
+	PSMaterial materials[ZAAP_SHADER_MATERIAL_COUNT];
 };
 
 /////////////////
@@ -106,22 +103,22 @@ float4 PShader(VOut input) : SV_TARGET
 
 	float3 lightDirection;
 	float brightness, specular, reflection;
-	float3 diffuse = ambientLightColor;
+	float3 diffuse = AmbientLight;
 	for (uint i = 0; i < PSLightCount; i++)
 	{
 		lightDirection = normalize(input.toLightVector[i]);
 		
 		//diffuse
 		brightness = max(dot(normal, lightDirection), 0.0);
-		diffuse += saturate(brightness * lightColor[i].xyz);
+		diffuse += saturate(brightness * LightColors[i].xyz);
 
 		//specular
 		reflection = normalize(reflect(lightDirection, normal));
 		specular += saturate(dot(reflection, viewDirection)) * materials[input.material].Reflectivity;
 	}
 	//diffuse
-	color *= diffuse;
+	color *= clamp(diffuse, 0.0, 1.0);
 	color += float3(specular, specular, specular);
 
-	return float4(color.xyz, 1.0f);
+	return float4(color.xyz, 1.0);
 }

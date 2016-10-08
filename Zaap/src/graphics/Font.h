@@ -96,19 +96,16 @@ namespace zaap { namespace graphics {
 		Bitmap m_Bitmap;
 
 		API::Texture2D* m_CharSheet;
-		API::VertexBuffer* m_VertexBuffer;
 
 		std::vector<ZA_CharacterInfo> m_CharInfo;
 
 		//Methods
-	private:
-		void generateVertexBuffer();
 	public:
 		Font();
 		Font(String chars);
 
 		//render
-		void render(String string) const;
+		API::VertexBuffer* getVertexBuffer(String string);
 
 		//util
 		uint getCharIndex(char c) const;

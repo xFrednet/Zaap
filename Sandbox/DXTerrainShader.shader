@@ -1,7 +1,7 @@
 //////////////////////
 // Type definitions //
 //////////////////////
-#define SUPPORTET_LIGHT_COUNT 8
+#define ZAAP_SHADER_LIGHT_COUNT 4
 
 struct VS_IN
 {
@@ -16,7 +16,7 @@ struct VS_OUT
 	float3 TexMapColor		: TEXMAPCOLOR;
 	float2 TexCoord			: TEXCOORD;
 	float4 SurfaceNormal	: SURFACE_NORMAL;
-	float3 ToLightVector[SUPPORTET_LIGHT_COUNT]	: TO_LIGHT_VECTOR;
+	float3 ToLightVector[ZAAP_SHADER_LIGHT_COUNT]	: TO_LIGHT_VECTOR;
 };
 
 /////////////
@@ -32,7 +32,7 @@ cbuffer VSLightBuffer : register(b1)
 {
 	uint VSLightCount;
 	float3 VSLightPadding;
-	float4 LightPosition[SUPPORTET_LIGHT_COUNT];
+	float4 LightPosition[ZAAP_SHADER_LIGHT_COUNT];
 }
 
 ///////////////////
@@ -85,7 +85,7 @@ cbuffer PSLightBuffer : register(b0)
 {
 	uint PSLightCount;
 	float3 PSLightPadding;
-	float4 LightColor[SUPPORTET_LIGHT_COUNT];
+	float4 LightColor[ZAAP_SHADER_LIGHT_COUNT];
 }
 
 //////////////////

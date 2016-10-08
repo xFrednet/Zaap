@@ -1,5 +1,6 @@
 ﻿#include "DXFontShader2D.h"
 #include <util/Console.h>
+#include <graphics/API/DXContext.h>
 
 D3D11_INPUT_ELEMENT_DESC DXFontShaderIED[] = {
 	{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT	, 0, 0					, D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -24,7 +25,7 @@ namespace zaap { namespace graphics { namespace DX {
 		// Matrix Buffer
 		//
 		{
-			if (CreateConstBuffer(m_MatrixBuffer, sizeof(VS_MATRIX_BUFFER), &m_TransformationMatrix))
+			if (CreateConstBuffer(m_MatrixBuffer, sizeof(math::Mat4), &m_TransformationMatrix))
 			{
 				DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
 			} else
@@ -57,7 +58,7 @@ namespace zaap { namespace graphics { namespace DX {
 		D3D11_MAPPED_SUBRESOURCE ms;
 
 		devcon->Map(m_MatrixBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &m_TransformationMatrix, sizeof(VS_MATRIX_BUFFER));
+		memcpy(ms.pData, &m_TransformationMatrix, sizeof(math::Mat4));
 		devcon->Unmap(m_MatrixBuffer, NULL);
 	}
 	void DXFontShader2D::loadTextColor() const
@@ -84,7 +85,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXFontShader2D::start() const
 	{
-		DXShader::start();
+		startDXShader();
 
 		ID3D11DeviceContext* devcon = DXContext::GetDevContext();
 
@@ -96,4 +97,8 @@ namespace zaap { namespace graphics { namespace DX {
 		loadTextColor();
 	}
 
+	void DXFontShader2D::stop() const
+	{
+		stopDXShader();
+	}
 }}}

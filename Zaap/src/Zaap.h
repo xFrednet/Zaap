@@ -1,10 +1,16 @@
 #pragma once
 
+#pragma warning(push)
+#pragma warning(disable: 4251)
+
+#include <Common.h>
+
 #include <app/Application.h>
 
 #include <util/Console.h>
 #include <util/StringUtil.h>
 #include <util/ImageLoader.h>
+#include <util/UUID.h>
 
 #include <scene/terrain/Terrain.h>
 

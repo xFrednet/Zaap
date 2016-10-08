@@ -5,10 +5,10 @@
 
 #include <graphics/Renderer.h>
 #include <graphics/API/DXCommon.h>
-#include <graphics/shader/DXShader/DXTextureShader.h>
 #include <graphics/camera/Camera.h>
-#include <graphics/shader/DXShader/DXMaterialShader.h>
-#include <graphics/shader/DXShader/DXTerrainShader.h>
+#include <graphics/shader/materialShader/MaterialShader.h>
+#include <graphics/shader/textureShader/TextureShader.h>
+#include <graphics/shader/terrainShader/TerrainShader.h>
 
 namespace zaap { namespace graphics { namespace DX {
 
@@ -22,7 +22,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//Rendering
 		ID3D11RenderTargetView *m_RenderTargetView;
 
-		//Rasterstate
+		//RasterizerState
 		ID3D11RasterizerState *m_RasterizerState;
 
 		//BlendState
@@ -32,10 +32,6 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11DepthStencilState *m_DepthStencilState;
 		ID3D11Texture2D *m_DepthStencil;
 		ID3D11DepthStencilView *m_DepthStencilView;
-
-		DXMaterialShader *m_MaterialShader;
-		DXTextureShader *m_TextureShader;
-		DXTerrainShader *m_TerrainShader;
 
 		Camera* m_Camera;
 	protected:

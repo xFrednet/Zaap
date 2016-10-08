@@ -5,7 +5,7 @@
 
 #include <graphics/API/DXCommon.h>
 #include "FontShader2D.h"
-#include <graphics/shader/DXShader/DXShader.h>
+#include <graphics/shader/DXShader.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -23,6 +23,7 @@ namespace zaap { namespace graphics { namespace DX {
 		void cleanup() override;
 
 		void start() const override;
+		void stop() const override;
 	};
 
 }}}
