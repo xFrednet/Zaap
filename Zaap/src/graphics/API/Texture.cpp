@@ -1,8 +1,8 @@
 #include "Texture.h"
 
-#include <graphics/DX/DXTexture2D.h>
 #include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
+#include <graphics/API/DX/DXTexture2D.h>
 #include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace API {

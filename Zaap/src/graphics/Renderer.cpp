@@ -1,11 +1,13 @@
 #include "Renderer.h"
 
-#include "DX/DXRenderer.h"
+
 #include "util/Console.h"
-#include "shader/fontShader/DXFontShader2D.h"
-#include "shader/textureShader/DXTextureShader.h"
-#include "shader/materialShader/DXMaterialShader.h"
-#include "shader/terrainShader/DXTerrainShader.h"
+#include "API/DX/DXRenderer.h"
+#include "API/DX/shader/types/DXFontShader2D.h"
+#include "API/DX/shader/types/DXTextureShader.h"
+#include "API/DX/shader/types/DXMaterialShader.h"
+#include "API/DX/shader/types/DXTerrainShader.h"
+
 
 namespace zaap { namespace graphics {
 		

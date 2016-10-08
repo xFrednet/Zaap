@@ -1,6 +1,5 @@
 #include "TextureManager.h"
 
-#include <graphics/DX/DXTexture2D.h>
 #include <util/Console.h>
 
 namespace zaap { namespace graphics {

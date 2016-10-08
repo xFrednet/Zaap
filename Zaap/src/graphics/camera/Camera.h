@@ -1,6 +1,6 @@
 #pragma once
 
-#include <graphics/API/DXCommon.h>
+#include <graphics/API/DX/DXCommon.h>
 #include <maths/MathHelper.h>
 #include "ViewFrustum.h"
 

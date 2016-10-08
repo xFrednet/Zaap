@@ -1,7 +1,5 @@
 #include "Texture2D.h"
 
-#include <graphics/API/DXContext.h>
-
 namespace zaap { namespace graphics { namespace API {
 	
 	Texture2D::Texture2D(String& textureName)

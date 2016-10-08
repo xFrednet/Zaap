@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 
-#include <graphics/DX/DXVertexBuffer.h>
+#include <graphics/API/DX/DXVertexBuffer.h>
 #include <util/Console.h>
 
 namespace zaap { namespace graphics { namespace API {

@@ -251,6 +251,10 @@ public:
 		}
 
 		light2->setPosition(camera->getPosition());
+
+		//light->setColor(Color(0.0f, 0.0f, 0.0f, 0.0f));
+		light2->setColor(Color(0.0f, 0.0f, 0.0f, 0.0f));
+
 	}
 
 	void render() override 

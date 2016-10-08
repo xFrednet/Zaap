@@ -2,8 +2,6 @@
 #include <util/Console.h>
 #include <graphics/TextureManager.h>
 #include <graphics/mesh/Mesh.h>
-#include <graphics/API/Context.h>
-#include <graphics/API/DXContext.h>
 #include <graphics/Renderer.h>
 
 //

@@ -6,10 +6,10 @@
 #include <graphics/light/LightSetup.h>
 #include <scene/terrain/Terrain.h>
 #include <graphics/camera/ViewFrustum.h>
-#include "shader/fontShader/FontShader2D.h"
-#include "shader/terrainShader/TerrainShader.h"
-#include "shader/textureShader/TextureShader.h"
-#include "shader/materialShader/MaterialShader.h"
+#include "shader/types/FontShader2D.h"
+#include "shader/types/MaterialShader.h"
+#include "shader/types/TextureShader.h"
+#include "shader/types/TerrainShader.h"
 
 namespace zaap { namespace graphics {
 
