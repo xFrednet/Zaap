@@ -54,66 +54,120 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 	void DXRenderer::initBlendState()
 	{
-		//desc
-		D3D11_BLEND_DESC blendDesc;
-		ZeroMemory(&blendDesc, sizeof(D3D11_BLEND_DESC));
-		blendDesc.RenderTarget[0].BlendEnable			= false;
-		blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		HRESULT hr;
+		//
+		// BlendState[0]
+		//
+		{
+			D3D11_BLEND_DESC blendDesc0;
+			ZeroMemory(&blendDesc0, sizeof(D3D11_BLEND_DESC));
+			blendDesc0.RenderTarget[0].BlendEnable = false;
+			blendDesc0.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-		//creation
-		HRESULT hr = m_Dev->CreateBlendState(&blendDesc, &m_BlendState);
-		DXNAME(m_BlendState, "DXRender::m_BlendState")
-		if (FAILED(hr))
-			ZAAP_ERROR("DXRenderer: The BlendState creation failed");
-		
-		float blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
-		uint sampleMask = 0xffffffff;
+			hr = m_Dev->CreateBlendState(&blendDesc0, &m_BlendState[0]);
+			DXNAME(m_BlendState[0], "DXRender::m_BlendState[0]");
+			
+			if (FAILED(hr))
+				ZAAP_ERROR("DXRenderer: The BlendState[0] creation failed");
+		}
+		{
+			D3D11_BLEND_DESC blendDesc1;
+			ZeroMemory(&blendDesc1, sizeof(D3D11_BLEND_DESC));
 
-		m_Devcon->OMSetBlendState(m_BlendState, blendFactor, sampleMask);
+			blendDesc1.RenderTarget[0].BlendEnable = true;
+			blendDesc1.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+			blendDesc1.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+			blendDesc1.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+			blendDesc1.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+			blendDesc1.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+			blendDesc1.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+			blendDesc1.RenderTarget[0].RenderTargetWriteMask = 0x0f;
 
-		ZAAP_INFO("DXRenderer: created the BlendState");
+			//creation
+			hr = m_Dev->CreateBlendState(&blendDesc1, &m_BlendState[1]);
+			DXNAME(m_BlendState[1], "DXRender::m_BlendState[1]");
+			
+			if (FAILED(hr))
+				ZAAP_ERROR("DXRenderer: The BlendState[1] creation failed");
+		}
+		ZAAP_INFO("DXRenderer: created the BlendStates");
 	}
 	void DXRenderer::initDepthBuffer()
 	{
 		HRESULT hr;
 
 		//
-		// DepthStencilState
+		// DepthStencilState 0
 		//
 		{
-			D3D11_DEPTH_STENCIL_DESC dssDesc;
+			D3D11_DEPTH_STENCIL_DESC dssDesc0;
 
 			//Depth test
-			dssDesc.DepthEnable		= true;
-			dssDesc.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ALL;
-			dssDesc.DepthFunc		= D3D11_COMPARISON_LESS_EQUAL;
+			dssDesc0.DepthEnable		= true;
+			dssDesc0.DepthWriteMask	= D3D11_DEPTH_WRITE_MASK_ALL;
+			dssDesc0.DepthFunc		= D3D11_COMPARISON_LESS_EQUAL;
 			
 			//Stencil test
-			dssDesc.StencilEnable = true;
-			dssDesc.StencilReadMask = 0xFF;
-			dssDesc.StencilWriteMask = 0xFF;
+			dssDesc0.StencilEnable = true;
+			dssDesc0.StencilReadMask = 0xFF;
+			dssDesc0.StencilWriteMask = 0xFF;
 
 			// Stencil operations if pixel is back-facing
-			dssDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			dssDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
-			dssDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
-			dssDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+			dssDesc0.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc0.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+			dssDesc0.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
+			dssDesc0.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
 
 			// Stencil operations if pixel is back-facing
-			dssDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-			dssDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
-			dssDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-			dssDesc.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+			dssDesc0.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc0.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+			dssDesc0.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc0.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
 
 			//Depth stencil state creation
-			hr = m_Dev->CreateDepthStencilState(&dssDesc, &m_DepthStencilState);
-			DXNAME(m_DepthStencilState, "DXRenderer::m_DepthStencilState");
+			hr = m_Dev->CreateDepthStencilState(&dssDesc0, &m_DepthStencilState[0]);
+			DXNAME(m_DepthStencilState[0], "DXRenderer::m_DepthStencilState[0]");
 			if (FAILED(hr))
-				ZAAP_ERROR("DXRenderer: Failed to xreate the DepthStencilState");
+				ZAAP_ERROR("DXRenderer: Failed to create the DepthStencilState[0]");
 
-			m_Devcon->OMSetDepthStencilState(m_DepthStencilState, 1);
+			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[0], 1);
 		}
 
+		//
+		// DepthStencilState 1
+		//
+		{
+			D3D11_DEPTH_STENCIL_DESC dssDesc1;
+
+			//Depth test
+			dssDesc1.DepthEnable = false;
+			dssDesc1.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+			dssDesc1.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+			//Stencil test
+			dssDesc1.StencilEnable = false;
+			dssDesc1.StencilReadMask = 0xFF;
+			dssDesc1.StencilWriteMask = 0xFF;
+
+			// Stencil operations if pixel is back-facing
+			dssDesc1.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc1.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_INCR;
+			dssDesc1.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;
+			dssDesc1.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+			// Stencil operations if pixel is back-facing
+			dssDesc1.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc1.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_DECR;
+			dssDesc1.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			dssDesc1.BackFace.StencilFunc = D3D11_COMPARISON_NEVER;
+
+			//Depth stencil state creation
+			hr = m_Dev->CreateDepthStencilState(&dssDesc1, &m_DepthStencilState[1]);
+			DXNAME(m_DepthStencilState[1], "DXRenderer::m_DepthStencilState[1]");
+			if (FAILED(hr))
+				ZAAP_ERROR("DXRenderer: Failed to create the DepthStencilState[1]");
+
+		}
 	}
 
 	void DXRenderer::resize(uint width, uint height)
@@ -136,7 +190,7 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 		
 		//
-		// resizing the Backbuffer and creating the RenderTargetView
+		// resizing the BackBuffer and creating the RenderTargetView
 		//
 		HRESULT hr;
 		{
@@ -221,17 +275,29 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 		//m_Devcon->OMSetRenderTargets(1, &renderTargetView, NULL);
 	}
-	void DXRenderer::loadLightSetup(LightSetup* lightSetup)
+
+	void DXRenderer::setDepthTestState(bool enable)
 	{
-		m_TextureShader->loadLightSetup(lightSetup);
-		m_MaterialShader->loadLightSetup(lightSetup);
-		m_TerrainShader->loadLightSetup(lightSetup);
+		if (enable)
+			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[0], 1);
+		else 
+			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[1], 1);
+	}
+	void DXRenderer::setAlphaChanelState(bool enable)
+	{
+		float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		uint sampleMask = 0xffffffff;
+		
+		if (enable)
+			m_Devcon->OMSetBlendState(m_BlendState[0], blendFactor, sampleMask);
+		else
+			m_Devcon->OMSetBlendState(m_BlendState[1], blendFactor, sampleMask);
 	}
 
 	//
 	// Render util
 	//
-	void DXRenderer::prepare()
+	void DXRenderer::prepareFrame()
 	{
 		DXContext::SwapBuffers();
 
@@ -321,10 +387,12 @@ namespace zaap { namespace graphics { namespace DX {
 		DXRELEASE(m_RasterizerState);
 
 		//BlendState
-		DXRELEASE(m_BlendState);
+		DXRELEASE(m_BlendState[0]);
+		DXRELEASE(m_BlendState[1]);
 
 		//DepthBuffer
-		DXRELEASE(m_DepthStencilState);
+		DXRELEASE(m_DepthStencilState[0]);
+		DXRELEASE(m_DepthStencilState[1]);
 		DXRELEASE(m_DepthStencil);
 		DXRELEASE(m_DepthStencilView);
 

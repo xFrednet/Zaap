@@ -19,13 +19,17 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11RenderTargetView *m_RenderTargetView;
 
 		//RasterizerState
-		ID3D11RasterizerState *m_RasterizerState;
+		ID3D11RasterizerState *m_RasterizerState; 
 
 		//BlendState
-		ID3D11BlendState *m_BlendState;
+		// 0 = enabled
+		// 1 = disabled
+		ID3D11BlendState *m_BlendState[2];
 
 		//DepthBffer
-		ID3D11DepthStencilState *m_DepthStencilState;
+		// 0 = enabled
+		// 1 = disabled
+		ID3D11DepthStencilState *m_DepthStencilState[2];
 		ID3D11Texture2D *m_DepthStencil;
 		ID3D11DepthStencilView *m_DepthStencilView;
 
@@ -46,10 +50,13 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//setters / loaders
 		void setRenderTargets(ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView) const;
-		void loadLightSetup(LightSetup* lightSetup) override;
+
+		//render options
+		void setDepthTestState(bool enable) override;
+		void setAlphaChanelState(bool enable) override;
 
 		//render util
-		void prepare() override;
+		void prepareFrame() override;
 		void render(const scene::Terrain const *terrinTile) override;
 		void render(Entity* entity) override;
 

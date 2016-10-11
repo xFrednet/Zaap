@@ -106,6 +106,7 @@ namespace zaap { namespace graphics {
 
 		//render
 		API::VertexBuffer* getVertexBuffer(String string);
+		void render(API::VertexBuffer *vb);
 
 		//util
 		uint getCharIndex(char c) const;

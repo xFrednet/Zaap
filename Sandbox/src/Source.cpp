@@ -18,6 +18,7 @@ Entity* m3 = nullptr;
 Entity* lightCube = nullptr;
 Terrain* terrain_ = nullptr;
 Font font_;
+API::VertexBuffer *fontVB = nullptr;
 
 void loadEntitys()
 {
@@ -28,15 +29,24 @@ void loadEntitys()
 	{
 		lightSetup = new LightSetup();
 
-		light = new Light(Vec3(0.0f, 10.0f, 0.0f), Vec3(1.0f, 0.0f, 1.0f));
+		light = new Light(Vec3(0.0f, 10.0f, 0.0f), Color(1.0f, 0.0f, 1.0f));
 		lightSetup->add(light);
-		light2 = new Light(Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		light2 = new Light(Vec3(0.0f, 20.0f, 0.0f), Color(1.0f, 1.0f, 1.0f));
 		lightSetup->add(light2);
 		lightSetup->setAmbientColor(Color(0.2f, 0.2f, 0.2f));
 
 		scene_->setLightSetup(lightSetup);
 	}
 	
+	//
+	//Font
+	//
+	{
+		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
+		fontVB = font_.getVertexBuffer("WELCOME to ZAAP");
+		if (!fontVB)
+			ZAAP_INFO("Source: fontVB is NULL");
+	}
 	//Terrain
 	{
 		TERRAIN_DESC tDesc;
@@ -182,7 +192,7 @@ void loadEntitys()
 		v = Vec3(-7, 5, 0);
 		scene_->addEntity(new Entity(MeshManager::GetMesh("zaap"), v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));
 	}
-	
+
 
 	long time = clock() - timer;
 	ZAAP_INFO("Source: Scene init took " + std::to_string(time) + "ms");
@@ -198,7 +208,7 @@ public:
 	uint log = 0;
 	bool val;
 
-	Test() : Application("Test", 852, 480, scene_)
+	Test() : Application("ZAAP testing window", 852, 480, scene_)
 	{}
 
 	void update() override {
@@ -249,20 +259,28 @@ public:
 			p.Y = terrain_->getHeight(Vec2(p.X, p.Z)) + 1.9f;
 			camera->setPosition(p);
 		}
+			light2->setPosition(camera->getPosition());
 
-		light2->setPosition(camera->getPosition());
 
-		//light->setColor(Color(0.0f, 0.0f, 0.0f, 0.0f));
-		light2->setColor(Color(0.0f, 0.0f, 0.0f, 0.0f));
+		//light->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
+		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 
 	}
-
+	uint timer = 0;
+	bool bTemp = true;
 	void render() override 
 	{
+		if (timer % 100 == 0)
+		{
+			timer++;
+			Renderer::SetAlphaChanelState(bTemp);
+			bTemp = !bTemp;
+		}
+		Renderer::SetAlphaChanelState(false);
 		Application::render();
 
 		terrain_->render();
-
+		font_.render(fontVB);
 	}
 };
 
@@ -277,7 +295,7 @@ int main(void)
 		scene_ = new Scene();
 
 		Test t;
-		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
+	
 		loadEntitys();
 
 		t.start();

@@ -72,7 +72,7 @@ namespace zaap { namespace graphics { namespace DX {
 		D3D11_MAPPED_SUBRESOURCE ms;
 
 		devcon->Map(m_ColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &m_ColorBuffer, sizeof(Color));
+		memcpy(ms.pData, &m_TextColor, sizeof(Color));
 		devcon->Unmap(m_ColorBuffer, NULL);
 	}
 

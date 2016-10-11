@@ -47,7 +47,7 @@ namespace zaap { namespace graphics {
 		Light const* light;
 		for (uint i = 0; i < lightCount; i++)
 		{
-			light = lightSetup->getConstLight(0);
+			light = lightSetup->getConstLight(i);
 			m_VSLightBufferStruct.LightPositions[i] = light->getPosition();
 			m_PSLightBufferStruct.LightColors[i] = light->getColor();
 		}

@@ -113,7 +113,7 @@ float4 PShader(VS_OUT input) : SV_TARGET
 		diffuse += brightness * LightColor[i];
 	}
 
-	color.xyz *= diffuse;
+	color.xyz *= clamp(diffuse, 0.0, 1.0);
 
 	//return float4(texMapColor, 1.0);
 	return float4(color.xyz, 1.0);

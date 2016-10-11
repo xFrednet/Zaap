@@ -39,11 +39,13 @@ namespace zaap { namespace graphics {
 		//Camera
 		virtual void setCamera(Camera* camera) = 0;
 		virtual Camera* getCamera() = 0;
-		//Setters
-		virtual void loadLightSetup(LightSetup* lightSetup) = 0;
+
+		//Render options
+		virtual void setDepthTestState(bool enable) = 0;
+		virtual void setAlphaChanelState(bool enable) = 0;
 
 		//Util
-		virtual void prepare() = 0;
+		virtual void prepareFrame() = 0;
 		virtual void cleanup() = 0;
 		virtual void resize(uint width, uint height) = 0;
 		virtual ViewFrustum getViewFrustum(void) = 0;
@@ -70,8 +72,12 @@ namespace zaap { namespace graphics {
 		//Setters
 		static void LoadLightSetup(LightSetup* lightSetup);
 
+		//Render options 
+		static void SetDepthTestState(bool enable);
+		static void SetAlphaChanelState(bool enable);
+		
 		//Util
-		static void Prepare();
+		static void PrepareFrame();
 		static void Cleanup();
 		static void Resize(uint width, uint height);
 

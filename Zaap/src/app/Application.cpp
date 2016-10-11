@@ -123,7 +123,7 @@ namespace zaap {
 
 	void Application::render()
 	{
-		graphics::Renderer::Prepare();
+		graphics::Renderer::PrepareFrame();
 
 		m_Scene->render();
 	}

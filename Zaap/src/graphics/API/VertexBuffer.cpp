@@ -31,6 +31,7 @@ namespace zaap { namespace graphics { namespace API {
 			if (s_VertexBuffers[i]->getUUID() == uuid)
 			{
 				VertexBuffer* vb = s_VertexBuffers[i];
+				vb->cleanup();
 				s_VertexBuffers.erase(s_VertexBuffers.begin() + i);
 				delete vb;
 			}

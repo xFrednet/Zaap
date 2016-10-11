@@ -15,7 +15,7 @@ namespace zaap { namespace graphics {
 
 	void Renderer::caluclateProjectionMatrix()
 	{
-		if (m_Size.Y == 0) //TODO add Error Message and get the size from the window
+		if (m_Size.Y == 0) //TODO add Error Message if y == 0 and get the size from the window
 		{
 			m_Size.X = 16;
 			m_Size.Y = 9;
@@ -85,14 +85,28 @@ namespace zaap { namespace graphics {
 	//
 	void Renderer::LoadLightSetup(LightSetup* lightSetup)
 	{
-		s_Instance->loadLightSetup(lightSetup);
+		s_Instance->m_TerrainShader->loadLightSetup(lightSetup);
+		s_Instance->m_TextureShader->loadLightSetup(lightSetup);
+		s_Instance->m_MaterialShader->loadLightSetup(lightSetup);
+	}
+
+	//
+	// Render options
+	//
+	void Renderer::SetDepthTestState(bool enable)
+	{
+		s_Instance->setDepthTestState(enable);
+	}
+	void Renderer::SetAlphaChanelState(bool enable)
+	{
+		s_Instance->setAlphaChanelState(enable);
 	}
 
 	//
 	//Util
 	//
-	void Renderer::Prepare()
-	{ s_Instance->prepare(); }
+	void Renderer::PrepareFrame()
+	{ s_Instance->prepareFrame(); }
 	void Renderer::Cleanup()
 	{
 		s_Instance->cleanup();

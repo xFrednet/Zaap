@@ -188,9 +188,12 @@ namespace zaap { namespace graphics {
 				
 				charMatirx.Width			= float(ftCharMatrix.width / 64.0f);
 				charMatirx.Height			= float(ftCharMatrix.height / 64.0f);
-				charMatirx.OrigenYOffset	= float(ftCharMatrix.vertBearingY / 64.0f);
+				charMatirx.OrigenYOffset	= float(ftCharMatrix.horiBearingY / 64.0f);
 				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
 				charMatirx.TotalWidth		= float(ftCharMatrix.horiAdvance / 64.0f);
+
+				charMatirx.Width = float(ftCharMatrix.horiAdvance / 64.0f);
+				charMatirx.Height = float(ftCharMatrix.vertAdvance / 64.0f);
 
 				charInfo.CharMatirx = charMatirx;
 			}
@@ -198,7 +201,7 @@ namespace zaap { namespace graphics {
 			//test bitmapX and bitmapY
 			{
 				
-				if (bitMapX + charMatirx.Width >= font.m_Bitmap.getWidth())
+				if (bitMapX + charMatirx.TotalWidth * 1.5f >= font.m_Bitmap.getWidth())
 				{
 					bitMapX = 0;
 					bitmapY += charSize * 2;
@@ -223,7 +226,7 @@ namespace zaap { namespace graphics {
 			//adding the char
 			font.m_CharInfo[i] = charInfo;
 
-			bitMapX += uint(charMatirx.Width);
+			bitMapX += uint(charMatirx.TotalWidth  * 1.5f);
 		}
 
 		// generate the texture
@@ -291,38 +294,75 @@ namespace zaap { namespace graphics {
 			
 			//setting indices
 			{
-				// v0, v1, v2
+				// v0, v2, v1
 				indices[iIndex++] = v0;
-				indices[iIndex++] = v1;
 				indices[iIndex++] = v2;
+				indices[iIndex++] = v1;
 
 				// v0, v3, v2
 				indices[iIndex++] = v0;
-				indices[iIndex++] = v2;
 				indices[iIndex++] = v3;
+				indices[iIndex++] = v2;
 			}
-
+			// 0 3
+			// 1 2 
 			//v0
 			vertices[v0].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset, zValue);
-			vertices[v0].TexCoord = cInfo.TexMinCoords;
+			vertices[v0].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
 
 			//v1
 			vertices[v1].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
-			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
+			vertices[v1].TexCoord = cInfo.TexMinCoords;
 
 			//v2
 			vertices[v2].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
-			vertices[v2].TexCoord = cInfo.TexMaxCoords;
-
+			vertices[v2].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
 
 			//v3
 			vertices[v3].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset, zValue);
-			vertices[v1].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
+			vertices[v3].TexCoord = cInfo.TexMaxCoords;
 
 			drawX += cMatrix.TotalWidth;
 		}
 
 		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size());
+	}
+
+	uint temp = 0;
+	bool up = true;
+	Color color;
+	void Font::render(API::VertexBuffer *vb)
+	{
+		using namespace math;
+		
+		if (up)
+		{
+			temp += 1;
+			if (temp >= 255)
+			{
+				up = false;
+				color = Color(rand() % 255, rand() % 255, rand() % 255);
+			}
+		} else
+		{
+			temp -= 1;
+			if (temp <= 125)
+			{
+				up = true;
+				color = Color(rand() % 255, rand() % 255, rand() % 255);
+			}
+		}
+		Renderer::StartFontShader2D();
+		Vec3 pos(-1.0f, 0.0f, 0.0f);
+		Vec3 rot(0.0f, 0.0f, 0.0f);
+		Vec3 scale(1.0f, 1.0f, 1.0f);
+		scale *= 0.1f;
+		Mat4 mat = CreateTransformationMatrix(pos, rot, scale);
+		Renderer::GetFontShader2D()->setTransformationMatrix(mat);
+		Renderer::GetFontShader2D()->setColor(Color(color.getIntR(), color.getIntG(), color.getIntB(), temp));
+		m_CharSheet->bind(0);
+		vb->draw();
+
 	}
 
 	//
@@ -339,6 +379,6 @@ namespace zaap { namespace graphics {
 
 	math::Vec2 Font::getPixelCoord(uint x, uint y) const
 	{
-		return math::Vec2(float(x / m_Bitmap.getWidth()), float(y / m_Bitmap.getHeight()));
+		return math::Vec2(float((float)x / (float)m_Bitmap.getWidth()), float((float)y / (float)m_Bitmap.getHeight()));
 	}
 }}
