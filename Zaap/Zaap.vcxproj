@@ -168,6 +168,7 @@
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
+    <ClCompile Include="src\graphics\Format.cpp" />
     <ClCompile Include="src\graphics\light\Light.cpp" />
     <ClCompile Include="src\graphics\light\LightSetup.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Color.h" />
+    <ClInclude Include="src\graphics\Format.h" />
     <ClInclude Include="src\graphics\light\Light.h" />
     <ClInclude Include="src\graphics\light\LightSetup.h" />
     <ClInclude Include="src\graphics\Material.h" />

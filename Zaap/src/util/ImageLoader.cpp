@@ -73,7 +73,6 @@ namespace zaap
 			FreeImage_FlipVertical(bitmap32);
 		if (FreeImage_GetRedMask(bitmap32) == 0xff0000)
 			SwapRedBlue32(bitmap32);
-		
 
 		data = FreeImage_GetBits(bitmap32);
 		*width = FreeImage_GetWidth(bitmap32);

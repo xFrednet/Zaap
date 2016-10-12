@@ -6,6 +6,7 @@
 #include <graphics/Bitmap.h>
 #include <graphics/API/Texture2D.h>
 #include <graphics/API/DX/DXContext.h>
+#include <graphics/Format.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -25,7 +26,7 @@ namespace zaap { namespace graphics { namespace DX {
 		DXTexture2D(String name, Bitmap image);
 
 	protected:
-		void init(byte const *byte);
+		void init(byte const *byte, ZA_FORMAT format);
 
 	public:
 		void bind(uint slot = 0) override;

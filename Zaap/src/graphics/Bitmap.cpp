@@ -4,15 +4,11 @@
 #include <util/Console.h>
 
 namespace zaap { namespace graphics {
-
+	
 	uint Bitmap::getIndex(uint x, uint y) const
 	{
-		if (m_BitsPerPixel == 32) 
-			return (x + y * m_Width) * 4;
-		if (m_BitsPerPixel == 24)
-			return (x + y * m_Width) * 3;
-
-		return (x + y * m_Width) * (m_BitsPerPixel / 8);
+		//8 Bits == 1 Byte
+		return (x + y * m_Width) * GetFormatSize(m_Format);
 	}
 
 	//
@@ -22,30 +18,51 @@ namespace zaap { namespace graphics {
 		: m_Bytes(0),
 		m_Width(0),
 		m_Height(0),
-		m_BitsPerPixel(0)
+		m_Format(ZA_FORMAT_UNKNOWN)
 	{
 	}
 	Bitmap::Bitmap(uint width, uint height, uint bitsPerPixel)
 		: m_Bytes(width * height * ((bitsPerPixel == 32) ? 4 : 3)),
 		m_Width(width),
+		m_Height(height)
+	{
+		//Format
+		if (bitsPerPixel == 32)
+			m_Format = ZA_FORMAT_R8G8B8A8_UINT;
+		else if (bitsPerPixel == 24)
+			m_Format = ZA_FORMAT_R8G8B8_UINT;
+		else
+			m_Format = ZA_FORMAT_UNKNOWN;
+	}
+	Bitmap::Bitmap(uint width, uint height, ZA_FORMAT format)
+		: m_Bytes(width * height * GetFormatSize(format)),
+		m_Width(width),
 		m_Height(height),
-		m_BitsPerPixel(bitsPerPixel)
+		m_Format(format)
 	{
 	}
 	Bitmap::Bitmap(const char* file)
 		: m_Bytes(0)
 	{
-		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &m_BitsPerPixel);
+		//load the Image
+		uint bitsPerPixel;
+		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &bitsPerPixel);
 
-		uint size = m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3);
+		//Format
+		if (bitsPerPixel == 32)
+			m_Format = ZA_FORMAT_R8G8B8A8_UINT;
+		else if (bitsPerPixel == 24)
+			m_Format = ZA_FORMAT_R8G8B8_UINT;
+		else
+			m_Format = ZA_FORMAT_UNKNOWN;
 
-		m_Bytes = std::vector<byte>(m_Width * m_Height * ((m_BitsPerPixel == 32) ? 4 : 3));
+		uint size = m_Width * m_Height * ((bitsPerPixel == 32) ? 4 : 3);
 
-		memcpy(&m_Bytes[0], bytes, m_Bytes.size());
+		//copy the pixel bytes
+		m_Bytes = std::vector<byte>(size);
+		memcpy(&m_Bytes[0], bytes, size);
 
 		delete[] bytes;
-		
-
 	}
 
 	//
@@ -68,7 +85,7 @@ namespace zaap { namespace graphics {
 	}
 	uint Bitmap::getA(uint x, uint y) const
 	{
-		if (m_BitsPerPixel != 32) return 255;
+		if (m_Format != ZA_FORMAT_R8G8B8A8_UINT) return 255;
 		if (!contains(x, y)) return 0;
 		return uint(m_Bytes[getIndex(x, y) + 3]);
 	}
@@ -90,7 +107,7 @@ namespace zaap { namespace graphics {
 	}
 	void Bitmap::setA(uint x, uint y, uint a)
 	{
-		if (m_BitsPerPixel == 32 && contains(x, y))
+		if (m_Format == ZA_FORMAT_R8G8B8A8_UINT && contains(x, y))
 			m_Bytes[getIndex(x, y) + 3] = a;
 	}
 	
@@ -138,17 +155,21 @@ namespace zaap { namespace graphics {
 	}
 	uint Bitmap::getBitsPerPixel() const
 	{
-		return m_BitsPerPixel;
+		return GetFormatSize(m_Format) * 8;
 	}
-
 	byte const* Bitmap::getPixelArray() const
 	{
 		return &m_Bytes[0];
 	}
+	ZA_FORMAT Bitmap::getFormat() const
+	{
+		return m_Format;
+	}
+
 
 	Bitmap Bitmap::getSubMap(uint x, uint y, uint width, uint height) const
 	{
-		Bitmap b(width, height, m_BitsPerPixel);
+		Bitmap b(width, height, m_Format);
 
 		uint copyWidth = ((x + width) < m_Width) ? width : m_Width - x;
 		uint copyHeight = ((y + height) < m_Height) ? height : m_Height - y;

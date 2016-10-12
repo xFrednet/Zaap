@@ -8,7 +8,13 @@ namespace zaap { namespace graphics { namespace DX {
 	DXTexture2D::DXTexture2D(String name, String filePath)
 		: Texture2D(name)
 	{
-		init(ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel));
+		byte* b = ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel);
+		if (m_BitsPerPixel == 32)
+			init(b, ZA_FORMAT_R8G8B8A8_UINT);
+		else 
+			init(b, ZA_FORMAT_R8G8B8_UINT);
+
+		delete b;
 	}
 
 	DXTexture2D::DXTexture2D(String name, Bitmap image)
@@ -23,22 +29,25 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Height = image.getHeight();
 		m_BitsPerPixel = image.getBitsPerPixel();
 
-		init(image.getPixelArray());
+		init(image.getPixelArray(), image.getFormat());
 	}
 
-	void DXTexture2D::init(byte const *bytes)
+	void DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
 	{
 		//general declarations
 		HRESULT result;
 		ID3D11Device *dev = DXContext::GetDevice();
 		
+		//Format
+		DXGI_FORMAT DXformat = GetDirectXFormat(format);
+
 		//
 		// Texture
 		//
 		{
 			//sub resource
 			D3D11_SUBRESOURCE_DATA resource;
-			uint stride = 4;
+			uint stride = GetFormatSize(format);
 			resource.pSysMem			= bytes;
 			resource.SysMemPitch		= stride * m_Width;
 			resource.SysMemSlicePitch	= stride * m_Width * m_Height;
@@ -50,7 +59,7 @@ namespace zaap { namespace graphics { namespace DX {
 			m_TextureDesc.Height			= m_Height;
 			m_TextureDesc.MipLevels			= 1;
 			m_TextureDesc.ArraySize			= 1;
-			m_TextureDesc.Format			= DXGI_FORMAT_R8G8B8A8_UNORM;
+			m_TextureDesc.Format			= DXformat;
 			m_TextureDesc.SampleDesc.Count	= 1;
 			m_TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
 			m_TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
@@ -73,7 +82,7 @@ namespace zaap { namespace graphics { namespace DX {
 			D3D11_SHADER_RESOURCE_VIEW_DESC resDesc;
 			ZeroMemory(&resDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 
-			resDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+			resDesc.Format = DXformat;
 			resDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 			resDesc.Texture2D.MostDetailedMip = 0;
 			resDesc.Texture2D.MipLevels = -1;

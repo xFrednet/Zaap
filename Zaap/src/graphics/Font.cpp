@@ -186,14 +186,11 @@ namespace zaap { namespace graphics {
 				ftCharMatrix = charFTInfo->metrics;
 				charInfo = ZA_CharacterInfo(chars.at(i));
 				
-				charMatirx.Width			= float(ftCharMatrix.width / 64.0f);
-				charMatirx.Height			= float(ftCharMatrix.height / 64.0f);
+				charMatirx.Width			= float(ftCharMatrix.horiAdvance / 64.0f);
+				charMatirx.Height			= float(ftCharMatrix.vertAdvance / 64.0f);
 				charMatirx.OrigenYOffset	= float(ftCharMatrix.horiBearingY / 64.0f);
 				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
 				charMatirx.TotalWidth		= float(ftCharMatrix.horiAdvance / 64.0f);
-
-				charMatirx.Width = float(ftCharMatrix.horiAdvance / 64.0f);
-				charMatirx.Height = float(ftCharMatrix.vertAdvance / 64.0f);
 
 				charInfo.CharMatirx = charMatirx;
 			}

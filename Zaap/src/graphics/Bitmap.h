@@ -3,21 +3,23 @@
 #include <Common.h>
 #include <Types.h>
 #include "Color.h"
+#include <graphics/Format.h>
 
 namespace zaap { namespace graphics {
-	
+
 	class ZAAP_API Bitmap
 	{
 	private:
 		std::vector<byte> m_Bytes;
 		uint m_Width;
 		uint m_Height;
-		uint m_BitsPerPixel;
+		ZA_FORMAT m_Format;
 			
 		uint getIndex(uint x, uint y) const;
 	public:
 		Bitmap();
 		Bitmap(uint width, uint height, uint bitsPerPixel);
+		Bitmap(uint width, uint height, ZA_FORMAT format);
 		Bitmap(const char *file);
 
 		//color
@@ -44,6 +46,7 @@ namespace zaap { namespace graphics {
 		uint getHeight(void) const;
 		uint getBitsPerPixel() const;
 		byte const* getPixelArray() const;
+		ZA_FORMAT getFormat() const;
 
 		Bitmap getSubMap(uint x, uint y, uint width, uint height) const;
 			
