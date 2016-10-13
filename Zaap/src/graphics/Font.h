@@ -12,15 +12,14 @@
 
 namespace zaap { namespace graphics {
 
-	// x = origin
-	// x  <-Width-->          
+	// x = origin             
 	//                        
 	//    ##########     ^    
 	//        ##         |    
 	//        ##       Height 
 	//        ##         |    
 	//        ##         v    
-	//  <--TotalWidth-->      
+	//  <--  Width  -->      
 	// This explanation is so bad :P
 	// The values should be the values for a fontSize of 1.
 	// To translate the struct members to the current size they are multiplied by the size.
@@ -29,11 +28,8 @@ namespace zaap { namespace graphics {
 		float OrigenXOffset;
 		float OrigenYOffset;
 
-		//width and height should be the actual width and height without any padding
 		float Width;
 		float Height;
-
-		float TotalWidth;
 
 		ZA_CharMarix();
 		ZA_CharMarix(const ZA_CharMarix &charMarix);
@@ -47,8 +43,8 @@ namespace zaap { namespace graphics {
 	{
 		char Character;
 			
-		math::Vec2 TexMinCoords;
-		math::Vec2 TexMaxCoords;
+		Vec2 TexMinCoords;
+		Vec2 TexMaxCoords;
 
 		ZA_CharMarix CharMatirx;
 
@@ -58,8 +54,8 @@ namespace zaap { namespace graphics {
 
 	struct ZAAP_API ZA_CharVertex
 	{
-		math::Vec3 Position;
-		math::Vec2 TexCoord;
+		Vec3 Position;
+		Vec2 TexCoord;
 	};
 
 	typedef ZAAP_API enum FONT_FORMAT
@@ -78,7 +74,7 @@ namespace zaap { namespace graphics {
 		//static methods
 	public:
 
-		static math::Mat4 CreateFontTransformationMatrix(const math::Vec3 &position, const float &fontSize);
+		static Mat4 CreateFontTransformationMatrix(const Vec3 &position, const float &fontSize);
 
 		//This methods returns all the characters that are supported by a certain FONT_FORMAT
 		static String GetFormatCharacters(FONT_FORMAT format);
@@ -93,7 +89,6 @@ namespace zaap { namespace graphics {
 
 		float m_Size;
 		String m_Chars;
-		Bitmap m_Bitmap;
 
 		API::Texture2D* m_CharSheet;
 
@@ -111,8 +106,6 @@ namespace zaap { namespace graphics {
 		//util
 		uint getCharIndex(char c) const;
 		uint getCharCount() const;
-
-		math::Vec2 getPixelCoord(uint x, uint y) const;
 	};
 		
 }}

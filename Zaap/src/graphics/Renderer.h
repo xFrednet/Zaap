@@ -18,11 +18,11 @@ namespace zaap { namespace graphics {
 	private:
 		static Renderer* s_Instance;
 	protected:
-		math::Vec2 m_Size;
+		Vec2 m_Size;
 		float m_FOV = 90.0f;
 		float m_NearPlane = 0.1f;
 		float m_FarPlane = 1000.0f;
-		math::Mat4 m_ProjectionMatrix;
+		Mat4 m_ProjectionMatrix;
 
 		FontShader2D* m_FontShader2D;
 		MaterialShader *m_MaterialShader;
@@ -83,7 +83,7 @@ namespace zaap { namespace graphics {
 
 		//getters
 		static ViewFrustum GetViewFrustum();
-		static math::Mat4 GetProjectionMatrix();
+		static Mat4 GetProjectionMatrix();
 	};
 
 }}

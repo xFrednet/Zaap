@@ -2,7 +2,6 @@
 #include <graphics/Font.h>
 
 using namespace zaap;
-using namespace math;
 using namespace graphics;
 using namespace scene;
 using namespace std;
@@ -52,7 +51,6 @@ void loadEntitys()
 		TERRAIN_DESC tDesc;
 		tDesc.setup();
 		terrain_ = new Terrain("res//scene//", tDesc);
-
 	}
 
 	Vec3 v;

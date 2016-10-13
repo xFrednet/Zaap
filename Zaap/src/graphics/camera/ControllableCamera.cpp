@@ -5,7 +5,7 @@
 
 namespace zaap { namespace graphics {
 	
-	ControllableCamera::ControllableCamera(math::Vec3& position, float yaw, float pitch, float fov, float fovRatio)
+	ControllableCamera::ControllableCamera(Vec3& position, float yaw, float pitch, float fov, float fovRatio)
 		: Camera(position, yaw, pitch, fov, fovRatio)
 	{
 	}
@@ -15,12 +15,12 @@ namespace zaap { namespace graphics {
 	{
 		if (events::Input::IsButtonPressed(ZAAP_MOUSE_LEFT))
 		{
-			math::Vec2 m = events::Input::GetMouseMotion();
+			Vec2 m = events::Input::GetMouseMotion();
 			addToYaw(m.X * m_MouseSensitivity);
 			addToPitch(m.Y * m_MouseSensitivity);
 		}
 
-		math::Vec3 v(0.0f, 0.0f, 0.0f);
+		Vec3 v(0.0f, 0.0f, 0.0f);
 
 		if (events::Input::IsKeyDown(ZAAP_VK_W))		v.Z -= m_Speed;
 		if (events::Input::IsKeyDown(ZAAP_VK_A))		v.X -= m_Speed;
@@ -49,7 +49,7 @@ namespace zaap { namespace graphics {
 		//reset
 		if (events::Input::IsKeyPressed(ZAAP_VK_R))
 		{
-			m_Position = math::Vec3(12.0f, 12.0f, -1.0f);
+			m_Position = Vec3(12.0f, 12.0f, -1.0f);
 			m_Yaw = -90.0;
 			m_Pitch = 30.0;
 		}

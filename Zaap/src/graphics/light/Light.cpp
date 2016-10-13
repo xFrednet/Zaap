@@ -2,7 +2,7 @@
 
 namespace zaap { namespace graphics {
 	
-	Light::Light(math::Vec3 position, Color color)
+	Light::Light(Vec3 position, Color color)
 		: BasicEntity(position),
 		m_Color(color)
 	{

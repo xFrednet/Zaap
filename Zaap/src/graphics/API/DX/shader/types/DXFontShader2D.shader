@@ -46,13 +46,9 @@ cbuffer ColorBuffer : register(b0)
 /////////////////
 float4 PShader(VSOut input) : SV_TARGET
 {
-	float4 color = charSheet.Sample(charSampler, input.TexCoord);
+	float alpha = charSheet.Sample(charSampler, input.TexCoord).w;
 	
 	//returns nothing if the color is #ff000000
-	if (color.x == 0.0f && color.x == 0.0f && color.z == 0.0f) {
-		return float4(0.0, 0.0, 0.0, 0.0);
-	}
-	return color * textColor;
-	
+	return float4(textColor.xyz, textColor.w * alpha);
 	
 })"

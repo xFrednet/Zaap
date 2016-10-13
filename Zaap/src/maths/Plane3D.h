@@ -5,7 +5,7 @@
 #include <maths/Vec3.h>
 #include <maths/Vec4.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 
 	struct ZAAP_API Plane3D
 	{
@@ -56,4 +56,4 @@ namespace zaap { namespace math {
 	// below   = ZAAP_POINT_BELOW   = 1
 	// onPlane = ZAAP_POINT_ONPLANE = 2
 	ZAAP_API uint8 GetRelation(const Plane3D& plane, const Vec3& point);
-}}
+}

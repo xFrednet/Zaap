@@ -1,7 +1,7 @@
 #include "Vec3.h"
 #include <util/Console.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 
 	Vec3::Vec3()
 	{
@@ -119,12 +119,12 @@ namespace zaap { namespace math {
 	}
 
 	
-}}
+}
 
 //
 // Util Methods
 //
-namespace zaap { namespace math {
+namespace zaap {
 	
 	Vec3 Scale(const Vec3& vec, float scale)
 	{
@@ -185,4 +185,4 @@ namespace zaap { namespace math {
 			(vec1.Y * vec2.Y) +
 			(vec1.Z * vec2.Z);
 	}
-}}
+}

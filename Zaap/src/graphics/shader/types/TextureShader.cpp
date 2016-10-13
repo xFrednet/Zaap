@@ -11,19 +11,19 @@ namespace zaap { namespace graphics {
 
 		loadMatrixBuffer();
 	}
-	void TextureShader::setProjectionMatrix(math::Mat4 projectionMatrix)
+	void TextureShader::setProjectionMatrix(Mat4 projectionMatrix)
 	{
 		m_MatrixBufferStruct.ProjectionMatrix = projectionMatrix;
 
 		loadMatrixBuffer();
 	}
-	void TextureShader::setTransformationMatrix(math::Mat4 transformationMatrix)
+	void TextureShader::setTransformationMatrix(Mat4 transformationMatrix)
 	{
 		m_MatrixBufferStruct.TransformationMatrix = transformationMatrix;
 
 		loadMatrixBuffer();
 	}
-	void TextureShader::setViewMatrix(math::Mat4 viewMatrix)
+	void TextureShader::setViewMatrix(Mat4 viewMatrix)
 	{
 		m_MatrixBufferStruct.ViewMatrix = viewMatrix;
 

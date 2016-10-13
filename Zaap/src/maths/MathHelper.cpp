@@ -2,7 +2,7 @@
 
 #include <maths/Maths.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 	
 	//
 	// Matrix math
@@ -83,4 +83,4 @@ namespace zaap { namespace math {
 		return l1 * a.Y + l2 * b.Y + l3 * c.Y;
 	}
 
-}}
+}

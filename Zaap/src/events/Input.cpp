@@ -2,8 +2,8 @@
 
 namespace zaap { namespace events {
 
-	math::Vec2 Input::m_MousePosition(0, 0);
-	math::Vec2 Input::m_MouseMotion(0, 0);
+	Vec2 Input::m_MousePosition(0, 0);
+	Vec2 Input::m_MouseMotion(0, 0);
 	bool Input::m_MouseButtonPressed[ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED] = {false};
 
 	//keyboard
@@ -50,7 +50,7 @@ namespace zaap { namespace events {
 		m_MousePosition.Y = float(mouseY);
 	}
 
-	math::Vec2 Input::GetMouseMotion()
+	Vec2 Input::GetMouseMotion()
 	{
 		return m_MouseMotion;
 	}

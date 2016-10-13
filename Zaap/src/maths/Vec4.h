@@ -6,7 +6,7 @@
 #include <maths/Vec2.h>
 #include <maths/Vec3.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 
 	struct ZAAP_API Vec4
 	{
@@ -49,4 +49,4 @@ namespace zaap { namespace math {
 
 	};
 
-}}
+}

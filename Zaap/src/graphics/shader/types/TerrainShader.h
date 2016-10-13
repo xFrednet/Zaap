@@ -22,9 +22,9 @@ namespace zaap { namespace graphics {
 	public:
 		//Matrix buffer
 		void setMatrixBuffer(ZA_VS_MATRIX_BUFFER matrixBuffer);
-		void setProjectionMatrix(math::Mat4 projectionMatrix);
-		void setTransformationMatrix(math::Mat4 transformationMatrix);
-		void setViewMatrix(math::Mat4 iewMatrix);
+		void setProjectionMatrix(Mat4 projectionMatrix);
+		void setTransformationMatrix(Mat4 transformationMatrix);
+		void setViewMatrix(Mat4 iewMatrix);
 
 		//Light buffer
 		void loadLightSetup(const LightSetup const* lightSetup);

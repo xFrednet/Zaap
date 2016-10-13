@@ -1,7 +1,7 @@
 #include "Vec4.h"
 #include <util/Console.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 
 	Vec4::Vec4()
 	{
@@ -149,4 +149,4 @@ namespace zaap { namespace math {
 	{
 		return Vec4(X * scale, Y * scale, Z * scale, W * scale);
 	}
-}}
+}

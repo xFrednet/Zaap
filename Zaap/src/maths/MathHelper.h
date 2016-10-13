@@ -7,7 +7,7 @@
 #include <maths/Vec3.h>
 
 
-namespace zaap { namespace math {
+namespace zaap {
 	
 	//Matrix Math
 	Mat4 ZAAP_API CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale);
@@ -23,4 +23,4 @@ namespace zaap { namespace math {
 	// Compute barycentric coordinates for
 	// Vec3 point with respect to triangle (a, b, c)
 	float ZAAP_API BarycentricY(const Vec3 &a, const Vec3 &b, const Vec3 &c, const Vec2 &point);
-}}
+}

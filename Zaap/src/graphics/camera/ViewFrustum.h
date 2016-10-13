@@ -17,7 +17,7 @@ namespace zaap { namespace graphics {
 			BACK // far
 		};
 
-		math::Plane3D m_Sides[6];
+		Plane3D m_Sides[6];
 
 		float m_Angle, m_Ratio, m_NearPlane, m_FarPlane;
 		float m_NearPlaneWidth, m_NearPlaneHeight; 
@@ -27,10 +27,10 @@ namespace zaap { namespace graphics {
 		ViewFrustum(float angle, float ratio, float nearPlane, float farPlane);
 
 		void setInternals(float angle, float ratio, float nearPlane, float farPlane);
-		void calculateFrustum(math::Mat4 projectionMatrix, math::Mat4 viewMatrix);
+		void calculateFrustum(Mat4 projectionMatrix, Mat4 viewMatrix);
 
-		bool isVisible(const math::Vec3 &point) const;
-		bool isCuboidVisible(math::Vec3 min, math::Vec3 max) const;
+		bool isVisible(const Vec3 &point) const;
+		bool isCuboidVisible(Vec3 min, Vec3 max) const;
 	};
 
 }}

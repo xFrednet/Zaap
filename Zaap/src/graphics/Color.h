@@ -18,7 +18,7 @@ namespace zaap { namespace graphics {
 				float A;
 			};
 			
-			math::Vec4 RGBA;
+			Vec4 RGBA;
 
 		};
 	private:
@@ -27,8 +27,8 @@ namespace zaap { namespace graphics {
 	public:
 		//constructor
 		Color(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
-		Color(math::Vec4 color);
-		Color(math::Vec3 color, float a = 1.0f);
+		Color(Vec4 color);
+		Color(Vec3 color, float a = 1.0f);
 		Color(int intR, int intG, int intB, int intA = 255);
 		Color(int hex);
 
@@ -36,8 +36,8 @@ namespace zaap { namespace graphics {
 		void setRGB(float r, float g, float b);
 		void setRGBA(float r, float g, float b, float a);
 
-		void setRGB(math::Vec3 rgb);
-		void setRGBA(math::Vec4 rgba);
+		void setRGB(Vec3 rgb);
+		void setRGBA(Vec4 rgba);
 
 		void setIntRGB(int r, int g, int b);
 		void setIntRGBA(int r, int g, int b, int a);
@@ -47,8 +47,8 @@ namespace zaap { namespace graphics {
 		float getG(void) const;
 		float getB(void) const;
 		float getA(void) const;
-		math::Vec3 getRGB(void) const;
-		math::Vec4 getRGBA(void) const;
+		Vec3 getRGB(void) const;
+		Vec4 getRGBA(void) const;
 
 		int getIntR(void) const;
 		int getIntG(void) const;

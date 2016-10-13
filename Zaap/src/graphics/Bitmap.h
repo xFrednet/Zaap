@@ -14,7 +14,7 @@ namespace zaap { namespace graphics {
 		uint m_Width;
 		uint m_Height;
 		ZA_FORMAT m_Format;
-			
+		
 		uint getIndex(uint x, uint y) const;
 	public:
 		Bitmap();
@@ -47,6 +47,9 @@ namespace zaap { namespace graphics {
 		uint getBitsPerPixel() const;
 		byte const* getPixelArray() const;
 		ZA_FORMAT getFormat() const;
+
+		//converts the X and Y values to the Coordinate system from 0.0f - 1.0f
+		Vec2 getPixelCoord(uint x, uint y) const;
 
 		Bitmap getSubMap(uint x, uint y, uint width, uint height) const;
 			

@@ -45,8 +45,8 @@ namespace zaap { namespace scene {
 	{
 		graphics::ViewFrustum view = graphics::Renderer::GetViewFrustum();
 		//Terrain wrong orentaion ?
-		//return view.isVisible(math::Vec3(m_MinX, (m_MinHeight + m_MaxHeight) / 2, m_MinZ));
-		return view.isCuboidVisible(math::Vec3(m_MinX, m_MinHeight, m_MinZ), math::Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
+		//return view.isVisible(Vec3(m_MinX, (m_MinHeight + m_MaxHeight) / 2, m_MinZ));
+		return view.isCuboidVisible(Vec3(m_MinX, m_MinHeight, m_MinZ), Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
 
 	}
 
@@ -101,14 +101,14 @@ namespace zaap { namespace scene {
 			}
 		}
 
-		math::Vec3 min_(m_MinX, m_MinHeight, m_MinZ);
-		math::Vec3 max_(m_MaxX, m_MaxHeight, m_MaxZ);
+		Vec3 min_(m_MinX, m_MinHeight, m_MinZ);
+		Vec3 max_(m_MaxX, m_MaxHeight, m_MaxZ);
 
-		math::Vec3 tPoints[]{
-			math::Vec3(min_.X, min_.Y, min_.Z), math::Vec3(max_.X, min_.Y, min_.Z),
-			math::Vec3(min_.X, min_.Y, max_.Z), math::Vec3(max_.X, min_.Y, max_.Z),
-			math::Vec3(min_.X, max_.Y, min_.Z), math::Vec3(max_.X, max_.Y, min_.Z),
-			math::Vec3(min_.X, max_.Y, max_.Z), math::Vec3(max_.X, max_.Y, max_.Z)
+		Vec3 tPoints[]{
+			Vec3(min_.X, min_.Y, min_.Z), Vec3(max_.X, min_.Y, min_.Z),
+			Vec3(min_.X, min_.Y, max_.Z), Vec3(max_.X, min_.Y, max_.Z),
+			Vec3(min_.X, max_.Y, min_.Z), Vec3(max_.X, max_.Y, min_.Z),
+			Vec3(min_.X, max_.Y, max_.Z), Vec3(max_.X, max_.Y, max_.Z)
 		};
 
 	}

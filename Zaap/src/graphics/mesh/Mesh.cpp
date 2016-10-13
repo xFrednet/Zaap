@@ -12,7 +12,7 @@ namespace zaap { namespace graphics {
 	{
 	}
 
-	TEXTURE_VERTEX::TEXTURE_VERTEX(math::Vec3 vertex, math::Vec3 normal, math::Vec2 texCoords)
+	TEXTURE_VERTEX::TEXTURE_VERTEX(Vec3 vertex, Vec3 normal, Vec2 texCoords)
 		: Position(vertex),
 		Normal(normal),
 		TexCoord(texCoords)
@@ -22,7 +22,7 @@ namespace zaap { namespace graphics {
 	//////////////////////////////////////////////////////////////////////////////////
 	// MATERIAL_VERTEX  // MATERIAL_VERTEX  // MATERIAL_VERTEX  // MATERIAL_VERTEX  //
 	//////////////////////////////////////////////////////////////////////////////////
-	MATERIAL_VERTEX::MATERIAL_VERTEX(math::Vec3 position, math::Vec3 normal, uint material)
+	MATERIAL_VERTEX::MATERIAL_VERTEX(Vec3 position, Vec3 normal, uint material)
 		: Position(position),
 		Normal(normal),
 		Material(material)
@@ -39,7 +39,7 @@ namespace zaap { namespace graphics {
 	//////////////////////////////////////////////////////////////////////////////
 	// TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  //
 	//////////////////////////////////////////////////////////////////////////////
-	TERRAIN_VERTEX::TERRAIN_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec3 texMapColor, math::Vec2 texCoord)
+	TERRAIN_VERTEX::TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord)
 		: Position(position),
 		Normal(normal),
 		TexMapColor(texMapColor),

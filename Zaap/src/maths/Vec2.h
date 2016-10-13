@@ -3,7 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 		
 	struct ZAAP_API Vec2
 	{
@@ -42,4 +42,4 @@ namespace zaap { namespace math {
 
 	};
 
-}}
+}

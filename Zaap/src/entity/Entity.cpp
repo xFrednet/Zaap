@@ -6,7 +6,7 @@
 
 namespace zaap {
 
-	Entity::Entity(graphics::Mesh *mesh, math::Vec3 position, math::Vec3 rotation, math::Vec3 scale)
+	Entity::Entity(graphics::Mesh *mesh, Vec3 position, Vec3 rotation, Vec3 scale)
 		: BasicEntity(position),
 		m_Mesh(mesh),
 		m_Rotation(rotation),
@@ -21,19 +21,19 @@ namespace zaap {
 	//
 	// Rotation
 	//
-	void Entity::setRotation(const math::Vec3& rotation)
+	void Entity::setRotation(const Vec3& rotation)
 	{
 		m_Rotation = rotation;
 	}
-	void Entity::increaseRotation(const math::Vec3& rotation)
+	void Entity::increaseRotation(const Vec3& rotation)
 	{
 		m_Rotation += rotation;
 	}
-	math::Vec3 Entity::getRotation() const
+	Vec3 Entity::getRotation() const
 	{
 		return m_Rotation;
 	}
-	math::Vec3* Entity::getRotationP()
+	Vec3* Entity::getRotationP()
 	{
 		return &m_Rotation;
 	}
@@ -43,27 +43,27 @@ namespace zaap {
 	//
 	void Entity::setScale(float scale)
 	{
-		setScale(math::Vec3(scale, scale, scale));
+		setScale(Vec3(scale, scale, scale));
 	}
-	void Entity::setScale(math::Vec3 scale)
+	void Entity::setScale(Vec3 scale)
 	{
 		m_Scale = scale;
 	}
 	void Entity::increaseScale(float scale)
 	{
-		increaseScale(math::Vec3(scale, scale, scale));
+		increaseScale(Vec3(scale, scale, scale));
 	}
-	void Entity::increaseScale(math::Vec3 scale)
+	void Entity::increaseScale(Vec3 scale)
 	{
 		m_Scale += scale;
 	}
 
-	math::Vec3 Entity::getScale() const
+	Vec3 Entity::getScale() const
 	{
 		return m_Scale;
 	}
 
-	math::Vec3* Entity::getScaleP()
+	Vec3* Entity::getScaleP()
 	{
 		return &m_Scale;
 	}
@@ -75,9 +75,9 @@ namespace zaap {
 	{
 		return m_Mesh;
 	}
-	void Entity::getTransformationMatrix(math::Mat4 &result) const
+	void Entity::getTransformationMatrix(Mat4 &result) const
 	{
-		result = math::CreateTransformationMatrix(m_Position, m_Rotation, m_Scale);
+		result = CreateTransformationMatrix(m_Position, m_Rotation, m_Scale);
 	}
 	
 	//

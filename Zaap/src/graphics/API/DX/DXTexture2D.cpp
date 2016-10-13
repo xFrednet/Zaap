@@ -20,11 +20,6 @@ namespace zaap { namespace graphics { namespace DX {
 	DXTexture2D::DXTexture2D(String name, Bitmap image)
 		: Texture2D(name)
 	{
-		if (image.getBitsPerPixel() != 32)
-		{
-			ZAAP_ALERT("DXTexture2D: submitted Bitmap has an unexpected bitrate");
-		}
-
 		m_Width = image.getWidth();
 		m_Height = image.getHeight();
 		m_BitsPerPixel = image.getBitsPerPixel();

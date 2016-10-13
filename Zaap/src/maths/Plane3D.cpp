@@ -2,7 +2,7 @@
 
 // source: https://graphics.stanford.edu/~mdfisher/Code/Engine/Plane.cpp.html
 
-namespace zaap { namespace math {
+namespace zaap {
 	
 	//
 	// Constructor
@@ -68,9 +68,9 @@ namespace zaap { namespace math {
 		return !(*this == other);
 	}
 
-}}
+}
 
-namespace zaap { namespace math {
+namespace zaap {
 	
 	Plane3D Normalize(const Plane3D& a)
 	{
@@ -122,4 +122,4 @@ namespace zaap { namespace math {
 		if (d < 0) return ZAAP_POINT_BELOW;
 		return ZAAP_POINT_ONPLANE;
 	}
-}}
+}

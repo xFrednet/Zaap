@@ -20,7 +20,7 @@ namespace zaap { namespace graphics {
 			m_Size.X = 16;
 			m_Size.Y = 9;
 		}
-		m_ProjectionMatrix = math::CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
+		m_ProjectionMatrix = CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
 	}
 
 	//
@@ -122,7 +122,7 @@ namespace zaap { namespace graphics {
 	{
 		if (s_Instance)
 		{
-			s_Instance->m_Size = math::Vec2((float)width, (float)height); //TODO add a seperate option to set the Size
+			s_Instance->m_Size = Vec2((float)width, (float)height); //TODO add a seperate option to set the Size
 			s_Instance->caluclateProjectionMatrix();
 
 			s_Instance->resize(width, height);
@@ -134,11 +134,11 @@ namespace zaap { namespace graphics {
 		return s_Instance->getViewFrustum();
 	}
 
-	math::Mat4 Renderer::GetProjectionMatrix()
+	Mat4 Renderer::GetProjectionMatrix()
 	{
 		if (s_Instance)
 			return s_Instance->m_ProjectionMatrix;
 
-		return math::Mat4();
+		return Mat4();
 	}
 }}

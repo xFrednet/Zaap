@@ -2,7 +2,7 @@
 
 namespace zaap
 {
-	BasicEntity::BasicEntity(math::Vec3 position)
+	BasicEntity::BasicEntity(Vec3 position)
 		: m_Position(position)
 	{
 	}
@@ -10,19 +10,19 @@ namespace zaap
 	//
 	// Position
 	//
-	void BasicEntity::setPosition(const math::Vec3& position)
+	void BasicEntity::setPosition(const Vec3& position)
 	{
 		m_Position = position;
 	}
-	void BasicEntity::increasePosition(const math::Vec3& position)
+	void BasicEntity::increasePosition(const Vec3& position)
 	{
 		m_Position += position;
 	}
-	math::Vec3 BasicEntity::getPosition() const
+	Vec3 BasicEntity::getPosition() const
 	{
 		return m_Position;
 	}
-	math::Vec3* BasicEntity::getPositionP()
+	Vec3* BasicEntity::getPositionP()
 	{
 		return &m_Position;
 	}

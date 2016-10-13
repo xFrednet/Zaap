@@ -166,6 +166,10 @@ namespace zaap { namespace graphics {
 		return m_Format;
 	}
 
+	Vec2 Bitmap::getPixelCoord(uint x, uint y) const
+	{
+		return Vec2((float)x / (float)m_Width, (float)y / (float)m_Height);
+	}
 
 	Bitmap Bitmap::getSubMap(uint x, uint y, uint width, uint height) const
 	{

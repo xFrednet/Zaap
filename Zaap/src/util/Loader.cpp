@@ -60,9 +60,9 @@ namespace zaap {
 
 		//util values
 		String line;
-		std::vector<math::Vec3> position_unsorted;
-		std::vector<math::Vec2> texCoords_unsorted;
-		std::vector<math::Vec3> normals_unsorted;
+		std::vector<Vec3> position_unsorted;
+		std::vector<Vec2> texCoords_unsorted;
+		std::vector<Vec3> normals_unsorted;
 
 		int currentMaterial = 0;
 		int textureIndex = 0;
@@ -84,7 +84,7 @@ namespace zaap {
 				str = split(line, " ");
 
 				position_unsorted.push_back(
-					math::Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
+					Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
 
 				continue;
 			}
@@ -92,7 +92,7 @@ namespace zaap {
 			if (startWith(line, "vt", 2) && isTMesh)
 			{
 				str = split(line, " ");
-				texCoords_unsorted.push_back(math::Vec2((float)atof(str[1].c_str()), (float)atof(str[2].c_str())));
+				texCoords_unsorted.push_back(Vec2((float)atof(str[1].c_str()), (float)atof(str[2].c_str())));
 
 				continue;
 			}
@@ -102,7 +102,7 @@ namespace zaap {
 				str = split(line, " ");
 
 				normals_unsorted.push_back(
-					math::Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
+					Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
 
 				continue;
 			}

@@ -13,7 +13,8 @@ namespace zaap
 		ZA_FORMAT_UNKNOWN       = 0,
 		ZA_FORMAT_R8G8B8A8_UINT = 1,
 		ZA_FORMAT_R8G8B8_UINT   = 2,
-		ZA_FORMAT_R8_UINT       = 3
+		ZA_FORMAT_R8_UINT       = 3,
+		ZA_FORMAT_A8_UINT       = 4
 	} ZA_FORMAT;
 
 	//returns the size of the format in bytes

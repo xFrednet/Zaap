@@ -13,29 +13,29 @@ namespace zaap
 	{
 	protected:
 		graphics::Mesh* m_Mesh;
-		math::Vec3 m_Rotation;
-		math::Vec3 m_Scale;
+		Vec3 m_Rotation;
+		Vec3 m_Scale;
 	public:
-		Entity(graphics::Mesh *mesh, math::Vec3 position, math::Vec3 rotation = math::Vec3(0.0f, 0.0f, 0.0f), math::Vec3 scale = math::Vec3(1.0f, 1.0f, 1.0f));
+		Entity(graphics::Mesh *mesh, Vec3 position, Vec3 rotation = Vec3(0.0f, 0.0f, 0.0f), Vec3 scale = Vec3(1.0f, 1.0f, 1.0f));
 		Entity();
 
 		//rotation
-		void setRotation(const math::Vec3 &rotation);
-		void increaseRotation(const math::Vec3 &rotation);
-		math::Vec3 getRotation(void) const;
-		math::Vec3* getRotationP(void);
+		void setRotation(const Vec3 &rotation);
+		void increaseRotation(const Vec3 &rotation);
+		Vec3 getRotation(void) const;
+		Vec3* getRotationP(void);
 
 		//Scale
 		void setScale(float scale);
-		void setScale(math::Vec3 scale);
+		void setScale(Vec3 scale);
 		void increaseScale(float scale);
-		void increaseScale(math::Vec3 scale);
-		math::Vec3 getScale(void) const;
-		math::Vec3* getScaleP(void);
+		void increaseScale(Vec3 scale);
+		Vec3 getScale(void) const;
+		Vec3* getScaleP(void);
 
 		//Getters
 		graphics::Mesh* getMesh(void);
-		void getTransformationMatrix(math::Mat4& result) const;
+		void getTransformationMatrix(Mat4& result) const;
 		
 		//util
 		virtual void render() override;

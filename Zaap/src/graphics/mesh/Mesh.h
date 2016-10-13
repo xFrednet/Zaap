@@ -10,32 +10,32 @@ namespace zaap { namespace graphics {
 
 	struct ZAAP_API TEXTURE_VERTEX
 	{
-		math::Vec3 Position;
-		math::Vec3 Normal;
-		math::Vec2 TexCoord;
+		Vec3 Position;
+		Vec3 Normal;
+		Vec2 TexCoord;
 
 		TEXTURE_VERTEX();
-		TEXTURE_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec2 texCoord);
+		TEXTURE_VERTEX(Vec3 position, Vec3 normal, Vec2 texCoord);
 	};
 	
 	struct ZAAP_API MATERIAL_VERTEX
 	{
-		math::Vec3 Position;
-		math::Vec3 Normal;
+		Vec3 Position;
+		Vec3 Normal;
 		uint Material;
 
-		MATERIAL_VERTEX(math::Vec3 Position, math::Vec3 Normal, uint Material);
+		MATERIAL_VERTEX(Vec3 Position, Vec3 Normal, uint Material);
 		MATERIAL_VERTEX();
 	};
 
 	struct ZAAP_API TERRAIN_VERTEX
 	{
-		math::Vec3 Position;
-		math::Vec3 Normal;
-		math::Vec3 TexMapColor;
-		math::Vec2 TexCoord;
+		Vec3 Position;
+		Vec3 Normal;
+		Vec3 TexMapColor;
+		Vec2 TexCoord;
 
-		TERRAIN_VERTEX(math::Vec3 position, math::Vec3 normal, math::Vec3 texMapColor, math::Vec2 texCoord);
+		TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord);
 		TERRAIN_VERTEX();
 	};
 

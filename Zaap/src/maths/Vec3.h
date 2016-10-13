@@ -5,7 +5,7 @@
 
 #include <maths/Vec2.h>
 
-namespace zaap { namespace math	{
+namespace zaap {
 		
 	struct ZAAP_API Vec3
 	{
@@ -49,4 +49,4 @@ namespace zaap { namespace math	{
 	ZAAP_API Vec3  Clamp(const Vec3 &a, float min, float max);
 	ZAAP_API float Dot(const Vec3 &a, const Vec3 &b);
 
-}}
+}

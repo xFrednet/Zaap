@@ -31,7 +31,7 @@ namespace zaap { namespace graphics {
 		m_NearPlane = nearPlane;
 		m_FarPlane = farPlane;
 
-		float tang = tan(math::toRadians(m_Angle) / 2.0f);
+		float tang = tan(toRadians(m_Angle) / 2.0f);
 
 		//nearPlane
 		m_NearPlaneHeight = tang * m_NearPlane;
@@ -41,12 +41,12 @@ namespace zaap { namespace graphics {
 		m_FarPlaneHeight = tang * m_FarPlane;
 		m_FarPlaneWidth = m_FarPlaneHeight * m_Ratio;
 	}
-	void ViewFrustum::calculateFrustum(math::Mat4 projectionMatrix, math::Mat4 viewMatrix)
+	void ViewFrustum::calculateFrustum(Mat4 projectionMatrix, Mat4 viewMatrix)
 	{
 		//Source: http://gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 
 		// comboMatrix
-		math::Mat4 matrix = viewMatrix * projectionMatrix;
+		Mat4 matrix = viewMatrix * projectionMatrix;
 
 		//Left
 		m_Sides[LEFT].A = matrix.m14 + matrix.m11;
@@ -88,7 +88,7 @@ namespace zaap { namespace graphics {
 			m_Sides[i].normalize();
 	}
 
-	bool ViewFrustum::isVisible(const math::Vec3& point) const
+	bool ViewFrustum::isVisible(const Vec3& point) const
 	{
 		//add far and near plane
 		for (uint i = 0; i < 4; i++)
@@ -99,7 +99,7 @@ namespace zaap { namespace graphics {
 		return true;
 	}
 
-	bool ViewFrustum::isCuboidVisible(math::Vec3 min, math::Vec3 max) const
+	bool ViewFrustum::isCuboidVisible(Vec3 min, Vec3 max) const
 	{
 		bool isVisible = false;
 		uint i, j;
@@ -108,11 +108,11 @@ namespace zaap { namespace graphics {
 		//  0   1  |  4   5  |
 		//         |         |
 		//  2   3  |  6   7  |
-		math::Vec3 tPoints[]{
-			math::Vec3(min.X, min.Y, min.Z), math::Vec3(max.X, min.Y, min.Z),
-			math::Vec3(min.X, min.Y, max.Z), math::Vec3(max.X, min.Y, max.Z),
-			math::Vec3(min.X, max.Y, min.Z), math::Vec3(max.X, max.Y, min.Z),
-			math::Vec3(min.X, max.Y, max.Z), math::Vec3(max.X, max.Y, max.Z)
+		Vec3 tPoints[]{
+			Vec3(min.X, min.Y, min.Z), Vec3(max.X, min.Y, min.Z),
+			Vec3(min.X, min.Y, max.Z), Vec3(max.X, min.Y, max.Z),
+			Vec3(min.X, max.Y, min.Z), Vec3(max.X, max.Y, min.Z),
+			Vec3(min.X, max.Y, max.Z), Vec3(max.X, max.Y, max.Z)
 		};
 
 		//in front

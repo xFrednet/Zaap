@@ -27,12 +27,12 @@ namespace zaap { namespace graphics {
 	{
 		RGBA.clamp(0.0f, 1.0f);
 	}
-	Color::Color(math::Vec4 color)
+	Color::Color(Vec4 color)
 		: RGBA(color)
 	{
 		RGBA.clamp(0.0f, 1.0f);
 	}
-	Color::Color(math::Vec3 color, float a)
+	Color::Color(Vec3 color, float a)
 		: RGBA(color, a)
 	{
 		RGBA.clamp(0.0f, 1.0f);
@@ -66,11 +66,11 @@ namespace zaap { namespace graphics {
 		RGBA.clamp(0.0f, 1.0f);
 	}
 
-	void Color::setRGB(math::Vec3 rgb)
+	void Color::setRGB(Vec3 rgb)
 	{
 		setRGBA(rgb.X, rgb.Y, rgb.Z, A);
 	}
-	void Color::setRGBA(math::Vec4 rgba)
+	void Color::setRGBA(Vec4 rgba)
 	{
 		setRGBA(rgba.X, rgba.Y, rgba.Z, rgba.W);
 	}
@@ -104,11 +104,11 @@ namespace zaap { namespace graphics {
 		return A;
 	}
 
-	math::Vec3 Color::getRGB() const
+	Vec3 Color::getRGB() const
 	{
-		return math::Vec3(R, G, B);
+		return Vec3(R, G, B);
 	}
-	math::Vec4 Color::getRGBA() const
+	Vec4 Color::getRGBA() const
 	{
 		return RGBA;
 	}

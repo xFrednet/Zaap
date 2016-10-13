@@ -41,9 +41,9 @@ namespace zaap { namespace graphics {
 		//
 		struct ZAAP_API ZA_VS_MATRIX_BUFFER
 		{
-			math::Mat4 ProjectionMatrix;
-			math::Mat4 TransformationMatrix;
-			math::Mat4 ViewMatrix;
+			Mat4 ProjectionMatrix;
+			Mat4 TransformationMatrix;
+			Mat4 ViewMatrix;
 		};
 
 		//
@@ -54,18 +54,18 @@ namespace zaap { namespace graphics {
 		public:
 			uint VSLightCount;
 		private:
-			math::Vec3 padding;
+			Vec3 padding;
 		
 			//4 Bytes * ZAAP_SHADER_LIGHT_COUNT
 		public:
-			math::Vec4 LightPositions[ZAAP_SHADER_LIGHT_COUNT];
+			Vec4 LightPositions[ZAAP_SHADER_LIGHT_COUNT];
 		};
 		struct ZAAP_API ZA_PS_LIGHT_BUFFER {
 		public:
 			
 			//4 Bytes
 			uint PSLightCount;
-			math::Vec3 AmbientLight;
+			Vec3 AmbientLight;
 
 			//4 Bytes * ZAAP_SHADER_LIGHT_COUNT
 			Color LightColors[ZAAP_SHADER_LIGHT_COUNT];
@@ -76,7 +76,7 @@ namespace zaap { namespace graphics {
 		//
 		// A buffer to hold shader information from the current scene.
 		struct ZAAP_API ZA_VS_SCENE_BUFFER {
-			math::Vec3 CameraPosition;
+			Vec3 CameraPosition;
 		private:
 			float padding = 0;
 		};
@@ -86,7 +86,7 @@ namespace zaap { namespace graphics {
 		//
 		// The material struct that holds the information about the single materials
 		struct ZAAP_API ZA_PS_SHADER_MATERIAL {
-			math::Vec3 Color;
+			Vec3 Color;
 			float Reflectivity;
 		};
 		//This struct represents the actual buffer that is loaded

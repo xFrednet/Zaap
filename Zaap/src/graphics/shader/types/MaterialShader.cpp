@@ -13,19 +13,19 @@ namespace zaap { namespace graphics {
 
 		loadMatrixBuffer();
 	}
-	void MaterialShader::setProjectionMatrix(math::Mat4 projectionMatrix)
+	void MaterialShader::setProjectionMatrix(Mat4 projectionMatrix)
 	{
 		m_MatrixBufferStruct.ProjectionMatrix = projectionMatrix;
 
 		loadMatrixBuffer();
 	}
-	void MaterialShader::setTransformationMatrix(math::Mat4 transformationMatrix)
+	void MaterialShader::setTransformationMatrix(Mat4 transformationMatrix)
 	{
 		m_MatrixBufferStruct.TransformationMatrix = transformationMatrix;
 
 		loadMatrixBuffer();
 	}
-	void MaterialShader::setViewMatrix(math::Mat4 viewMatrix)
+	void MaterialShader::setViewMatrix(Mat4 viewMatrix)
 	{
 		m_MatrixBufferStruct.ViewMatrix = viewMatrix;
 
@@ -35,7 +35,7 @@ namespace zaap { namespace graphics {
 	//
 	//Scene buffer
 	//
-	void MaterialShader::setCameraPosition(math::Vec3 cameraPosition)
+	void MaterialShader::setCameraPosition(Vec3 cameraPosition)
 	{
 		m_SceneBufferStruct.CameraPosition = cameraPosition;
 

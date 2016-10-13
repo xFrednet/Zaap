@@ -15,8 +15,8 @@ namespace zaap { namespace events {
 	{
 	private:
 		//mouse
-		static math::Vec2 m_MousePosition;
-		static math::Vec2 m_MouseMotion;
+		static Vec2 m_MousePosition;
+		static Vec2 m_MouseMotion;
 		static bool m_MouseButtonPressed[ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED];
 
 		//keyboard
@@ -33,7 +33,7 @@ namespace zaap { namespace events {
 		//mouse
 		static void MouseButtonEvent(uint button, bool state);
 		static void MouseMotionEvent(uint mouseX, uint mouseY);
-		static math::Vec2 GetMouseMotion();
+		static Vec2 GetMouseMotion();
 		static bool IsButtonPressed(uint button);
 
 		//keyboard

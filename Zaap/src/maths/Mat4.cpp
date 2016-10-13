@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace zaap { namespace math {
+namespace zaap {
 	
 	Mat4::Mat4(bool addDiagonal)
 	{
@@ -231,4 +231,4 @@ namespace zaap { namespace math {
 		}
 		return mat;
 	}
-}}
+}

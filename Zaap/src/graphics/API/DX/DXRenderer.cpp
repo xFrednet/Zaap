@@ -9,7 +9,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
-	math::Mat4 matrix_;
+	Mat4 matrix_;
 	void DXRenderer::init()
 	{
 		m_Devcon = DXContext::GetDevContext();
@@ -304,7 +304,7 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		math::Mat4 matrix = m_Camera->getViewMatrix();
+		Mat4 matrix = m_Camera->getViewMatrix();
 		m_TextureShader->setViewMatrix(matrix);
 		m_TerrainShader->setViewMatrix(matrix);
 		m_MaterialShader->setViewMatrix(matrix);
@@ -320,7 +320,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_TerrainShader->start();
 
-		m_TerrainShader->setTransformationMatrix(math::Mat4(1.0f));
+		m_TerrainShader->setTransformationMatrix(Mat4(1.0f));
 
 	}
 

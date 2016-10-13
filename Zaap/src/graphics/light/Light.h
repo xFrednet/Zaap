@@ -14,7 +14,7 @@ namespace zaap { namespace graphics {
 	protected:
 		Color m_Color;
 	public:
-		Light(math::Vec3 position = math::Vec3(0, 0, 0), Color color = Color(1.0f, 1.0f, 1.0f));
+		Light(Vec3 position = Vec3(0, 0, 0), Color color = Color(1.0f, 1.0f, 1.0f));
 
 		//color
 		void setColor(Color color);

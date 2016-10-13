@@ -11,19 +11,19 @@ namespace zaap { namespace graphics {
 
 		loadMatrixBuffer();
 	}
-	void TerrainShader::setProjectionMatrix(math::Mat4 projectionMatrix)
+	void TerrainShader::setProjectionMatrix(Mat4 projectionMatrix)
 	{
 		m_MatrixBufferStruct.ProjectionMatrix = projectionMatrix;
 
 		loadMatrixBuffer();
 	}
-	void TerrainShader::setTransformationMatrix(math::Mat4 transformationMatrix)
+	void TerrainShader::setTransformationMatrix(Mat4 transformationMatrix)
 	{
 		m_MatrixBufferStruct.TransformationMatrix = transformationMatrix;
 
 		loadMatrixBuffer();
 	}
-	void TerrainShader::setViewMatrix(math::Mat4 viewMatrix)
+	void TerrainShader::setViewMatrix(Mat4 viewMatrix)
 	{
 		m_MatrixBufferStruct.ViewMatrix = viewMatrix;
 

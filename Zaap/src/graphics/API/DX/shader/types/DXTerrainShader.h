@@ -18,16 +18,16 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			uint LightCount;
 		private:
-			math::Vec3 padding;
+			Vec3 padding;
 		public:
-			math::Vec4 Position[SUPPORTET_LIGHT_COUNT];
+			Vec4 Position[SUPPORTET_LIGHT_COUNT];
 		};
 
 		struct PS_LIGHT_BUFFER
 		{
 			uint LightCount;
 		private:
-			math::Vec3 padding;
+			Vec3 padding;
 		public:
 			Color LightColor[SUPPORTET_LIGHT_COUNT];
 		};

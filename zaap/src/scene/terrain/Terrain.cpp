@@ -111,7 +111,7 @@ namespace zaap { namespace scene {
 				for (x = 0; x < m_VCountHorizontal; x++)
 				{
 					height = calculateHeightFromColor(heightMap.getColor(x, y));
-					m_Vertices[x + y * m_VCountVertical].Position = math::Vec3((float)x * vSpacing, height, (float)y * vSpacing);
+					m_Vertices[x + y * m_VCountVertical].Position = Vec3((float)x * vSpacing, height, (float)y * vSpacing);
 
 					if (height < m_MinHeight)
 						m_MinHeight = height;
@@ -132,7 +132,7 @@ namespace zaap { namespace scene {
 				{
 					m_Vertices[x + y * m_VCountVertical].Normal = calcualteNormal(x, y);
 					m_Vertices[x + y * m_VCountVertical].TexMapColor = texMap.getColor(x, y).getRGB();
-					m_Vertices[x + y * m_VCountVertical].TexCoord = math::Vec2(x * texIncrease, y * texIncrease);
+					m_Vertices[x + y * m_VCountVertical].TexCoord = Vec2(x * texIncrease, y * texIncrease);
 				}
 			}
 			
@@ -153,9 +153,9 @@ namespace zaap { namespace scene {
 		return m_Vertices[vertexX + vertexY * m_VCountVertical].Position.Y;
 	}
 
-	math::Vec3 Terrain::calcualteNormal(uint vX, uint vY) const
+	Vec3 Terrain::calcualteNormal(uint vX, uint vY) const
 	{
-		math::Vec3 normal(0.0f, 2.0f, 0.0f);
+		Vec3 normal(0.0f, 2.0f, 0.0f);
 
 		//x Value
 		{
@@ -223,7 +223,7 @@ namespace zaap { namespace scene {
 		return m_VCountVertical;
 	}
 
-	float Terrain::getHeight(math::Vec2 point)
+	float Terrain::getHeight(Vec2 point)
 	{
 		uint vX = (uint)(point.X / m_TerrainDesc.VertexSpacing);
 		uint vY = (uint)(point.Y / m_TerrainDesc.VertexSpacing);
@@ -235,7 +235,7 @@ namespace zaap { namespace scene {
 		// v0   v2 |      v2
 		//         |        
 		// v1      | v3   v0
-		math::Vec3 v0, v1, v2;
+		Vec3 v0, v1, v2;
 		if ((point.X - vX) <= (1 - (point.Y - vY)))
 		{
 			v0 = m_Vertices[(vX    ) + (vY    ) * m_VCountHorizontal].Position;
@@ -247,7 +247,7 @@ namespace zaap { namespace scene {
 			v1 = m_Vertices[(vX + 1) + (vY    ) * m_VCountHorizontal].Position;
 			v2 = m_Vertices[(vX    ) + (vY + 1) * m_VCountHorizontal].Position;
 		}
-		float height = BarycentricY(v0, v1, v2, math::Vec2(point.X, point.Y));
+		float height = BarycentricY(v0, v1, v2, Vec2(point.X, point.Y));
 		return height;
 	}
 

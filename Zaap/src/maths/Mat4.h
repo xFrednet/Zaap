@@ -6,7 +6,7 @@
 #include <maths/Vec3.h>
 #include <maths/Vec4.h>
 
-namespace zaap { namespace math {
+namespace zaap {
 		
 	struct ZAAP_API Mat4
 	{
@@ -61,4 +61,4 @@ namespace zaap { namespace math {
 		Mat4 operator*(const float &scale) const;
 	};
 
-}}
+}
