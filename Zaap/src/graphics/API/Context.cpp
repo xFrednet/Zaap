@@ -12,9 +12,9 @@ namespace zaap { namespace graphics { namespace API {
 
 	Context* Context::s_Context = nullptr;
 
-	void Context::Create(Window& window)
+	void Context::Create()
 	{
-		s_Context = new DX::DXContext(window);
+		s_Context = new DX::DXContext();
 	}
 
 	void Context::Cleanup()
@@ -22,11 +22,6 @@ namespace zaap { namespace graphics { namespace API {
 		s_Context->cleanup();
 		delete s_Context;
 		ZAAP_CLEANUP_LOG("Context");
-	}
-
-	void Context::Resize(uint width, uint height)
-	{
-		if (s_Context) s_Context->resize(width, height);
 	}
 
 	void Context::SwapBuffers()

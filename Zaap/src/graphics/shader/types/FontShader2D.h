@@ -7,7 +7,10 @@
 #include <graphics/Color.h>
 #include <graphics/shader/Shader.h>
 
-namespace zaap { namespace graphics {
+namespace zaap { 
+	class Event;
+
+namespace graphics {
 	
 	class ZAAP_API FontShader2D : public Shader
 	{
@@ -18,12 +21,16 @@ namespace zaap { namespace graphics {
 		Color m_TextColor;
 		virtual void loadTextColor() const = 0;
 	public:
+		FontShader2D();
 		virtual ~FontShader2D()
 		{
 		}
 
 		void setTransformationMatrix(Mat4 matrix);
 		void setColor(Color color);
+
+		void windowCallback(const Event& windowEvent);
+
 	};
 
 }}

@@ -7,11 +7,17 @@
 #include "API/DX/shader/types/DXTextureShader.h"
 #include "API/DX/shader/types/DXMaterialShader.h"
 #include "API/DX/shader/types/DXTerrainShader.h"
+#include <events/Input.h>
 
 
 namespace zaap { namespace graphics {
 		
 	Renderer* Renderer::s_Instance = nullptr;
+
+	Renderer::Renderer()
+	{
+		Input::AddWindowCallback(METHOD_1(&Renderer::windowCallback));
+	}
 
 	void Renderer::caluclateProjectionMatrix()
 	{
@@ -22,6 +28,7 @@ namespace zaap { namespace graphics {
 		}
 		m_ProjectionMatrix = CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
 	}
+
 
 	//
 	//Init
@@ -39,6 +46,7 @@ namespace zaap { namespace graphics {
 		s_Instance->caluclateProjectionMatrix();
 
 		s_Instance->init();
+
 	}
 
 	void Renderer::StartFontShader2D()
@@ -118,15 +126,21 @@ namespace zaap { namespace graphics {
 		delete s_Instance;
 		ZAAP_CLEANUP_LOG("Renderer");
 	}
-	void Renderer::Resize(uint width, uint height)
+	void Renderer::windowCallback(const Event& windowEvent) const
 	{
-		if (s_Instance)
+		if (windowEvent.getEventType() == WINDOW_RESIZE_EVENT)
 		{
-			s_Instance->m_Size = Vec2((float)width, (float)height); //TODO add a seperate option to set the Size
+			if (!s_Instance) return;
+			WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
+			uint width = event->getWidth();
+			uint height = event->getHeight();
+
+			s_Instance->m_Size = Vec2((float)width, (float)height); //TODO add a separation option to set the Size
 			s_Instance->caluclateProjectionMatrix();
 
 			s_Instance->resize(width, height);
 		}
+
 	}
 
 	ViewFrustum Renderer::GetViewFrustum()

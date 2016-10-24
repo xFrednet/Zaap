@@ -4,10 +4,11 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
-	DXContext::DXContext(Window &window)
+	DXContext::DXContext()
 		: Context()
 	{
-		SIZE *size = window.getSize();
+		uint wWidth = Window::GetWidth();
+		uint wHeight = Window::GetHeight();
 		//
 		// Swap chain
 		//
@@ -22,12 +23,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 			scd.BufferCount = 1;
 			scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			scd.BufferDesc.Width = UINT(size->Width);
-			scd.BufferDesc.Height = UINT(size->Height);
+			scd.BufferDesc.Width = UINT(wWidth);
+			scd.BufferDesc.Height = UINT(wHeight);
 			scd.BufferDesc.RefreshRate.Numerator = 60;
 			scd.BufferDesc.RefreshRate.Denominator = 1;
 			scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			scd.OutputWindow = window.getHWND();
+			scd.OutputWindow = Window::GetHWND();
 			scd.SampleDesc.Count = 1;//TODO add option
 			scd.SampleDesc.Quality = 0;
 			scd.Windowed = true;
@@ -53,11 +54,6 @@ namespace zaap { namespace graphics { namespace DX {
 			DXNAME(m_Dev, "DXContext::m_Dev");
 			DXNAME(m_Devcon, "DXContext::m_Devcon");
 		}
-		
-	}
-
-	void DXContext::resize(uint width, uint height)
-	{
 		
 	}
 

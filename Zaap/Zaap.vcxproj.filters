@@ -67,6 +67,9 @@
     <Filter Include="Source Files\src\graphics\API\DX\shader\types">
       <UniqueIdentifier>{f844c93d-04c4-49e3-8f91-ae8fb2bad02c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\events\types">
+      <UniqueIdentifier>{af3d5829-1179-41fd-8562-6dabd692a4fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -107,9 +110,6 @@
     </ClCompile>
     <ClCompile Include="src\graphics\camera\Camera.cpp">
       <Filter>Source Files\src\graphics\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="src\events\Event.cpp">
-      <Filter>Source Files\src\events</Filter>
     </ClCompile>
     <ClCompile Include="src\events\Input.cpp">
       <Filter>Source Files\src\events</Filter>
@@ -231,6 +231,12 @@
     <ClCompile Include="src\graphics\Format.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\events\EventManager.cpp">
+      <Filter>Source Files\src\events</Filter>
+    </ClCompile>
+    <ClCompile Include="src\events\WindowEvent.cpp">
+      <Filter>Source Files\src\events\types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -286,12 +292,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\camera\Camera.h">
       <Filter>Source Files\src\graphics\camera</Filter>
-    </ClInclude>
-    <ClInclude Include="src\events\Event.h">
-      <Filter>Source Files\src\events</Filter>
-    </ClInclude>
-    <ClInclude Include="src\events\EventManager.h">
-      <Filter>Source Files\src\events</Filter>
     </ClInclude>
     <ClInclude Include="src\events\Input.h">
       <Filter>Source Files\src\events</Filter>
@@ -415,6 +415,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Format.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\EventManager.h">
+      <Filter>Source Files\src\events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\events\WindowEvent.h">
+      <Filter>Source Files\src\events\types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

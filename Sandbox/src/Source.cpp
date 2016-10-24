@@ -242,7 +242,7 @@ public:
 			}
 		}
 
-		if (events::Input::IsKeyDown(ZAAP_VK_T))
+		if (Input::IsKeyDown(ZAAP_VK_T))
 		{
 			Vec3 p = camera->getPosition();
 			p.Y = terrain_->getHeight(Vec2(p.X, p.Z));
@@ -251,7 +251,7 @@ public:
 			if (log % 10 == 0)
 				ZAAP_INFO(std::to_string(p.Y));
 		}
-		if (events::Input::IsKeyDown(ZAAP_VK_X))
+		if (Input::IsKeyDown(ZAAP_VK_X))
 		{
 			Vec3 p = camera->getPosition();
 			p.Y = terrain_->getHeight(Vec2(p.X, p.Z)) + 1.9f;

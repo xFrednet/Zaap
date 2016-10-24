@@ -4,22 +4,31 @@
 
 #define ZAAP_DEBUG 1
 
+//OS selection
 #ifdef ZA_OS_WINDOWS
-#define ZA_OS_WIN
-#define ZA_OS_WIN32
-#define ZA_INCLUDE_DIRECTX
+	#define ZA_OS_WIN
+	#define ZA_OS_WIN32
+	#define ZA_INCLUDE_DIRECTX
 #else //!ZA_OS_WINDOWS
-#pragma message("Zaap ERROR : The targeted operating system isn't specified. Use ZA_OS_WINDOWS")
+	#pragma message("Zaap ERROR : The targeted operating system isn't specified. Use ZA_OS_WINDOWS")
 #endif
 
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
-#include <iostream>
-#include <vector>
-#include <time.h>
-#include <ctime>
+#include <functional>
 #include <iostream>
 #include <fstream>
-#include <map>
 #include <sstream>
+
+#include <vector>
+#include <map>
+#include <list>
+#include <unordered_map>
+
+#include <time.h>
+#include <ctime>
+
+#include "Types.h"
+
+#define METHOD_1(x) std::bind(x, this, std::placeholders::_1)

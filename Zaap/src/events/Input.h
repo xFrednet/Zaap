@@ -3,14 +3,18 @@
 #include <Common.h>
 #include <Types.h>
 #include <maths/Vec2.h>
+#include <functional>
+#include "EventManager.h"
 
 #define ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED 16
 #define ZAAP_KEYBOARD_KEY_COUNT_SUPPORTED 256
 
 #define ZAAP_UNKNOWN_MOUSE_POSITION -1
 
-namespace zaap { namespace events {
+namespace zaap {
 	
+	typedef std::function<void(const Event& windowEvent)> WindowCallback;
+
 	class ZAAP_API Input
 	{
 	private:
@@ -23,6 +27,8 @@ namespace zaap { namespace events {
 		static bool m_KeysDown[ZAAP_KEYBOARD_KEY_COUNT_SUPPORTED];
 		static bool m_KeysLastDown[ZAAP_KEYBOARD_KEY_COUNT_SUPPORTED];
 
+		//window callback
+		static std::vector<WindowCallback> s_WindowCallbacks;
 	public:
 		static void Init(void);
 		static void Update(void);
@@ -40,9 +46,15 @@ namespace zaap { namespace events {
 		static void KeyEvent(uint key, bool state);
 		static bool IsKeyDown(int key);
 		static bool IsKeyPressed(int Key);
+
+		//Window callbacks
+		static void AddWindowCallback(WindowCallback windowCallback);
+		static void WindowCallback(const Event& windowEvent);
 	};
 
-}}
+}
+
+#include <events/WindowEvent.h>
 
 /*
 * Mouse stuff

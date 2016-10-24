@@ -147,8 +147,9 @@
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\entity\BasicEntity.cpp" />
     <ClCompile Include="src\entity\Entity.cpp" />
-    <ClCompile Include="src\events\Event.cpp" />
+    <ClCompile Include="src\events\EventManager.cpp" />
     <ClCompile Include="src\events\Input.cpp" />
+    <ClCompile Include="src\events\WindowEvent.cpp" />
     <ClCompile Include="src\graphics\API\Context.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer.cpp" />
@@ -204,9 +205,9 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\entity\BasicEntity.h" />
     <ClInclude Include="src\entity\Entity.h" />
-    <ClInclude Include="src\events\Event.h" />
     <ClInclude Include="src\events\EventManager.h" />
     <ClInclude Include="src\events\Input.h" />
+    <ClInclude Include="src\events\WindowEvent.h" />
     <ClInclude Include="src\graphics\API\Context.h" />
     <ClInclude Include="src\graphics\API\DX\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DX\DXContext.h" />

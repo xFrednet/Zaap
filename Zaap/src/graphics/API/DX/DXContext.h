@@ -21,12 +21,9 @@ namespace zaap { namespace graphics	{ namespace DX {
 
 		//Buffer stuff
 		void swapBuffers(void) override;
-		
-		//util
-		void resize(uint width, uint height) override;
 
 	public:
-		DXContext(Window &window);
+		DXContext();
 
 		//getters
 		static DXContext* GetContext(void);

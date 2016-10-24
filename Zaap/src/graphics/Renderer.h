@@ -30,6 +30,7 @@ namespace zaap { namespace graphics {
 		TerrainShader *m_TerrainShader;
 
 		//Init
+		Renderer();
 		virtual void init() = 0;
 
 		//Render
@@ -50,7 +51,9 @@ namespace zaap { namespace graphics {
 		virtual void resize(uint width, uint height) = 0;
 		virtual ViewFrustum getViewFrustum(void) = 0;
 		
+		void windowCallback(const Event& windowEvent) const;
 		void caluclateProjectionMatrix();
+
 
 	public:
 		//Init
@@ -79,7 +82,6 @@ namespace zaap { namespace graphics {
 		//Util
 		static void PrepareFrame();
 		static void Cleanup();
-		static void Resize(uint width, uint height);
 
 		//getters
 		static ViewFrustum GetViewFrustum();

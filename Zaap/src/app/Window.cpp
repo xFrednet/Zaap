@@ -10,16 +10,21 @@
 //Event Method
 
 namespace zaap {
+
+	HWND Window::s_HWND;
+	uint Window::s_Width = 0;
+	uint Window::s_Height = 0;
+
+	//
+	// Creation
+	//
 	LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-	Window::Window(char* title, int width, int height)
+	void Window::Create(char* title, int width, int height)
 	{
-
-		resolution_ = SIZE(width, height);
 		WNDCLASSEX wc;
 		DWORD style = WS_OVERLAPPEDWINDOW;
 
-		//setes als wc values to NULL
+		//sets all wc values to NULL
 		ZeroMemory(&wc, sizeof(WNDCLASSEX));
 
 		//properties
@@ -30,13 +35,15 @@ namespace zaap {
 		wc.lpfnWndProc = WindowProc;
 
 		//window size
+		s_Width = width;
+		s_Height = height;
 		RECT size = { 0, 0, LONG(width), LONG(height) };
 		AdjustWindowRect(&size, style, false);
 
 		//register
 		RegisterClassEx(&wc);
 
-		hWnd_ = CreateWindowEx(NULL,
+		s_HWND = CreateWindowEx(NULL,
 			"ZAAP_WINDOW",
 			title,
 			style,
@@ -46,77 +53,86 @@ namespace zaap {
 			size.bottom - size.top,
 			NULL, NULL, NULL, NULL);
 
-		ShowWindow(hWnd_, SW_SHOWNORMAL);
+		ShowWindow(s_HWND, SW_SHOWNORMAL);
 
 		ZAAP_INFO("Window: Window was created");
 	}
 
-	HWND Window::getHWND()
+	//
+	// Getters
+	//
+	HWND Window::GetHWND()
 	{
-		return hWnd_;
+		return s_HWND;
 	}
-	zaap::SIZE* Window::getSize()
+	uint Window::GetWidth()
 	{
-		return &resolution_;
+		return s_Width;
+	}
+	uint Window::GetHeight()
+	{
+		return s_Height;
 	}
 
+	//
+	// Events
+	//
 	void windowResized(uint width, uint height)
 	{
-		graphics::API::Context::Resize(width, height);
-		graphics::Renderer::Resize(width, height);
+		Window::s_Width = width;
+		Window::s_Height = height;
+		Input::WindowCallback(WindowResizeEvent(width, height));
 	}
-
 	LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
-		//std::cout << wParam << " " << lParam << std::endl;
 		switch (message)
 		{
 			//
 			// Focus
 			//
 		case WM_KILLFOCUS:
-			events::Input::ClearButtons();
-			events::Input::ClearKeys();
+			Input::ClearButtons();
+			Input::ClearKeys();
 			break;
 
 			//
 			// Keyboard
 			//
 		case WM_KEYUP:
-			events::Input::KeyEvent(wParam, false);
+			Input::KeyEvent(wParam, false);
 			break;
 		case WM_KEYDOWN:
-			events::Input::KeyEvent(wParam, true);
+			Input::KeyEvent(wParam, true);
 			break;
 			//
 			// Mouse
 			//
 		case WM_MOUSEMOVE:
-			events::Input::MouseMotionEvent(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			Input::MouseMotionEvent(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			break;
 
 			//LButton
 		case WM_LBUTTONDOWN:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, true);
+			Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, true);
 			break;
 		case WM_LBUTTONUP:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, false);
+			Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, false);
 			break;
 
 			//MButton
 		case WM_MBUTTONDOWN:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, true);
+			Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, true);
 			break;
 		case WM_MBUTTONUP:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, false);
+			Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, false);
 			break;
 
 			//RButton
 		case WM_RBUTTONDOWN:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, true);
+			Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, true);
 			break;
 		case WM_RBUTTONUP:
-			events::Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, false);
+			Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, false);
 			break;
 
 			//

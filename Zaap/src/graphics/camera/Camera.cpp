@@ -29,7 +29,7 @@ namespace zaap { namespace graphics {
 
 	void Camera::calculateViewFrustum()
 	{
-		if (!events::Input::IsKeyDown(ZAAP_VK_V))
+		if (!Input::IsKeyDown(ZAAP_VK_V))
 			m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
 		
 	}

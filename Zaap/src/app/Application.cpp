@@ -19,10 +19,10 @@
 namespace zaap {
 
 	Application::Application(char* title, int width, int height, graphics::Scene *scene)
-		: m_Window(title, width, height),
-		m_Scene(scene)
+		: m_Scene(scene)
 	{
-		graphics::API::Context::Create(m_Window);
+		Window::Create(title, width, height);
+		graphics::API::Context::Create();
 		graphics::Renderer::Init();
 	}
 	void Application::cleanup() const
@@ -86,14 +86,14 @@ namespace zaap {
 			//update stuff
 			if (update_prog >= 1.0f)
 			{
-				if (events::Input::IsKeyPressed(ZAAP_VK_P))
+				if (Input::IsKeyPressed(ZAAP_VK_P))
 				{
 					ZAAP_ALERT("Application: PAUSE");
 					m_Paused = !m_Paused;
 				}
 
 				if (!m_Paused)update();
-				events::Input::Update();
+				Input::Update();
 				update_prog--;
 				updates++;
 

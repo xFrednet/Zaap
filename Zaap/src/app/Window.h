@@ -7,33 +7,20 @@
 
 namespace zaap
 {
-	struct ZAAP_API SIZE
-		{
-			uint Width;
-			uint Height;
-
-			SIZE(uint width, uint height)
-			{
-				Width = width;
-				Height = height;
-			}
-			SIZE()
-			{
-				Width = 0; 
-				Height = 0;
-			}
-		};
 
 	class ZAAP_API Window
 	{
-
 	private:
-		HWND hWnd_;
-		SIZE resolution_;
+		friend void windowResized(uint width, uint height);
+		
+		static HWND s_HWND;
+		static uint s_Width;
+		static uint s_Height;
 	public:
-		Window(char* title, int width, int height);
+		static void Create(char* title, int width, int height);
 
-		HWND getHWND();
-		SIZE* getSize();
+		static HWND GetHWND();
+		static uint GetWidth();
+		static uint GetHeight();
 	};
 }

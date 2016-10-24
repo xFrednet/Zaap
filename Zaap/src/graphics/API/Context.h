@@ -15,15 +15,13 @@ namespace zaap { namespace graphics { namespace API {
 		
 		virtual void cleanup(void) = 0;
 		virtual void swapBuffers(void) = 0;
-		virtual void resize(uint width, uint height) = 0;
 
+		virtual ~Context() {}
 	public:
-		static void Create(Window &window);
+		static void Create();
 
 		static void Cleanup();
 		static void SwapBuffers();
-
-		static void Resize(uint width, uint height);
 	};
 
 }}}
