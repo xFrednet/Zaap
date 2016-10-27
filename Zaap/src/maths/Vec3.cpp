@@ -38,7 +38,7 @@ namespace zaap {
 
 	float Vec3::getLength() const
 	{
-		return GetLength(*this);
+		return Length(*this);
 	}
 
 	void Vec3::normalize()
@@ -61,96 +61,145 @@ namespace zaap {
 	//
 	bool Vec3::operator==(const Vec3 &other) const
 	{
-		return (X == other.X) && (Y == other.Y) && (Z == other.Z);
+		return Equal(*this, other);
 	}
 	bool Vec3::operator!=(const Vec3 &other) const
 	{
-		return (X != other.X) || (Y != other.Y) || (Z != other.Z);
+		return !Equal(*this, other);
 	}
 
 	Vec3& Vec3::operator+=(const Vec3 &other)
 	{
-		X += other.X;
-		Y += other.Y;
-		Z += other.Z;
+		*this = Add(*this, other);
 		return *this;
 	}
 	Vec3& Vec3::operator-=(const Vec3 &other)
 	{
-		X -= other.X;
-		Y -= other.Y;
-		Z -= other.Z;
+		*this = Subtract(*this, other);
 		return *this;
 	}
 	Vec3& Vec3::operator*=(const Vec3 &other)
 	{
-		X *= other.X;
-		Y *= other.Y;
-		Z *= other.Z;
+		*this = Multiply(*this, other);
 		return *this;
 	}
-	Vec3& Vec3::operator*=(const float scale)
+	Vec3& Vec3::operator/=(const Vec3& other)
 	{
-		this->scale(scale);
+		*this = Divide(*this, other);
+		return *this;
+	}
+
+	Vec3& Vec3::operator*=(const float value)
+	{
+		*this = Multiply(*this, value);
+		return *this;
+	}
+	Vec3& Vec3::operator/=(const float value)
+	{
+		*this = Multiply(*this, value);
 		return *this;
 	}
 
 	Vec3 Vec3::operator+(const Vec3 &other) const
 	{
-		return Vec3(X + other.X,
-			Y + other.Y,
-			Z + other.Z);
+		return Add(*this, other);
 	}
 	Vec3 Vec3::operator-(const Vec3 &other) const
 	{
-		return Vec3(X - other.X,
-			Y - other.Y,
-			Z - other.Z);
+		return Subtract(*this, other);
 	}
 	Vec3 Vec3::operator*(const Vec3 &other) const
 	{
-		return Vec3(X * other.X,
-			Y * other.Y,
-			Z * other.Z);
+		return Multiply(*this, other);
 	}
+	Vec3 Vec3::operator/(const Vec3& other) const
+	{
+		return Divide(*this, other);
+	}
+
 	Vec3 Vec3::operator*(float scale) const
 	{
-		return Vec3(X * scale, Y * scale, Z * scale);
+		return Multiply(*this, scale);
 	}
-
-	
+	Vec3 Vec3::operator/(const float value) const
+	{
+		return Divide(*this, value);
+	}
 }
-
 //
-// Util Methods
+// Operations && Util Methods
 //
 namespace zaap {
 	
-	Vec3 Scale(const Vec3& vec, float scale)
+	//
+	// Operations
+	//
+	Vec3 Add(const Vec3& a, const Vec3& b)
 	{
-		return vec * scale;
+		return Vec3(a.X + b.X,
+			a.Y + b.Y,
+			a.Z + b.Z);
+	}
+	Vec3 Subtract(const Vec3& a, const Vec3& b)
+	{
+		return Vec3(a.X - b.X,
+			a.Y - b.Y,
+			a.Z - b.Z);
+	}
+	Vec3 Multiply(const Vec3& a, const Vec3& b)
+	{
+		return Vec3(a.X * b.X,
+			a.Y * b.Y,
+			a.Z * b.Z);
+	}
+	Vec3 Divide(const Vec3& a, const Vec3& b)
+	{
+		return Vec3(a.X / b.X,
+			a.Y / b.Y,
+			a.Z / b.Z);
 	}
 
-	float GetLength(const Vec3& vec)
+	Vec3 Multiply(const Vec3& a, const float b)
+	{
+		return Vec3(a.X * b,
+			a.Y * b,
+			a.Z * b);
+	}
+	Vec3 Divide(const Vec3& a, const float b)
+	{
+		return Vec3(a.X / b,
+			a.Y / b,
+			a.Z / b);
+	}
+
+	bool Equal(const Vec3& a, const Vec3& b)
+	{
+		return (a.X == b.X) && (a.Y == b.Y) && (a.Z == b.Z);
+	}
+
+	//
+	// Util Methods
+	//
+	Vec3 Scale(const Vec3& vec, float scale)
+	{
+		return Multiply(vec, scale);
+	}
+	float Length(const Vec3& vec)
 	{
 		return sqrtf(vec.X * vec.X +
 			vec.Y * vec.Y + 
 			vec.Z * vec.Z);
 	}
-
 	Vec3 Normalize(const Vec3& vec)
 	{
-		float d = GetLength(vec);
-		return Vec3(vec.X / d, vec.Y / d, vec.Z / d);
+		return Divide(vec, Length(vec));
 	}
-
 	Vec3 Cross(const Vec3& a, const Vec3& b)
 	{
 		return Vec3(((a.Y * b.Z) - (a.Z * b.Y)),
 			((a.Z * b.X) - (a.X * b.Z)),
 			((a.X * b.Y) - (a.Y * b.X)));
 	}
-
 	Vec3 Clamp(const Vec3& vec, float min, float max)
 	{
 		Vec3 rVec(vec);
@@ -178,7 +227,6 @@ namespace zaap {
 
 		return rVec;
 	}
-
 	float Dot(const Vec3& vec1, const Vec3& vec2)
 	{
 		return (vec1.X * vec2.X) +

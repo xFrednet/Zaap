@@ -33,17 +33,34 @@ namespace zaap {
 		Vec3& operator+=(const Vec3 &other);
 		Vec3& operator-=(const Vec3 &other);
 		Vec3& operator*=(const Vec3 &other);
-		Vec3& operator*=(const float scale);
+		Vec3& operator/=(const Vec3 &other);
+
+		Vec3& operator*=(const float value);
+		Vec3& operator/=(const float value);
 
 		Vec3 operator+(const Vec3 &other) const;
 		Vec3 operator-(const Vec3 &other) const;
 		Vec3 operator*(const Vec3 &other) const;
-		Vec3 operator*(const float scale) const;
+		Vec3 operator/(const Vec3 &other) const;
+
+		Vec3 operator*(const float value) const;
+		Vec3 operator/(const float value) const;
 	};
+
+	//operations
+	ZAAP_API Vec3 Add(const Vec3 &a, const Vec3 &b);
+	ZAAP_API Vec3 Subtract(const Vec3 &a, const Vec3 &b);
+	ZAAP_API Vec3 Multiply(const Vec3 &a, const Vec3 &b);
+	ZAAP_API Vec3 Divide(const Vec3 &a, const Vec3 &b);
+
+	ZAAP_API Vec3 Multiply(const Vec3 &a, const float b);
+	ZAAP_API Vec3 Divide(const Vec3 &a, const float b);
+
+	ZAAP_API bool Equal(const Vec3 &a, const Vec3 &b);
 
 	//Util methods
 	ZAAP_API Vec3  Scale(const Vec3 &a, float scale);
-	ZAAP_API float GetLength(const Vec3 &a);
+	ZAAP_API float Length(const Vec3 &a);
 	ZAAP_API Vec3  Normalize(const Vec3 &a);
 	ZAAP_API Vec3  Cross(const Vec3 &a, const Vec3 &b);
 	ZAAP_API Vec3  Clamp(const Vec3 &a, float min, float max);

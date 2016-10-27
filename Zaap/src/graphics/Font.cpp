@@ -100,7 +100,7 @@ namespace zaap { namespace graphics {
 				xa = x + xx;
 				color = source.buffer[xx + yy * source.width];
 				
-				if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RAGB
+				if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
 					target.setColor(xa, ya, Color(color, color, color));
 				else 
 					target.setR(xa, ya, color);
@@ -225,6 +225,15 @@ namespace zaap { namespace graphics {
 				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
 
 				charInfo.CharMatirx = charMatirx;
+
+				if (charMatirx.Width > font.m_MaxCharSize.Width)
+					font.m_MaxCharSize.Width = charMatirx.Width;
+
+				if (charMatirx.Height > font.m_MaxCharSize.Height)
+					font.m_MaxCharSize.Height = charMatirx.Height;
+
+				if (charMatirx.OrigenYOffset > font.m_MaxCharSize.OrigenYOffset)
+					font.m_MaxCharSize.OrigenYOffset = charMatirx.OrigenYOffset;
 			}
 
 			//test bitmapX and bitmapY
@@ -256,6 +265,9 @@ namespace zaap { namespace graphics {
 
 			bitMapX += uint(charMatirx.Width  * 1.5f);
 		}
+
+		//resize the MaxCharSize
+		font.m_MaxCharSize = font.m_MaxCharSize / float(charSize);
 
 		// generate the texture
 		font.m_CharSheet = API::Texture::CreateTexture2D("font", charSheet);
@@ -377,13 +389,8 @@ namespace zaap { namespace graphics {
 			}
 		}
 		Renderer::StartFontShader2D();
-		Vec3 pos(-1.0f, 0.0f, 0.0f);
-		Vec3 rot(0.0f, 0.0f, 0.0f);
-		Vec3 scale(1.0f, 1.0f, 1.0f);
-		scale *= 0.1f;
-		Mat4 mat = CreateTransformationMatrix(pos, rot, scale);
-		Renderer::GetFontShader2D()->setTransformationMatrix(mat);
-		Renderer::GetFontShader2D()->setColor(Color(color.getIntR(), color.getIntG(), color.getIntB(), temp));
+		Renderer::GetFontShader2D()->setSize(26.0f);
+		//Renderer::GetFontShader2D()->setColor(Color(color.getIntR(), color.getIntG(), color.getIntB(), temp));
 		m_CharSheet->bind(0);
 		vb->draw();
 

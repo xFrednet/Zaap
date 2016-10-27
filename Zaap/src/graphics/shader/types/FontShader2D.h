@@ -15,18 +15,24 @@ namespace graphics {
 	class ZAAP_API FontShader2D : public Shader
 	{
 	protected:
+		
+		// Shader Buffers
 		Mat4 m_TransformationMatrix;
 		virtual void loadMatrixBuffer() const  = 0;
 
 		Color m_TextColor;
 		virtual void loadTextColor() const = 0;
+
+		Mat4 m_BaseTransformationMatrix;
+		void calculateBaseMatrix(uint width, uint height);
+
 	public:
 		FontShader2D();
 		virtual ~FontShader2D()
 		{
 		}
 
-		void setTransformationMatrix(Mat4 matrix);
+		void setSize(float size);
 		void setColor(Color color);
 
 		void windowCallback(const Event& windowEvent);

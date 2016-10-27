@@ -131,7 +131,6 @@ namespace zaap {
 	{
 		this->scale(scale.X, scale.Y, scale.Z);
 	}
-
 	void Mat4::scale(const float x, const float y, const float z)
 	{
 		Row[0] *= x;

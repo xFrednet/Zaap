@@ -90,9 +90,10 @@ namespace zaap { namespace graphics {
 		float m_Size;
 		String m_Chars;
 
+		// loaded chars
 		API::Texture2D* m_CharSheet;
-
 		std::vector<ZA_CharacterInfo> m_CharInfo;
+		ZA_CharMarix m_MaxCharSize;
 
 		//Methods
 	public:
