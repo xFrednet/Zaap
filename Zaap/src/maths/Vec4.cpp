@@ -10,21 +10,21 @@ namespace zaap {
 		Z = 0;
 		W = 0;
 	}
-	Vec4::Vec4(float x, float y, float z, float w)
+	Vec4::Vec4(const float &x, const float &y, const float &z, const float &w)
 	{
 		X = x;
 		Y = y;
 		Z = z;
 		W = w;
 	}
-	Vec4::Vec4(Vec2 vec2, float z, float w)
+	Vec4::Vec4(Vec2 vec2, const float &z, const float &w)
 	{
 		X = vec2.X;
 		Y = vec2.Y;
 		Z = z;
 		W = w;
 	}
-	Vec4::Vec4(Vec3 vec3, float w)
+	Vec4::Vec4(Vec3 vec3, const float &w)
 	{
 		X = vec3.X;
 		Y = vec3.Y;
@@ -32,7 +32,7 @@ namespace zaap {
 		W = w;
 	}
 
-	String Vec4::toString()
+	String Vec4::toString() const
 	{
 		return "Vec4(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ", W:" + StringUtil::to_string(W) + ")";
 	}
@@ -40,113 +40,210 @@ namespace zaap {
 	//
 	// Operations
 	//
-	void Vec4::scale(float scale)
-	{
-		X *= scale;
-		Y *= scale;
-		Z *= scale;
-		W *= scale;
-	}
-
-	float Vec4::getLength() const
-	{
-		return sqrtf(X * X + Y * Y + Z * Z + W * W);
-	}
-
 	void Vec4::normalize()
 	{
-		float d = getLength();
-		X /= d;
-		Y /= d;
-		Z /= d;
-		W /= d;
+		*this = Normalize(*this);
 	}
-
-	void Vec4::clamp(float min, float max)
+	void Vec4::scale(const float &scale)
 	{
-		if (min >= max)
-		{
-			ZAAP_ALERT("Vec4::clamp: The min Value has to be lower than the max Value");
-			return;
-		}
-		//X
-		if (X < min) X = min;
-		else if (X > max) X = max;
-
-		//Y
-		if (Y < min) Y = min;
-		else if (Y > max) Y = max;
-
-		//Z
-		if (Z < min) Z = min;
-		else if (Z > max) Z = max;
-
-		//W
-		if (W < min) W = min;
-		else if (W > max) W = max;
+		*this = Scale(*this, scale);
 	}
-
+	void Vec4::clamp(const float &min, const float &max)
+	{
+		*this = Clamp(*this, min, max);
+	}
 	float Vec4::dot(const Vec4& v) const
 	{
-		return X * v.X + Y * v.Y + Z * v.Z + W * v.W;
+		return Dot(*this, v);
+	}
+	float Vec4::getLength() const
+	{
+		return Length(*this);
 	}
 
 	//
-	// operators
+	// Operators
 	//
-	bool Vec4::operator==(Vec4 &other) const
+	bool Vec4::operator==(Vec4& other) const
 	{
-		return (X == other.X) && (Y == other.Y) && (Z == other.Z) && (W == other.W);
+		return Equal(*this, other);
 	}
-	bool Vec4::operator!=(Vec4 &other) const
+	bool Vec4::operator!=(Vec4& other) const
 	{
-		return (X != other.X) || (Y != other.Y) || (Z != other.Z) || (W != other.W);
+		return !Equal(*this, other);
 	}
 
 	Vec4& Vec4::operator+=(Vec4& other)
 	{
-		X += other.X;
-		Y += other.Y;
-		Z += other.Z;
-		W += other.W;
+		*this = Add(*this, other);
 		return *this;
 	}
 	Vec4& Vec4::operator-=(Vec4& other)
 	{
-		X -= other.X;
-		Y -= other.Y;
-		Z -= other.Z;
-		W -= other.W;
+		*this = Subtract(*this, other);
 		return *this;
 	}
 	Vec4& Vec4::operator*=(Vec4& other)
 	{
-		X *= other.X;
-		Y *= other.Y;
-		Z *= other.Z;
-		W *= other.W;
+		*this = Multiply(*this, other);
 		return *this;
 	}
-	Vec4& Vec4::operator*=(float scale)
+	Vec4& Vec4::operator/=(Vec4& other)
 	{
-		this->scale(scale);
+		*this = Divide(*this, other);
 		return *this;
 	}
 
-	Vec4 Vec4::operator+(Vec4 &other) const
+	Vec4& Vec4::operator*=(const float &value)
 	{
-		return Vec4(X + other.X, Y + other.Y, Z + other.Z, W + other.Z);
+		*this = Multiply(*this, value);
+		return *this;
 	}
-	Vec4 Vec4::operator-(Vec4 &other) const
+	Vec4& Vec4::operator/=(const float &value)
 	{
-		return Vec4(X - other.X, Y - other.Y, Z - other.Z, W - other.W);
+		*this = Divide(*this, value);
+		return *this;
 	}
-	Vec4 Vec4::operator*(Vec4 &other) const
+
+	Vec4 Vec4::operator+(Vec4& other) const
 	{
-		return Vec4(X * other.X, Y * other.Y, Z * other.Z, W * other.W);
+		return Add(*this, other);
 	}
-	Vec4 Vec4::operator*(float scale) const
+	Vec4 Vec4::operator-(Vec4& other) const
 	{
-		return Vec4(X * scale, Y * scale, Z * scale, W * scale);
+		return Subtract(*this, other);
+	}
+	Vec4 Vec4::operator*(Vec4& other) const
+	{
+		return Multiply(*this, other);
+	}
+	Vec4 Vec4::operator/(Vec4& other) const
+	{
+		return Divide(*this, other);
+	}
+
+	Vec4 Vec4::operator*(const float &value) const
+	{
+		return Multiply(*this, value);
+	}
+	Vec4 Vec4::operator/(const float &value) const
+	{
+		return Divide(*this, value);
+	}
+
+}
+
+//
+// Operations && Util Methods
+//
+namespace zaap {
+	
+	//
+	// Operations
+	//
+	Vec4 Add(const Vec4& a, const Vec4& b)
+	{
+		return Vec4(a.X + b.X,
+			a.Y + b.Y,
+			a.Z + b.Z,
+			a.W + b.W);
+	}
+	Vec4 Subtract(const Vec4& a, const Vec4& b)
+	{
+		return Vec4(a.X - b.X,
+			a.Y - b.Y,
+			a.Z - b.Z,
+			a.W - b.W);
+	}
+	Vec4 Multiply(const Vec4& a, const Vec4& b)
+	{
+		return Vec4(a.X * b.X,
+			a.Y * b.Y,
+			a.Z * b.Z,
+			a.W * b.W);
+	}
+	Vec4 Divide(const Vec4& a, const Vec4& b)
+	{
+		return Vec4(a.X / b.X,
+			a.Y / b.Y,
+			a.Z / b.Z,
+			a.W / b.W);
+	}
+
+	Vec4 Multiply(const Vec4& a, const float &b)
+	{
+		return Vec4(a.X * b,
+			a.Y * b,
+			a.Z * b,
+			a.W * b);
+	}
+	Vec4 Divide(const Vec4& a, const float &b)
+	{
+		return Vec4(a.X / b,
+			a.Y / b,
+			a.Z / b,
+			a.W / b);
+	}
+
+	bool Equal(const Vec4& a, const Vec4& b)
+	{
+		return (a.X == b.X) &&
+			(a.Y == b.Y) &&
+			(a.Z == b.Z) &&
+			(a.W == b.W);
+	}
+
+	//
+	// Util Methods
+	//
+	Vec4 Normalize(const Vec4& a)
+	{
+		return Divide(a, Length(a));
+	}
+	Vec4 Scale(const Vec4& a, const float &scale)
+	{
+		return Multiply(a, scale);
+	}
+	Vec4 Clamp(const Vec4& a, const float &min, const float &max)
+	{
+		Vec4 rVec(a);
+		if (min > max)
+		{
+			ZAAP_ALERT("Vec4::clamp: The min Value has to be lower than the max Value");
+			return rVec;
+		}
+
+		//X
+		if (rVec.X < min) rVec.X = min;
+		else if (rVec.X > max) rVec.X = max;
+
+		//Y
+		if (rVec.Y < min) rVec.Y = min;
+		else if (rVec.Y > max) rVec.Y = max;
+
+		//Z
+		if (rVec.Z < min) rVec.Z = min;
+		else if (rVec.Z > max) rVec.Z = max;
+
+		//W
+		if (rVec.W < min) rVec.W = min;
+		else if (rVec.W > max) rVec.W = max;
+
+		return rVec;
+	}
+	float Dot(const Vec4& a, const Vec4& b)
+	{
+		return (a.X * b.X) +
+			(a.Y * b.Y) +
+			(a.Z * b.Z) +
+			(a.W * b.W);
+	}
+	float Length(const Vec4& a)
+	{
+		//A^2 = X^2 + Y^2 + Z^2 + W^2
+		return sqrtf((a.X * a.X) +
+			(a.Y * a.Y) +
+			(a.Z * a.Z) +
+			(a.W * a.W));
 	}
 }

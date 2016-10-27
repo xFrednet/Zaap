@@ -29,6 +29,8 @@
 #include <time.h>
 #include <ctime>
 
+#include <cmath>
+
 #include "Types.h"
 
 #define METHOD_1(x) std::bind(x, this, std::placeholders::_1)

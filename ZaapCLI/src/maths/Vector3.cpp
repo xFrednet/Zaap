@@ -21,25 +21,29 @@ namespace ZaapCLI {
 	}
 
 	//operations
-	void  Vector3::scale(float scale)
-	{
-		m_Instance->scale(scale);
-	}
-	float Vector3::getLength()
-	{
-		return m_Instance->getLength();
-	}
 	void  Vector3::normalize()
 	{
 		m_Instance->normalize();
+	}
+	void  Vector3::scale(float scale)
+	{
+		m_Instance->scale(scale);
 	}
 	void  Vector3::clamp(float min, float max)
 	{
 		m_Instance->clamp(min, max);
 	}
-	float Vector3::dot(Vector3^ v)
+	Vector3^ Vector3::cross(Vector3^ other)
 	{
-		return m_Instance->dot(*v->getHandle());
+		return gcnew Vector3(&Cross(*m_Instance, *other->getHandle()));
+	}
+	float Vector3::dot(Vector3^ other)
+	{
+		return m_Instance->dot(*other->getHandle());
+	}
+	float Vector3::getLength()
+	{
+		return m_Instance->getLength();
 	}
 
 	//operators
@@ -73,6 +77,17 @@ namespace ZaapCLI {
 		return this;
 	}
 
+	Vector3^ Vector3::operator*=(float value)
+	{
+		*m_Instance = Multiply(*m_Instance, value);
+		return this;
+	}
+	Vector3^ Vector3::operator/=(float value)
+	{
+		*m_Instance = Divide(*m_Instance, value);
+		return this;
+	}
+
 	Vector3^ Vector3::operator+(Vector3^ left, Vector3^ right) 
 	{
 		return gcnew Vector3(&Add(*left->getHandle(), *right->getHandle()));
@@ -90,4 +105,12 @@ namespace ZaapCLI {
 		return gcnew Vector3(&Divide(*left->getHandle(), *right->getHandle()));
 	}
 
+	Vector3^ Vector3::operator*(Vector3^ left, float right)
+	{
+		return gcnew Vector3(&Multiply(*left->getHandle(), right));
+	}
+	Vector3^ Vector3::operator/(Vector3^ left, float right)
+	{
+		return gcnew Vector3(&Divide(*left->getHandle(), right));
+	}
 }

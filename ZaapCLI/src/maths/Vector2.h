@@ -8,54 +8,60 @@ namespace ZaapCLI {
 
 	public ref class Vector2 : public ManagedClass<zaap::Vec2>
 	{
-		private:
-			Vector2(zaap::Vec2* instance);
-		public:
-			property float X {
-				float get()
-				{
-					return m_Instance->X;
-				}
-				void set(float x)
-				{
-					m_Instance->X = x;
-				}
+	private:
+		Vector2(zaap::Vec2* instance);
+	public:
+		property float X {
+			float get()
+			{
+				return m_Instance->X;
 			}
-
-			property float Y {
-				float get()
-				{
-					return m_Instance->Y;
-				}
-				void set(float y)
-				{
-					m_Instance->Y = y;
-				}
+			void set(float x)
+			{
+				m_Instance->X = x;
 			}
+		}
 
-			Vector2();
-			Vector2(float x, float y);
+		property float Y {
+			float get()
+			{
+				return m_Instance->Y;
+			}
+			void set(float y)
+			{
+				m_Instance->Y = y;
+			}
+		}
 
-			//operations
-			void scale(float scale);
-			float getLength();
-			void normalize();
-			void clamp(float min, float max);
-			float dot(Vector2^ v);
+		Vector2();
+		Vector2(float x, float y);
 
-			//operators 
-			bool operator==(Vector2^ other);
-			bool operator!=(Vector2^ other);
+		//operations
+		void  normalize();
+		void  scale(float scale);
+		void  clamp(float min, float max);
+		float dot(Vector2^ v);
+		float getLength();
 
-			Vector2^ operator+=(Vector2^ other);
-			Vector2^ operator-=(Vector2^ other);
-			Vector2^ operator*=(Vector2^ other);
-			Vector2^ operator/=(Vector2^ other);
+		//operators 
+		bool operator==(Vector2^ other);
+		bool operator!=(Vector2^ other);
 
-			static Vector2^ operator+(Vector2^ left, Vector2^ right);
-			static Vector2^ operator-(Vector2^ left, Vector2^ right);
-			static Vector2^ operator*(Vector2^ left, Vector2^ right);
-			static Vector2^ operator/(Vector2^ left, Vector2^ right);
+		Vector2^ operator+=(Vector2^ other);
+		Vector2^ operator-=(Vector2^ other);
+		Vector2^ operator*=(Vector2^ other);
+		Vector2^ operator/=(Vector2^ other);
+
+		Vector2^ operator*=(float value);
+		Vector2^ operator/=(float value);
+		
+		static Vector2^ operator+(Vector2^ left, Vector2^ right);
+		static Vector2^ operator-(Vector2^ left, Vector2^ right);
+		static Vector2^ operator*(Vector2^ left, Vector2^ right);
+		static Vector2^ operator/(Vector2^ left, Vector2^ right);
+
+		static Vector2^ operator*(Vector2^ left, float right);
+		static Vector2^ operator/(Vector2^ left, float right);
 	};
 
 }

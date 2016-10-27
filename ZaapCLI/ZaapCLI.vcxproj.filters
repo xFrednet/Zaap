@@ -36,6 +36,12 @@
     <ClInclude Include="src\maths\Vector3.h">
       <Filter>Source Files\maths</Filter>
     </ClInclude>
+    <ClInclude Include="src\maths\Vector4.h">
+      <Filter>Source Files\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Matrix4.h">
+      <Filter>Source Files\maths</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp">
@@ -48,6 +54,12 @@
       <Filter>Source Files\maths</Filter>
     </ClCompile>
     <ClCompile Include="src\maths\Vector3.cpp">
+      <Filter>Source Files\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vector4.cpp">
+      <Filter>Source Files\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Matrix4.cpp">
       <Filter>Source Files\maths</Filter>
     </ClCompile>
   </ItemGroup>

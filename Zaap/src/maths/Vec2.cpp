@@ -13,7 +13,7 @@ namespace zaap {
 		Y(a.Y)
 	{
 	}
-	Vec2::Vec2(float x, float y)
+	Vec2::Vec2(const float &x, const float &y)
 	{
 		X = x;
 		Y = y;
@@ -27,25 +27,25 @@ namespace zaap {
 	//
 	// Operations
 	//
-	void Vec2::scale(float scale)
-	{
-		*this = Scale(*this, scale);
-	}
-	float Vec2::getLength() const
-	{
-		return Length(*this);
-	}
-	void Vec2::normalize()
+	void  Vec2::normalize()
 	{
 		*this = Normalize(*this);
 	}
-	void Vec2::clamp(float min, float max)
+	void  Vec2::scale(const float &scale)
+	{
+		*this = Scale(*this, scale);
+	}
+	void  Vec2::clamp(const float &min, const float &max)
 	{
 		*this = Clamp(*this, min, max);
 	}
 	float Vec2::dot(const Vec2& v) const
 	{
 		return Dot(*this, v);
+	}
+	float Vec2::getLength() const
+	{
+		return Length(*this);
 	}
 
 	//
@@ -81,12 +81,12 @@ namespace zaap {
 		return *this;
 	}
 
-	Vec2& Vec2::operator*=(float value)
+	Vec2& Vec2::operator*=(const float &value)
 	{
 		*this = Multiply(*this, value);
 		return *this;
 	}
-	Vec2& Vec2::operator/=(float value)
+	Vec2& Vec2::operator/=(const float &value)
 	{
 		*this = Divide(*this, value);
 		return *this;
@@ -109,11 +109,11 @@ namespace zaap {
 		return Divide(*this, other);
 	}
 
-	Vec2 Vec2::operator*(float value) const
+	Vec2 Vec2::operator*(const float &value) const
 	{
 		return Multiply(*this, value);
 	}
-	Vec2 Vec2::operator/(float value) const
+	Vec2 Vec2::operator/(const float &value) const
 	{
 		return Divide(*this, value);
 	}
@@ -144,11 +144,11 @@ namespace zaap
 		return Vec2(a.X / b.X, a.Y / b.Y);
 	}
 
-	Vec2 Multiply(const Vec2& a, float b)
+	Vec2 Multiply(const Vec2& a, const float &b)
 	{
 		return Vec2(a.X * b, a.Y * b);
 	}
-	Vec2 Divide(const Vec2& a, float b)
+	Vec2 Divide(const Vec2& a, const float &b)
 	{
 		return Vec2(a.X / b, a.Y / b);
 	}
@@ -161,30 +161,22 @@ namespace zaap
 	//
 	// Util Methods
 	//
-	Vec2  Scale(const Vec2& a, float scale)
-	{
-		return Vec2(a.X * scale, a.Y * scale);
-	}
-	float Length(const Vec2& a)
-	{
-		return sqrtf(a.X * a.X + a.Y * a.Y);
-	}
 	Vec2  Normalize(const Vec2& a)
 	{
 		float d = Length(a);
 		return Vec2(a.X / d, a.Y / d);
 	}
-	Vec2  Clamp(const Vec2& a, float min, float max)
+	Vec2  Scale(const Vec2& a, const float &scale)
+	{
+		return Vec2(a.X * scale, a.Y * scale);
+	}
+	Vec2  Clamp(const Vec2& a, const float &min, const float &max)
 	{
 		Vec2 rVec(a);
 		if (min > max)
 		{
 			ZAAP_ALERT("Vec2::clamp: The min Value has to be lower than the max Value");
-
-			//switch values
-			float t = min;
-			min = max;
-			max = t;
+			return rVec;
 		}
 
 		if (rVec.X < min) rVec.X = min;
@@ -198,6 +190,10 @@ namespace zaap
 	float Dot(const Vec2& a, const Vec2& b)
 	{
 		return (a.X * b.X) + (a.Y * b.Y);
+	}
+	float Length(const Vec2& a)
+	{
+		return sqrtf(a.X * a.X + a.Y * a.Y);
 	}
 }
 

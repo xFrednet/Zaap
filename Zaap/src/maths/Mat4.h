@@ -23,28 +23,26 @@ namespace zaap {
 			Vec4 Row[4];
 		};
 
-		Mat4(bool addDiagonal = true);
-		Mat4(float diagonal);
-		Mat4(Mat4 &mat);
+		Mat4(float diagonal = 1.0f);
+		Mat4(const Mat4 &mat);
 		Mat4(float mat[16]);
 		Mat4(Vec4 rows[4]);
 		Mat4(const Vec4 &row0, const Vec4 &row1, const Vec4 &row2, const Vec4 &row3);
 
+		String toString() const;
 		//
 		// util
 		//
-		void identity(float value = 1.0f);
+		void identify(const float &value = 1.0f);
 
-		void translate(Vec3 &vec);
-		void translate(float x, float y, float z);
+		void translate(const Vec3 &vec);
+		void translate(const float &x, const float &y, const float &z);
 
-		void rotate(float angle, Vec3 &axis);
-		void rotate(float angle, float x, float y, float z);
+		void rotate(const float &angle, const Vec3 &axis);
+		void rotate(const float &angle, const float &x, const float &y, const float &z);
 
 		void scale(const Vec3& scale);
-		void scale(const float x, const float y, const float z);
-
-		String toString();
+		void scale(const float &x, const float &y, const float &z);
 
 		// operators
 		bool operator==(const Mat4 &other) const;
@@ -53,12 +51,37 @@ namespace zaap {
 		Mat4& operator+=(const Mat4 &other);
 		Mat4& operator-=(const Mat4 &other);
 		Mat4& operator*=(const Mat4 &other);
-		Mat4& operator*=(const float &scale);
+
+		Mat4& operator*=(const float &value);
+		Mat4& operator/=(const float &value);
 
 		Mat4 operator+(const Mat4 &other) const;
 		Mat4 operator-(const Mat4 &other) const;
 		Mat4 operator*(const Mat4 &other) const;
-		Mat4 operator*(const float &scale) const;
+
+		Vec4 operator*(const Vec4 &other) const;
+		Mat4 operator*(const float &value) const;
+		Mat4 operator/(const float &value) const;
 	};
 
+	//operations
+	ZAAP_API Mat4 Add(const Mat4 &a, const Mat4 &b);
+	ZAAP_API Mat4 Subtract(const Mat4 &a, const Mat4 &b);
+	ZAAP_API Mat4 Multiply(const Mat4 &a, const Mat4 &b);
+	
+	ZAAP_API Vec4 Multiply(const Mat4 &a, const Vec4 &b);
+
+	ZAAP_API Mat4 Multiply(const Mat4 &a, const float &b);
+	ZAAP_API Mat4 Divide(const Mat4 &a, const float &b);
+
+	ZAAP_API bool Equal(const Mat4 &a, const Mat4 &b);
+
+	//operations 
+	ZAAP_API Mat4 Identify(const float &diagonal);
+	ZAAP_API Mat4 Traslate(const Mat4 &a, const Vec3 &b);
+	ZAAP_API Mat4 Traslate(const Mat4 &a, const float &x, const float &y, const float &z);
+	ZAAP_API Mat4 Rotate(const Mat4 &a, const float &angle, const Vec3 &axis);
+	ZAAP_API Mat4 Rotate(const Mat4 &a, const float &angle, const float &x, const float &y, const float &z);
+	ZAAP_API Mat4 Scale(const Mat4 &a, const Vec3& scale);
+	ZAAP_API Mat4 Scale(const Mat4 &a, const float &x, const float &y, const float &z);
 }

@@ -7,9 +7,8 @@ namespace zaap { namespace graphics {
 		float scaleH = (2.0f / height);
 		float scaleW = (2.0f / width);
 
-		m_BaseTransformationMatrix.identity();
+		m_BaseTransformationMatrix.identify(1.0f);
 		m_BaseTransformationMatrix.scale(scaleW, scaleH, 1.0f);
-	
 	}
 
 	FontShader2D::FontShader2D()

@@ -9,14 +9,14 @@ namespace zaap {
 		Y = 0;
 		Z = 0;
 	}
-	Vec3::Vec3(float x, float y, float z)
+	Vec3::Vec3(const float &x, const float &y, const float &z)
 	{
 		X = x;
 		Y = y;
 		Z = z;
 	}
 
-	Vec3::Vec3(Vec2 vec2, float z)
+	Vec3::Vec3(Vec2 vec2, const float &z)
 	{
 		X = vec2.X;
 		Y = vec2.Y;
@@ -31,29 +31,29 @@ namespace zaap {
 	//
 	// Operations
 	//
-	void Vec3::scale(float scale)
-	{
-		*this = Scale(*this, scale);
-	}
-
-	float Vec3::getLength() const
-	{
-		return Length(*this);
-	}
-
-	void Vec3::normalize()
+	void  Vec3::normalize()
 	{
 		*this = Normalize(*this);
 	}
-
-	void Vec3::clamp(float min, float max)
+	void  Vec3::scale(const float &scale)
+	{
+		*this = Scale(*this, scale);
+	}
+	void  Vec3::clamp(const float &min, const float &max)
 	{
 		*this = Clamp(*this, min, max);
 	}
-
+	Vec3  Vec3::cross(const Vec3& other) const
+	{
+		return Cross(*this, other);
+	}
 	float Vec3::dot(const Vec3& v) const
 	{
 		return Dot(*this, v);
+	}
+	float Vec3::getLength() const
+	{
+		return Length(*this);
 	}
 
 	//
@@ -89,12 +89,12 @@ namespace zaap {
 		return *this;
 	}
 
-	Vec3& Vec3::operator*=(const float value)
+	Vec3& Vec3::operator*=(const float &value)
 	{
 		*this = Multiply(*this, value);
 		return *this;
 	}
-	Vec3& Vec3::operator/=(const float value)
+	Vec3& Vec3::operator/=(const float &value)
 	{
 		*this = Multiply(*this, value);
 		return *this;
@@ -117,11 +117,11 @@ namespace zaap {
 		return Divide(*this, other);
 	}
 
-	Vec3 Vec3::operator*(float scale) const
+	Vec3 Vec3::operator*(const float &scale) const
 	{
 		return Multiply(*this, scale);
 	}
-	Vec3 Vec3::operator/(const float value) const
+	Vec3 Vec3::operator/(const float &value) const
 	{
 		return Divide(*this, value);
 	}
@@ -159,13 +159,13 @@ namespace zaap {
 			a.Z / b.Z);
 	}
 
-	Vec3 Multiply(const Vec3& a, const float b)
+	Vec3 Multiply(const Vec3& a, const float &b)
 	{
 		return Vec3(a.X * b,
 			a.Y * b,
 			a.Z * b);
 	}
-	Vec3 Divide(const Vec3& a, const float b)
+	Vec3 Divide(const Vec3& a, const float &b)
 	{
 		return Vec3(a.X / b,
 			a.Y / b,
@@ -180,37 +180,21 @@ namespace zaap {
 	//
 	// Util Methods
 	//
-	Vec3 Scale(const Vec3& vec, float scale)
-	{
-		return Multiply(vec, scale);
-	}
-	float Length(const Vec3& vec)
-	{
-		return sqrtf(vec.X * vec.X +
-			vec.Y * vec.Y + 
-			vec.Z * vec.Z);
-	}
-	Vec3 Normalize(const Vec3& vec)
+	Vec3  Normalize(const Vec3& vec)
 	{
 		return Divide(vec, Length(vec));
 	}
-	Vec3 Cross(const Vec3& a, const Vec3& b)
+	Vec3  Scale(const Vec3& vec, const float &scale)
 	{
-		return Vec3(((a.Y * b.Z) - (a.Z * b.Y)),
-			((a.Z * b.X) - (a.X * b.Z)),
-			((a.X * b.Y) - (a.Y * b.X)));
+		return Multiply(vec, scale);
 	}
-	Vec3 Clamp(const Vec3& vec, float min, float max)
+	Vec3  Clamp(const Vec3& vec, const float &min, const float &max)
 	{
 		Vec3 rVec(vec);
 		if (min > max)
 		{
 			ZAAP_ALERT("Vec3::clamp: The min Value has to be lower than the max Value");
-			
-			//switch values
-			float t = min;
-			min = max;
-			max = t;
+			return rVec;
 		}
 
 		//X
@@ -218,19 +202,31 @@ namespace zaap {
 		else if (rVec.X > max) rVec.X = max;
 
 		//Y
-		if (rVec.Y < min) rVec.X = min;
-		else if (rVec.Y > max) rVec.X = max;
+		if (rVec.Y < min) rVec.Y = min;
+		else if (rVec.Y > max) rVec.Y = max;
 
 		//Z
-		if (rVec.Z < min) rVec.X = min;
-		else if (rVec.Z > max) rVec.X = max;
+		if (rVec.Z < min) rVec.Z = min;
+		else if (rVec.Z > max) rVec.Z = max;
 
 		return rVec;
+	}
+	Vec3  Cross(const Vec3& a, const Vec3& b)
+	{
+		return Vec3(((a.Y * b.Z) - (a.Z * b.Y)),
+			((a.Z * b.X) - (a.X * b.Z)),
+			((a.X * b.Y) - (a.Y * b.X)));
 	}
 	float Dot(const Vec3& vec1, const Vec3& vec2)
 	{
 		return (vec1.X * vec2.X) +
 			(vec1.Y * vec2.Y) +
 			(vec1.Z * vec2.Z);
+	}
+	float Length(const Vec3& vec)
+	{
+		return sqrtf(vec.X * vec.X +
+			vec.Y * vec.Y + 
+			vec.Z * vec.Z);
 	}
 }

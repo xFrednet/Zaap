@@ -19,6 +19,7 @@ Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
 
+
 void loadEntitys()
 {
 	clock_t timer = clock();

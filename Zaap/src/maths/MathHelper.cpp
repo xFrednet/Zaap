@@ -9,8 +9,7 @@ namespace zaap {
 	//
 	Mat4 CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale)
 	{
-		Mat4 mat;
-		mat.identity();
+		Mat4 mat(1.0f);
 
 		mat.rotate(toRadians(rotation.X), 1.0f, 0.0f, 0.0f);
 		mat.rotate(toRadians(rotation.Y), 0.0f, 1.0f, 0.0f);
@@ -25,8 +24,7 @@ namespace zaap {
 
 	Mat4 CreateProjectionMatrix(float fov, float aspect, float nearPlane, float farPlane)//60
 	{
-		Mat4 mat;
-		mat.identity(1.0f);
+		Mat4 mat(1.0f);
 
 		float difference = farPlane - nearPlane;
 		float f = atan(fov / 2.0f);
