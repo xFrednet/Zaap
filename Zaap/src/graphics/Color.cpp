@@ -5,14 +5,14 @@ namespace zaap { namespace graphics {
 	//
 	// Util
 	//
-	float Color::getAccordingFloat(int colorInt) const
+	float Color::GetAccordingFloat(const int &colorInt)
 	{
 		if (colorInt < 0) return 0.0f;
 		if (colorInt > 255) return 1.0f;
 
-		return (float)colorInt / 255;
+		return (const float &)colorInt / 255;
 	}
-	int Color::getAccordingUint(float colorFloat) const
+	int Color::GetAccordingInt(const float &colorFloat)
 	{
 		if (colorFloat < 0) return 0;
 		if (colorFloat > 1.0f) return 255;
@@ -22,30 +22,30 @@ namespace zaap { namespace graphics {
 	//
 	// Constructors
 	//
-	Color::Color(float r, float g, float b, float a)
+	Color::Color(const float &r, const float &g, const float &b, const float &a)
 		: R(r), G(g), B(b), A(a)
 	{
 		RGBA.clamp(0.0f, 1.0f);
 	}
-	Color::Color(Vec4 color)
+	Color::Color(const Vec4 &color)
 		: RGBA(color)
 	{
 		RGBA.clamp(0.0f, 1.0f);
 	}
-	Color::Color(Vec3 color, float a)
+	Color::Color(const Vec3 &color, const float &a)
 		: RGBA(color, a)
 	{
 		RGBA.clamp(0.0f, 1.0f);
 	}
-	Color::Color(int intR, int intG, int intB, int intA)
+	Color::Color(const int &intR, const int &intG, const int &intB, const int &intA)
 	{
 		setIntRGBA(intR, intG, intB, intA);
 	}
-	Color::Color(int hex)
+	Color::Color(const int &hex)
 	{
-		R = ((hex >> 16) & 0xFF) / 255.0f;  // Extract the RR byte
-		G = ((hex >> 8) & 0xFF) / 255.0f;   // Extract the GG byte
-		B = ((hex) & 0xFF) / 255.0f;        // Extract the BB byte
+		R = ((hex >> 16) &0xFF) / 255.0f;  // Extract the RR byte
+		G = ((hex >> 8) &0xFF) / 255.0f;   // Extract the GG byte
+		B = ((hex) &0xFF) / 255.0f;        // Extract the BB byte
 		A = 1.0f;
 		RGBA.clamp(0.0f, 1.0f);
 	}
@@ -53,11 +53,11 @@ namespace zaap { namespace graphics {
 	//
 	// Setters
 	//
-	void Color::setRGB(float r, float g, float b)
+	void Color::setRGB(const float &r, const float &g, const float &b)
 	{
 		setRGBA(r, g, b, A);
 	}
-	void Color::setRGBA(float r, float g, float b, float a)
+	void Color::setRGBA(const float &r, const float &g, const float &b, const float &a)
 	{
 		R = r;
 		G = g;
@@ -66,44 +66,44 @@ namespace zaap { namespace graphics {
 		RGBA.clamp(0.0f, 1.0f);
 	}
 
-	void Color::setRGB(Vec3 rgb)
+	void Color::setRGB(const Vec3 &rgb)
 	{
 		setRGBA(rgb.X, rgb.Y, rgb.Z, A);
 	}
-	void Color::setRGBA(Vec4 rgba)
+	void Color::setRGBA(const Vec4 &rgba)
 	{
 		setRGBA(rgba.X, rgba.Y, rgba.Z, rgba.W);
 	}
 
-	void Color::setIntRGB(int r, int g, int b)
+	void Color::setIntRGB(const int &r, const int &g, const int &b)
 	{
-		setRGBA(getAccordingFloat(r), getAccordingFloat(g), getAccordingFloat(b), A);
+		setRGBA(GetAccordingFloat(r), GetAccordingFloat(g), GetAccordingFloat(b), A);
 	}
-	void Color::setIntRGBA(int r, int g, int b, int a)
+	void Color::setIntRGBA(const int &r, const int &g, const int &b, const int &a)
 	{
-		setRGBA(getAccordingFloat(r), getAccordingFloat(g), getAccordingFloat(b), getAccordingFloat(a));
+		setRGBA(GetAccordingFloat(r), GetAccordingFloat(g), GetAccordingFloat(b), GetAccordingFloat(a));
+	}
+
+	void Color::setIntR(const int& r)
+	{
+		R = GetAccordingFloat(r);
+	}
+	void Color::setIntG(const int& g)
+	{
+		R = GetAccordingFloat(g);
+	}
+	void Color::setIntB(const int& b)
+	{
+		R = GetAccordingFloat(b);
+	}
+	void Color::setIntA(const int& a)
+	{
+		R = GetAccordingFloat(a);
 	}
 
 	//
 	// Getters
 	//
-	float Color::getR() const
-	{
-		return R;
-	}
-	float Color::getG() const
-	{
-		return G;
-	}
-	float Color::getB() const
-	{
-		return B;
-	}
-	float Color::getA() const
-	{
-		return A;
-	}
-
 	Vec3 Color::getRGB() const
 	{
 		return Vec3(R, G, B);
@@ -115,19 +115,19 @@ namespace zaap { namespace graphics {
 
 	int Color::getIntR() const
 	{
-		return getAccordingUint(R);
+		return GetAccordingInt(R);
 	}
 	int Color::getIntG() const
 	{
-		return getAccordingUint(G);
+		return GetAccordingInt(G);
 	}
 	int Color::getIntB() const
 	{
-		return getAccordingUint(B);
+		return GetAccordingInt(B);
 	}
 	int Color::getIntA() const
 	{
-		return getAccordingUint(A);
+		return GetAccordingInt(A);
 	}
 
 	String Color::toString() const

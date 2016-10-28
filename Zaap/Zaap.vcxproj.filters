@@ -135,9 +135,6 @@
     <ClCompile Include="src\graphics\light\LightSetup.cpp">
       <Filter>Source Files\src\graphics\light</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Color.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\MaterialManager.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
@@ -169,9 +166,6 @@
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Font.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Bitmap.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\util\UUID.cpp">
@@ -236,6 +230,12 @@
     </ClCompile>
     <ClCompile Include="src\events\WindowEvent.cpp">
       <Filter>Source Files\src\events\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Bitmap.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Color.cpp">
+      <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,9 +317,6 @@
     <ClInclude Include="src\graphics\light\LightSetup.h">
       <Filter>Source Files\src\graphics\light</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Color.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\Material.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
@@ -351,9 +348,6 @@
       <Filter>Source Files\src\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Font.h">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Bitmap.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\util\UUID.h">
@@ -421,6 +415,12 @@
     </ClInclude>
     <ClInclude Include="src\events\WindowEvent.h">
       <Filter>Source Files\src\events\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Bitmap.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Color.h">
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

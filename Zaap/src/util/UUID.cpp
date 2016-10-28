@@ -1,5 +1,4 @@
 ﻿#include "UUID.h"
-#include <sstream>
 
 namespace zaap
 {
@@ -9,16 +8,11 @@ namespace zaap
 	//
 	bool UUID::operator==(const UUID& other) const
 	{
-		for (uint i = 0; i < 16; i++)
-		{
-			if (Data[i] != other.Data[i])
-				return false;
-		}
-		return true;
+		return Equal(*this, other);
 	}
 	bool UUID::operator!=(const UUID& other) const
 	{
-		return !(*this == other);
+		return !Equal(*this, other);
 	}
 
 	//
@@ -35,19 +29,27 @@ namespace zaap
 		//uint            = 4
 
 		//first segment
-		uint hexValue;
+		uint32 hexValue;
 		stringstream ss;
+		ss << "UUID(";
 		for (uint i = 0; i < 4; i++)
 		{
 			memcpy(&hexValue, &uuid.Data[i * 4], sizeof(byte) * 4);
-			ss << hex << hexValue;
+			//setfill('0') << setw(8) to include the zeros
+			ss << setfill('0') << setw(8) << hex << hexValue;
 		}
 		String s = ss.str();
 		s.insert(20, "-");
 		s.insert(16, "-");
 		s.insert(12, "-");
 		s.insert( 8, "-");
+		s += ")";
 		return s;
+	}
+
+	bool Equal(const UUID& a, const UUID& b)
+	{
+		return (memcmp(&a, &b, sizeof(UUID)) == 0);
 	}
 }
 
@@ -56,13 +58,12 @@ namespace zaap
 #ifdef ZA_OS_WIN 
 #include <windows.h>
 
-void zaap::RandomUUID(UUID* uuid)
+	void zaap::RandomUUID(UUID* uuid)
 	{
 		_GUID guid;
 		CoCreateGuid(&guid);
 
 		memcpy(uuid, &guid, sizeof(UUID));
-
 	}
 
 

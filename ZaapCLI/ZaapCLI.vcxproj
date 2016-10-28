@@ -134,19 +134,25 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\graphics\Bitmap.h" />
+    <ClInclude Include="src\graphics\Color.h" />
     <ClInclude Include="src\maths\Matrix4.h" />
     <ClInclude Include="src\maths\Vector2.h" />
     <ClInclude Include="src\maths\Vector3.h" />
     <ClInclude Include="src\maths\Vector4.h" />
+    <ClInclude Include="src\util\UUID.h" />
     <ClInclude Include="src\ZaapCLI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\graphics\Bitmap.cpp" />
+    <ClCompile Include="src\graphics\Color.cpp" />
     <ClCompile Include="src\maths\Matrix4.cpp" />
     <ClCompile Include="src\maths\Vector2.cpp" />
     <ClCompile Include="src\maths\Vector3.cpp" />
     <ClCompile Include="src\maths\Vector4.cpp" />
+    <ClCompile Include="src\util\UUID.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

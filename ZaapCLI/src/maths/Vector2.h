@@ -11,27 +11,8 @@ namespace ZaapCLI {
 	private:
 		Vector2(zaap::Vec2* instance);
 	public:
-		property float X {
-			float get()
-			{
-				return m_Instance->X;
-			}
-			void set(float x)
-			{
-				m_Instance->X = x;
-			}
-		}
-
-		property float Y {
-			float get()
-			{
-				return m_Instance->Y;
-			}
-			void set(float y)
-			{
-				m_Instance->Y = y;
-			}
-		}
+		ZA_CLI_VALUE(float, X, x);
+		ZA_CLI_VALUE(float, Y, y);
 
 		Vector2();
 		Vector2(float x, float y);

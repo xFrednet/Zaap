@@ -15,43 +15,47 @@ namespace zaap { namespace graphics {
 		uint m_Height;
 		ZA_FORMAT m_Format;
 		
-		uint getIndex(uint x, uint y) const;
+		//returns 0 if the channel is not supported
+		uint getRIndex(const uint &x, const uint &y) const;
+		uint getGIndex(const uint &x, const uint &y) const;
+		uint getBIndex(const uint &x, const uint &y) const;
+		uint getAIndex(const uint &x, const uint &y) const;
 	public:
-		Bitmap();
-		Bitmap(uint width, uint height, uint bitsPerPixel);
-		Bitmap(uint width, uint height, ZA_FORMAT format);
+		Bitmap(const uint &width = 0, const uint &height = 0, const uint &bitsPerPixel = 0);
+		Bitmap(const uint &width, const uint &height, ZA_FORMAT format);
 		Bitmap(const char *file);
 
+		//RGBA Values
+		uint getR(const uint &x, const uint &y) const;
+		uint getG(const uint &x, const uint &y) const;
+		uint getB(const uint &x, const uint &y) const;
+		uint getA(const uint &x, const uint &y) const;
+
+		void setR(const uint &x, const uint &y, const uint &r);
+		void setG(const uint &x, const uint &y, const uint &g);
+		void setB(const uint &x, const uint &y, const uint &b);
+		void setA(const uint &x, const uint &y, const uint &a);
+
 		//color
-		uint getR(uint x, uint y) const;
-		uint getG(uint x, uint y) const;
-		uint getB(uint x, uint y) const;
-		uint getA(uint x, uint y) const;
-
-		void setR(uint x, uint y, uint r);
-		void setG(uint x, uint y, uint g);
-		void setB(uint x, uint y, uint b);
-		void setA(uint x, uint y, uint a);
-
-		void setColor(uint x, uint y, Color color);
-		Color getColor(uint x, uint y) const;
+		void setColor(const uint &x, const uint &y, Color color);
+		Color getColor(const uint &x, const uint &y) const;
 		
-		//bit
-		void setByte(uint index, byte value);
+		//byte
+		void setByte(const uint &index, byte value);
 
 		//getters
-		bool contains(uint x, uint y) const;
+		bool contains(const uint &x, const uint &y) const;
 
-		uint getWidth(void) const;
-		uint getHeight(void) const;
+		uint getWidth() const;
+		uint getHeight() const;
 		uint getBitsPerPixel() const;
 		byte const* getPixelArray() const;
 		ZA_FORMAT getFormat() const;
 
 		//converts the X and Y values to the Coordinate system from 0.0f - 1.0f
-		Vec2 getPixelCoord(uint x, uint y) const;
+		Vec2 getPixelCoord(const uint &x, const uint &y) const;
 
-		Bitmap getSubMap(uint x, uint y, uint width, uint height) const;
+		Bitmap getSubMap(const uint &x, const uint &y, const uint &width, const uint &height) const;
 			
 	};
 }}

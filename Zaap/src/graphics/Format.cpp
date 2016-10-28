@@ -11,11 +11,139 @@ namespace zaap
 			return 4;
 		case ZA_FORMAT_R8G8B8_UINT:
 			return 3;
-		case ZA_FORMAT_A8_UINT:
 		case ZA_FORMAT_R8_UINT:
+		case ZA_FORMAT_A8_UINT:
 			return 1;
 		default:
 			return 0;
+		}
+	}
+
+	//
+	// Red
+	//
+	bool Format_Is_R_Readable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+		case ZA_FORMAT_R8_UINT:
+		case ZA_FORMAT_A8_UINT:
+			return true;
+		default:
+			return false;
+		}
+	}
+	bool Format_Is_R_Setable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+		case ZA_FORMAT_R8_UINT:
+			return true;
+		case ZA_FORMAT_A8_UINT:
+		default:
+			return false;
+		}
+	}
+
+	//
+	// Green
+	// 
+	bool Format_Is_G_Readable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+			return true;
+		case ZA_FORMAT_R8_UINT:
+			return false;
+		case ZA_FORMAT_A8_UINT:
+			return true;
+		default:
+			return false;
+		}
+	}
+	bool Format_Is_G_Setable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+			return true;
+		case ZA_FORMAT_R8_UINT:
+		case ZA_FORMAT_A8_UINT:
+		default:
+			return false;
+		}
+	}
+
+	//
+	// Blue
+	//
+	bool Format_Is_B_Readable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+			return true;
+		case ZA_FORMAT_R8_UINT:
+			return false;
+		case ZA_FORMAT_A8_UINT:
+			return true;
+		default:
+			return false;
+		}
+	}
+	bool Format_Is_B_Setable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+		case ZA_FORMAT_R8G8B8_UINT:
+			return true;
+		case ZA_FORMAT_R8_UINT:
+		case ZA_FORMAT_A8_UINT:
+		default:
+			return false;
+		}
+	}
+
+	//
+	// Alpha
+	//
+	bool Format_Is_A_Readable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+			return true;
+		case ZA_FORMAT_R8G8B8_UINT:
+		case ZA_FORMAT_R8_UINT:
+			return false;
+		case ZA_FORMAT_A8_UINT:
+			return true;
+		default:
+			return false;
+		}
+	}
+	bool Format_Is_A_Setable(const ZA_FORMAT& format)
+	{
+		switch (format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+			return true;
+		case ZA_FORMAT_R8G8B8_UINT:
+		case ZA_FORMAT_R8_UINT:
+			return false;
+		case ZA_FORMAT_A8_UINT:
+			return true;
+		default:
+			return false;
 		}
 	}
 

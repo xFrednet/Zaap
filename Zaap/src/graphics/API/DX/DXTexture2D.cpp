@@ -128,8 +128,8 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 	void DXTexture2D::unbind(uint slot)
 	{
-		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, nullptr);
-		DXContext::GetDevContext()->PSSetSamplers(slot, 1, nullptr);
+		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, 0);
+		DXContext::GetDevContext()->PSSetSamplers(slot, 1, 0);
 	}
 
 	void DXTexture2D::cleanup() 

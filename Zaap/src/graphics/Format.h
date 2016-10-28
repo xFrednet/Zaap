@@ -19,6 +19,23 @@ namespace zaap
 
 	//returns the size of the format in bytes
 	ZAAP_API uint GetFormatSize(ZA_FORMAT format);
+	
+	//returns if the red value can be read in the format
+	ZAAP_API bool Format_Is_R_Readable(const ZA_FORMAT &format);
+	//returns if the red value can be set in the format
+	ZAAP_API bool Format_Is_R_Setable(const ZA_FORMAT &format);
+	//returns if the green value can be read in the format
+	ZAAP_API bool Format_Is_G_Readable(const ZA_FORMAT &format);
+	//returns if the green value can be set in the format
+	ZAAP_API bool Format_Is_G_Setable(const ZA_FORMAT &format);
+	//returns if the blue value can be read in the format
+	ZAAP_API bool Format_Is_B_Readable(const ZA_FORMAT &format);
+	//returns if the blue value can be set in the format
+	ZAAP_API bool Format_Is_B_Setable(const ZA_FORMAT &format);
+	//returns if the alpha value can be read in the format
+	ZAAP_API bool Format_Is_A_Readable(const ZA_FORMAT &format);
+	//returns if the alpha value can be set in the format
+	ZAAP_API bool Format_Is_A_Setable(const ZA_FORMAT &format);
 
 #ifdef ZA_INCLUDE_DIRECTX
 	//returns the corresponding DXGI_FORMAT to the ZA_FORMAT

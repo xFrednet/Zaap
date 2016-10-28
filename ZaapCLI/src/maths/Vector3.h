@@ -12,36 +12,9 @@ namespace ZaapCLI {
 	{
 	private:
 	public:
-		property float X {
-			float get()
-			{
-				return m_Instance->X;
-			}
-			void set(float x)
-			{
-				m_Instance->X = x;
-			}
-		}
-		property float Y {
-			float get()
-			{
-				return m_Instance->Y;
-			}
-			void set(float y)
-			{
-				m_Instance->Y = y;
-			}
-		}
-		property float Z {
-			float get()
-			{
-				return m_Instance->Z;
-			}
-			void set(float z)
-			{
-				m_Instance->Z = z;
-			}
-		}
+		ZA_CLI_VALUE(float, X, x);
+		ZA_CLI_VALUE(float, Y, y);
+		ZA_CLI_VALUE(float, Z, z);
 
 		//Constructors
 		Vector3();

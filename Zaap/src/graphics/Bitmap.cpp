@@ -4,24 +4,74 @@
 #include <util/Console.h>
 
 namespace zaap { namespace graphics {
-	
-	uint Bitmap::getIndex(uint x, uint y) const
+
+	uint Bitmap::getRIndex(const uint &x, const uint &y) const
 	{
-		//8 Bits == 1 Byte
-		return (x + y * m_Width) * GetFormatSize(m_Format);
+		switch (m_Format)
+		{
+			case ZA_FORMAT_R8G8B8A8_UINT:
+				return (x + y * m_Width) * 4;
+			case ZA_FORMAT_R8G8B8_UINT:
+				return (x + y * m_Width) * 3;
+			case ZA_FORMAT_R8_UINT:
+			case ZA_FORMAT_A8_UINT:
+				return (x + y * m_Width);
+			default: 
+				return 1;
+		}
+	}
+	uint Bitmap::getGIndex(const uint &x, const uint &y) const
+	{
+		switch (m_Format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+			return (x + y * m_Width) * 4 + 1;
+		case ZA_FORMAT_R8G8B8_UINT:
+			return (x + y * m_Width) * 3 + 1;
+		case ZA_FORMAT_R8_UINT:
+			return 1;
+		case ZA_FORMAT_A8_UINT:
+			return (x + y * m_Width);
+		default:
+			return 1;
+		}
+	}
+	uint Bitmap::getBIndex(const uint &x, const uint &y) const
+	{
+		switch (m_Format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+			return (x + y * m_Width) * 4 + 2;
+		case ZA_FORMAT_R8G8B8_UINT:
+			return (x + y * m_Width) * 3 + 2;
+		case ZA_FORMAT_R8_UINT:
+			return 1;
+		case ZA_FORMAT_A8_UINT:
+			return (x + y * m_Width);
+		default:
+			return 1;
+		}
+	}
+	uint Bitmap::getAIndex(const uint &x, const uint &y) const
+	{
+		switch (m_Format)
+		{
+		case ZA_FORMAT_R8G8B8A8_UINT:
+			return (x + y * m_Width) * 4;
+		case ZA_FORMAT_R8G8B8_UINT:
+		case ZA_FORMAT_R8_UINT:
+			return 1;
+		case ZA_FORMAT_A8_UINT:
+			return (x + y * m_Width);
+		default:
+			return 1;
+		}
 	}
 
 	//
 	// Constructor
 	//
-	Bitmap::Bitmap()
-		: m_Bytes(0),
-		m_Width(0),
-		m_Height(0),
-		m_Format(ZA_FORMAT_UNKNOWN)
-	{
-	}
-	Bitmap::Bitmap(uint width, uint height, uint bitsPerPixel)
+	Bitmap::Bitmap(const uint &width, const uint &height, const uint &bitsPerPixel)
 		: m_Bytes(width * height * ((bitsPerPixel == 32) ? 4 : 3)),
 		m_Width(width),
 		m_Height(height)
@@ -34,7 +84,7 @@ namespace zaap { namespace graphics {
 		else
 			m_Format = ZA_FORMAT_UNKNOWN;
 	}
-	Bitmap::Bitmap(uint width, uint height, ZA_FORMAT format)
+	Bitmap::Bitmap(const uint &width, const uint &height, ZA_FORMAT format)
 		: m_Bytes(width * height * GetFormatSize(format)),
 		m_Width(width),
 		m_Height(height),
@@ -66,81 +116,97 @@ namespace zaap { namespace graphics {
 	}
 
 	//
-	// Color
+	// RGBA Values
 	//
-	uint Bitmap::getR(uint x, uint y) const
+	uint Bitmap::getR(const uint &x, const uint &y) const
 	{
 		if (!contains(x, y)) return 0;
-		return uint(m_Bytes[getIndex(x, y)]);
+		if (Format_Is_R_Readable(m_Format))
+			return uint(m_Bytes[getRIndex(x, y)]);
+		
+		return 0;
 	}
-	uint Bitmap::getG(uint x, uint y) const
+	uint Bitmap::getG(const uint &x, const uint &y) const
 	{
 		if (!contains(x, y)) return 0;
-		return uint(m_Bytes[getIndex(x, y) + 1]);
+		if (Format_Is_G_Readable(m_Format))
+			return uint(m_Bytes[getGIndex(x, y)]);
+
+		return 0;
 	}
-	uint Bitmap::getB(uint x, uint y) const
+	uint Bitmap::getB(const uint &x, const uint &y) const
 	{
 		if (!contains(x, y)) return 0;
-		return uint(m_Bytes[getIndex(x, y) + 2]);
+		if (Format_Is_B_Readable(m_Format))
+			return uint(m_Bytes[getBIndex(x, y)]);
+
+		return 0;
 	}
-	uint Bitmap::getA(uint x, uint y) const
+	uint Bitmap::getA(const uint &x, const uint &y) const
 	{
-		if (m_Format != ZA_FORMAT_R8G8B8A8_UINT) return 255;
 		if (!contains(x, y)) return 0;
-		return uint(m_Bytes[getIndex(x, y) + 3]);
+		if (Format_Is_A_Readable(m_Format))
+			return uint(m_Bytes[getAIndex(x, y)]);
+
+		return 255;
 	}
 
-	void Bitmap::setR(uint x, uint y, uint r)
+	
+	void Bitmap::setR(const uint &x, const uint &y, const uint &r)
 	{
-		if (contains(x, y))
-			m_Bytes[getIndex(x, y)] = r;
+		if (Format_Is_R_Setable(m_Format) && contains(x, y))
+			m_Bytes[getRIndex(x, y)] = r;
 	}
-	void Bitmap::setG(uint x, uint y, uint g)
+	void Bitmap::setG(const uint &x, const uint &y, const uint &g)
 	{
-		if (contains(x, y))
-			m_Bytes[getIndex(x, y) + 1] = g;
+		if (Format_Is_G_Setable(m_Format) && contains(x, y))
+			m_Bytes[getGIndex(x, y)] = g;
 	}
-	void Bitmap::setB(uint x, uint y, uint b)
+	void Bitmap::setB(const uint &x, const uint &y, const uint &b)
 	{
-		if (contains(x, y))
-			m_Bytes[getIndex(x, y) + 2] = b;
+		if (Format_Is_B_Setable(m_Format) && contains(x, y))
+			m_Bytes[getBIndex(x, y) + 2] = b;
 	}
-	void Bitmap::setA(uint x, uint y, uint a)
+	void Bitmap::setA(const uint &x, const uint &y, const uint &a)
 	{
-		if (m_Format == ZA_FORMAT_R8G8B8A8_UINT && contains(x, y))
-			m_Bytes[getIndex(x, y) + 3] = a;
+		if (Format_Is_A_Setable(m_Format) && contains(x, y))
+			m_Bytes[getBIndex(x, y) + 2] = a;
 	}
 	
-	Color Bitmap::getColor(uint x, uint y) const
+	//
+	// Color
+	//
+	void Bitmap::setColor(const uint &x, const uint &y, Color color)
 	{
-		if (!contains(x, y)) return Color(0.0f, 0.0f, 0.0f, 0.0f);
-		uint index = getIndex(x, y);
-		Color c = Color(
-			(int)m_Bytes[index],
-			(int)m_Bytes[index + 1],
-			(int)m_Bytes[index + 2],
-			(int)m_Bytes[index + 3]);
-		return c;
-	}
-
-	void Bitmap::setByte(uint index, byte value)
-	{
-		m_Bytes[index] = value;
-	}
-
-	void Bitmap::setColor(uint x, uint y, Color color)
-	{
-		if (!contains(x, y)) return;
 		setR(x, y, uint(color.getIntR()));
 		setG(x, y, uint(color.getIntG()));
 		setB(x, y, uint(color.getIntB()));
 		setA(x, y, uint(color.getIntA()));
 	}
+	Color Bitmap::getColor(const uint &x, const uint &y) const
+	{
+		if (!contains(x, y)) return Color(0.0f, 0.0f, 0.0f, 255.0f);
 
+		return Color(
+			int(m_Bytes[getRIndex(x, y)]),
+			int(m_Bytes[getGIndex(x, y)]),
+			int(m_Bytes[getBIndex(x, y)]),
+			int(m_Bytes[getAIndex(x, y)]));
+	}
+
+	//
+	// Byte
+	//
+	void Bitmap::setByte(const uint &index, byte value)
+	{
+		if (index < m_Bytes.size())
+			m_Bytes[index] = value;
+	}
+	
 	//
 	// Getters
 	//
-	bool Bitmap::contains(uint x, uint y) const
+	bool Bitmap::contains(const uint &x, const uint &y) const
 	{
 		return (x < m_Width || y < m_Height);
 	}
@@ -166,12 +232,12 @@ namespace zaap { namespace graphics {
 		return m_Format;
 	}
 
-	Vec2 Bitmap::getPixelCoord(uint x, uint y) const
+	Vec2 Bitmap::getPixelCoord(const uint &x, const uint &y) const
 	{
 		return Vec2((float)x / (float)m_Width, (float)y / (float)m_Height);
 	}
 
-	Bitmap Bitmap::getSubMap(uint x, uint y, uint width, uint height) const
+	Bitmap Bitmap::getSubMap(const uint &x, const uint &y, const uint &width, const uint &height) const
 	{
 		Bitmap b(width, height, m_Format);
 
@@ -182,7 +248,7 @@ namespace zaap { namespace graphics {
 		{
 			for (uint xl = 0; xl < copyWidth; xl++)
 			{
-				b.setColor(xl, yl, getColor(x + xl, y + yl));
+				b.setColor(xl, yl, getColor(x + xl, y + yl));//TODO switch to memcpy
 			}
 		}
 

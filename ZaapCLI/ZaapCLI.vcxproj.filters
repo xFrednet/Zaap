@@ -19,6 +19,12 @@
     <Filter Include="Source Files\maths">
       <UniqueIdentifier>{50faca6a-14b4-4c54-b7e0-d0e59249da33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{1765ab1e-3bdf-4ab6-bdc0-2ca44039ee43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\graphics">
+      <UniqueIdentifier>{902bbf61-3bc5-4317-816e-ae6beb574928}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -42,6 +48,15 @@
     <ClInclude Include="src\maths\Matrix4.h">
       <Filter>Source Files\maths</Filter>
     </ClInclude>
+    <ClInclude Include="src\util\UUID.h">
+      <Filter>Source Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Bitmap.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Color.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp">
@@ -61,6 +76,15 @@
     </ClCompile>
     <ClCompile Include="src\maths\Matrix4.cpp">
       <Filter>Source Files\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\UUID.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Bitmap.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Color.cpp">
+      <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

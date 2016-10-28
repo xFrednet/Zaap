@@ -19,34 +19,36 @@ namespace zaap { namespace graphics {
 			};
 			
 			Vec4 RGBA;
-
 		};
+
 	private:
-		float getAccordingFloat(int colorInt) const;
-		int getAccordingUint(float colorFloat) const;
+		static float GetAccordingFloat(const int &colorInt);
+		static int GetAccordingInt(const float &colorFloat);
 	public:
-		//constructor
-		Color(float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 1.0f);
-		Color(Vec4 color);
-		Color(Vec3 color, float a = 1.0f);
-		Color(int intR, int intG, int intB, int intA = 255);
-		Color(int hex);
+		//constructors
+		Color(const float &r = 0.0f, const float &g = 0.0f, const float &b = 0.0f, const float &a = 1.0f);
+		Color(const Vec4 &color);
+		Color(const Vec3 &color, const float &a = 1.0f);
+		Color(const int &intR, const int &intG, const int &intB, const int &intA = 255);
+		Color(const int &hex);
 
 		//setters
-		void setRGB(float r, float g, float b);
-		void setRGBA(float r, float g, float b, float a);
+		void setRGB(const float &r, const float &g, const float &b);
+		void setRGBA(const float &r, const float &g, const float &b, const float &a);
 
-		void setRGB(Vec3 rgb);
-		void setRGBA(Vec4 rgba);
+		void setRGB(const Vec3 &rgb);
+		void setRGBA(const Vec4 &rgba);
 
-		void setIntRGB(int r, int g, int b);
-		void setIntRGBA(int r, int g, int b, int a);
+		//int setters
+		void setIntR(const int &r);
+		void setIntG(const int &g);
+		void setIntB(const int &b);
+		void setIntA(const int &a);
+
+		void setIntRGB(const int &r, const int &g, const int &b);
+		void setIntRGBA(const int &r, const int &g, const int &b, const int &a);
 
 		//getters
-		float getR(void) const;
-		float getG(void) const;
-		float getB(void) const;
-		float getA(void) const;
 		Vec3 getRGB(void) const;
 		Vec4 getRGBA(void) const;
 

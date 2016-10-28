@@ -14,217 +14,34 @@ namespace ZaapCLI {
 	{
 	private:
 	public:
-
-//__FILE__ is always defined
-#ifdef __FILE__
 		//Row 1
-		property float m11 {
-			float get()
-			{
-				return m_Instance->m11;
-			}
-			void set(float m11)
-			{
-				m_Instance->m11 = m11;
-			}
-		}
-		property float m12 {
-			float get()
-			{
-				return m_Instance->m12;
-			}
-			void set(float m12)
-			{
-				m_Instance->m12 = m12;
-			}
-		}
-		property float m13 {
-			float get()
-			{
-				return m_Instance->m13;
-			}
-			void set(float m13)
-			{
-				m_Instance->m13 = m13;
-			}
-		}
-		property float m14 {
-			float get()
-			{
-				return m_Instance->m14;
-			}
-			void set(float m14)
-			{
-				m_Instance->m14 = m14;
-			}
-		}
-		property Vector4^ Row1 {
-			Vector4^ get()
-			{
-				return gcnew Vector4(&m_Instance->Row[0]);
-			}
-			void set(Vector4^ Row1)
-			{
-				m_Instance->Row[0] = *Row1->getHandle();
-			}
-		}
+		ZA_CLI_VALUE(float, m11, m11);
+		ZA_CLI_VALUE(float, m12, m12);
+		ZA_CLI_VALUE(float, m13, m13);
+		ZA_CLI_VALUE(float, m14, m14);
+		ZA_CLI_VECTOR4(Row1, row1, Row[0]);
 
 		//Row 2
-		property float m21 {
-			float get()
-			{
-				return m_Instance->m21;
-			}
-			void set(float m21)
-			{
-				m_Instance->m21 = m21;
-			}
-		}
-		property float m22 {
-			float get()
-			{
-				return m_Instance->m22;
-			}
-			void set(float m22)
-			{
-				m_Instance->m22 = m22;
-			}
-		}
-		property float m23 {
-			float get()
-			{
-				return m_Instance->m23;
-			}
-			void set(float m23)
-			{
-				m_Instance->m23 = m23;
-			}
-		}
-		property float m24 {
-			float get()
-			{
-				return m_Instance->m24;
-			}
-			void set(float m24)
-			{
-				m_Instance->m24 = m24;
-			}
-		}
-		property Vector4^ Row2 {
-			Vector4^ get()
-			{
-				return gcnew Vector4(&m_Instance->Row[1]);
-			}
-			void set(Vector4^ Row2)
-			{
-				m_Instance->Row[1] = *Row2->getHandle();
-			}
-		}
+		ZA_CLI_VALUE(float, m21, m21);
+		ZA_CLI_VALUE(float, m22, m22);
+		ZA_CLI_VALUE(float, m23, m23);
+		ZA_CLI_VALUE(float, m24, m24);
+		ZA_CLI_VECTOR4(Row2, row2, Row[1]);
 
 		//Row 3
-		property float m31 {
-			float get()
-			{
-				return m_Instance->m31;
-			}
-			void set(float m31)
-			{
-				m_Instance->m31 = m31;
-			}
-		}
-		property float m32 {
-			float get()
-			{
-				return m_Instance->m32;
-			}
-			void set(float m32)
-			{
-				m_Instance->m32 = m32;
-			}
-		}
-		property float m33 {
-			float get()
-			{
-				return m_Instance->m33;
-			}
-			void set(float m33)
-			{
-				m_Instance->m33 = m33;
-			}
-		}
-		property float m34 {
-			float get()
-			{
-				return m_Instance->m34;
-			}
-			void set(float m34)
-			{
-				m_Instance->m34 = m34;
-			}
-		}
-		property Vector4^ Row3 {
-			Vector4^ get()
-			{
-				return gcnew Vector4(&m_Instance->Row[2]);
-			}
-			void set(Vector4^ Row3)
-			{
-				m_Instance->Row[2] = *Row3->getHandle();
-			}
-		}
+		ZA_CLI_VALUE(float, m31, m31);
+		ZA_CLI_VALUE(float, m32, m32);
+		ZA_CLI_VALUE(float, m33, m33);
+		ZA_CLI_VALUE(float, m34, m34);
+		ZA_CLI_VECTOR4(Row3, row3, Row[2]);
 
 		//Row 4
-		property float m41 {
-			float get()
-			{
-				return m_Instance->m41;
-			}
-			void set(float m41)
-			{
-				m_Instance->m41 = m41;
-			}
-		}
-		property float m42 {
-			float get()
-			{
-				return m_Instance->m42;
-			}
-			void set(float m42)
-			{
-				m_Instance->m42 = m42;
-			}
-		}
-		property float m43 {
-			float get()
-			{
-				return m_Instance->m43;
-			}
-			void set(float m43)
-			{
-				m_Instance->m43 = m43;
-			}
-		}
-		property float m44 {
-			float get()
-			{
-				return m_Instance->m44;
-			}
-			void set(float m44)
-			{
-				m_Instance->m44 = m44;
-			}
-		}
-		property Vector4^ Row4 {
-			Vector4^ get()
-			{
-				return gcnew Vector4(&m_Instance->Row[3]);
-			}
-			void set(Vector4^ Row4)
-			{
-				m_Instance->Row[3] = *Row4->getHandle();
-			}
-		}
-#endif
+		ZA_CLI_VALUE(float, m41, m41);
+		ZA_CLI_VALUE(float, m42, m42);
+		ZA_CLI_VALUE(float, m43, m43);
+		ZA_CLI_VALUE(float, m44, m44);
+		ZA_CLI_VECTOR4(Row4, row4, Row[3]);
+
 		//constructors
 		Matrix4();
 		Matrix4(float diagonal);

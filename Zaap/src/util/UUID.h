@@ -16,7 +16,6 @@ namespace zaap
 
 			struct
 			{
-				
 				byte Data1[4];
 				byte Data2[2];
 				byte Data3[2];
@@ -25,7 +24,7 @@ namespace zaap
 		};
 
 		//TODO 0x00 at the start or end aren't written to string
-		//String format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+		//String format UUID(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
 		String toString() const;
 
 		//operators
@@ -33,8 +32,10 @@ namespace zaap
 		bool operator!=(const UUID &other) const;
 	};
 
-	void ZAAP_API RandomUUID(UUID *uuid);
+	//String format UUID(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+	ZAAP_API String ToString(const UUID &uuid);
+	
+	ZAAP_API bool Equal(const UUID &a, const UUID &b);
 
-	//String format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	String ZAAP_API ToString(const UUID &uuid);
+	ZAAP_API void RandomUUID(UUID *uuid);
 }

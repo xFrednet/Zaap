@@ -20,7 +20,7 @@ namespace zaap { namespace graphics {
 	};
 
 	/*This class is a Polymorphic class for the representation of a texture in Graphic Ram.
-	For direct Texture Representation and the ability to read Bitmap parts use zaap::graphics::Bitmap
+	For direct Texture Representation and the ability to read Bitmap parts use zaap::Bitmap
 	*/
 	class ZAAP_API Texture
 	{
