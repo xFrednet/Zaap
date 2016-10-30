@@ -1,0 +1,69 @@
+﻿#include "Format.h"
+
+namespace ZaapCLI {
+	
+	zaap::ZA_FORMAT to_CPP_ZAFormat(ZA_FORMAT format)
+	{
+		return static_cast<zaap::ZA_FORMAT>(format);
+	}
+	ZA_FORMAT to_CLI_ZAFormat(zaap::ZA_FORMAT format)
+	{
+		return static_cast<ZA_FORMAT>(format);
+	}
+	
+	//
+	// Format class
+	//
+	uint Format::GetFormatSize(ZA_FORMAT format)
+	{
+		return zaap::GetFormatSize(to_CPP_ZAFormat(format));
+	}
+
+	//
+	// Red
+	//
+	bool Format::Is_R_Readable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_R_Readable(to_CPP_ZAFormat(format));
+	}
+	bool Format::Is_R_Setable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_R_Setable(to_CPP_ZAFormat(format));
+	}
+	
+	//
+	// Green
+	//
+	bool Format::Is_G_Readable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_G_Readable(to_CPP_ZAFormat(format));
+	}
+	bool Format::Is_G_Setable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_G_Setable(to_CPP_ZAFormat(format));
+	}
+
+	//
+	// Blue
+	//
+	bool Format::Is_B_Readable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_B_Readable(to_CPP_ZAFormat(format));
+	}
+	bool Format::Is_B_Setable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_B_Setable(to_CPP_ZAFormat(format));
+	}
+	
+	//
+	// Alpha
+	//
+	bool Format::Is_A_Readable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_A_Readable(to_CPP_ZAFormat(format));
+	}
+	bool Format::Is_A_Setable(ZA_FORMAT format)
+	{
+		return zaap::Format_is_A_Setable(to_CPP_ZAFormat(format));
+	}
+}

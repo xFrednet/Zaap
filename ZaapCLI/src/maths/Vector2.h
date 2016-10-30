@@ -9,13 +9,13 @@ namespace ZaapCLI {
 	public ref class Vector2 : public ManagedClass<zaap::Vec2>
 	{
 	private:
-		Vector2(zaap::Vec2* instance);
 	public:
 		ZA_CLI_VALUE(float, X, x);
 		ZA_CLI_VALUE(float, Y, y);
 
 		Vector2();
 		Vector2(float x, float y);
+		Vector2(zaap::Vec2* instance);
 
 		//operations
 		void  normalize();

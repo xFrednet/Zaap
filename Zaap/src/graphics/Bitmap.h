@@ -23,6 +23,7 @@ namespace zaap { namespace graphics {
 	public:
 		Bitmap(const uint &width = 0, const uint &height = 0, const uint &bitsPerPixel = 0);
 		Bitmap(const uint &width, const uint &height, ZA_FORMAT format);
+		Bitmap(String file);
 		Bitmap(const char *file);
 
 		//RGBA Values

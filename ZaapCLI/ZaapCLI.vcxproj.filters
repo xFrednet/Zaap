@@ -57,6 +57,9 @@
     <ClInclude Include="src\graphics\Color.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\Format.h">
+      <Filter>Source Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp">
@@ -84,6 +87,9 @@
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Color.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Format.cpp">
       <Filter>Source Files\graphics</Filter>
     </ClCompile>
   </ItemGroup>

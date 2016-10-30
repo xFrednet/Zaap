@@ -21,6 +21,7 @@ namespace ZaapCLI {
 
 		//constructor
 		Color();
+		Color(zaap::graphics::Color* color);
 		Color(float r, float g, float b);
 		Color(float r, float g, float b, float a);
 		Color(Vector4^ color);
@@ -43,8 +44,8 @@ namespace ZaapCLI {
 		void setIntB(int b);
 		void setIntA(int a);
 
-		float setIntRGB(int r, int g, int b);
-		float setIntRGBA(int r, int g, int b, int a);
+		void setIntRGB(int r, int g, int b);
+		void setIntRGBA(int r, int g, int b, int a);
 
 		//getters
 		Vector3^ getRGB();

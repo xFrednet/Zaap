@@ -32,7 +32,7 @@ namespace ZaapCLI
 		return msclr::interop::marshal_as<System::String^>(stdString);
 	}
 
-	static std::string to_std_String(System::String^ cliString)
+	static std::string to_CPP_String(System::String^ cliString)
 	{
 		return msclr::interop::marshal_as<std::string>(cliString);
 	}

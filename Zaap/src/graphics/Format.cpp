@@ -22,7 +22,7 @@ namespace zaap
 	//
 	// Red
 	//
-	bool Format_Is_R_Readable(const ZA_FORMAT& format)
+	bool Format_is_R_Readable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -35,7 +35,7 @@ namespace zaap
 			return false;
 		}
 	}
-	bool Format_Is_R_Setable(const ZA_FORMAT& format)
+	bool Format_is_R_Setable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -52,7 +52,7 @@ namespace zaap
 	//
 	// Green
 	// 
-	bool Format_Is_G_Readable(const ZA_FORMAT& format)
+	bool Format_is_G_Readable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -67,7 +67,7 @@ namespace zaap
 			return false;
 		}
 	}
-	bool Format_Is_G_Setable(const ZA_FORMAT& format)
+	bool Format_is_G_Setable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -84,7 +84,7 @@ namespace zaap
 	//
 	// Blue
 	//
-	bool Format_Is_B_Readable(const ZA_FORMAT& format)
+	bool Format_is_B_Readable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -99,7 +99,7 @@ namespace zaap
 			return false;
 		}
 	}
-	bool Format_Is_B_Setable(const ZA_FORMAT& format)
+	bool Format_is_B_Setable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -116,7 +116,7 @@ namespace zaap
 	//
 	// Alpha
 	//
-	bool Format_Is_A_Readable(const ZA_FORMAT& format)
+	bool Format_is_A_Readable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
@@ -131,7 +131,7 @@ namespace zaap
 			return false;
 		}
 	}
-	bool Format_Is_A_Setable(const ZA_FORMAT& format)
+	bool Format_is_A_Setable(const ZA_FORMAT& format)
 	{
 		switch (format)
 		{
