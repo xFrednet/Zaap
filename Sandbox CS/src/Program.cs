@@ -8,6 +8,17 @@ using ZaapCLI;
 
 namespace Sandbox_CS
 {
+	//public class CLITest : Application
+	//{
+	//	CLITest() : Application("CLI Test", 852, 480)
+	//	{
+
+	//	}
+	//	public:
+	//	virtual void update() override {
+	//		}
+	//}
+
 	class Program
 	{
 		static void Main(string[] args)

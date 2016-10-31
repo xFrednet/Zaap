@@ -18,7 +18,7 @@
 
 namespace zaap {
 
-	Application::Application(char* title, int width, int height, graphics::Scene *scene)
+	Application::Application(char* title, uint width, uint height, graphics::Scene *scene)
 		: m_Scene(scene)
 	{
 		Window::Create(title, width, height);

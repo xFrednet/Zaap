@@ -3,11 +3,16 @@
 #include <common.h>
 #include <types.h>
 
-#include <app/Window.h>
 #include <graphics/Scene.h>
+
+namespace ZaapCLI {
+	class Application;
+}
 
 namespace zaap
 {
+
+
 	class ZAAP_API Application
 	{
 	private:
@@ -24,8 +29,9 @@ namespace zaap
 
 		virtual void render();
 		virtual void update();
+
 	public:
-		Application(char* title, int width, int height, graphics::Scene *scene);
+		Application(char* title, uint width, uint height, graphics::Scene *scene);
 		virtual ~Application(){}
 
 		void start();

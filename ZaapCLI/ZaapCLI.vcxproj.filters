@@ -30,9 +30,6 @@
     <ClInclude Include="src\ZaapCLI.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\Application.h">
-      <Filter>Source Files\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\app\Window.h">
       <Filter>Source Files\app</Filter>
     </ClInclude>
@@ -60,11 +57,11 @@
     <ClInclude Include="src\graphics\Format.h">
       <Filter>Source Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="src\app\Application.h">
+      <Filter>Source Files\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\Application.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\app\Window.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="src\graphics\Format.cpp">
       <Filter>Source Files\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Application.cpp">
+      <Filter>Source Files\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #pragma once
 #include <msclr\marshal_cppstd.h>
+#using <mscorlib.dll>
 
 #define ZA_CLI_VALUE(type, name, setName) \
 property type name {				\
