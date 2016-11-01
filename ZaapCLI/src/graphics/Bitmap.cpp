@@ -11,7 +11,7 @@ namespace ZaapCLI {
 	{
 	}
 	Bitmap::Bitmap(System::String^ file)
-		: ManagedClass(new zaap::graphics::Bitmap(to_CPP_String(file)))
+		: ManagedClass(new zaap::graphics::Bitmap(to_CPP_String(file).c_str()))
 	{
 	}
 	Bitmap::Bitmap(zaap::graphics::Bitmap* instance)
@@ -87,10 +87,6 @@ namespace ZaapCLI {
 	uint Bitmap::getBitsPerPixel()
 	{
 		return m_Instance->getBitsPerPixel();
-	}
-	byte* Bitmap::getPixelArray()
-	{
-		m_Instance->getPixelArray();
 	}
 	ZA_FORMAT Bitmap::getFormat()
 	{

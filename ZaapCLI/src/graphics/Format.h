@@ -16,8 +16,14 @@ namespace ZaapCLI {
 		ZA_FORMAT_A8_UINT		= zaap::ZA_FORMAT_A8_UINT
 	};
 
-	static zaap::ZA_FORMAT to_CPP_ZAFormat(ZA_FORMAT format);
-	static ZA_FORMAT to_CLI_ZAFormat(zaap::ZA_FORMAT format);
+	static zaap::ZA_FORMAT to_CPP_ZAFormat(ZA_FORMAT format)
+	{
+		return static_cast<zaap::ZA_FORMAT>(format);
+	}
+	static ZA_FORMAT to_CLI_ZAFormat(zaap::ZA_FORMAT format)
+	{
+		return static_cast<ZA_FORMAT>(format);
+	}
 
 	public ref class Format
 	{

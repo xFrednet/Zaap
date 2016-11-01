@@ -43,12 +43,14 @@ namespace ZaapCLI {
 		uint getWidth();
 		uint getHeight();
 		uint getBitsPerPixel();
-		byte* getPixelArray();
 		ZA_FORMAT getFormat();
 
 		//converts the X and Y values to the Coordinate system from 0.0f - 1.0f
 		Vector2^ getPixelCoord(uint x, uint y);
 
 		Bitmap^ getSubMap(uint x, uint y, uint width, uint height);
+		
+		
+		//TODO add char* getPixelArray();
 	};
 }

@@ -13,7 +13,7 @@ namespace zaap { namespace graphics {
 
 	FontShader2D::FontShader2D()
 	{
-		Input::AddWindowCallback(METHOD_1(&FontShader2D::windowCallback));
+		Input::AddWindowCallback(METHOD_1(FontShader2D::windowCallback));
 	}
 
 	void FontShader2D::setSize(float size)

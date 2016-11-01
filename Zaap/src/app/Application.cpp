@@ -24,6 +24,9 @@ namespace zaap {
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
 		graphics::Renderer::Init();
+
+		m_UpdateMethod = METHOD_0(Application::update);
+		m_RenderMethod = METHOD_0(Application::render);
 	}
 	void Application::cleanup() const
 	{
@@ -92,13 +95,13 @@ namespace zaap {
 					m_Paused = !m_Paused;
 				}
 
-				if (!m_Paused)update();
+				if (!m_Paused)m_UpdateMethod();
 				Input::Update();
 				update_prog--;
 				updates++;
 
 				//render stuff
-				if (!m_Paused)render();
+				if (!m_Paused)m_RenderMethod();
 				frames++;
 			}
 

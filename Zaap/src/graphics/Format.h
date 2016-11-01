@@ -1,13 +1,14 @@
 #pragma once
 
 #include <Common.h>
+#include <Types.h>
 
 #ifdef ZA_INCLUDE_DIRECTX
 #include <graphics/API/DX/DXCommon.h>
 #endif
 
-namespace zaap {
-	
+namespace zaap
+{
 	typedef ZAAP_API enum {
 		ZA_FORMAT_UNKNOWN       = 0,
 		ZA_FORMAT_R8G8B8A8_UINT = 1,

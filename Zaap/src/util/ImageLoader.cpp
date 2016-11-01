@@ -5,6 +5,8 @@
 #include <FreeImage.h>
 #include <FreeImage/Utilities.h>
 
+#pragma comment (lib, "FreeImage.lib")
+
 namespace zaap
 {
 	bool ImageLoader::isFreeImageInit = false;

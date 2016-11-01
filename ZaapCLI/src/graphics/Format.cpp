@@ -2,15 +2,6 @@
 
 namespace ZaapCLI {
 	
-	zaap::ZA_FORMAT to_CPP_ZAFormat(ZA_FORMAT format)
-	{
-		return static_cast<zaap::ZA_FORMAT>(format);
-	}
-	ZA_FORMAT to_CLI_ZAFormat(zaap::ZA_FORMAT format)
-	{
-		return static_cast<ZA_FORMAT>(format);
-	}
-	
 	//
 	// Format class
 	//

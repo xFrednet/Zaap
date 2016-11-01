@@ -16,7 +16,7 @@ namespace zaap { namespace graphics {
 
 	Renderer::Renderer()
 	{
-		Input::AddWindowCallback(METHOD_1(&Renderer::windowCallback));
+		Input::AddWindowCallback(METHOD_1(Renderer::windowCallback));
 	}
 
 	void Renderer::caluclateProjectionMatrix()

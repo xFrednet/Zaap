@@ -1,96 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\app">
-      <UniqueIdentifier>{19b7e0d8-c0d5-4f2c-8623-6c95fa7f60d8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\maths">
-      <UniqueIdentifier>{50faca6a-14b4-4c54-b7e0-d0e59249da33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\util">
-      <UniqueIdentifier>{1765ab1e-3bdf-4ab6-bdc0-2ca44039ee43}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\graphics">
-      <UniqueIdentifier>{902bbf61-3bc5-4317-816e-ae6beb574928}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="src\maths\Matrix4.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vector2.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vector4.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Vector3.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\UUID.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\Window.cpp">
+      <Filter>Source Files\src\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Bitmap.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Color.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Format.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\Window.h">
-      <Filter>Source Files\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\maths\Vector2.h">
-      <Filter>Source Files\maths</Filter>
-    </ClInclude>
-    <ClInclude Include="src\maths\Vector3.h">
-      <Filter>Source Files\maths</Filter>
+    <ClInclude Include="src\maths\Matrix4.h">
+      <Filter>Source Files\src\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\maths\Vector4.h">
-      <Filter>Source Files\maths</Filter>
+      <Filter>Source Files\src\maths</Filter>
     </ClInclude>
-    <ClInclude Include="src\maths\Matrix4.h">
-      <Filter>Source Files\maths</Filter>
+    <ClInclude Include="src\maths\Vector3.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Vector2.h">
+      <Filter>Source Files\src\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\util\UUID.h">
-      <Filter>Source Files\util</Filter>
+      <Filter>Source Files\src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\Window.h">
+      <Filter>Source Files\src\app</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Bitmap.h">
-      <Filter>Source Files\graphics</Filter>
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Color.h">
-      <Filter>Source Files\graphics</Filter>
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Format.h">
-      <Filter>Source Files\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\Application.h">
-      <Filter>Source Files\app</Filter>
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\Window.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\maths\Vector2.cpp">
-      <Filter>Source Files\maths</Filter>
-    </ClCompile>
-    <ClCompile Include="src\maths\Vector3.cpp">
-      <Filter>Source Files\maths</Filter>
-    </ClCompile>
-    <ClCompile Include="src\maths\Vector4.cpp">
-      <Filter>Source Files\maths</Filter>
-    </ClCompile>
-    <ClCompile Include="src\maths\Matrix4.cpp">
-      <Filter>Source Files\maths</Filter>
-    </ClCompile>
-    <ClCompile Include="src\util\UUID.cpp">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Bitmap.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Color.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\Format.cpp">
-      <Filter>Source Files\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\Application.cpp">
-      <Filter>Source Files\app</Filter>
-    </ClCompile>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8289a5f4-f4a4-4ac4-90a0-73a89d60f011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{36a738c7-73d7-4db5-8e90-a811872cc0a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\maths">
+      <UniqueIdentifier>{d4625cfb-9695-4dce-af74-164954fb91c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\util">
+      <UniqueIdentifier>{c6942639-e41e-4b10-9cd5-3c0aa252a066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\app">
+      <UniqueIdentifier>{47febb80-30fb-4de1-bdb1-d82a613764af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics">
+      <UniqueIdentifier>{ac19bc24-0257-4265-959b-3bd0a0741828}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

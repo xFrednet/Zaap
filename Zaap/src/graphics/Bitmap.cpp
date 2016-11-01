@@ -91,30 +91,6 @@ namespace zaap { namespace graphics {
 		m_Format(format)
 	{
 	}
-
-	Bitmap::Bitmap(String file)
-		: m_Bytes(0)
-	{
-		//load the Image
-		uint bitsPerPixel;
-		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &bitsPerPixel);
-
-		//Format
-		if (bitsPerPixel == 32)
-			m_Format = ZA_FORMAT_R8G8B8A8_UINT;
-		else if (bitsPerPixel == 24)
-			m_Format = ZA_FORMAT_R8G8B8_UINT;
-		else
-			m_Format = ZA_FORMAT_UNKNOWN;
-
-		uint size = m_Width * m_Height * ((bitsPerPixel == 32) ? 4 : 3);
-
-		//copy the pixel bytes
-		m_Bytes = std::vector<byte>(size);
-		memcpy(&m_Bytes[0], bytes, size);
-
-		delete[] bytes;
-	}
 	Bitmap::Bitmap(const char* file)
 		: m_Bytes(0)
 	{

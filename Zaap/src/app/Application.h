@@ -5,16 +5,21 @@
 
 #include <graphics/Scene.h>
 
-namespace ZaapCLI {
-	class Application;
-}
 
 namespace zaap
 {
 
-
 	class ZAAP_API Application
 	{
+		//These components are only included for ZaapCLI
+	private:
+		//friend class ZaapCLI::Application;
+
+		typedef std::function<void()> UpdateMethod;
+		typedef std::function<void()> RenderMethod;
+
+		UpdateMethod m_UpdateMethod;
+		RenderMethod m_RenderMethod;
 	private:
 		bool m_Running = false;
 
