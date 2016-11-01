@@ -19,7 +19,7 @@ namespace zaap {
 	// Creation
 	//
 	LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	void Window::Create(char* title, int width, int height)
+	void Window::Create(String title, int width, int height)
 	{
 		WNDCLASSEX wc;
 		DWORD style = WS_OVERLAPPEDWINDOW;
@@ -45,7 +45,7 @@ namespace zaap {
 
 		s_HWND = CreateWindowEx(NULL,
 			"ZAAP_WINDOW",
-			title,
+			title.c_str(),
 			style,
 			100,
 			100,

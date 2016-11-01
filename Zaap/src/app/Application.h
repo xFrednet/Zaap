@@ -8,18 +8,8 @@
 
 namespace zaap
 {
-
 	class ZAAP_API Application
 	{
-		//These components are only included for ZaapCLI
-	private:
-		//friend class ZaapCLI::Application;
-
-		typedef std::function<void()> UpdateMethod;
-		typedef std::function<void()> RenderMethod;
-
-		UpdateMethod m_UpdateMethod;
-		RenderMethod m_RenderMethod;
 	private:
 		bool m_Running = false;
 
@@ -34,9 +24,8 @@ namespace zaap
 
 		virtual void render();
 		virtual void update();
-
 	public:
-		Application(char* title, uint width, uint height, graphics::Scene *scene);
+		Application(String title, uint width, uint height, graphics::Scene *scene);
 		virtual ~Application(){}
 
 		void start();
@@ -47,7 +36,7 @@ namespace zaap
 
 		void cleanup() const;
 		/*
-		This method pulls events from the window, like butten presses and mouse interactions.
+		This method pulls events from the window, like button presses and mouse interactions.
 		This method is implemented in the default gameloop, it can be used if a different gameloop is used.
 		*/
 		void pullEvents();

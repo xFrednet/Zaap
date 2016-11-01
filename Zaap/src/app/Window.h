@@ -17,7 +17,7 @@ namespace zaap
 		static uint s_Width;
 		static uint s_Height;
 	public:
-		static void Create(char* title, int width, int height);
+		static void Create(String title, int width, int height);
 
 		static HWND GetHWND();
 		static uint GetWidth();
