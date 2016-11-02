@@ -32,8 +32,6 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11DepthStencilState *m_DepthStencilState[2];
 		ID3D11Texture2D *m_DepthStencil;
 		ID3D11DepthStencilView *m_DepthStencilView;
-
-		Camera* m_Camera;
 	protected:
 		void init() override;
 
@@ -43,10 +41,6 @@ namespace zaap { namespace graphics { namespace DX {
 		void initDepthBuffer();
 
 		void resize(uint width, uint height) override;
-
-		//Camera
-		void setCamera(Camera* camera) override;
-		Camera* getCamera() override;
 
 		//setters / loaders
 		void setRenderTargets(ID3D11RenderTargetView *renderTargetView, ID3D11DepthStencilView *depthStencilView) const;

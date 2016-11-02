@@ -31,6 +31,15 @@
     <ClCompile Include="src\app\Application.cpp">
       <Filter>Source Files\src\app</Filter>
     </ClCompile>
+    <ClCompile Include="src\maths\Plane3D.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\ViewFrustum.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\Camera.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -66,6 +75,15 @@
     <ClInclude Include="src\app\Application.h">
       <Filter>Source Files\src\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\maths\Plane3D.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\ViewFrustum.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\Camera.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -85,6 +103,9 @@
     </Filter>
     <Filter Include="Source Files\src\graphics">
       <UniqueIdentifier>{ac19bc24-0257-4265-959b-3bd0a0741828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\camera">
+      <UniqueIdentifier>{de330325-0cc4-480b-b486-b8375e219577}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

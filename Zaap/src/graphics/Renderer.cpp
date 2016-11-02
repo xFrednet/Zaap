@@ -10,15 +10,68 @@
 #include <events/Input.h>
 
 
-namespace zaap { namespace graphics {
-		
+namespace zaap {
+namespace graphics {
+
 	Renderer* Renderer::s_Instance = nullptr;
 
 	Renderer::Renderer()
 	{
 		Input::AddWindowCallback(METHOD_1(Renderer::windowCallback));
+
+		m_Camera = new Camera();
 	}
 
+	//
+	// Camera
+	//
+	void Renderer::setCamera(Camera* camera, bool deleteOldCamera)
+	{
+		if (deleteOldCamera)
+			delete m_Camera;
+
+		m_Camera = camera;
+	}
+	Camera* Renderer::getCamera()
+	{
+		return m_Camera;
+	}
+	ViewFrustum Renderer::getViewFrustum()
+	{
+		Camera *camera = getCamera();
+		if (camera)
+			return camera->getViewFrustum();
+		else
+			return ViewFrustum();
+	}
+	Mat4 Renderer::getViewMatrix()
+	{
+		Camera *camera = getCamera();
+		if (camera)
+			return camera->getViewMatrix();
+		
+		return CreateViewMatrix(Vec3(), 0.0f, 0.0f);
+	}
+
+	//
+	// private Util
+	//
+	void Renderer::windowCallback(const Event& windowEvent) const
+	{
+		if (windowEvent.getEventType() == WINDOW_RESIZE_EVENT)
+		{
+			if (!s_Instance) return;
+			WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
+			uint width = event->getWidth();
+			uint height = event->getHeight();
+
+			s_Instance->m_Size = Vec2((float)width, (float)height); //TODO add a separation option to set the Size
+			s_Instance->caluclateProjectionMatrix();
+
+			s_Instance->resize(width, height);
+		}
+
+	}
 	void Renderer::caluclateProjectionMatrix()
 	{
 		if (m_Size.Y == 0) //TODO add Error Message if y == 0 and get the size from the window
@@ -29,7 +82,12 @@ namespace zaap { namespace graphics {
 		m_ProjectionMatrix = CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
 	}
 
+}}
 
+//
+// Static members
+//
+namespace zaap { namespace graphics {
 	//
 	//Init
 	//
@@ -49,24 +107,25 @@ namespace zaap { namespace graphics {
 
 	}
 
+	//
+	// Shader stuff
+	//
 	void Renderer::StartFontShader2D()
 	{
 		s_Instance->m_FontShader2D->start();
 	}
-
 	FontShader2D* Renderer::GetFontShader2D()
 	{
 		return s_Instance->m_FontShader2D;
 	}
 
+	//
+	//Render
+	//
 	void Renderer::Render(const scene::Terrain const *terrainTile)
 	{
 		s_Instance->render(terrainTile);
 	}
-
-	//
-	//Render
-	//
 	void Renderer::Render(Entity* entity)
 	{ s_Instance->render(entity); }
 	void Renderer::RenderEntityArray(const std::vector<Entity*>& Entities)
@@ -80,12 +139,17 @@ namespace zaap { namespace graphics {
 	//
 	//Camera
 	//
-	void Renderer::SetCamera(Camera* camera)
-	{ s_Instance->setCamera(camera); }
-
+	void Renderer::SetCamera(Camera* camera, bool deleteOldCamera)
+	{
+		s_Instance->setCamera(camera, deleteOldCamera);
+	}
 	Camera* Renderer::GetCamera()
 	{
 		return s_Instance->getCamera();
+	}
+	ViewFrustum Renderer::GetViewFrustum()
+	{
+		return s_Instance->getViewFrustum();
 	}
 
 	//
@@ -114,7 +178,9 @@ namespace zaap { namespace graphics {
 	//Util
 	//
 	void Renderer::PrepareFrame()
-	{ s_Instance->prepareFrame(); }
+	{
+		s_Instance->prepareFrame();
+	}
 	void Renderer::Cleanup()
 	{
 		s_Instance->cleanup();
@@ -123,31 +189,16 @@ namespace zaap { namespace graphics {
 		s_Instance->m_FontShader2D->cleanup();
 		delete s_Instance->m_FontShader2D;
 
+		if (s_Instance->m_Camera) delete s_Instance->m_Camera;
+
 		delete s_Instance;
 		ZAAP_CLEANUP_LOG("Renderer");
 	}
-	void Renderer::windowCallback(const Event& windowEvent) const
-	{
-		if (windowEvent.getEventType() == WINDOW_RESIZE_EVENT)
-		{
-			if (!s_Instance) return;
-			WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
-			uint width = event->getWidth();
-			uint height = event->getHeight();
 
-			s_Instance->m_Size = Vec2((float)width, (float)height); //TODO add a separation option to set the Size
-			s_Instance->caluclateProjectionMatrix();
 
-			s_Instance->resize(width, height);
-		}
-
-	}
-
-	ViewFrustum Renderer::GetViewFrustum()
-	{
-		return s_Instance->getViewFrustum();
-	}
-
+	//
+	//getters
+	//
 	Mat4 Renderer::GetProjectionMatrix()
 	{
 		if (s_Instance)

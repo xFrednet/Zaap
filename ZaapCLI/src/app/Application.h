@@ -15,17 +15,15 @@ namespace ZaapCLI {
 	public:
 		ApplicationRedirector(ZaapCLI::Application^ owner, String title, uint width, uint height);
 	protected:
-		/*void render() override;
-		void update() override;*/
+		void render() override;
+		void update() override;
 
 	public:
-		void start();
-
 		void callDefaultRender();
 		void callDefaultUpdate();
 	};
 
-	public ref class Application abstract : ManagedClass<ApplicationRedirector>
+	public ref class Application : ManagedClass<ApplicationRedirector>
 	{
 	protected:
 	public:

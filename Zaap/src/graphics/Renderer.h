@@ -24,6 +24,8 @@ namespace zaap { namespace graphics {
 		float m_FarPlane = 1000.0f;
 		Mat4 m_ProjectionMatrix;
 
+		Camera* m_Camera;
+
 		FontShader2D* m_FontShader2D;
 		MaterialShader *m_MaterialShader;
 		TextureShader *m_TextureShader;
@@ -38,8 +40,10 @@ namespace zaap { namespace graphics {
 		virtual void render(Entity* model) = 0;
 
 		//Camera
-		virtual void setCamera(Camera* camera) = 0;
-		virtual Camera* getCamera() = 0;
+		virtual void setCamera(Camera* camera, bool deleteOldCamera = true);
+		virtual Camera* getCamera();
+		virtual ViewFrustum getViewFrustum();
+		virtual Mat4 getViewMatrix();
 
 		//Render options
 		virtual void setDepthTestState(bool enable) = 0;
@@ -49,11 +53,9 @@ namespace zaap { namespace graphics {
 		virtual void prepareFrame() = 0;
 		virtual void cleanup() = 0;
 		virtual void resize(uint width, uint height) = 0;
-		virtual ViewFrustum getViewFrustum(void) = 0;
 		
 		void windowCallback(const Event& windowEvent) const;
 		void caluclateProjectionMatrix();
-
 
 	public:
 		//Init
@@ -69,8 +71,9 @@ namespace zaap { namespace graphics {
 		static void RenderEntityArray(const std::vector<Entity*>& models);
 		
 		//Camera
-		static void SetCamera(Camera* camera);
+		static void SetCamera(Camera* camera, bool deleteOldCamera = true);
 		static Camera* GetCamera();
+		static ViewFrustum GetViewFrustum();
 
 		//Setters
 		static void LoadLightSetup(LightSetup* lightSetup);
@@ -84,8 +87,8 @@ namespace zaap { namespace graphics {
 		static void Cleanup();
 
 		//getters
-		static ViewFrustum GetViewFrustum();
 		static Mat4 GetProjectionMatrix();
+
 	};
 
 }}

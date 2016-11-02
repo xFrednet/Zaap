@@ -24,13 +24,13 @@ namespace zaap { namespace graphics {
 		float m_FarPlaneWidth, m_FarPlaneHeight;
 	public:
 		ViewFrustum();
-		ViewFrustum(float angle, float ratio, float nearPlane, float farPlane);
+		ViewFrustum(const float &angle, const float &ratio, const float &nearPlane, const float &farPlane);
 
-		void setInternals(float angle, float ratio, float nearPlane, float farPlane);
-		void calculateFrustum(Mat4 projectionMatrix, Mat4 viewMatrix);
+		void setInternals(const float &angle, const float &ratio, const float &nearPlane, const float &farPlane);
+		void calculateFrustum(const Mat4 &projectionMatrix, const Mat4 &viewMatrix);
 
 		bool isVisible(const Vec3 &point) const;
-		bool isCuboidVisible(Vec3 min, Vec3 max) const;
+		bool isCuboidVisible(const Vec3 &min, const Vec3 &max) const;
 	};
 
 }}

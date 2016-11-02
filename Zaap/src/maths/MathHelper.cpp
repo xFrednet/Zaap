@@ -7,7 +7,7 @@ namespace zaap {
 	//
 	// Matrix math
 	//
-	Mat4 CreateTransformationMatrix(const Vec3 const &position, const Vec3 const &rotation, const Vec3 const &scale)
+	Mat4 CreateTransformationMatrix(const Vec3 &position, const Vec3 &rotation, const Vec3 &scale)
 	{
 		Mat4 mat(1.0f);
 
@@ -22,7 +22,7 @@ namespace zaap {
 		return mat;
 	}
 
-	Mat4 CreateProjectionMatrix(float fov, float aspect, float nearPlane, float farPlane)//60
+	Mat4 CreateProjectionMatrix(const float &fov, const float &aspect, const float &nearPlane, const float &farPlane)//60
 	{
 		Mat4 mat(1.0f);
 
@@ -39,7 +39,7 @@ namespace zaap {
 		return mat;
 	}
 
-	Mat4 CreateViewMatrix(Vec3& position, float yaw, float pitch)
+	Mat4 CreateViewMatrix(const Vec3& position, const float yaw, const float pitch)
 	{
 		Mat4 mat(1.0f);
 		
@@ -49,8 +49,7 @@ namespace zaap {
 
 		return mat;
 	}
-
-	Mat4 CreateViewMatrix(Vec3& position, Vec3& lookAt, Vec3& up)
+	Mat4 CreateViewMatrix(const Vec3& position, const Vec3& lookAt, const Vec3& up)
 	{
 		Vec3 zAxis = Normalize(position - lookAt);
 		Vec3 xAxis = Normalize(Cross(up, zAxis));
@@ -67,7 +66,7 @@ namespace zaap {
 	//
 	// Util
 	//
-	float toRadians(float angdeg)
+	float toRadians(const float &angdeg)
 	{
 		return angdeg / 180.0f * PI;
 	}

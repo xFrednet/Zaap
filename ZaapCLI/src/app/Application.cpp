@@ -11,18 +11,14 @@ namespace ZaapCLI {
 	{
 	}
 
-	void ApplicationRedirector::start()
-	{
-		zaap::Application::start();
-	}
-	/*void ApplicationRedirector::render()
+	void ApplicationRedirector::render()
 	{
 		m_Owner->render();
 	}
 	void ApplicationRedirector::update()
 	{
 		m_Owner->update();
-	}*/
+	}
 
 	void ApplicationRedirector::callDefaultRender()
 	{
@@ -46,10 +42,7 @@ namespace ZaapCLI {
 
 	void Application::start()
 	{
-		if (m_Instance)
-		{
-			m_Instance->start();
-		}
+		m_Instance->start();
 	}
 	void Application::stop()
 	{
@@ -67,11 +60,11 @@ namespace ZaapCLI {
 
 	void Application::render()
 	{
-		//m_Instance->callDefaultRender();
+		m_Instance->callDefaultRender();
 	}
 	void Application::update()
 	{
-		//m_Instance->callDefaultUpdate();
+		m_Instance->callDefaultUpdate();
 	}
 
 	void Application::cleanup()

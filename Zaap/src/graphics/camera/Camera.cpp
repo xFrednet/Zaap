@@ -5,13 +5,12 @@
 
 namespace zaap { namespace graphics {
 	
-	Camera::Camera(Vec3& position, float yaw, float pitch, float fov, float fovRatio)
+	Camera::Camera(const Vec3 &position, const float &yaw, const float &pitch, const float &fov, const float &fovRatio)
 		: m_Position(position),
 		m_Yaw(yaw), m_Pitch(pitch),
 		m_FOV(fov), m_FOVRatio(fovRatio)
 	{}
-
-	Camera::Camera(Vec3& position, Vec3 lookAt, Vec3 up)
+	Camera::Camera(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up)
 		: m_Position(position),
 		m_Yaw(0), m_Pitch(0),
 		m_FOV(90), m_FOVRatio(1.775f)
@@ -21,12 +20,10 @@ namespace zaap { namespace graphics {
 
 	void Camera::update()
 	{}
-
-	Mat4 Camera::getViewMatrix()
+	Mat4 Camera::getViewMatrix() const
 	{
 		return CreateViewMatrix(m_Position, m_Yaw, m_Pitch);
 	}
-
 	void Camera::calculateViewFrustum()
 	{
 		if (!Input::IsKeyDown(ZAAP_VK_V))

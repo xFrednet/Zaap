@@ -15,7 +15,7 @@ namespace zaap { namespace graphics {
 	{
 	}
 
-	ViewFrustum::ViewFrustum(float angle, float ratio, float nearPlane, float farPlane)
+	ViewFrustum::ViewFrustum(const float &angle, const float &ratio, const float &nearPlane, const float &farPlane)
 	{
 		setInternals(angle, ratio, nearPlane, farPlane);
 	}
@@ -23,7 +23,7 @@ namespace zaap { namespace graphics {
 	//
 	// Setters
 	//
-	void ViewFrustum::setInternals(float angle, float ratio, float nearPlane, float farPlane)
+	void ViewFrustum::setInternals(const float &angle, const float &ratio, const float &nearPlane, const float &farPlane)
 	{
 
 		m_Angle = angle;
@@ -41,7 +41,7 @@ namespace zaap { namespace graphics {
 		m_FarPlaneHeight = tang * m_FarPlane;
 		m_FarPlaneWidth = m_FarPlaneHeight * m_Ratio;
 	}
-	void ViewFrustum::calculateFrustum(Mat4 projectionMatrix, Mat4 viewMatrix)
+	void ViewFrustum::calculateFrustum(const Mat4 &projectionMatrix, const Mat4 &viewMatrix)
 	{
 		//Source: http://gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
 
@@ -93,13 +93,13 @@ namespace zaap { namespace graphics {
 		//add far and near plane
 		for (uint i = 0; i < 4; i++)
 		{
-			if (GetRelation(m_Sides[i], point) == ZAAP_POINT_BELOW)
+			if (GetRelation(m_Sides[i], point) == ZA_POINT_BELOW)
 				return false;
 		}
 		return true;
 	}
 
-	bool ViewFrustum::isCuboidVisible(Vec3 min, Vec3 max) const
+	bool ViewFrustum::isCuboidVisible(const Vec3 &min, const Vec3 &max) const
 	{
 		bool isVisible = false;
 		uint i, j;
@@ -119,7 +119,7 @@ namespace zaap { namespace graphics {
 		{
 			for (i = 0; i < 8; i++)
 			{
-				if (GetRelation(m_Sides[FRONT], tPoints[i]) != ZAAP_POINT_BELOW)
+				if (GetRelation(m_Sides[FRONT], tPoints[i]) != ZA_POINT_BELOW)
 				{
 					isVisible = true;
 					break;
@@ -146,21 +146,21 @@ namespace zaap { namespace graphics {
 				j = 7 - i;
 
 				//test if point is to the left
-				if (GetRelation(m_Sides[LEFT], tPoints[i]) == ZAAP_POINT_BELOW)
+				if (GetRelation(m_Sides[LEFT], tPoints[i]) == ZA_POINT_BELOW)
 				{
 					// 1 \ view  2
-					if (GetRelation(m_Sides[LEFT], tPoints[j]) == ZAAP_POINT_ABOVE)
+					if (GetRelation(m_Sides[LEFT], tPoints[j]) == ZA_POINT_ABOVE)
 					{
 						isVisible = true;
 						break;
 					}
 
 					//else test if point is to the right
-				} else if (GetRelation(m_Sides[RIGHT], tPoints[i]) == ZAAP_POINT_ABOVE)
+				} else if (GetRelation(m_Sides[RIGHT], tPoints[i]) == ZA_POINT_ABOVE)
 				{
 					isVisible = true;
 					break;
-				} else if (GetRelation(m_Sides[RIGHT], tPoints[j]) == ZAAP_POINT_ABOVE)
+				} else if (GetRelation(m_Sides[RIGHT], tPoints[j]) == ZA_POINT_ABOVE)
 				{
 					isVisible = true;
 					break;
@@ -182,21 +182,21 @@ namespace zaap { namespace graphics {
 				j = 7 - i;
 
 				//test if point is to the left
-				if (GetRelation(m_Sides[TOP], tPoints[i]) == ZAAP_POINT_BELOW)
+				if (GetRelation(m_Sides[TOP], tPoints[i]) == ZA_POINT_BELOW)
 				{
 					// 1 \ view  2
-					if (GetRelation(m_Sides[TOP], tPoints[j]) == ZAAP_POINT_ABOVE)
+					if (GetRelation(m_Sides[TOP], tPoints[j]) == ZA_POINT_ABOVE)
 					{
 						isVisible = true;
 						break;
 					}
 
 					//else test if point is to the right
-				} else if (GetRelation(m_Sides[BOTTOM], tPoints[i]) == ZAAP_POINT_ABOVE)
+				} else if (GetRelation(m_Sides[BOTTOM], tPoints[i]) == ZA_POINT_ABOVE)
 				{
 					isVisible = true;
 					break;
-				} else if (GetRelation(m_Sides[BOTTOM], tPoints[j]) == ZAAP_POINT_ABOVE)
+				} else if (GetRelation(m_Sides[BOTTOM], tPoints[j]) == ZA_POINT_ABOVE)
 				{
 					isVisible = true;
 					break;
@@ -214,7 +214,7 @@ namespace zaap { namespace graphics {
 
 			for (i = 0; i < 8; i++)
 			{
-				if (GetRelation(m_Sides[BACK], tPoints[i]) != ZAAP_POINT_BELOW)
+				if (GetRelation(m_Sides[BACK], tPoints[i]) != ZA_POINT_BELOW)
 				{
 					isVisible = true;
 					break;

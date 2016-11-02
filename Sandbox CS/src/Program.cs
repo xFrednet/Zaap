@@ -15,7 +15,6 @@ namespace Sandbox_CS
 
 		}
 		
-		
 	}
 
 	class Program

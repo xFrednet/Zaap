@@ -97,7 +97,7 @@ namespace zaap {
 				Input::Update();
 				update_prog--;
 				updates++;
-
+				
 				//render stuff
 				if (!m_Paused)render();
 				frames++;
@@ -126,11 +126,13 @@ namespace zaap {
 	{
 		graphics::Renderer::PrepareFrame();
 
-		m_Scene->render();
+		if (m_Scene) 
+			m_Scene->render();
 	}
 	void Application::update()
 	{
-		m_Scene->update();
+		if (m_Scene) 
+			m_Scene->update();
 	}
 
 	MSG msg_;

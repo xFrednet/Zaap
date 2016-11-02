@@ -22,6 +22,8 @@ namespace zaap { namespace graphics { namespace DX {
 		initDepthBuffer();
 		
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		setCamera(new Camera()); //TODO remove default camera 
 	}
 
 	//
@@ -198,7 +200,7 @@ namespace zaap { namespace graphics { namespace DX {
 			
 			ID3D11Texture2D *backBuffer;
 			hr = DXContext::GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
-			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to get the Backbuffer from the SwapChain");
+			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to get the BackBuffer from the SwapChain");
 
 			hr = m_Dev->CreateRenderTargetView(backBuffer, NULL, &m_RenderTargetView);
 			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to create the RenderTargetView");
@@ -256,18 +258,6 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 
 	//
-	// Camera
-	//
-	void DXRenderer::setCamera(Camera* camera)
-	{
-		m_Camera = camera;
-	}
-	Camera* DXRenderer::getCamera()
-	{
-		return m_Camera;
-	}
-
-	//
 	// Setters / Loaders
 	//
 	void DXRenderer::setRenderTargets(ID3D11RenderTargetView* renderTargetView, ID3D11DepthStencilView* depthStencilView) const
@@ -304,16 +294,17 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		Mat4 matrix = m_Camera->getViewMatrix();
+		Mat4 matrix = getViewMatrix();
 		m_TextureShader->setViewMatrix(matrix);
 		m_TerrainShader->setViewMatrix(matrix);
 		m_MaterialShader->setViewMatrix(matrix);
 
-		m_MaterialShader->setCameraPosition(m_Camera->getPosition());
+		if (m_Camera) 
+			m_MaterialShader->setCameraPosition(m_Camera->getPosition());
+		else 
+			m_MaterialShader->setCameraPosition(Vec3());
 
-		m_Camera->calculateViewFrustum();
-
-		//TODO Change Method
+		//TODO improve Method
 	}
 
 	void DXRenderer::render(const scene::Terrain const* terrain)
@@ -321,7 +312,6 @@ namespace zaap { namespace graphics { namespace DX {
 		m_TerrainShader->start();
 
 		m_TerrainShader->setTransformationMatrix(Mat4(1.0f));
-
 	}
 
 	void DXRenderer::render(Entity* entity)
@@ -369,8 +359,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_Devcon = nullptr;
 		m_Dev = nullptr;
-
-		if (m_Camera) delete m_Camera;
 
 		m_TextureShader->cleanup();
 		m_MaterialShader->cleanup();

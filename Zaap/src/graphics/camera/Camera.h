@@ -23,25 +23,25 @@ namespace zaap { namespace graphics {
 
 		ViewFrustum m_Frustum;
 	public:
-		Camera(Vec3 &position = Vec3(), float yaw = 0, float pitch = 0, float fov = DEFAULT_FOV, float fovRatio = 1.775f);
-		Camera(Vec3 &position, Vec3 lookAt, Vec3 up);
+		Camera(const Vec3 &position = Vec3(), const float &yaw = 0, const float & pitch = 0, const float & fov = DEFAULT_FOV, const float & fovRatio = 1.775f);
+		Camera(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up);
 
 		virtual void update();
-		Mat4 getViewMatrix(void);
+		Mat4 getViewMatrix() const;
 		void calculateViewFrustum();
 		ViewFrustum getViewFrustum() const;
 
 		//position
 		virtual void setPosition(Vec3 &position);
 		virtual void addToPosition(Vec3 &position);
-		Vec3 getPosition(void) const;
+		Vec3 getPosition() const;
 
 		//rotation
 		virtual void setRotation(float yaw, float pitch);
 		virtual void addToRotation(float yaw, float pitch);
 		virtual void addToYaw(float yaw);
 		virtual void addToPitch(float pitch);
-		virtual float getPitch(void) const;
-		virtual float getYaw(void) const;
+		virtual float getPitch() const;
+		virtual float getYaw() const;
 	};
 }}
