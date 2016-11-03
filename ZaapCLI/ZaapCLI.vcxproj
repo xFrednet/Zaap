@@ -135,7 +135,9 @@
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\graphics\Bitmap.h" />
+    <ClInclude Include="src\graphics\camera\BaseCamera.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
+    <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
     <ClInclude Include="src\graphics\Color.h" />
     <ClInclude Include="src\graphics\Format.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="src\maths\Vector2.h" />
     <ClInclude Include="src\maths\Vector3.h" />
     <ClInclude Include="src\maths\Vector4.h" />
+    <ClInclude Include="src\scene\Terrain.h" />
     <ClInclude Include="src\util\UUID.h" />
     <ClInclude Include="src\ZaapCLI.h" />
   </ItemGroup>
@@ -151,7 +154,9 @@
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
     <ClCompile Include="src\graphics\Bitmap.cpp" />
+    <ClCompile Include="src\graphics\camera\BaseCamera.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
+    <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
@@ -160,6 +165,7 @@
     <ClCompile Include="src\maths\Vector2.cpp" />
     <ClCompile Include="src\maths\Vector3.cpp" />
     <ClCompile Include="src\maths\Vector4.cpp" />
+    <ClCompile Include="src\scene\Terrain.cpp" />
     <ClCompile Include="src\util\UUID.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

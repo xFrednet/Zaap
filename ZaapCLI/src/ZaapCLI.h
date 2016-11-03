@@ -26,6 +26,18 @@ property Vector4^ name {							\
 	}												\
 }
 
+#define ZA_CLI_VECTOR3(name, setName, original)		\
+property Vector3^ name {							\
+	Vector3^ get()									\
+	{												\
+		return gcnew Vector3(&m_Instance->original);\
+	}												\
+	void set(Vector3^ setName)						\
+	{												\
+		m_Instance->original = *setName->getHandle();\
+	}												\
+}
+
 namespace ZaapCLI
 {
 	static System::String^ to_CLI_String(std::string stdString)

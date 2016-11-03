@@ -49,9 +49,6 @@ namespace zaap { namespace scene {
 	{
 		init(folder);
 	}
-	Terrain::~Terrain()
-	{
-	}
 
 	//
 	// Util

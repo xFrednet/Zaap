@@ -22,17 +22,8 @@ namespace ZaapCLI {
 		ZA_CLI_VALUE(float, B, b);
 		ZA_CLI_VALUE(float, C, c);
 		ZA_CLI_VALUE(float, D, d);
+		ZA_CLI_VECTOR3(N, n, N);
 
-		property Vector3^ N {
-			Vector3^ get()
-			{
-				return gcnew Vector3(&m_Instance->N);
-			}
-			void set(Vector3^ n)
-			{
-				m_Instance->N = *n->getHandle();
-			}
-		}
 
 		Plane3D();
 		Plane3D(float a, float b, float c, float d);

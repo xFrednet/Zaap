@@ -9,18 +9,20 @@
 
 namespace ZaapCLI {
 
-	//TODO add a Redirector Class
+	//Use ZaapCLI::BaseCamera to cerate a own functional camera
 
-	public ref class Camera : public ManagedClass<zaap::graphics::Camera>
+	public ref class Camera
 	{
-	private:
+	protected:
+		zaap::graphics::Camera* m_Instance;
+		
+		Camera(zaap::graphics::Camera* instance);
 	public:
-		Camera();
-		Camera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio);
-		Camera(Vector3^ position, Vector3^ lookAt, Vector3^ up);
+		~Camera();
+		!Camera();
 
 		virtual void update();
-		Matrix4^ getViewMatrix();
+		virtual Matrix4^ getViewMatrix();
 		void calculateViewFrustum();
 		ViewFrustum^ getViewFrustum();
 
@@ -30,11 +32,16 @@ namespace ZaapCLI {
 		Vector3^ getPosition();
 
 		//rotation
-		virtual void setRotation(float yaw, float pitch);
-		virtual void addToRotation(float yaw, float pitch);
-		virtual void addToYaw(float yaw);
-		virtual void addToPitch(float pitch);
-		virtual float getPitch();
-		virtual float getYaw();
+		void setRotation(float yaw, float pitch);
+		void addToRotation(float yaw, float pitch);
+		void addToYaw(float yaw);
+		void addToPitch(float pitch);
+		float getPitch();
+		float getYaw();
+
+		zaap::graphics::Camera* getHandle()
+		{
+			return m_Instance;
+		}
 	};
 }

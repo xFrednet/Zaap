@@ -19,6 +19,8 @@ Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
 
+// TODO TEXTURE deletion
+// TODO pointer vector
 
 void loadEntitys()
 {

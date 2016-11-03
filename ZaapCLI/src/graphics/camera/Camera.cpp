@@ -1,20 +1,33 @@
 ﻿#include "Camera.h"
 
 namespace ZaapCLI {
-	Camera::Camera()
-		: ManagedClass(new zaap::graphics::Camera())
+	Camera::Camera(zaap::graphics::Camera* instance)
+		: m_Instance(instance)
 	{
-	}
-	Camera::Camera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio)
-		: ManagedClass(new zaap::graphics::Camera(*position->getHandle(), yaw, pitch, fov, fovRatio))
-	{
-	}
-	Camera::Camera(Vector3^ position, Vector3^ lookAt, Vector3^ up)
-		: ManagedClass(new zaap::graphics::Camera(*position->getHandle(), *lookAt->getHandle(), *up->getHandle()))
-	{
+		
 	}
 
-	void Camera::update(){}
+	Camera::~Camera()
+	{
+		if (m_Instance)
+		{
+			delete m_Instance;
+			m_Instance = nullptr;
+		}
+	}
+	Camera::!Camera()
+	{
+		if (m_Instance)
+		{
+			delete m_Instance;
+			m_Instance = nullptr;
+		}
+	}
+
+	void Camera::update()
+	{
+		m_Instance->update();
+	}
 	Matrix4^ Camera::getViewMatrix()
 	{
 		return gcnew Matrix4(&m_Instance->getViewMatrix());

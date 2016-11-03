@@ -50,7 +50,6 @@ namespace zaap { namespace scene {
 		TerrainPart* m_ParrentNode;
 	public:
 		Terrain(String folder, TERRAIN_DESC terrainDesc);
-		~Terrain();
 
 		//Util
 		void init(String folder);

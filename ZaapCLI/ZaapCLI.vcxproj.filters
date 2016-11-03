@@ -40,6 +40,15 @@
     <ClCompile Include="src\graphics\camera\Camera.cpp">
       <Filter>Source Files\src\graphics\camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\camera\ControllableCamera.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\camera\BaseCamera.cpp">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\scene\Terrain.cpp">
+      <Filter>Source Files\src\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -84,6 +93,15 @@
     <ClInclude Include="src\graphics\camera\Camera.h">
       <Filter>Source Files\src\graphics\camera</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\camera\ControllableCamera.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\camera\BaseCamera.h">
+      <Filter>Source Files\src\graphics\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Terrain.h">
+      <Filter>Source Files\src\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -106,6 +124,9 @@
     </Filter>
     <Filter Include="Source Files\src\graphics\camera">
       <UniqueIdentifier>{de330325-0cc4-480b-b486-b8375e219577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\scene">
+      <UniqueIdentifier>{544efb9e-afd0-43a4-b296-7f3feeba284a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
