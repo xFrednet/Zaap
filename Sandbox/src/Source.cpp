@@ -22,6 +22,9 @@ API::VertexBuffer *fontVB = nullptr;
 // TODO TEXTURE deletion
 // TODO pointer vector
 
+// TODO LIGHT deletion
+// TODO pointer vector
+
 void loadEntitys()
 {
 	clock_t timer = clock();

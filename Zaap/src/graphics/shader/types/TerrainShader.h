@@ -4,7 +4,7 @@
 #include <Types.h>
 
 #include <graphics/shader/Shader.h>
-#include <graphics/light/LightSetup.h>
+#include <entity/light/LightSetup.h>
 
 namespace zaap { namespace graphics {
 	

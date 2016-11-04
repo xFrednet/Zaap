@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "graphics/camera/Camera.h"
 #include <entity/Entity.h>
-#include <graphics/light/LightSetup.h>
+#include <entity/light/LightSetup.h>
 #include <scene/terrain/Terrain.h>
 #include <graphics/camera/ViewFrustum.h>
 #include "shader/types/FontShader2D.h"

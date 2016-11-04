@@ -37,12 +37,6 @@
     <Filter Include="Source Files\src\events">
       <UniqueIdentifier>{ff50829f-cec1-47e4-bfbb-fd31a35b82f0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\entity">
-      <UniqueIdentifier>{d3c6f1f6-8c7a-4b50-ba19-f1b11f77a83d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\src\graphics\light">
-      <UniqueIdentifier>{e146fc29-9ed3-416b-a68e-00ccfdabb270}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\src\graphics\mesh">
       <UniqueIdentifier>{8b7407c5-aec1-4099-aa91-f777b148a15d}</UniqueIdentifier>
     </Filter>
@@ -69,6 +63,12 @@
     </Filter>
     <Filter Include="Source Files\src\events\types">
       <UniqueIdentifier>{af3d5829-1179-41fd-8562-6dabd692a4fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\entity">
+      <UniqueIdentifier>{0820ef89-fcef-475c-b8a5-14ef05f48384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\entity\light">
+      <UniqueIdentifier>{e146fc29-9ed3-416b-a68e-00ccfdabb270}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,18 +122,6 @@
     </ClCompile>
     <ClCompile Include="src\graphics\Scene.cpp">
       <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\Entity.cpp">
-      <Filter>Source Files\src\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\entity\BasicEntity.cpp">
-      <Filter>Source Files\src\entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\light\Light.cpp">
-      <Filter>Source Files\src\graphics\light</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\light\LightSetup.cpp">
-      <Filter>Source Files\src\graphics\light</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\MaterialManager.cpp">
       <Filter>Source Files\src\graphics</Filter>
@@ -237,6 +225,15 @@
     <ClCompile Include="src\graphics\Color.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\entity\Entity.cpp">
+      <Filter>Source Files\src\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\light\Light.cpp">
+      <Filter>Source Files\src\entity\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entity\light\LightSetup.cpp">
+      <Filter>Source Files\src\entity\light</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -304,18 +301,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Scene.h">
       <Filter>Source Files\src\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\Entity.h">
-      <Filter>Source Files\src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="src\entity\BasicEntity.h">
-      <Filter>Source Files\src\entity</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\light\Light.h">
-      <Filter>Source Files\src\graphics\light</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\light\LightSetup.h">
-      <Filter>Source Files\src\graphics\light</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Material.h">
       <Filter>Source Files\src\graphics</Filter>
@@ -421,6 +406,15 @@
     </ClInclude>
     <ClInclude Include="src\graphics\Color.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\Entity.h">
+      <Filter>Source Files\src\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\light\Light.h">
+      <Filter>Source Files\src\entity\light</Filter>
+    </ClInclude>
+    <ClInclude Include="src\entity\light\LightSetup.h">
+      <Filter>Source Files\src\entity\light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

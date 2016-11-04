@@ -3,18 +3,18 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <graphics/light/Light.h>
+#include "Light.h"
 
 #pragma warning( disable : 4251)
 
-namespace zaap { namespace graphics {
+namespace zaap {
 	
 	class ZAAP_API LightSetup
 	{
 	private:
 		std::vector<Light*> m_Lights;
 
-		Color m_AmbientLightColor;
+		graphics::Color m_AmbientLightColor;
 	public:
 		~LightSetup(void);
 
@@ -22,12 +22,11 @@ namespace zaap { namespace graphics {
 		void add(Light *light);
 		void remove(Light *light);
 
-		void update(void);
-		void render(void);
+		void update();
 
 		//Ambient lighting
-		void setAmbientColor(Color color);
-		Color getAmbientColor(void) const;
+		void setAmbientColor(graphics::Color color);
+		graphics::Color getAmbientColor() const;
 
 		//getters
 		uint getSize() const;
@@ -35,4 +34,4 @@ namespace zaap { namespace graphics {
 		const Light* getConstLight(int index) const;
 	};
 
-}}
+}

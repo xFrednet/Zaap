@@ -15,11 +15,11 @@ namespace zaap { namespace graphics {
 		}
 	}
 
-	void Scene::addEntity(BasicEntity* entity)
+	void Scene::addEntity(Entity* entity)
 	{
 		m_Entities.push_back(entity);
 	}
-	void Scene::removeEntity(BasicEntity* entity)
+	void Scene::removeEntity(Entity* entity)
 	{
 		for (unsigned int i = 0; i < m_Entities.size(); i++)
 			if (entity == m_Entities[i])
@@ -33,7 +33,6 @@ namespace zaap { namespace graphics {
 	{
 		if (m_LightSetup)
 		{
-			m_LightSetup->render();
 			Renderer::LoadLightSetup(m_LightSetup);
 		}
 		if (m_Terrain)

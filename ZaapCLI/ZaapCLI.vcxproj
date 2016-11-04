@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\entity\light\Light.h" />
     <ClInclude Include="src\graphics\Bitmap.h" />
     <ClInclude Include="src\graphics\camera\BaseCamera.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
@@ -153,6 +154,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\entity\light\Light.cpp" />
     <ClCompile Include="src\graphics\Bitmap.cpp" />
     <ClCompile Include="src\graphics\camera\BaseCamera.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />

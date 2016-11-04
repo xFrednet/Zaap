@@ -20,8 +20,8 @@
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 
-#include <graphics/light/LightSetup.h>
-#include <graphics/light/Light.h>
+#include <entity/light/LightSetup.h>
+#include <entity/light/Light.h>
 
 #include <graphics/camera/ControllableCamera.h>
 #include <graphics/camera/Camera.h>

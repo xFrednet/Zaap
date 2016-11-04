@@ -145,8 +145,9 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
-    <ClCompile Include="src\entity\BasicEntity.cpp" />
     <ClCompile Include="src\entity\Entity.cpp" />
+    <ClCompile Include="src\entity\light\Light.cpp" />
+    <ClCompile Include="src\entity\light\LightSetup.cpp" />
     <ClCompile Include="src\events\EventManager.cpp" />
     <ClCompile Include="src\events\Input.cpp" />
     <ClCompile Include="src\events\WindowEvent.cpp" />
@@ -170,8 +171,6 @@
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
-    <ClCompile Include="src\graphics\light\Light.cpp" />
-    <ClCompile Include="src\graphics\light\LightSetup.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\MaterialManager.cpp" />
     <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp" />
@@ -203,8 +202,9 @@
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\entity\BasicEntity.h" />
     <ClInclude Include="src\entity\Entity.h" />
+    <ClInclude Include="src\entity\light\Light.h" />
+    <ClInclude Include="src\entity\light\LightSetup.h" />
     <ClInclude Include="src\events\EventManager.h" />
     <ClInclude Include="src\events\Input.h" />
     <ClInclude Include="src\events\WindowEvent.h" />
@@ -229,8 +229,6 @@
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Format.h" />
-    <ClInclude Include="src\graphics\light\Light.h" />
-    <ClInclude Include="src\graphics\light\LightSetup.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\MaterialManager.h" />
     <ClInclude Include="src\graphics\mesh\MaterialMesh.h" />

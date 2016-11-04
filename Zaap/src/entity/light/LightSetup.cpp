@@ -1,6 +1,6 @@
 #include "LightSetup.h"
 
-namespace zaap { namespace graphics {
+namespace zaap {
 	
 	LightSetup::~LightSetup()
 	{
@@ -32,20 +32,15 @@ namespace zaap { namespace graphics {
 		for (uint i = 0; i < m_Lights.size(); i++)
 			m_Lights[i]->update();
 	}
-	void LightSetup::render()
-	{
-		for (uint i = 0; i < m_Lights.size(); i++)
-			m_Lights[i]->render();
-	}
 
 	//
 	// Ambient lighting
 	//
-	void LightSetup::setAmbientColor(Color color)
+	void LightSetup::setAmbientColor(graphics::Color color)
 	{
 		m_AmbientLightColor = color;
 	}
-	Color LightSetup::getAmbientColor() const
+	graphics::Color LightSetup::getAmbientColor() const
 	{
 		return m_AmbientLightColor;
 	}
@@ -66,4 +61,4 @@ namespace zaap { namespace graphics {
 		return m_Lights[index];
 	}
 
-}}
+}

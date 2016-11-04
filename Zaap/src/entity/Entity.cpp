@@ -5,17 +5,43 @@
 #include <graphics/Renderer.h>
 
 namespace zaap {
-
-	Entity::Entity(graphics::Mesh *mesh, Vec3 position, Vec3 rotation, Vec3 scale)
-		: BasicEntity(position),
-		m_Mesh(mesh),
+	
+	//
+	// Constructors
+	// 
+	Entity::Entity(graphics::Mesh* mesh, const Vec3& position, const Vec3& rotation, const Vec3& scale)
+		: m_Mesh(mesh),
+		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale)
 	{
 	}
 	Entity::Entity()
-		: m_Scale(1.0f, 1.0f, 1.0f)
+		: m_Mesh(nullptr),
+		m_Position(0.0f, 0.0f, 0.0f),
+		m_Rotation(0.0f, 0.0f, 0.0f),
+		m_Scale(1.0f, 1.0f, 1.0f)
 	{
+	}
+
+	//
+	// Position
+	//
+	void Entity::setPosition(const Vec3& position)
+	{
+		m_Position = position;
+	}
+	void Entity::increasePosition(const Vec3& position)
+	{
+		m_Position += position;
+	}
+	Vec3 Entity::getPosition() const
+	{
+		return m_Position;
+	}
+	Vec3* Entity::getPositionP()
+	{
+		return &m_Position;
 	}
 
 	//
@@ -41,28 +67,26 @@ namespace zaap {
 	//
 	// Scale
 	//
-	void Entity::setScale(float scale)
+	void Entity::setScale(const float& scale)
 	{
 		setScale(Vec3(scale, scale, scale));
 	}
-	void Entity::setScale(Vec3 scale)
+	void Entity::setScale(const Vec3& scale)
 	{
 		m_Scale = scale;
 	}
-	void Entity::increaseScale(float scale)
+	void Entity::increaseScale(const float& scale)
 	{
 		increaseScale(Vec3(scale, scale, scale));
 	}
-	void Entity::increaseScale(Vec3 scale)
+	void Entity::increaseScale(const Vec3& scale)
 	{
 		m_Scale += scale;
 	}
-
 	Vec3 Entity::getScale() const
 	{
 		return m_Scale;
 	}
-
 	Vec3* Entity::getScaleP()
 	{
 		return &m_Scale;
@@ -75,14 +99,17 @@ namespace zaap {
 	{
 		return m_Mesh;
 	}
-	void Entity::getTransformationMatrix(Mat4 &result) const
+	void Entity::getTransformationMatrix(Mat4& result) const
 	{
 		result = CreateTransformationMatrix(m_Position, m_Rotation, m_Scale);
 	}
 	
 	//
-	// Util
+	// GameLoop Util
 	//
+	void Entity::update()
+	{
+	}
 	void Entity::render()
 	{
 		graphics::Renderer::Render(this);

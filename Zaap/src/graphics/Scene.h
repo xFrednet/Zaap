@@ -4,7 +4,7 @@
 #include <types.h>
 
 #include <entity/Entity.h>
-#include <graphics/light/LightSetup.h>
+#include <entity/light/LightSetup.h>
 #include <scene/terrain/Terrain.h>
 
 namespace zaap { namespace graphics {
@@ -13,15 +13,15 @@ namespace zaap { namespace graphics {
 	{
 	private:
 	protected:
-		std::vector<BasicEntity*> m_Entities;
+		std::vector<Entity*> m_Entities;
 
 		LightSetup *m_LightSetup = nullptr;
 		scene::Terrain *m_Terrain;
 	public:
 		~Scene(void);
 
-		virtual void addEntity(BasicEntity* entity);
-		virtual void removeEntity(BasicEntity* entity);
+		virtual void addEntity(Entity* entity);
+		virtual void removeEntity(Entity* entity);
 
 		virtual void render() const;
 		virtual void update() const;

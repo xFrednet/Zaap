@@ -3,7 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <graphics/light/LightSetup.h>
+#include <entity/light/LightSetup.h>
 #include <graphics/API/DX/DXCommon.h>
 #include <graphics/shader/types/TerrainShader.h>
 #include <graphics/API/DX/shader/DXShader.h>

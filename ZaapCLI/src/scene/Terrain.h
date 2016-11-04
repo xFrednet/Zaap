@@ -8,31 +8,35 @@
 
 namespace ZaapCLI {
 
-	struct TERRAIN_DESC {
-		float HeightMin;
-		float HeightMax;
-		float DefaultHeight;
-		float VertexSpacing;
-		uint VerticesPerTexture;
-		uint MaxVerticesPerTerrainTile;
-
-		TERRAIN_DESC();
-		TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float vertexSpacing, uint verticesPerTexture);
+	public ref struct TerrainOptions : public ManagedClass<zaap::scene::TERRAIN_DESC> {
+	public:
+		ZA_CLI_VALUE(float, HeightMin, heightMin);
+		ZA_CLI_VALUE(float, HeightMax, heightMax);
+		ZA_CLI_VALUE(float, DefaultHeight, defaultHeight);
+		ZA_CLI_VALUE(float, VertexSpacing, vertexSpacing);
+		ZA_CLI_VALUE(uint, VerticesPerTexture, verticesPerTexture);
+		ZA_CLI_VALUE(uint, MaxVerticesPerTerrainTile, maxVerticesPerTerrainTile);
+		
+		TerrainOptions();
+		TerrainOptions(zaap::scene::TERRAIN_DESC* instance);
 
 		void setup();
 	};
+
+	static zaap::scene::TERRAIN_DESC to_CPP_TERRAIN_DESC(TerrainOptions^ terrainDesc);
+	static TerrainOptions^ to_CLI_TERRAIN_DESC(zaap::scene::TERRAIN_DESC terrainDesc);
 
 	public ref class Terrain : public ManagedClass<zaap::scene::Terrain>
 	{
 	private:
 	public:
-		Terrain(System::String^ folder, TERRAIN_DESC terrainDesc);
+		Terrain(System::String^ folder, TerrainOptions^ terrainDesc);
 
 		//Util
 		void cleanup();
 
 		//getters
-		TERRAIN_DESC getTerrainDesc();
+		TerrainOptions^ getTerrainOptions();
 		//graphics::API::Texture2D* getTexture(uint texture) const;
 
 		float getMinHeight();
