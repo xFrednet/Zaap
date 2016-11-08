@@ -15,12 +15,15 @@ namespace zaap {
 	{
 		m_Lights.push_back(light);
 	}
-	void LightSetup::remove(Light* light)
+	void LightSetup::remove(Light* light, const bool& deleteLight)
 	{
 		for (uint i = 0; i < m_Lights.size(); i++)
 		{
-			if (light == m_Lights[i])
+			if (light->equal(m_Lights[i]))
 			{
+				if (deleteLight)
+					delete m_Lights[i];
+
 				m_Lights.erase(m_Lights.begin() + i);
 				return;
 			}

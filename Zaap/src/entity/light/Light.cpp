@@ -44,6 +44,11 @@ namespace zaap {
 		return &m_Position;
 	}
 
+	bool Light::equal(const Light* other) const
+	{
+		return m_UUID == other->m_UUID;
+	}
+
 	void Light::update()
 	{
 	}

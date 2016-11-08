@@ -87,7 +87,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Zaap\src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Zaap\src;src;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZA_OS_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -105,7 +105,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)Zaap\src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Zaap\src;src;</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>ZA_OS_WINDOWS;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -134,7 +134,10 @@
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
     <ClInclude Include="src\app\Window.h" />
+    <ClInclude Include="src\entity\BaseEntity.h" />
+    <ClInclude Include="src\entity\Entity.h" />
     <ClInclude Include="src\entity\light\Light.h" />
+    <ClInclude Include="src\entity\light\LightSetup.h" />
     <ClInclude Include="src\graphics\Bitmap.h" />
     <ClInclude Include="src\graphics\camera\BaseCamera.h" />
     <ClInclude Include="src\graphics\camera\Camera.h" />
@@ -154,7 +157,10 @@
   <ItemGroup>
     <ClCompile Include="src\app\Application.cpp" />
     <ClCompile Include="src\app\Window.cpp" />
+    <ClCompile Include="src\entity\BaseEntity.cpp" />
+    <ClCompile Include="src\entity\Entity.cpp" />
     <ClCompile Include="src\entity\light\Light.cpp" />
+    <ClCompile Include="src\entity\light\LightSetup.cpp" />
     <ClCompile Include="src\graphics\Bitmap.cpp" />
     <ClCompile Include="src\graphics\camera\BaseCamera.cpp" />
     <ClCompile Include="src\graphics\camera\Camera.cpp" />

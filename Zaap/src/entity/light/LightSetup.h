@@ -20,7 +20,7 @@ namespace zaap {
 
 		//util
 		void add(Light *light);
-		void remove(Light *light);
+		void remove(Light *light, const bool& deleteLight = true);
 
 		void update();
 
