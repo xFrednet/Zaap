@@ -8,54 +8,53 @@
 
 namespace zaap { namespace graphics {
 
-	struct ZAAP_API TEXTURE_VERTEX
+	struct ZAAP_API ZA_TEXTURE_VERTEX
 	{
 		Vec3 Position;
 		Vec3 Normal;
 		Vec2 TexCoord;
 
-		TEXTURE_VERTEX();
-		TEXTURE_VERTEX(Vec3 position, Vec3 normal, Vec2 texCoord);
+		ZA_TEXTURE_VERTEX();
+		ZA_TEXTURE_VERTEX(Vec3 position, Vec3 normal, Vec2 texCoord);
 	};
 	
-	struct ZAAP_API MATERIAL_VERTEX
+	struct ZAAP_API ZA_MATERIAL_VERTEX
 	{
 		Vec3 Position;
 		Vec3 Normal;
 		uint Material;
 
-		MATERIAL_VERTEX(Vec3 Position, Vec3 Normal, uint Material);
-		MATERIAL_VERTEX();
+		ZA_MATERIAL_VERTEX(Vec3 Position, Vec3 Normal, uint Material);
+		ZA_MATERIAL_VERTEX();
 	};
 
-	struct ZAAP_API TERRAIN_VERTEX
+	struct ZAAP_API ZA_TERRAIN_VERTEX
 	{
 		Vec3 Position;
 		Vec3 Normal;
 		Vec3 TexMapColor;
 		Vec2 TexCoord;
 
-		TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord);
-		TERRAIN_VERTEX();
+		ZA_TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord);
+		ZA_TERRAIN_VERTEX();
 	};
 
-	enum class ZAAP_API MeshType
+	typedef enum ZAAP_API ZA_MESH_TYPE_
 	{
-		NONE,
-		TEXTURED_MESH,
-		MATERIAL_MESH,
-		TERRAIN
-	};
+		ZA_MESH_TYPE_UNKNOWN,
+		ZA_MESH_TYPE_TEXTURED,
+		ZA_MESH_TYPE_MATERIAL
+	} ZA_MESH_TYPE;
 
 	class ZAAP_API Mesh
 	{
 	protected:
 		String m_Name;
 		API::VertexBuffer* m_VertexBuffer;
-		const MeshType m_TYPE;
+		const ZA_MESH_TYPE m_TYPE;
 
 		Mesh();
-		Mesh(String name, API::VertexBuffer* vertexBuffer, MeshType type);
+		Mesh(String name, API::VertexBuffer* vertexBuffer, ZA_MESH_TYPE type);
 	public:
 
 		//vertex buffer
@@ -64,7 +63,8 @@ namespace zaap { namespace graphics {
 
 		String getName(void) const;
 
-		MeshType getType(void) const;
- 	};
+		ZA_MESH_TYPE getType(void) const;
+		ZA_SHADER_TYPE getTargetShader() const;
+	};
 
 }}

@@ -94,7 +94,7 @@ namespace zaap { namespace scene {
 		}
 
 		if (m_Vertices.size() != m_VCountHorizontal * m_VCountVertical)
-			m_Vertices = std::vector<graphics::TERRAIN_VERTEX>(m_VCountHorizontal * m_VCountVertical);
+			m_Vertices = std::vector<graphics::ZA_TERRAIN_VERTEX>(m_VCountHorizontal * m_VCountVertical);
 
 		//height
 		uint x, y;

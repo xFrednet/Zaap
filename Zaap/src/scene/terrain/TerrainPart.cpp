@@ -44,8 +44,7 @@ namespace zaap { namespace scene {
 	bool TerrainPart::isVisible() const
 	{
 		graphics::ViewFrustum view = graphics::Renderer::GetViewFrustum();
-		//Terrain wrong orentaion ?
-		//return view.isVisible(Vec3(m_MinX, (m_MinHeight + m_MaxHeight) / 2, m_MinZ));
+		
 		return view.isCuboidVisible(Vec3(m_MinX, m_MinHeight, m_MinZ), Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
 
 	}
@@ -147,7 +146,7 @@ namespace zaap { namespace scene {
 		//Adds one to the width and height because the End tiles have to overlap. 
 		//However the values are kept the same if they reach the edge because there is no tile to overlap.
 	{
-		std::vector<graphics::TERRAIN_VERTEX> vertices(getVCount());
+		std::vector<graphics::ZA_TERRAIN_VERTEX> vertices(getVCount());
 
 		uint width = m_VCountHorizontal;
 		uint height = m_VCountVertical;
@@ -200,7 +199,7 @@ namespace zaap { namespace scene {
 			}
 		}
 
-		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size());
+		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::ZA_TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size(), graphics::ZA_SHADER_TERRAIN_SHADER);
 	}
 
 	void TerrainTreeEndPart::render()

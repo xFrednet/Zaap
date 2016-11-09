@@ -19,8 +19,8 @@ namespace zaap { namespace graphics { namespace DX {
 		
 		uint m_Stride;
 	public:
-		DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount);
-		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount, uint stride);
+		DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader);
+		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount, uint stride, ZA_SHADER_TYPE targetShader);
 
 		ID3D11Buffer* const* getVBuffer() const;
 		ID3D11Buffer* getIBuffer() const;

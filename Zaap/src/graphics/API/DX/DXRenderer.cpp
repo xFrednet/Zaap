@@ -279,9 +279,9 @@ namespace zaap { namespace graphics { namespace DX {
 		uint sampleMask = 0xffffffff;
 		
 		if (enable)
-			m_Devcon->OMSetBlendState(m_BlendState[0], blendFactor, sampleMask);
-		else
 			m_Devcon->OMSetBlendState(m_BlendState[1], blendFactor, sampleMask);
+		else
+			m_Devcon->OMSetBlendState(m_BlendState[0], blendFactor, sampleMask);
 	}
 
 	//
@@ -322,7 +322,7 @@ namespace zaap { namespace graphics { namespace DX {
 		entity->getTransformationMatrix(matrix_);
 
 		//Texture
-		if (mesh->getType() == MeshType::TEXTURED_MESH)
+		if (mesh->getType() == ZA_MESH_TYPE_TEXTURED)
 		{
 			m_TextureShader->start();
 
@@ -331,7 +331,7 @@ namespace zaap { namespace graphics { namespace DX {
 			m_TextureShader->setTransformationMatrix(matrix_);
 
 			mesh->getVertexBuffer()->bind(0);
-		} else if (mesh->getType() == MeshType::MATERIAL_MESH)
+		} else if (mesh->getType() == ZA_MESH_TYPE_MATERIAL)
 		{
 			m_MaterialShader->start();
 			MaterialMesh* mMesh = (MaterialMesh*)mesh;

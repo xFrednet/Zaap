@@ -16,10 +16,45 @@ namespace graphics {
 	Renderer* Renderer::s_Instance = nullptr;
 
 	Renderer::Renderer()
+		: m_ActiveShader(ZA_SHADER_UNKNOWN)
 	{
 		Input::AddWindowCallback(METHOD_1(Renderer::windowCallback));
 
 		m_Camera = new Camera();
+	}
+
+	void Renderer::startShader(ZA_SHADER_TYPE shader)
+	{
+		if (shader == m_ActiveShader || shader == ZA_SHADER_UNKNOWN) return;
+		
+		Shader* cShader = getShader(m_ActiveShader);
+		if (cShader)
+			cShader->stop();
+
+		m_ActiveShader = shader;
+		
+		cShader = getShader(m_ActiveShader);
+		if (cShader)
+			cShader->start();
+		
+		m_ActiveShader = ZA_SHADER_UNKNOWN;
+	}
+	Shader* Renderer::getShader(ZA_SHADER_TYPE shader)
+	{
+		switch (shader)
+		{
+		case ZA_SHADER_TEXTURE_SHADER:
+			return m_TextureShader;
+		case ZA_SHADER_MATERIAL_SHADER:
+			return m_MaterialShader;
+		case ZA_SHADER_TERRAIN_SHADER:
+			return m_TerrainShader;
+		case ZA_SHADER_FONT_SHADER_2D:
+			return m_FontShader2D;
+		case ZA_SHADER_UNKNOWN:
+		default:
+			return nullptr;
+		}
 	}
 
 	//
@@ -110,13 +145,13 @@ namespace zaap { namespace graphics {
 	//
 	// Shader stuff
 	//
-	void Renderer::StartFontShader2D()
+	void Renderer::StartShader(ZA_SHADER_TYPE shader)
 	{
-		s_Instance->m_FontShader2D->start();
+		s_Instance->startShader(shader);
 	}
-	FontShader2D* Renderer::GetFontShader2D()
+	Shader* Renderer::GetShader(ZA_SHADER_TYPE shader)
 	{
-		return s_Instance->m_FontShader2D;
+		return s_Instance->getShader(shader);
 	}
 
 	//
@@ -180,6 +215,7 @@ namespace zaap { namespace graphics {
 	void Renderer::PrepareFrame()
 	{
 		s_Instance->prepareFrame();
+		s_Instance->m_Camera->calculateViewFrustum();
 	}
 	void Renderer::Cleanup()
 	{

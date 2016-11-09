@@ -85,4 +85,9 @@ namespace zaap { namespace graphics {
 
 		loadMaterialBuffer();
 	}
+
+	ZA_SHADER_TYPE MaterialShader::getShaderType() const
+	{
+		return ZA_SHADER_MATERIAL_SHADER;
+	}
 }}

@@ -103,7 +103,7 @@ namespace zaap { namespace graphics {
 				if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
 					target.setColor(xa, ya, Color(color, color, color));
 				else 
-					target.setR(xa, ya, color);
+					target.setA(xa, ya, color);
 			}
 		}
 	}
@@ -362,16 +362,16 @@ namespace zaap { namespace graphics {
 			drawX += cMatrix.Width;
 		}
 
-		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size());
+		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size(), ZA_SHADER_FONT_SHADER_2D);
 	}
 
 	uint temp = 0;
 	bool up = true;
-	Color color;
+	Color color(1.0f, 1.0f, 1.0f, 1.0f);
 	void Font::render(API::VertexBuffer *vb)
 	{
 		
-		if (up)
+		/*if (up)
 		{
 			temp += 1;
 			if (temp >= 255)
@@ -387,10 +387,13 @@ namespace zaap { namespace graphics {
 				up = true;
 				color = Color(rand() % 255, rand() % 255, rand() % 255);
 			}
-		}
-		Renderer::StartFontShader2D();
-		Renderer::GetFontShader2D()->setSize(26.0f);
-		//Renderer::GetFontShader2D()->setColor(Color(color.getIntR(), color.getIntG(), color.getIntB(), temp));
+		}*/
+
+		
+		Renderer::StartShader(ZA_SHADER_FONT_SHADER_2D);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setSize(26.0f);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(10, 100);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
 		vb->draw();
 

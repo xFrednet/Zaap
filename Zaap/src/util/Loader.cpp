@@ -165,26 +165,26 @@ namespace zaap {
 		uint size = position_indices.size();
 		if (isTMesh)
 		{
-			std::vector<TEXTURE_VERTEX> vertices(size);
+			std::vector<ZA_TEXTURE_VERTEX> vertices(size);
 
 			for (uint i = 0; i < size; i++)
 			{
-				vertices[i] = TEXTURE_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], texCoords_unsorted[texCoords_indices[i]]);
+				vertices[i] = ZA_TEXTURE_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], texCoords_unsorted[texCoords_indices[i]]);
 			}
 			
-			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(TEXTURE_VERTEX), size, &indices[0], indices.size());
+			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_TEXTURE_VERTEX), size, &indices[0], indices.size(), ZA_SHADER_TEXTURE_SHADER);
 
 			rMesh = new TexturedMesh(name, vBuffer, nullptr);
 		} else
 		{
-			std::vector<MATERIAL_VERTEX> vertices(size);
+			std::vector<ZA_MATERIAL_VERTEX> vertices(size);
 
 			for (uint i = 0; i < size; i++)
 			{
-				vertices[i] = MATERIAL_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], material[i]);
+				vertices[i] = ZA_MATERIAL_VERTEX(position_unsorted[position_indices[i]], normals_unsorted[normals_indices[i]], material[i]);
 			}
 
-			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(MATERIAL_VERTEX), size, &indices[0], indices.size());
+			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_MATERIAL_VERTEX), size, &indices[0], indices.size(), ZA_SHADER_MATERIAL_SHADER);
 			
 			rMesh = new MaterialMesh(name, vBuffer, materials, materialCount);
 		}

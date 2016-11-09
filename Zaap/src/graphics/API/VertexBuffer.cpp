@@ -12,9 +12,9 @@ namespace zaap { namespace graphics { namespace API {
 	//
 	// Static methods
 	//
-	VertexBuffer* VertexBuffer::CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount)
+	VertexBuffer* VertexBuffer::CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader)
 	{
-		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertices, vertexSize, vCount, indices, indexCount);
+		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertices, vertexSize, vCount, indices, indexCount, targetShader);
 
 		s_VertexBuffers.push_back(vBuffer);
 
@@ -64,8 +64,9 @@ namespace zaap { namespace graphics { namespace API {
 	//
 	// Class methods
 	//
-	VertexBuffer::VertexBuffer(uint vertexCount)
-		: m_VertexCount(vertexCount)
+	VertexBuffer::VertexBuffer(uint vertexCount, ZA_SHADER_TYPE targetShader)
+		: m_VertexCount(vertexCount),
+		m_TargetShader(targetShader)
 	{
 		RandomUUID(&m_uuid);
 	}

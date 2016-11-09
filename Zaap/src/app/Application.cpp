@@ -126,8 +126,7 @@ namespace zaap {
 	{
 		graphics::Renderer::PrepareFrame();
 
-		if (m_Scene) 
-			m_Scene->render();
+		if (m_Scene) m_Scene->render();
 	}
 	void Application::update()
 	{

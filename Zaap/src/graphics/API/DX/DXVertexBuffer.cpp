@@ -4,8 +4,8 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
-	DXVertexBuffer::DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount)
-		: VertexBuffer(indexCount),
+	DXVertexBuffer::DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader)
+		: VertexBuffer(indexCount, targetShader),
 		m_VBuffer(nullptr),
 		m_IndexBuffer(nullptr),
 		m_Stride(vertexSize)
@@ -61,8 +61,8 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 	}
 
-	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount, uint stride)
-		: VertexBuffer(vertexCount),
+	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount, uint stride, ZA_SHADER_TYPE targetShader)
+		: VertexBuffer(vertexCount, targetShader),
 		m_VBuffer(vertexBuffer),
 		m_IndexBuffer(indexBuffer),
 		m_Stride(stride)

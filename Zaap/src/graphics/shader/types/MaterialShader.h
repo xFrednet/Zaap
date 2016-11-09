@@ -46,6 +46,7 @@ namespace zaap { namespace graphics {
 		void loadMaterials(const MaterialMesh const* mesh);
 		void loadMaterials(const Material const* materials, uint materialCount);
 
+		ZA_SHADER_TYPE getShaderType() const override;
 	};
 
 }}

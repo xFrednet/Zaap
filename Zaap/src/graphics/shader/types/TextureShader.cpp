@@ -58,4 +58,9 @@ namespace zaap { namespace graphics {
 		//loading the buffers
 		loadLightBuffers();
 	}
+
+	ZA_SHADER_TYPE TextureShader::getShaderType() const
+	{
+		return ZA_SHADER_TEXTURE_SHADER;
+	}
 }}

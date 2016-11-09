@@ -24,6 +24,8 @@ namespace graphics {
 		virtual void loadTextColor() const = 0;
 
 		Mat4 m_BaseTransformationMatrix;
+		float m_XPixel;
+		float m_YPixel;
 		void calculateBaseMatrix(uint width, uint height);
 
 	public:
@@ -33,9 +35,12 @@ namespace graphics {
 		}
 
 		void setSize(float size);
+		void setPixelCoords(const uint& x, const uint& y);
 		void setColor(Color color);
 
 		void windowCallback(const Event& windowEvent);
+
+		ZA_SHADER_TYPE getShaderType() const override;
 
 	};
 

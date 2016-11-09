@@ -26,6 +26,7 @@ namespace zaap { namespace graphics {
 
 		Camera* m_Camera;
 
+		ZA_SHADER_TYPE m_ActiveShader;
 		FontShader2D* m_FontShader2D;
 		MaterialShader *m_MaterialShader;
 		TextureShader *m_TextureShader;
@@ -34,6 +35,10 @@ namespace zaap { namespace graphics {
 		//Init
 		Renderer();
 		virtual void init() = 0;
+
+		//Shader stuff
+		void startShader(ZA_SHADER_TYPE shader);
+		Shader* getShader(ZA_SHADER_TYPE shader);
 
 		//Render
 		virtual void render(const scene::Terrain const *terrainTile) = 0;
@@ -62,8 +67,14 @@ namespace zaap { namespace graphics {
 		static void Init();
 
 		//Shader stuff
-		static void StartFontShader2D();
-		static FontShader2D* GetFontShader2D();
+		static void StartShader(ZA_SHADER_TYPE shader);
+		static Shader* GetShader(ZA_SHADER_TYPE shader);
+
+		/*
+		MaterialShader *m_MaterialShader;
+		TextureShader *m_TextureShader;
+		TerrainShader *m_TerrainShader;
+		*/
 
 		//Render
 		static void Render(const scene::Terrain const *terrainTile);

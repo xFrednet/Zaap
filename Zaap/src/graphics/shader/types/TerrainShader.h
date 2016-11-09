@@ -29,6 +29,7 @@ namespace zaap { namespace graphics {
 		//Light buffer
 		void loadLightSetup(const LightSetup const* lightSetup);
 
+		ZA_SHADER_TYPE getShaderType() const override;
 	};
 		
 }}

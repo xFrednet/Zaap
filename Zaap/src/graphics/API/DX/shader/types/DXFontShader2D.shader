@@ -50,5 +50,4 @@ float4 PShader(VSOut input) : SV_TARGET
 	
 	//returns nothing if the color is #ff000000
 	return float4(textColor.xyz, textColor.w * alpha);
-	
 })"

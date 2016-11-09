@@ -210,7 +210,7 @@ public:
 	float count2 = 0.0f;
 	float rot = 1.5f;
 	uint log = 0;
-	bool val;
+	bool val = true;
 
 	Test() : Application("ZAAP testing window", 852, 480, scene_)
 	{}
@@ -269,6 +269,7 @@ public:
 		//light->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 
+			camera->calculateViewFrustum();
 	}
 	uint timer = 0;
 	bool bTemp = true;
@@ -280,7 +281,7 @@ public:
 			Renderer::SetAlphaChanelState(bTemp);
 			bTemp = !bTemp;
 		}
-		Renderer::SetAlphaChanelState(false);
+		Renderer::SetAlphaChanelState(true);
 		Application::render();
 
 		terrain_->render();

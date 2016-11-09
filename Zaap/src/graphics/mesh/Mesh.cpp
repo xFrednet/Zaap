@@ -6,13 +6,13 @@ using namespace graphics;
 namespace zaap { namespace graphics {
 	
 	//////////////////////////////////////////////////////////////////////////////
-	// TEXTURE_VERTEX  // TEXTURE_VERTEX  // TEXTURE_VERTEX  // TEXTURE_VERTEX  //
+	// ZA_TEXTURE_VERTEX  // ZA_TEXTURE_VERTEX  // ZA_TEXTURE_VERTEX  // ZA_TEXTURE_VERTEX  //
 	//////////////////////////////////////////////////////////////////////////////
-	TEXTURE_VERTEX::TEXTURE_VERTEX()
+	ZA_TEXTURE_VERTEX::ZA_TEXTURE_VERTEX()
 	{
 	}
 
-	TEXTURE_VERTEX::TEXTURE_VERTEX(Vec3 vertex, Vec3 normal, Vec2 texCoords)
+	ZA_TEXTURE_VERTEX::ZA_TEXTURE_VERTEX(Vec3 vertex, Vec3 normal, Vec2 texCoords)
 		: Position(vertex),
 		Normal(normal),
 		TexCoord(texCoords)
@@ -20,16 +20,16 @@ namespace zaap { namespace graphics {
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////
-	// MATERIAL_VERTEX  // MATERIAL_VERTEX  // MATERIAL_VERTEX  // MATERIAL_VERTEX  //
+	// ZA_MATERIAL_VERTEX  // ZA_MATERIAL_VERTEX  // ZA_MATERIAL_VERTEX  // ZA_MATERIAL_VERTEX  //
 	//////////////////////////////////////////////////////////////////////////////////
-	MATERIAL_VERTEX::MATERIAL_VERTEX(Vec3 position, Vec3 normal, uint material)
+	ZA_MATERIAL_VERTEX::ZA_MATERIAL_VERTEX(Vec3 position, Vec3 normal, uint material)
 		: Position(position),
 		Normal(normal),
 		Material(material)
 	{
 	}
 
-	MATERIAL_VERTEX::MATERIAL_VERTEX()
+	ZA_MATERIAL_VERTEX::ZA_MATERIAL_VERTEX()
 		: Position(),
 		Normal(),
 		Material(0)
@@ -37,9 +37,9 @@ namespace zaap { namespace graphics {
 	}
 
 	//////////////////////////////////////////////////////////////////////////////
-	// TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  // TERRAIN_VERTEX  //
+	// ZA_TERRAIN_VERTEX  // ZA_TERRAIN_VERTEX  // ZA_TERRAIN_VERTEX  // ZA_TERRAIN_VERTEX  //
 	//////////////////////////////////////////////////////////////////////////////
-	TERRAIN_VERTEX::TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord)
+	ZA_TERRAIN_VERTEX::ZA_TERRAIN_VERTEX(Vec3 position, Vec3 normal, Vec3 texMapColor, Vec2 texCoord)
 		: Position(position),
 		Normal(normal),
 		TexMapColor(texMapColor),
@@ -47,7 +47,7 @@ namespace zaap { namespace graphics {
 	{
 	}
 
-	TERRAIN_VERTEX::TERRAIN_VERTEX()
+	ZA_TERRAIN_VERTEX::ZA_TERRAIN_VERTEX()
 		: Position(),
 		Normal(),
 		TexMapColor(),
@@ -58,7 +58,7 @@ namespace zaap { namespace graphics {
 	//////////////////////////////////////////////////////////
 	// Mesh // Mesh // Mesh // Mesh // Mesh // Mesh // Mesh //
 	//////////////////////////////////////////////////////////
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, MeshType type)
+	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, ZA_MESH_TYPE type)
 		: m_Name(name),
 		m_VertexBuffer(vertexBuffer),
 		m_TYPE(type)
@@ -67,7 +67,7 @@ namespace zaap { namespace graphics {
 	Mesh::Mesh()
 		: m_Name("NULL"),
 		m_VertexBuffer(nullptr),
-		m_TYPE(MeshType::NONE)
+		m_TYPE(ZA_MESH_TYPE_UNKNOWN)
 	{}
 
 	//
@@ -87,8 +87,24 @@ namespace zaap { namespace graphics {
 		return m_Name;
 	}
 
-	MeshType Mesh::getType() const
+	ZA_MESH_TYPE Mesh::getType() const
 	{
 		return m_TYPE;
+	}
+
+	ZA_SHADER_TYPE Mesh::getTargetShader() const
+	{
+		switch (m_TYPE)
+		{
+			case ZA_MESH_TYPE_TEXTURED:
+				return ZA_SHADER_TEXTURE_SHADER;
+
+			case ZA_MESH_TYPE_MATERIAL:
+				return ZA_SHADER_MATERIAL_SHADER;
+			
+			case ZA_MESH_TYPE_UNKNOWN:
+			default:
+				return ZA_SHADER_UNKNOWN;
+		}
 	}
 }}

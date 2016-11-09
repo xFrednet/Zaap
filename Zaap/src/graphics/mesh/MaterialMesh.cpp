@@ -8,7 +8,7 @@ namespace zaap { namespace graphics {
 	{
 	}
 	MaterialMesh::MaterialMesh(String name, API::VertexBuffer* vertexBuffer, Material materials[8], uint materialCount)
-		: Mesh(name, vertexBuffer, MeshType::MATERIAL_MESH),
+		: Mesh(name, vertexBuffer, ZA_MESH_TYPE_MATERIAL),
 		m_MaterialCount(materialCount)
 	{
 		memcpy(m_Materials, materials, sizeof(Material) * materialCount);

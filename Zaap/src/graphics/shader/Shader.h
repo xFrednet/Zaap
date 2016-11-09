@@ -27,10 +27,16 @@
 
 namespace zaap { namespace graphics {
 	
+	typedef  ZAAP_API enum ZA_SHADER_TYPE_ {
+		ZA_SHADER_UNKNOWN			= 0,
+		ZA_SHADER_TEXTURE_SHADER	= 1,
+		ZA_SHADER_MATERIAL_SHADER	= 2,
+		ZA_SHADER_TERRAIN_SHADER	= 3,
+		ZA_SHADER_FONT_SHADER_2D	= 4
+	} ZA_SHADER_TYPE;
+
 	class ZAAP_API Shader
 	{
-	private:
-	protected:
 	public:
 		virtual ~Shader()
 		{
@@ -100,6 +106,9 @@ namespace zaap { namespace graphics {
 		virtual void stop() const = 0;
 
 		virtual void cleanup() = 0;
+
+		virtual ZA_SHADER_TYPE getShaderType() const = 0;
+		
 	};
 
 }}

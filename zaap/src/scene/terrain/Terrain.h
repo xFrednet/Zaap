@@ -38,7 +38,7 @@ namespace zaap { namespace scene {
 		float m_MaxHeight;
 		uint m_VCountHorizontal;
 		uint m_VCountVertical;
-		std::vector<graphics::TERRAIN_VERTEX> m_Vertices;
+		std::vector<graphics::ZA_TERRAIN_VERTEX> m_Vertices;
 		graphics::API::Texture2D *m_Textures[4];
 
 		//HeightMap

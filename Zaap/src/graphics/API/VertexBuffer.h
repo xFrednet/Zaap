@@ -3,6 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 #include <util/UUID.h>
+#include <graphics/shader/Shader.h>
 
 namespace zaap { namespace graphics { namespace API {
 	
@@ -14,9 +15,10 @@ namespace zaap { namespace graphics { namespace API {
 	private:
 		static std::vector<VertexBuffer*> s_VertexBuffers;
 		static uint s_TotalDrawCount;
+
 		//Static methods
 	public:
-		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount);
+		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader);
 		static void Delete(VertexBuffer* vertexbuffer);
 		static void Delete(UUID uuid);
 		static void Cleanup();
@@ -29,10 +31,13 @@ namespace zaap { namespace graphics { namespace API {
 		uint m_VertexCount;
 		UUID m_uuid;
 
-		VertexBuffer(uint vertexCount);
+		ZA_SHADER_TYPE m_TargetShader;
+
+		VertexBuffer(uint vertexCount, ZA_SHADER_TYPE targetShader);
 
 	public:
-		
+		~VertexBuffer() {}
+
 		//class methods
 		uint getVertexCount(void) const;
 		UUID getUUID(void) const;

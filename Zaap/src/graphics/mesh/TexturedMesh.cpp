@@ -3,7 +3,7 @@
 namespace zaap { namespace graphics {
 	
 	TexturedMesh::TexturedMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture)
-		: Mesh(name, vertexBuffer, MeshType::TEXTURED_MESH),
+		: Mesh(name, vertexBuffer, ZA_MESH_TYPE_TEXTURED),
 		m_Texture(texture)
 	{}
 
