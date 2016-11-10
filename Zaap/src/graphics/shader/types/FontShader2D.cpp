@@ -1,5 +1,6 @@
 ﻿#include "FontShader2D.h"
 #include <events/Input.h>
+#include <app/Window.h>
 
 namespace zaap { namespace graphics {
 	void FontShader2D::calculateBaseMatrix(uint width, uint height)
@@ -9,11 +10,14 @@ namespace zaap { namespace graphics {
 
 		m_BaseTransformationMatrix.identify(1.0f);
 		m_BaseTransformationMatrix.scale(m_XPixel, m_YPixel, 1.0f);
+		m_BaseTransformationMatrix.m41 = -1;
+		m_BaseTransformationMatrix.m42 = 0.5f;
 	}
 
 	FontShader2D::FontShader2D()
 	{
 		Input::AddWindowCallback(METHOD_1(FontShader2D::windowCallback));
+		calculateBaseMatrix(Window::GetWidth(), Window::GetHeight());
 	}
 
 	void FontShader2D::setSize(float size)
@@ -23,7 +27,8 @@ namespace zaap { namespace graphics {
 	}
 	void FontShader2D::setPixelCoords(const uint& x, const uint& y)
 	{
-		m_TransformationMatrix = Traslate(m_TransformationMatrix, -1 + m_XPixel * x, -1 + m_YPixel* y, 0.0f);
+		m_TransformationMatrix.m41 = -1 + m_XPixel * x;
+		m_TransformationMatrix.m42 = 1 - m_YPixel * y;
 		loadMatrixBuffer();
 	}
 	void FontShader2D::setColor(Color color)

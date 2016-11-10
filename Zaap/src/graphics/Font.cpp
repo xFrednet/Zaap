@@ -221,7 +221,7 @@ namespace zaap { namespace graphics {
 				
 				charMatirx.Width			= float(ftCharMatrix.horiAdvance / 64.0f);
 				charMatirx.Height			= float(ftCharMatrix.vertAdvance / 64.0f);
-				charMatirx.OrigenYOffset	= float(ftCharMatrix.horiBearingY / 64.0f);
+				charMatirx.OrigenYOffset	= float(charSize - ftCharMatrix.horiBearingY / 64.0f);
 				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
 
 				charInfo.CharMatirx = charMatirx;
@@ -331,33 +331,41 @@ namespace zaap { namespace graphics {
 			
 			//setting indices
 			{
-				// v0, v2, v1
+				// v0, v1, v2
 				indices[iIndex++] = v0;
-				indices[iIndex++] = v2;
 				indices[iIndex++] = v1;
-
-				// v0, v3, v2
-				indices[iIndex++] = v0;
-				indices[iIndex++] = v3;
 				indices[iIndex++] = v2;
+
+				// v0, v2, v3
+				indices[iIndex++] = v0;
+				indices[iIndex++] = v2;
+				indices[iIndex++] = v3;
 			}
 			// 0 3
 			// 1 2 
 			//v0
-			vertices[v0].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset, zValue);
-			vertices[v0].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
+			vertices[v0].Position = Vec3(
+				cMatrix.OrigenXOffset + drawX,
+				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v0].TexCoord = cInfo.TexMinCoords;
 
 			//v1
-			vertices[v1].Position = Vec3(cMatrix.OrigenXOffset + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
-			vertices[v1].TexCoord = cInfo.TexMinCoords;
+			vertices[v1].Position = Vec3(
+				cMatrix.OrigenXOffset + drawX, 
+				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
 
 			//v2
-			vertices[v2].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset + cMatrix.Height, zValue);
-			vertices[v2].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
+			vertices[v2].Position = Vec3(
+				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
+				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v2].TexCoord = cInfo.TexMaxCoords;
 
 			//v3
-			vertices[v3].Position = Vec3(cMatrix.OrigenXOffset + cMatrix.Width + drawX, cMatrix.OrigenYOffset, zValue);
-			vertices[v3].TexCoord = cInfo.TexMaxCoords;
+			vertices[v3].Position = Vec3(
+				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
+				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v3].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
 
 			drawX += cMatrix.Width;
 		}
@@ -365,12 +373,14 @@ namespace zaap { namespace graphics {
 		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size(), ZA_SHADER_FONT_SHADER_2D);
 	}
 
-	uint temp = 0;
+	float temp = 0;
 	bool up = true;
-	Color color(1.0f, 1.0f, 1.0f, 1.0f);
+	float size = 0.0;
+	Color color(0.3f, 0.3f, 0.3f, 1.0f);
 	void Font::render(API::VertexBuffer *vb)
 	{
-		
+		temp += 0.01f;
+		size = 40 + 20 * sin(temp);
 		/*if (up)
 		{
 			temp += 1;
@@ -391,8 +401,8 @@ namespace zaap { namespace graphics {
 
 		
 		Renderer::StartShader(ZA_SHADER_FONT_SHADER_2D);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setSize(26.0f);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(10, 100);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 0);
 		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
 		vb->draw();
