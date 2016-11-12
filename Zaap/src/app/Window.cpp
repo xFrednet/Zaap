@@ -55,7 +55,7 @@ namespace zaap {
 
 		ShowWindow(s_HWND, SW_SHOWNORMAL);
 
-		ZAAP_INFO("Window: Window was created");
+		ZAAP_INFO("Window was created successfully");
 	}
 
 	//

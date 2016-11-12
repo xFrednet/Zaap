@@ -9,14 +9,14 @@ namespace zaap { namespace graphics {
 	{
 		if (Contains(name))
 		{
-			ZAAP_ALERT("MaterialManager: The manager already contains a material with the name: " + name + "\"");
+			ZAAP_ALERT("The manager already contains a material with the name: " + name + "\"");
 			delete material;
 			return Get(name);
 		}
 		
 		s_Materials[name] = material;
 
-		ZAAP_INFO("MaterialManager: added: \"" + name + "\"");
+		ZAAP_INFO("added: \"" + name + "\"");
 
 		return material;
 	}

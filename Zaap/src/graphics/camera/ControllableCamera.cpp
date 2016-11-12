@@ -43,7 +43,7 @@ namespace zaap { namespace graphics {
 		//info
 		if (Input::IsKeyPressed(ZAAP_VK_I))
 		{
-			ZAAP_INFO("ControllableCamera: Position: " + m_Position.toString());
+			ZAAP_INFO("Position: " + m_Position.toString());
 		}
 
 		//reset

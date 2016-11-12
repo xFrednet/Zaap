@@ -175,7 +175,7 @@ namespace zaap
 		Vec2 rVec(a);
 		if (min > max)
 		{
-			ZAAP_ALERT("Vec2::clamp: The min Value has to be lower than the max Value");
+			ZAAP_ALERT("clamp: The min Value has to be lower than the max Value");
 			return rVec;
 		}
 

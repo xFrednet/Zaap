@@ -64,7 +64,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateTexture2D(&m_TextureDesc, &resource, &m_Texture);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("DXTexture2D: Failed to create a Texture2D with the given data.");
+				ZAAP_ERROR("Failed to create a Texture2D with the given data.");
 				return;
 			}
 			DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
@@ -85,7 +85,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateShaderResourceView(m_Texture, &resDesc, &m_TextureView);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("DXTexture2D: Failed to create a ShaderResourceView.");
+				ZAAP_ERROR("Failed to create a ShaderResourceView.");
 				return;
 			}
 			DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
@@ -113,7 +113,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateSamplerState(&m_SamplerDesc, &m_SamplerState);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("DXTexture2D: Failed to create a ShaderResourceView.");
+				ZAAP_ERROR("Failed to create a ShaderResourceView.");
 				return;
 			}
 			DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));

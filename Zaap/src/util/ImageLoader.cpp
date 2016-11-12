@@ -15,7 +15,7 @@ namespace zaap
 	{
 		if (!isFreeImageInit)
 		{
-			ZAAP_ALERT("ImageLoader: FreeImage isn't Initialised");
+			ZAAP_ALERT("FreeImage isn't Initialised");
 			return;
 		}
 		FreeImage_DeInitialise();
@@ -27,7 +27,7 @@ namespace zaap
 	{
 		if (isFreeImageInit)
 		{
-			ZAAP_ALERT("ImageLoader: FreeImage is already Initialised");
+			ZAAP_ALERT("FreeImage is already Initialised");
 			return;
 		}
 		FreeImage_Initialise();
@@ -55,7 +55,7 @@ namespace zaap
 			fif = FreeImage_GetFIFFromFilename(filePath);
 		if (fif == FIF_UNKNOWN)
 		{
-			ZAAP_ERROR("LoadImage: could not load image format for " + String(filePath));
+			ZAAP_ERROR("could not load image format for " + String(filePath));
 			return nullptr;
 		}
 
@@ -64,7 +64,7 @@ namespace zaap
 			bitmap = FreeImage_Load(fif, filePath);
 		if (!bitmap)
 		{
-			ZAAP_ERROR("LoadImage: could not load bitmap for " + String(filePath));
+			ZAAP_ERROR("could not load bitmap for " + String(filePath));
 			return nullptr;
 		}
 

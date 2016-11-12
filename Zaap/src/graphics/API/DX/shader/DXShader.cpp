@@ -41,7 +41,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_Layout, "DXShader::m_Layout");
 			} else
 			{
-				ZAAP_ERROR_(m_Layout, "DXShader: InputLayout creation failed");
+				ZAAP_ERROR("InputLayout creation failed");
 				return false;
 			}
 
@@ -63,14 +63,14 @@ namespace zaap { namespace graphics { namespace DX {
 			return shaderBlob;
 		else
 		{
-			ZAAP_ERROR("DXShader::compileShader: Unable to compile shader from source");
+			ZAAP_ERROR("compileShader: Unable to compile shader from source");
 			if (errorBlob)
 			{
-				ZAAP_ERROR("DXShader::compileShader: targeted version: " + version);
+				ZAAP_ERROR("compileShader: targeted version: " + version);
 
 				if (errorBlob->GetBufferSize())
 				{
-					std::cout << "DXShader::compileShader: Errors: " << std::endl;
+					std::cout << "compileShader: Errors: " << std::endl;
 					std::cout << (const char*)errorBlob->GetBufferPointer() << std::endl;
 				}
 

@@ -18,10 +18,10 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		if (createShaderFromString(DXFontShader2DSrc, DXFontShaderIED, 2))
 		{
-			ZAAP_INFO("DXFontShader2D: compiled successfully");
+			ZAAP_INFO("compiled successfully");
 		} else
 		{
-			ZAAP_ALERT("DXFontShader2D: compiling failed");
+			ZAAP_ALERT("compiling failed");
 			system("pause"); //TODO remove DebugCode
 		}
 
@@ -34,7 +34,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXFontShader2D: Could not create m_MatrixBuffer");
+				ZAAP_ERROR("Could not create m_MatrixBuffer");
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_ColorBuffer, "DXFontShader2D::m_ColorBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXFontShader2D: Could not create m_ColorBuffer");
+				ZAAP_ERROR("Could not create m_ColorBuffer");
 			}
 		}
 	}

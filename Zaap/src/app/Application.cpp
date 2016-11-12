@@ -89,7 +89,7 @@ namespace zaap {
 			{
 				if (Input::IsKeyPressed(ZAAP_VK_P))
 				{
-					ZAAP_ALERT("Application: PAUSE");
+					ZAAP_ALERT("PAUSE");
 					m_Paused = !m_Paused;
 				}
 
@@ -108,11 +108,11 @@ namespace zaap {
 				timer += 1000;
 				
 				if (!m_Paused)
-				console::Println("Application: UPS: " + std::to_string(int(updates)) + ", FPS: " + std::to_string(int(frames)));
+				ZAAP_INFO(String("UPS: " + std::to_string(int(updates)) + ", FPS: " + std::to_string(int(frames))));
 
 				if ((clock() - timer) >= 20000)
 				{
-					ZAAP_ALERT(String("Application: The Gameloop can't keep up: skipped ") + std::to_string(clock() - timer / 1000 * m_UPS) + " Updates.");
+					ZAAP_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string(clock() - timer / 1000 * m_UPS) + " Updates.");
 					timer = clock();
 				}
 

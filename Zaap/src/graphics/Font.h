@@ -12,21 +12,25 @@
 
 namespace zaap { namespace graphics {
 
-	// x = origin             
-	//                        
-	//    ##########     ^    
-	//        ##         |    
-	//        ##       Height 
-	//        ##         |    
-	//        ##         v    
-	//  <--  Width  -->      
+	// x = origin                 | x = origin                |   x = origin     (zoomed in) |
+	//                   ^        |                           |   ^                          |
+	//    ##########     |        |    ##########    ^        |   |                          |
+	//        ##         |        |        ##        |        |  OrigenYOffset               |
+	//        ##     TotalHeight  |        ##      Height     |   |                          |
+	//        ##         |        |        ##        |        |   v                          |
+	//        ##         v        |        ##        v        |    <-OrigenXOffset->#########|
+	//  <-TotalWidth->            |    <--Width->             |                     #########|
+	//
 	// This explanation is so bad :P
 	// The values should be the values for a fontSize of 1.
-	// To translate the struct members to the current size they are multiplied by the size.
+	// To translate the struct members to the current size they are multiplied by the size. (This is done in the FontShader)
 	struct ZAAP_API ZA_CharMarix
 	{
 		float OrigenXOffset;
 		float OrigenYOffset;
+
+		float TotalWidth;
+		float TotalHeight;
 
 		float Width;
 		float Height;

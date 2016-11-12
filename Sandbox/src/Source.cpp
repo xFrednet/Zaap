@@ -25,6 +25,9 @@ API::VertexBuffer *fontVB = nullptr;
 // TODO LIGHT deletion
 // TODO pointer vector
 
+// TODO add specific error messages
+// TODO add division by zero to the math classes
+
 void loadEntitys()
 {
 	clock_t timer = clock();
@@ -48,9 +51,9 @@ void loadEntitys()
 	//
 	{
 		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
-		fontVB = font_.getVertexBuffer("WELCOME to ZAAP");
+		fontVB = font_.getVertexBuffer("WELCOME to ZAAP (@) A_.,'~* x v w # ");
 		if (!fontVB)
-			ZAAP_INFO("Source: fontVB is NULL");
+			ZAAP_INFO("fontVB is NULL");
 	}
 	//Terrain
 	{
@@ -199,7 +202,7 @@ void loadEntitys()
 
 
 	long time = clock() - timer;
-	ZAAP_INFO("Source: Scene init took " + std::to_string(time) + "ms");
+	ZAAP_INFO("Scene init took " + std::to_string(time) + "ms");
 }
 
 class Test : public Application

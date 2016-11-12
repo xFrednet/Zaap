@@ -54,7 +54,7 @@ namespace zaap {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("Loader: could not open: " + file));
+			ZAAP_ERROR(String("could not open: " + file));
 			return nullptr;
 		}
 
@@ -115,7 +115,7 @@ namespace zaap {
 				materials[materialCount] = *MaterialManager::Get(str[1]);
 				if (&materials[materialCount] == nullptr)
 				{
-					ZAAP_ALERT("Loader: requested material is null name: \"" + str[1] + "\" current file: " + file);
+					ZAAP_ALERT("requested material is null name: \"" + str[1] + "\" current file: " + file);
 					continue;
 				}
 				currentMaterial = materialCount;
@@ -189,7 +189,7 @@ namespace zaap {
 			rMesh = new MaterialMesh(name, vBuffer, materials, materialCount);
 		}
 
-		ZAAP_INFO(String("Loader: loaded ") + file + " as a " + (isTMesh ? "TexturedMesh" : "MaterialMesh"));
+		ZAAP_INFO(String("loaded ") + file + " as a " + (isTMesh ? "TexturedMesh" : "MaterialMesh"));
 
 		return rMesh;
 	}
@@ -213,7 +213,7 @@ namespace zaap {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("Loader: could not open: " + file));
+			ZAAP_ERROR(String("could not open: " + file));
 			return;
 		}
 
@@ -267,7 +267,7 @@ namespace zaap {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("Loader: could not open: " + file));
+			ZAAP_ERROR(String("could not open: " + file));
 			return "";
 		}
 

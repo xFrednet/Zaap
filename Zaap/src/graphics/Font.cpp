@@ -13,6 +13,8 @@ namespace zaap { namespace graphics {
 	ZA_CharMarix::ZA_CharMarix()
 		: OrigenXOffset(0),
 		OrigenYOffset(0),
+		TotalWidth(0),
+		TotalHeight(0),
 		Width(0),
 		Height(0)
 	{
@@ -36,6 +38,8 @@ namespace zaap { namespace graphics {
 		charMatrix.OrigenYOffset *= a;
 		charMatrix.Width *= a;
 		charMatrix.Height *= a;
+		charMatrix.TotalWidth *= a;
+		charMatrix.TotalHeight *= a;
 
 		return charMatrix;
 	}
@@ -155,7 +159,7 @@ namespace zaap { namespace graphics {
 		//Bitmap values
 		uint charSize;
 		if (chars.size() < 200)
-			charSize = 50;
+			charSize = 60;
 		else
 			charSize = 10;
 		
@@ -201,7 +205,7 @@ namespace zaap { namespace graphics {
 			else
 			{
 				charSheet = Bitmap(width, height, ZA_FORMAT_R8G8B8A8_UINT);
-				ZAAP_ERROR("Font: FreeType loaded the font with a unknown bitmap format");
+				ZAAP_ERROR("FreeType loaded the font with a unknown bitmap format");
 			}
 			
 		}
@@ -219,17 +223,22 @@ namespace zaap { namespace graphics {
 				ftCharMatrix = charFTInfo->metrics;
 				charInfo = ZA_CharacterInfo(chars.at(i));
 				
-				charMatirx.Width			= float(ftCharMatrix.horiAdvance / 64.0f);
-				charMatirx.Height			= float(ftCharMatrix.vertAdvance / 64.0f);
-				charMatirx.OrigenYOffset	= float(charSize - ftCharMatrix.horiBearingY / 64.0f);
 				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
+				charMatirx.OrigenYOffset	= float(charSize - ftCharMatrix.horiBearingY / 64.0f);
+				charMatirx.Width			= float(ftCharMatrix.width / 64.0f);
+				charMatirx.Height			= float(ftCharMatrix.height / 64.0f);
+				charMatirx.TotalWidth		= float(ftCharMatrix.horiAdvance / 64.0f);
+				charMatirx.TotalHeight		= float(ftCharMatrix.vertAdvance / 64.0f);
+
+				//if (charMatirx.Width != float(ftCharMatrix.width / 64.0f))
+				//	std::cout << chars.at(i) << " DifferenSize " << charMatirx.Width << " " << float(ftCharMatrix.width / 64.0f)  <<  std::endl;
 
 				charInfo.CharMatirx = charMatirx;
 
-				if (charMatirx.Width > font.m_MaxCharSize.Width)
+				if (charMatirx.TotalWidth > font.m_MaxCharSize.Width)
 					font.m_MaxCharSize.Width = charMatirx.Width;
 
-				if (charMatirx.Height > font.m_MaxCharSize.Height)
+				if (charMatirx.TotalHeight > font.m_MaxCharSize.Height)
 					font.m_MaxCharSize.Height = charMatirx.Height;
 
 				if (charMatirx.OrigenYOffset > font.m_MaxCharSize.OrigenYOffset)
@@ -245,7 +254,7 @@ namespace zaap { namespace graphics {
 					if (bitmapY + charSize >= charSheet.getHeight())
 					{
 						bitmapY = 0;
-						ZAAP_ERROR("Font: the given bitmap is to small for the selected char set");
+						ZAAP_ERROR("the given bitmap is to small for the selected char set");
 					}
 				}
 			}
@@ -277,7 +286,7 @@ namespace zaap { namespace graphics {
 		FT_Done_FreeType(FTLib);
 
 		long time = clock() - timer;
-		ZAAP_INFO("Font: loaded" + file + " in " + std::to_string(time) + "ms");
+		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
 
 		return font;
 	}
@@ -367,7 +376,7 @@ namespace zaap { namespace graphics {
 				(-cMatrix.OrigenYOffset), zValue);
 			vertices[v3].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
 
-			drawX += cMatrix.Width;
+			drawX += cMatrix.TotalWidth;
 		}
 
 		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size(), ZA_SHADER_FONT_SHADER_2D);
@@ -379,7 +388,7 @@ namespace zaap { namespace graphics {
 	Color color(0.3f, 0.3f, 0.3f, 1.0f);
 	void Font::render(API::VertexBuffer *vb)
 	{
-		temp += 0.01f;
+		temp += 0.005f;
 		size = 40 + 20 * sin(temp);
 		/*if (up)
 		{
@@ -399,13 +408,15 @@ namespace zaap { namespace graphics {
 			}
 		}*/
 
-		
+		Renderer::SetDepthTestState(false);
 		Renderer::StartShader(ZA_SHADER_FONT_SHADER_2D);
 		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 0);
+		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
 		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
 		vb->draw();
+		Renderer::SetDepthTestState(true);
+
 
 	}
 

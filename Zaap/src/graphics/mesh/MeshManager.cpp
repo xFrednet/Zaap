@@ -16,13 +16,13 @@ namespace zaap { namespace graphics {
 		
 		if (mesh->getName() == "NULL")
 		{
-			ZAAP_ERROR("MeshManager: submitted TMesh has no name")
+			ZAAP_ERROR("submitted TMesh has no name");
 		} else
 		{
 //This code only runs in debug mode because it could influence the performance
 #ifdef ZAAP_DEBUG
 			if (HasName(mesh->getName())) {
-				ZAAP_ALERT("MeshManager: submitted TMesh has a name that is already included")
+				ZAAP_ALERT("submitted TMesh has a name that is already included");
 			}
 #endif //ZAAP_DEBUG
 
@@ -40,7 +40,7 @@ namespace zaap { namespace graphics {
 				return s_Meshs[i];
 		}
 
-		ZAAP_ALERT("MeshManager: Requested TMesh was not found. Requested name: " + name);
+		ZAAP_ALERT("Requested TMesh was not found. Requested name: " + name);
 		return nullptr;
 	}
 

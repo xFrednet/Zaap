@@ -17,10 +17,10 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		if (createShaderFromString(DXMaterialShaderSrc, ied, 3))
 		{
-			ZAAP_INFO("DXMaterialShader: compiled successfully");
+			ZAAP_INFO("compiled successfully");
 		} else
 		{
-			ZAAP_ERROR("DXMaterialShader: compile error");
+			ZAAP_ERROR("compile error");
 			system("pause"); // TODO remove debug code
 		}
 
@@ -33,7 +33,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_MatrixBuffer, "DXMaterialShader::m_MatrixBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXMaterialShader: failed to create the m_MatrixBuffer");
+				ZAAP_ERROR("failed to create the m_MatrixBuffer");
 			}
 		}
 
@@ -46,7 +46,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_SceneBuffer, "DXMaterialShader::m_SceneBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXMaterialShader: failed to create the m_SceneBuffer");
+				ZAAP_ERROR("failed to create the m_SceneBuffer");
 			}
 		}
 
@@ -59,7 +59,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_VSLightBuffer, "DXMaterialShader::m_LightPositionBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXMaterialShader: failed to create the m_LightPositionBuffer");
+				ZAAP_ERROR("failed to create the m_LightPositionBuffer");
 			}
 		}
 
@@ -72,7 +72,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_PSLightBuffer, "DXMaterialShader::m_LightColorBuffer");
 			}else
 			{
-				ZAAP_ERROR("DXMaterialShader: failed to create the m_LightColorBuffer");
+				ZAAP_ERROR("failed to create the m_LightColorBuffer");
 			}
 		}
 
@@ -84,7 +84,7 @@ namespace zaap { namespace graphics { namespace DX {
 			{
 				DXNAME(m_MaterialBuffer, "DXMaterialShader::m_MaterialBuffer");
 			} else {
-				ZAAP_ERROR("DXMaterialShader: failed to create the m_MaterialBuffer");
+				ZAAP_ERROR("failed to create the m_MaterialBuffer");
 			}
 		}
 

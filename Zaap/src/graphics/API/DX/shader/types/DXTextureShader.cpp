@@ -11,7 +11,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT	, 0, sizeof(float) * 6	, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
-	String DXTerrainShaderSrc =
+	String DXTerrainShaderSrc = 
 #include <graphics/API/DX/shader/types/DXTextureShader.shader>
 		;
 
@@ -20,10 +20,10 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		if (createShaderFromString(DXTerrainShaderSrc, DXTextureShaderIED, 3))
 		{
-			ZAAP_INFO("DXTextureShader: compiled successfully");
+			ZAAP_INFO("compiled successfully");
 		} else
 		{
-			ZAAP_ALERT("DXTextureShader: compiling failed");
+			ZAAP_ALERT("compiling failed");
 			system("pause"); //TODO remove DebugCode
 		}
 
@@ -36,7 +36,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXTextureShader: Could not create m_MarixBuffer");
+				ZAAP_ERROR("Could not create m_MarixBuffer");
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXTextureShader: Could not create m_LightBuffer");
+				ZAAP_ERROR("Could not create m_LightBuffer");
 			}
 		}
 
@@ -62,7 +62,7 @@ namespace zaap { namespace graphics { namespace DX {
 				DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
 			} else
 			{
-				ZAAP_ERROR("DXTextureShader: Could not create m_LightColorBuffer");
+				ZAAP_ERROR("Could not create m_LightColorBuffer");
 			}
 
 		}

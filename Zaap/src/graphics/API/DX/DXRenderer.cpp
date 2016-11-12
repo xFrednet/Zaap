@@ -70,7 +70,7 @@ namespace zaap { namespace graphics { namespace DX {
 			DXNAME(m_BlendState[0], "DXRender::m_BlendState[0]");
 			
 			if (FAILED(hr))
-				ZAAP_ERROR("DXRenderer: The BlendState[0] creation failed");
+				ZAAP_ERROR("The BlendState[0] creation failed");
 		}
 		{
 			D3D11_BLEND_DESC blendDesc1;
@@ -90,9 +90,9 @@ namespace zaap { namespace graphics { namespace DX {
 			DXNAME(m_BlendState[1], "DXRender::m_BlendState[1]");
 			
 			if (FAILED(hr))
-				ZAAP_ERROR("DXRenderer: The BlendState[1] creation failed");
+				ZAAP_ERROR("The BlendState[1] creation failed");
 		}
-		ZAAP_INFO("DXRenderer: created the BlendStates");
+		ZAAP_INFO("created the BlendStates");
 	}
 	void DXRenderer::initDepthBuffer()
 	{
@@ -130,7 +130,7 @@ namespace zaap { namespace graphics { namespace DX {
 			hr = m_Dev->CreateDepthStencilState(&dssDesc0, &m_DepthStencilState[0]);
 			DXNAME(m_DepthStencilState[0], "DXRenderer::m_DepthStencilState[0]");
 			if (FAILED(hr))
-				ZAAP_ERROR("DXRenderer: Failed to create the DepthStencilState[0]");
+				ZAAP_ERROR("Failed to create the DepthStencilState[0]");
 
 			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[0], 1);
 		}
@@ -167,7 +167,7 @@ namespace zaap { namespace graphics { namespace DX {
 			hr = m_Dev->CreateDepthStencilState(&dssDesc1, &m_DepthStencilState[1]);
 			DXNAME(m_DepthStencilState[1], "DXRenderer::m_DepthStencilState[1]");
 			if (FAILED(hr))
-				ZAAP_ERROR("DXRenderer: Failed to create the DepthStencilState[1]");
+				ZAAP_ERROR("Failed to create the DepthStencilState[1]");
 
 		}
 	}
@@ -200,10 +200,10 @@ namespace zaap { namespace graphics { namespace DX {
 			
 			ID3D11Texture2D *backBuffer;
 			hr = DXContext::GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBuffer);
-			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to get the BackBuffer from the SwapChain");
+			if (FAILED(hr)) ZAAP_ERROR("Failed to get the BackBuffer from the SwapChain");
 
 			hr = m_Dev->CreateRenderTargetView(backBuffer, NULL, &m_RenderTargetView);
-			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to create the RenderTargetView");
+			if (FAILED(hr)) ZAAP_ERROR("Failed to create the RenderTargetView");
 
 			DXNAME(m_RenderTargetView, "DXRenderer::m_RenderTargetView");
 			DXRELEASE(backBuffer);
@@ -228,10 +228,10 @@ namespace zaap { namespace graphics { namespace DX {
 			dsDesc.MiscFlags = 0;
 
 			hr = m_Dev->CreateTexture2D(&dsDesc, NULL, &m_DepthStencil); //NULL = no init data
-			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to create the DepthStencil");
+			if (FAILED(hr)) ZAAP_ERROR("Failed to create the DepthStencil");
 
 			hr = m_Dev->CreateDepthStencilView(m_DepthStencil, NULL, &m_DepthStencilView);
-			if (FAILED(hr)) ZAAP_ERROR("DXRenderer: Failed to create the DepthStencilView");
+			if (FAILED(hr)) ZAAP_ERROR("Failed to create the DepthStencilView");
 
 			DXNAME(m_DepthStencilView, "DXRenderer::DepthStencil");
 			DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView")

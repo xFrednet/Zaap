@@ -89,7 +89,7 @@ namespace zaap { namespace scene {
 		m_VCountVertical = heightMap.getHeight();
 		if (m_VCountHorizontal == 0 || m_VCountVertical == 0)
 		{
-			ZAAP_ERROR("Terrain: The given heightMap does not exists");
+			ZAAP_ERROR("The given heightMap does not exists");
 			return;
 		}
 
