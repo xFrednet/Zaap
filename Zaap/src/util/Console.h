@@ -18,7 +18,7 @@ typedef ZAAP_API enum ZA_CON_MESSAGE_TYPE_ {
 
 namespace zaap { namespace console {
 	
-	ZAAP_API void Println(String message, ZA_CON_MESSAGE_TYPE messageType = ZA_CON_MESSAGE_INFO);
+	ZAAP_API void PrintCleanup(String fileName);
 	ZAAP_API void Println(String fileName, int line, ZA_CON_MESSAGE_TYPE type, String message);
 	ZAAP_API void PrintLastError(String message = "");
 
@@ -35,7 +35,7 @@ namespace zaap { namespace console {
 #endif
 
 #ifndef ZAAP_ALERT
-#	if (ZA_CON_MESSAGE_INFO >= ZAAP_LOG_LEVEL)
+#	if (ZA_CON_MESSAGE_ALERT >= ZAAP_LOG_LEVEL)
 #		define ZAAP_ALERT(x) zaap::console::Println(__FILE__, __LINE__, ZA_CON_MESSAGE_ALERT, x)
 #	else 
 #		define ZAAP_ALERT(x)
@@ -50,10 +50,10 @@ namespace zaap { namespace console {
 #	endif
 #endif
 
-#ifndef ZAAP_CLEANUP_LOG
-#	if (ZA_CON_MESSAGE_INFO >= ZAAP_LOG_LEVEL)
-#		define ZAAP_CLEANUP_LOG(x) zaap::console::Println(x, ZA_CON_MESSAGE_CLEANUP)
+#ifndef ZAAP_CLEANUP_INFO
+#	if (ZA_CON_MESSAGE_ALERT >= ZAAP_LOG_LEVEL)
+#		define ZAAP_CLEANUP_INFO() zaap::console::PrintCleanup(__FILE__)
 #	else 
-#		define ZAAP_CLEANUP_LOG(x)
+#		define ZAAP_CLEANUP_INFO()
 #	endif
 #endif

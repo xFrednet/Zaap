@@ -21,7 +21,7 @@ namespace zaap { namespace graphics { namespace API {
 	{
 		s_Context->cleanup();
 		delete s_Context;
-		ZAAP_CLEANUP_LOG("Context");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	void Context::SwapBuffers()

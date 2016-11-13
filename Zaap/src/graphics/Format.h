@@ -3,7 +3,7 @@
 #include <Common.h>
 #include <Types.h>
 
-#ifdef ZA_INCLUDE_DIRECTX
+#ifdef ZAAP_INCLUDE_DIRECTX
 #include <graphics/API/DX/DXCommon.h>
 #endif
 
@@ -37,7 +37,7 @@ namespace zaap
 	//returns if the alpha value can be set in the format
 	ZAAP_API bool Format_is_A_Setable(const ZA_FORMAT &format);
 
-#ifdef ZA_INCLUDE_DIRECTX
+#ifdef ZAAP_INCLUDE_DIRECTX
 	//returns the corresponding DXGI_FORMAT to the ZA_FORMAT
 	ZAAP_API DXGI_FORMAT GetDirectXFormat(ZA_FORMAT format);
 #endif

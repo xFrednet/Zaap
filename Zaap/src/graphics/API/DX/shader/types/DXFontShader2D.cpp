@@ -31,7 +31,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix))
 			{
-				DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
+				ZAAP_DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
 			} else
 			{
 				ZAAP_ERROR("Could not create m_MatrixBuffer");
@@ -44,7 +44,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_ColorBuffer, sizeof(Color), &m_TextColor))
 			{
-				DXNAME(m_ColorBuffer, "DXFontShader2D::m_ColorBuffer");
+				ZAAP_DXNAME(m_ColorBuffer, "DXFontShader2D::m_ColorBuffer");
 			} else
 			{
 				ZAAP_ERROR("Could not create m_ColorBuffer");
@@ -79,12 +79,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXFontShader2D::cleanup()
 	{
-		DXRELEASE(m_MatrixBuffer);
-		DXRELEASE(m_ColorBuffer);
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_ColorBuffer);
 		
 		cleanDXShader();
 
-		ZAAP_CLEANUP_LOG("DXFontShader2D");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	void DXFontShader2D::start() const

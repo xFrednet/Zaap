@@ -30,7 +30,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MatrixBuffer, sizeof(ZA_VS_MATRIX_BUFFER), &m_MatrixBufferStruct))
 			{
-				DXNAME(m_MatrixBuffer, "DXMaterialShader::m_MatrixBuffer");
+				ZAAP_DXNAME(m_MatrixBuffer, "DXMaterialShader::m_MatrixBuffer");
 			} else
 			{
 				ZAAP_ERROR("failed to create the m_MatrixBuffer");
@@ -43,7 +43,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_SceneBuffer, sizeof(ZA_VS_SCENE_BUFFER), &m_SceneBufferStruct))
 			{
-				DXNAME(m_SceneBuffer, "DXMaterialShader::m_SceneBuffer");
+				ZAAP_DXNAME(m_SceneBuffer, "DXMaterialShader::m_SceneBuffer");
 			} else
 			{
 				ZAAP_ERROR("failed to create the m_SceneBuffer");
@@ -56,7 +56,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_VSLightBuffer, sizeof(ZA_VS_LIGHT_BUFFER), &m_VSLightBufferStruct))
 			{
-				DXNAME(m_VSLightBuffer, "DXMaterialShader::m_LightPositionBuffer");
+				ZAAP_DXNAME(m_VSLightBuffer, "DXMaterialShader::m_LightPositionBuffer");
 			} else
 			{
 				ZAAP_ERROR("failed to create the m_LightPositionBuffer");
@@ -69,7 +69,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_PSLightBuffer, sizeof(ZA_PS_LIGHT_BUFFER), &m_PSLightBufferStruct))
 			{
-				DXNAME(m_PSLightBuffer, "DXMaterialShader::m_LightColorBuffer");
+				ZAAP_DXNAME(m_PSLightBuffer, "DXMaterialShader::m_LightColorBuffer");
 			}else
 			{
 				ZAAP_ERROR("failed to create the m_LightColorBuffer");
@@ -82,7 +82,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MaterialBuffer, sizeof(ZA_PS_MATERIAL_BUFFER), &m_MaterialBufferStruct))
 			{
-				DXNAME(m_MaterialBuffer, "DXMaterialShader::m_MaterialBuffer");
+				ZAAP_DXNAME(m_MaterialBuffer, "DXMaterialShader::m_MaterialBuffer");
 			} else {
 				ZAAP_ERROR("failed to create the m_MaterialBuffer");
 			}
@@ -176,16 +176,16 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 
 		//Vertex shader buffer
-		DXRELEASE(m_MatrixBuffer);
-		DXRELEASE(m_VSLightBuffer);
-		DXRELEASE(m_SceneBuffer);
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_VSLightBuffer);
+		ZAAP_DXRELEASE(m_SceneBuffer);
 
 		//Pixel shader buffer
-		DXRELEASE(m_PSLightBuffer);
-		DXRELEASE(m_MaterialBuffer);
+		ZAAP_DXRELEASE(m_PSLightBuffer);
+		ZAAP_DXRELEASE(m_MaterialBuffer);
 		
 		cleanDXShader();
 
-		ZAAP_CLEANUP_LOG("DXMaterialShader");
+		ZAAP_CLEANUP_INFO();
 	}
 }}}

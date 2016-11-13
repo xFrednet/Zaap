@@ -20,7 +20,7 @@ namespace zaap
 		}
 		FreeImage_DeInitialise();
 		isFreeImageInit = false;
-		ZAAP_CLEANUP_LOG("ImageLoader");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	void ImageLoader::Init()

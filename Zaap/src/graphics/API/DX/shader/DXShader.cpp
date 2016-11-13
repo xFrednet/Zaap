@@ -26,9 +26,9 @@ namespace zaap { namespace graphics { namespace DX {
 
 		//creation
 		dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_VShader);
-		DXNAME(m_VShader, "DXShader::m_VShader");
+		ZAAP_DXNAME(m_VShader, "DXShader::m_VShader");
 		dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_PShader);
-		DXNAME(m_PShader, "DXShader::m_PShader");
+		ZAAP_DXNAME(m_PShader, "DXShader::m_PShader");
 
 		devcon->VSSetShader(m_VShader, nullptr, 0);
 		devcon->PSSetShader(m_PShader, nullptr, 0);
@@ -38,7 +38,7 @@ namespace zaap { namespace graphics { namespace DX {
 			dev->CreateInputLayout(ied, eCount, VS->GetBufferPointer(), VS->GetBufferSize(), &m_Layout);
 			if (m_Layout)
 			{
-				DXNAME(m_Layout, "DXShader::m_Layout");
+				ZAAP_DXNAME(m_Layout, "DXShader::m_Layout");
 			} else
 			{
 				ZAAP_ERROR("InputLayout creation failed");
@@ -49,8 +49,8 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 
 		//cleanup
-		DXRELEASE(VS);
-		DXRELEASE(PS);
+		ZAAP_DXRELEASE(VS);
+		ZAAP_DXRELEASE(PS);
 
 		return true;
 	}
@@ -74,7 +74,7 @@ namespace zaap { namespace graphics { namespace DX {
 					std::cout << (const char*)errorBlob->GetBufferPointer() << std::endl;
 				}
 
-				DXRELEASE(errorBlob);
+				ZAAP_DXRELEASE(errorBlob);
 			}
 		}
 		return nullptr;
@@ -112,9 +112,9 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXShader::cleanDXShader()
 	{
-		DXRELEASE(m_VShader);
-		DXRELEASE(m_PShader);
-		DXRELEASE(m_Layout);
+		ZAAP_DXRELEASE(m_VShader);
+		ZAAP_DXRELEASE(m_PShader);
+		ZAAP_DXRELEASE(m_Layout);
 	}
 
 }}}

@@ -30,7 +30,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			//create Buffer
 			dev->CreateBuffer(&bd, NULL, &m_VBuffer);
-			DXNAME(m_VBuffer, "DXLoader::loadVBuffer::pVBuffer")
+			ZAAP_DXNAME(m_VBuffer, "DXLoader::loadVBuffer::pVBuffer")
 			
 			//Fill Buffer because D3D11_SUBRESOURDE_DATA doesn't work for me.
 			D3D11_MAPPED_SUBRESOURCE ms;
@@ -51,7 +51,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			//create Buffer
 			dev->CreateBuffer(&iBufferDesc, NULL, &m_IndexBuffer);
-			DXNAME(m_IndexBuffer, "DXLoader::loadVBuffer::indexBuffer")
+			ZAAP_DXNAME(m_IndexBuffer, "DXLoader::loadVBuffer::indexBuffer")
 
 			//Fill Buffer because D3D11_SUBRESOURDE_DATA doesn't work for me.
 			D3D11_MAPPED_SUBRESOURCE ms;
@@ -109,8 +109,8 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXVertexBuffer::cleanup()
 	{
-		DXRELEASE(m_VBuffer);
-		DXRELEASE(m_IndexBuffer);
+		ZAAP_DXRELEASE(m_VBuffer);
+		ZAAP_DXRELEASE(m_IndexBuffer);
 	}
 }}}
 

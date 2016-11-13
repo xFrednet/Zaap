@@ -37,7 +37,7 @@ namespace zaap {
 		graphics::API::Texture::Cleanup();
 		graphics::API::VertexBuffer::Cleanup();
 
-		ZAAP_CLEANUP_LOG("Application");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	void Application::start()

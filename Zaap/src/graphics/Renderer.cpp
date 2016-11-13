@@ -228,7 +228,7 @@ namespace zaap { namespace graphics {
 		if (s_Instance->m_Camera) delete s_Instance->m_Camera;
 
 		delete s_Instance;
-		ZAAP_CLEANUP_LOG("Renderer");
+		ZAAP_CLEANUP_INFO();
 	}
 
 

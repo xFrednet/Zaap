@@ -1,5 +1,15 @@
 #pragma once
 
+/*
+Macro names:
+	1.	Macros that start with ZA_ are used to configure 
+		the engine to the liking of the user.
+		
+	2.	ZAAP_* macros are used for the inner working of the engine.
+		These macros shouldn't be changed or tempered with from outside of the engine.
+		Just hope that everything works with ZA_ macros
+*/
+
 #pragma warning(push)
 #pragma warning(disable: 4251)
 

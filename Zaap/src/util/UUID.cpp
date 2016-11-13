@@ -55,7 +55,7 @@ namespace zaap
 
 
 //RandomUUID
-#ifdef ZA_OS_WIN 
+#ifdef ZAAP_OS_WIN 
 #include <windows.h>
 
 	void zaap::RandomUUID(UUID* uuid)
@@ -67,9 +67,9 @@ namespace zaap
 	}
 
 
-#else // not ZA_OS_WIN
+#else // not ZAAP_OS_WIN
 	void zaap::RandomUUID(UUID* uuid)
 	{
 		ZAAP_ERROR("RandomUUID: could not create a random UUID because no supported OS was specified");
 	}
-#endif // ZA_OS_WIN
+#endif // ZAAP_OS_WIN

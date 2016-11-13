@@ -40,6 +40,6 @@ namespace zaap { namespace graphics {
 			delete it->second;
 		}
 
-		ZAAP_CLEANUP_LOG("MaterialManager");
+		ZAAP_CLEANUP_INFO();
 	}
 }}

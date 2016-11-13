@@ -46,7 +46,7 @@ namespace zaap { namespace graphics { namespace API {
 			delete vBuffer;
 		}
 
-		ZAAP_CLEANUP_LOG("VertexBuffer");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	//

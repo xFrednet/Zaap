@@ -147,7 +147,7 @@ namespace zaap
 		}
 	}
 
-#ifdef ZA_INCLUDE_DIRECTX
+#ifdef ZAAP_INCLUDE_DIRECTX
 	DXGI_FORMAT GetDirectXFormat(ZA_FORMAT format)
 	{
 		switch (format)

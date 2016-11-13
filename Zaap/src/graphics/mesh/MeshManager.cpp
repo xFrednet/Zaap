@@ -58,6 +58,6 @@ namespace zaap { namespace graphics {
 	{
 		for (uint i = 0; i < s_Meshs.size(); i++)
 			delete s_Meshs[i];
-		ZAAP_CLEANUP_LOG("MeshManager");
+		ZAAP_CLEANUP_INFO();
 	}
 }}

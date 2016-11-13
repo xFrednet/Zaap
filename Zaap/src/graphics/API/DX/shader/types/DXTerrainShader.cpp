@@ -58,7 +58,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		if (CreateConstBuffer(m_MatrixBuffer, sizeof(ZA_VS_MATRIX_BUFFER), &m_MatrixBufferStruct))
 		{
-			DXNAME(m_MatrixBuffer, "DXTerrainShader::m_MatrixBuffer");
+			ZAAP_DXNAME(m_MatrixBuffer, "DXTerrainShader::m_MatrixBuffer");
 		} else
 		{
 			ZAAP_ERROR("could not create m_MatrixBuffer");
@@ -69,7 +69,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		if (CreateConstBuffer(m_VSLightBuffer, sizeof(ZA_VS_LIGHT_BUFFER), &m_VSLightBufferStruct))
 		{
-			DXNAME(m_VSLightBuffer, "DXTerrainShader::m_VSLightStruct");
+			ZAAP_DXNAME(m_VSLightBuffer, "DXTerrainShader::m_VSLightStruct");
 		} else
 		{
 			ZAAP_ERROR("could not create m_VSLightStruct");
@@ -80,7 +80,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		if (CreateConstBuffer(m_PSLightBuffer, sizeof(ZA_PS_LIGHT_BUFFER), &m_PSLightBuffer))
 		{
-			DXNAME(m_PSLightBuffer, "DXTerrainShader::m_PSLightBuffer");
+			ZAAP_DXNAME(m_PSLightBuffer, "DXTerrainShader::m_PSLightBuffer");
 		} else
 		{
 			ZAAP_ERROR("could not create m_PSLightBuffer");
@@ -107,12 +107,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXTerrainShader::cleanup()
 	{
-		DXRELEASE(m_MatrixBuffer);
-		DXRELEASE(m_VSLightBuffer);
-		DXRELEASE(m_PSLightBuffer);
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_VSLightBuffer);
+		ZAAP_DXRELEASE(m_PSLightBuffer);
 		
 		cleanDXShader();
 
-		ZAAP_CLEANUP_LOG("DXTerrainShader");
+		ZAAP_CLEANUP_INFO();
 	}
 }}}

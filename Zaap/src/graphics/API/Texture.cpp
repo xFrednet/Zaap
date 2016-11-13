@@ -56,7 +56,7 @@ namespace zaap { namespace graphics { namespace API {
 			delete texture;
 		}
 
-		ZAAP_CLEANUP_LOG("Textures");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	//

@@ -15,22 +15,23 @@
 #pragma comment (lib, "d3dcompiler.lib")
 
 //DXRelease
-#define DXRELEASE_(x) if (x) x->Release(); 
+#define ZAAP_DXRELEASE(x)       \
+	if (x)                 \
+	{                      \
+		x->Release();      \
+		x = nullptr;        \
+	}
+
+
+#ifdef ZAAP_DIRECTX_DEBUG
 	
-#define DXRELEASE(x) \
-	{ \
-		DXRELEASE_(x) \
-		x = nullptr; \
-	}
-
-
-#ifdef ZAAP_DEBUG
-#define DXNAME(x, y) { /*x is the DX object, y is the name*/ \
-		if (x) { /* nullptr == false */  \
-			String s(y); \
+	/*x is the DX object, y is the name*/
+#	define ZAAP_DXNAME(x, y)                                                   \
+		if (x) { /* nullptr == false */                                        \
+			String s(y);                                                       \
 			x->SetPrivateData(WKPDID_D3DDebugObjectName, s.size(), s.c_str()); \
-		}\
-	}
+		}                                                                      \
+	
 #else // ZAAP_DEBUG
-#	define DXNAME(x, y)
+#	define ZAAP_DXNAME(x, y)
 #endif // ZAAP_DEBUG

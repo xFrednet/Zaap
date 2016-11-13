@@ -33,7 +33,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_MatrixBuffer, sizeof(ZA_VS_MATRIX_BUFFER), &m_MatrixBufferStruct))
 			{
-				DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer");
+				ZAAP_DXNAME(m_MatrixBuffer, "DXTextureShader::m_MatrixBuffer");
 			} else
 			{
 				ZAAP_ERROR("Could not create m_MarixBuffer");
@@ -46,7 +46,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_LightBuffer, sizeof(ZA_VS_LIGHT_BUFFER), &m_VSLightBufferStruct))
 			{
-				DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
+				ZAAP_DXNAME(m_LightBuffer, "DXTextureShader::m_LightBuffer");
 			} else
 			{
 				ZAAP_ERROR("Could not create m_LightBuffer");
@@ -59,7 +59,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			if (CreateConstBuffer(m_LightColorBuffer, sizeof(ZA_PS_LIGHT_BUFFER), &m_PSLightBufferStruct))
 			{
-				DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
+				ZAAP_DXNAME(m_LightColorBuffer, "DXTextureShader::m_LightColorBuffer");
 			} else
 			{
 				ZAAP_ERROR("Could not create m_LightColorBuffer");
@@ -129,12 +129,12 @@ namespace zaap { namespace graphics { namespace DX {
 
 	void DXTextureShader::cleanup()
 	{
-		DXRELEASE(m_MatrixBuffer);
-		DXRELEASE(m_LightBuffer);
-		DXRELEASE(m_LightColorBuffer);
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_LightBuffer);
+		ZAAP_DXRELEASE(m_LightColorBuffer);
 		
 		cleanDXShader();
 
-		ZAAP_CLEANUP_LOG("DXTextureShader");
+		ZAAP_CLEANUP_INFO();
 	}
 }}}

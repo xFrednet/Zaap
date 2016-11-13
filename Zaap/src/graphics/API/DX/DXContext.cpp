@@ -14,9 +14,10 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		{
 			UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
-#ifdef ZAAP_DEBUG
+
+#			ifdef ZAAP_DIRECTX_DEBUG
 			creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
+#			endif
 
 			DXGI_SWAP_CHAIN_DESC scd;
 			ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
@@ -50,23 +51,23 @@ namespace zaap { namespace graphics { namespace DX {
 				&FeatureLevel,
 				&m_Devcon);
 
-			DXNAME(m_SwapChain, "DXContext::m_SwapChain");
-			DXNAME(m_Dev, "DXContext::m_Dev");
-			DXNAME(m_Devcon, "DXContext::m_Devcon");
+			ZAAP_DXNAME(m_SwapChain, "DXContext::m_SwapChain");
+			ZAAP_DXNAME(m_Dev, "DXContext::m_Dev");
+			ZAAP_DXNAME(m_Devcon, "DXContext::m_Devcon");
 		}
 		
 	}
 
 	void DXContext::cleanup(void)
 	{
-		DXRELEASE(m_SwapChain);
+		ZAAP_DXRELEASE(m_SwapChain);
 
 		ReportLiveObjects();
 
-		DXRELEASE(m_Devcon);
-		DXRELEASE(m_Dev);
+		ZAAP_DXRELEASE(m_Devcon);
+		ZAAP_DXRELEASE(m_Dev);
 
-		ZAAP_CLEANUP_LOG("DXContext");
+		ZAAP_CLEANUP_INFO();
 	}
 
 	void DXContext::swapBuffers()
@@ -104,7 +105,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11Debug *debug;
 		GetContext()->m_Dev->QueryInterface(__uuidof(ID3D11Debug), (void**)&debug);
 		debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
-		DXRELEASE(debug);
+		ZAAP_DXRELEASE(debug);
 #endif
 	}
 }}}

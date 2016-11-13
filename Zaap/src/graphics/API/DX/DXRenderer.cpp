@@ -49,7 +49,7 @@ namespace zaap { namespace graphics { namespace DX {
 		rDesc.AntialiasedLineEnable = false;
 
 		m_Dev->CreateRasterizerState(&rDesc, &m_RasterizerState);
-		DXNAME(m_RasterizerState, "DXRenderer::m_RasterizerState");
+		ZAAP_DXNAME(m_RasterizerState, "DXRenderer::m_RasterizerState");
 
 		m_Devcon->RSSetState(m_RasterizerState);
 
@@ -67,7 +67,7 @@ namespace zaap { namespace graphics { namespace DX {
 			blendDesc0.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
 			hr = m_Dev->CreateBlendState(&blendDesc0, &m_BlendState[0]);
-			DXNAME(m_BlendState[0], "DXRender::m_BlendState[0]");
+			ZAAP_DXNAME(m_BlendState[0], "DXRender::m_BlendState[0]");
 			
 			if (FAILED(hr))
 				ZAAP_ERROR("The BlendState[0] creation failed");
@@ -87,7 +87,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			//creation
 			hr = m_Dev->CreateBlendState(&blendDesc1, &m_BlendState[1]);
-			DXNAME(m_BlendState[1], "DXRender::m_BlendState[1]");
+			ZAAP_DXNAME(m_BlendState[1], "DXRender::m_BlendState[1]");
 			
 			if (FAILED(hr))
 				ZAAP_ERROR("The BlendState[1] creation failed");
@@ -128,7 +128,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			//Depth stencil state creation
 			hr = m_Dev->CreateDepthStencilState(&dssDesc0, &m_DepthStencilState[0]);
-			DXNAME(m_DepthStencilState[0], "DXRenderer::m_DepthStencilState[0]");
+			ZAAP_DXNAME(m_DepthStencilState[0], "DXRenderer::m_DepthStencilState[0]");
 			if (FAILED(hr))
 				ZAAP_ERROR("Failed to create the DepthStencilState[0]");
 
@@ -165,7 +165,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 			//Depth stencil state creation
 			hr = m_Dev->CreateDepthStencilState(&dssDesc1, &m_DepthStencilState[1]);
-			DXNAME(m_DepthStencilState[1], "DXRenderer::m_DepthStencilState[1]");
+			ZAAP_DXNAME(m_DepthStencilState[1], "DXRenderer::m_DepthStencilState[1]");
 			if (FAILED(hr))
 				ZAAP_ERROR("Failed to create the DepthStencilState[1]");
 
@@ -186,9 +186,9 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		{
 			m_Devcon->OMGetRenderTargets(0, nullptr, nullptr);
-			DXRELEASE(m_RenderTargetView);
-			DXRELEASE(m_DepthStencil);
-			DXRELEASE(m_DepthStencilView);
+			ZAAP_DXRELEASE(m_RenderTargetView);
+			ZAAP_DXRELEASE(m_DepthStencil);
+			ZAAP_DXRELEASE(m_DepthStencilView);
 		}
 		
 		//
@@ -205,8 +205,8 @@ namespace zaap { namespace graphics { namespace DX {
 			hr = m_Dev->CreateRenderTargetView(backBuffer, NULL, &m_RenderTargetView);
 			if (FAILED(hr)) ZAAP_ERROR("Failed to create the RenderTargetView");
 
-			DXNAME(m_RenderTargetView, "DXRenderer::m_RenderTargetView");
-			DXRELEASE(backBuffer);
+			ZAAP_DXNAME(m_RenderTargetView, "DXRenderer::m_RenderTargetView");
+			ZAAP_DXRELEASE(backBuffer);
 		}
 
 		//
@@ -233,8 +233,8 @@ namespace zaap { namespace graphics { namespace DX {
 			hr = m_Dev->CreateDepthStencilView(m_DepthStencil, NULL, &m_DepthStencilView);
 			if (FAILED(hr)) ZAAP_ERROR("Failed to create the DepthStencilView");
 
-			DXNAME(m_DepthStencilView, "DXRenderer::DepthStencil");
-			DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView")
+			ZAAP_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencil");
+			ZAAP_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView")
 		}
 
 		//setRenderTargets
@@ -369,22 +369,22 @@ namespace zaap { namespace graphics { namespace DX {
 		delete m_TerrainShader;
 
 		//Rendering
-		DXRELEASE(m_RenderTargetView);
+		ZAAP_DXRELEASE(m_RenderTargetView);
 		
 		//Rasterizer
-		DXRELEASE(m_RasterizerState);
+		ZAAP_DXRELEASE(m_RasterizerState);
 
 		//BlendState
-		DXRELEASE(m_BlendState[0]);
-		DXRELEASE(m_BlendState[1]);
+		ZAAP_DXRELEASE(m_BlendState[0]);
+		ZAAP_DXRELEASE(m_BlendState[1]);
 
 		//DepthBuffer
-		DXRELEASE(m_DepthStencilState[0]);
-		DXRELEASE(m_DepthStencilState[1]);
-		DXRELEASE(m_DepthStencil);
-		DXRELEASE(m_DepthStencilView);
+		ZAAP_DXRELEASE(m_DepthStencilState[0]);
+		ZAAP_DXRELEASE(m_DepthStencilState[1]);
+		ZAAP_DXRELEASE(m_DepthStencil);
+		ZAAP_DXRELEASE(m_DepthStencilView);
 
-		ZAAP_CLEANUP_LOG("DXRenderer");
+		ZAAP_CLEANUP_INFO();
 	}
 
 }}}
