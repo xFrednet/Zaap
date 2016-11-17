@@ -1,5 +1,6 @@
 #include <Zaap.h>
 #include <graphics/Font.h>
+#include <ZAError.h>
 
 using namespace zaap;
 using namespace graphics;
@@ -297,6 +298,9 @@ int main(void)
 	zaap::UUID id;
 	RandomUUID(&id);
 	cout << "RandomUUID: " << id.toString() << endl;
+	cout << ZA_ERROR_DIVISION_BY_ZERO << endl;
+	int i = ZA_ERROR_DIVISION_BY_ZERO;
+	cout << i << " " << hex << ZA_ERROR_DIVISION_BY_ZERO << endl;
 
 	//source
 	{

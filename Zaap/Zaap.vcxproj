@@ -259,6 +259,7 @@
     <ClInclude Include="src\util\StringUtil.h" />
     <ClInclude Include="src\util\UUID.h" />
     <ClInclude Include="src\Zaap.h" />
+    <ClInclude Include="src\ZAError.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\graphics\API\DX\shader\types\DXFontShader2D.shader" />

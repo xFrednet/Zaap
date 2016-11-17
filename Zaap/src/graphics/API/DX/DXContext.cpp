@@ -90,7 +90,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		return GetContext()->m_Devcon;
 	}
-
 	IDXGISwapChain* DXContext::GetSwapChain()
 	{
 		return GetContext()->m_SwapChain;
@@ -101,7 +100,7 @@ namespace zaap { namespace graphics { namespace DX {
 	//
 	void DXContext::ReportLiveObjects()
 	{
-#ifdef ZAAP_DEBUG
+#ifdef ZAAP_DIRECTX_DEBUG
 		ID3D11Debug *debug;
 		GetContext()->m_Dev->QueryInterface(__uuidof(ID3D11Debug), (void**)&debug);
 		debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);

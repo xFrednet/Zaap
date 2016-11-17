@@ -416,6 +416,9 @@
     <ClInclude Include="src\entity\light\LightSetup.h">
       <Filter>Source Files\src\entity\light</Filter>
     </ClInclude>
+    <ClInclude Include="src\ZAError.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\graphics\API\DX\shader\types\DXFontShader2D.shader">
