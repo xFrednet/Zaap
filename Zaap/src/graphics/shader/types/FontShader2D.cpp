@@ -16,7 +16,7 @@ namespace zaap { namespace graphics {
 
 	FontShader2D::FontShader2D()
 	{
-		Input::AddWindowCallback(METHOD_1(FontShader2D::windowCallback));
+		Input::AddWindowCallback(ZA_METHOD_1(FontShader2D::windowCallback));
 		calculateBaseMatrix(Window::GetWidth(), Window::GetHeight());
 	}
 

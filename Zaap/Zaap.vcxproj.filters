@@ -234,6 +234,9 @@
     <ClCompile Include="src\entity\light\LightSetup.cpp">
       <Filter>Source Files\src\entity\light</Filter>
     </ClCompile>
+    <ClCompile Include="src\ZAError.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">

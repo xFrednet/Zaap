@@ -18,7 +18,7 @@ namespace graphics {
 	Renderer::Renderer()
 		: m_ActiveShader(ZA_SHADER_UNKNOWN)
 	{
-		Input::AddWindowCallback(METHOD_1(Renderer::windowCallback));
+		Input::AddWindowCallback(ZA_METHOD_1(Renderer::windowCallback));
 
 		m_Camera = new Camera();
 	}

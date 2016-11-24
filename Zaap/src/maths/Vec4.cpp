@@ -164,6 +164,11 @@ namespace zaap {
 	}
 	Vec4 Divide(const Vec4& a, const Vec4& b)
 	{
+		if (b.X == 0 || b.Y == 0 || b.Z == 0 || b.W == 0)
+		{
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+			return a;
+		}
 		return Vec4(a.X / b.X,
 			a.Y / b.Y,
 			a.Z / b.Z,
@@ -179,6 +184,11 @@ namespace zaap {
 	}
 	Vec4 Divide(const Vec4& a, const float &b)
 	{
+		if (b == 0)
+		{
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+			return a;
+		}
 		return Vec4(a.X / b,
 			a.Y / b,
 			a.Z / b,
@@ -209,7 +219,7 @@ namespace zaap {
 		Vec4 rVec(a);
 		if (min > max)
 		{
-			ZAAP_ALERT("clamp: The min Value has to be lower than the max Value");
+			ZA_SUBMIT_ERROR(ZA_ERROR_MATH_WRONG_CLAMP_VALUES);
 			return rVec;
 		}
 

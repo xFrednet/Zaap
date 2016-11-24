@@ -197,6 +197,11 @@ namespace zaap {
 	}
 	Mat4 Divide(const Mat4& a, const float &b)
 	{
+		if (b == 0)
+		{
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+			return a;
+		}
 		return Mat4(
 			Divide(a.Row[0], b),
 			Divide(a.Row[1], b),

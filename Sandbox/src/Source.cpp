@@ -26,9 +26,6 @@ API::VertexBuffer *fontVB = nullptr;
 // TODO LIGHT deletion
 // TODO pointer vector
 
-// TODO add specific error messages
-// TODO add division by zero to the math classes
-
 void loadEntitys()
 {
 	clock_t timer = clock();
@@ -297,11 +294,9 @@ int main(void)
 {
 	zaap::UUID id;
 	RandomUUID(&id);
-	cout << "RandomUUID: " << id.toString() << endl;
-	cout << ZA_ERROR_DIVISION_BY_ZERO << endl;
-	int i = ZA_ERROR_DIVISION_BY_ZERO;
-	cout << i << " " << hex << ZA_ERROR_DIVISION_BY_ZERO << endl;
-
+	Vec3 v;
+	v = v / 0.0f;
+	cout << v.toString() << endl;
 	//source
 	{
 		scene_ = new Scene();

@@ -25,6 +25,9 @@
 
 #endif
 
+#define ZA_METHOD_1(x) std::bind(&x, this, std::placeholders::_1)
+#define ZA_METHOD_0(x) std::bind(&x, this)
+
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
@@ -45,6 +48,3 @@
 #include <cmath>
 
 #include "Types.h"
-
-#define METHOD_1(x) std::bind(&x, this, std::placeholders::_1)
-#define METHOD_0(x) std::bind(&x, this)

@@ -141,6 +141,11 @@ namespace zaap
 	}
 	Vec2 Divide(const Vec2& a, const Vec2& b)
 	{
+		if (b.X == 0 || b.Y == 0)
+		{
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+			return a;
+		}
 		return Vec2(a.X / b.X, a.Y / b.Y);
 	}
 
@@ -150,6 +155,11 @@ namespace zaap
 	}
 	Vec2 Divide(const Vec2& a, const float &b)
 	{
+		if (b == 0)
+		{
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+			return a;
+		}
 		return Vec2(a.X / b, a.Y / b);
 	}
 
@@ -163,8 +173,7 @@ namespace zaap
 	//
 	Vec2  Normalize(const Vec2& a)
 	{
-		float d = Length(a);
-		return Vec2(a.X / d, a.Y / d);
+		return Divide(a, Length(a));
 	}
 	Vec2  Scale(const Vec2& a, const float &scale)
 	{
@@ -175,7 +184,7 @@ namespace zaap
 		Vec2 rVec(a);
 		if (min > max)
 		{
-			ZAAP_ALERT("clamp: The min Value has to be lower than the max Value");
+			ZA_SUBMIT_ERROR(ZA_ERROR_MATH_WRONG_CLAMP_VALUES);
 			return rVec;
 		}
 

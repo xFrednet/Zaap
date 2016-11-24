@@ -197,6 +197,7 @@
     <ClCompile Include="src\util\Loader.cpp" />
     <ClCompile Include="src\util\StringUtil.cpp" />
     <ClCompile Include="src\util\UUID.cpp" />
+    <ClCompile Include="src\ZAError.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\Application.h" />
