@@ -21,9 +21,9 @@ namespace ZaapCLI
 		zaap::Vec3 getRotationValue();
 		zaap::Vec3 getScaleValue();
 
-		zaap::Vec3 setPositionValue(const zaap::Vec3& position);
-		zaap::Vec3 setRotationValue(const zaap::Vec3& rotation);
-		zaap::Vec3 setScaleValue(const zaap::Vec3& scale);
+		void setPositionValue(const zaap::Vec3& position);
+		void setRotationValue(const zaap::Vec3& rotation);
+		void setScaleValue(const zaap::Vec3& scale);
 
 		EntityRedirecter(ZaapCLI::BaseEntity^ owner, zaap::graphics::Mesh *mesh,
 			const zaap::Vec3& position = zaap::Vec3(0.0f, 0.0f, 0.0f),

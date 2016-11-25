@@ -31,6 +31,7 @@ namespace ZaapCLI {
 	private:
 	public:
 		Terrain(System::String^ folder, TerrainOptions^ terrainDesc);
+		Terrain(zaap::scene::Terrain* instance);
 
 		//Util
 		void cleanup();

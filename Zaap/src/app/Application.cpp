@@ -7,7 +7,6 @@
 
 #include <graphics/Renderer.h>
 #include <graphics/API/Context.h>
-#include <graphics/camera/ControllableCamera.h>
 #include <graphics/TextureManager.h>
 #include <graphics/MaterialManager.h>
 #include <graphics/mesh/MeshManager.h>
@@ -24,7 +23,6 @@ namespace zaap {
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
 		graphics::Renderer::Init();
-
 	}
 	void Application::cleanup() const
 	{

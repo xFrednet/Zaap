@@ -61,6 +61,9 @@
     <ClCompile Include="src\entity\BaseEntity.cpp">
       <Filter>Source Files\src\entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Scene.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="src\entity\BaseEntity.h">
       <Filter>Source Files\src\entity</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\Scene.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
@@ -157,6 +163,9 @@
     </Filter>
     <Filter Include="Source Files\src\entity\light">
       <UniqueIdentifier>{0f236bf1-7c36-47ec-97f4-c398a9ff3bff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\API">
+      <UniqueIdentifier>{481c9227-bdab-4fe9-a461-5bed2f883314}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

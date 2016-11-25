@@ -40,6 +40,10 @@ namespace ZaapCLI {
 		: ManagedClass(new zaap::scene::Terrain(to_CPP_String(folder), to_CPP_TERRAIN_DESC(terrainDesc)))
 	{
 	}
+	Terrain::Terrain(zaap::scene::Terrain* instance)
+		: ManagedClass(instance)
+	{
+	}
 
 	//Util
 	void Terrain::cleanup()

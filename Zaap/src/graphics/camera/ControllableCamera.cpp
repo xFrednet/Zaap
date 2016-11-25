@@ -5,12 +5,11 @@
 
 namespace zaap { namespace graphics {
 	
-	ControllableCamera::ControllableCamera(Vec3& position, float yaw, float pitch, float fov, float fovRatio)
+	ControllableCamera::ControllableCamera(const Vec3& position, float yaw, float pitch, float fov, float fovRatio)
 		: Camera(position, yaw, pitch, fov, fovRatio)
 	{
 	}
 
-	uint i = 0;
 	void ControllableCamera::update()
 	{
 		if (Input::IsButtonPressed(ZAAP_MOUSE_LEFT))

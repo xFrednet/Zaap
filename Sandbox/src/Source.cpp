@@ -1,6 +1,5 @@
 #include <Zaap.h>
 #include <graphics/Font.h>
-#include <ZAError.h>
 
 using namespace zaap;
 using namespace graphics;
@@ -19,9 +18,6 @@ Entity* lightCube = nullptr;
 Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
-
-// TODO TEXTURE deletion
-// TODO pointer vector
 
 // TODO LIGHT deletion
 // TODO pointer vector
@@ -58,6 +54,7 @@ void loadEntitys()
 		TERRAIN_DESC tDesc;
 		tDesc.setup();
 		terrain_ = new Terrain("res//scene//", tDesc);
+		scene_->setTerrain(terrain_);
 	}
 
 	Vec3 v;
@@ -285,7 +282,6 @@ public:
 		Renderer::SetAlphaChanelState(true);
 		Application::render();
 
-		terrain_->render();
 		font_.render(fontVB);
 	}
 };
@@ -294,9 +290,8 @@ int main(void)
 {
 	zaap::UUID id;
 	RandomUUID(&id);
-	Vec3 v;
-	v = v / 0.0f;
-	cout << v.toString() << endl;
+	ZAAP_INFO(id.toString());
+
 	//source
 	{
 		scene_ = new Scene();

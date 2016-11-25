@@ -10,9 +10,11 @@ namespace Sandbox_CS
 {
 	class CLITest : Application
 	{
-		public CLITest() : base("lol", 800, 600)
+		public CLITest(Scene s) : base("lol", 800, 600, s)
 		{
-
+			TerrainOptions tDesc = new TerrainOptions();
+			tDesc.setup();
+			//s.setTerrain(new Terrain("res//scene//", tDesc));
 		}
 		
 	}
@@ -21,9 +23,13 @@ namespace Sandbox_CS
 	{
 		static void Main(string[] args)
 		{
-			CLITest test = new CLITest();
+			CLITest test = new CLITest(new Scene());
+
+			//Bitmap b = new Bitmap("res//scene//HeightMap.png");
+
 			test.start();
 			test.cleanup();
+			//Console.WriteLine(b.ToString());
 		}
 	}
 }

@@ -5,8 +5,8 @@
 //
 namespace ZaapCLI {
 
-	ApplicationRedirector::ApplicationRedirector(ZaapCLI::Application^ owner, String title, uint width, uint height)
-		: zaap::Application(title, width, height, nullptr),
+	ApplicationRedirector::ApplicationRedirector(ZaapCLI::Application^ owner, String title, uint width, uint height, zaap::graphics::Scene* scene)
+		: zaap::Application(title, width, height, scene),
 		m_Owner(owner)
 	{
 	}
@@ -35,8 +35,8 @@ namespace ZaapCLI {
 // Application
 //
 namespace ZaapCLI {
-	Application::Application(System::String^ title, uint width, uint height)
-		: ManagedClass(new ApplicationRedirector(this, to_CPP_String(title), width, height))
+	Application::Application(System::String^ title, uint width, uint height, Scene^ scene)
+		: ManagedClass(new ApplicationRedirector(this, to_CPP_String(title), width, height, scene->getHandle()))
 	{
 	}
 

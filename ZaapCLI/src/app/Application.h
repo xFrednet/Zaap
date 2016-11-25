@@ -3,6 +3,7 @@
 #include <ZaapCLI.h>
 
 #include <app/Application.h>
+#include "../graphics/Scene.h"
 
 namespace ZaapCLI {
 
@@ -13,7 +14,7 @@ namespace ZaapCLI {
 	private:
 		gcroot<ZaapCLI::Application^> m_Owner;
 	public:
-		ApplicationRedirector(ZaapCLI::Application^ owner, String title, uint width, uint height);
+		ApplicationRedirector(ZaapCLI::Application^ owner, String title, uint width, uint height, zaap::graphics::Scene* scene);
 	protected:
 		void render() override;
 		void update() override;
@@ -27,7 +28,7 @@ namespace ZaapCLI {
 	{
 	protected:
 	public:
-		Application(System::String^ title, uint width, uint height);
+		Application(System::String^ title, uint width, uint height, Scene^ scene);
 		virtual ~Application() {}
 
 		void start();

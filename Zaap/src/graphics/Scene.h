@@ -20,18 +20,18 @@ namespace zaap { namespace graphics {
 	public:
 		~Scene(void);
 
-		virtual void addEntity(Entity* entity);
-		virtual void removeEntity(Entity* entity);
+		void addEntity(Entity* entity);
+		void removeEntity(Entity* entity);
 
-		virtual void render() const;
-		virtual void update() const;
+		void render() const;
+		void update() const;
 		
 		//lightSetup
 		virtual void setLightSetup(LightSetup* lightSetup);
-		virtual LightSetup* getLightSetup(void);
+		virtual LightSetup* getLightSetup();
 
 		//terrain
-		virtual void setTerrain(scene::Terrain* terrain);
-		virtual scene::Terrain* getTerrain(void);
+		void setTerrain(scene::Terrain* terrain);
+		scene::Terrain* getTerrain();
 	};
 }}

@@ -19,15 +19,15 @@ namespace ZaapCLI
 		return m_Scale;
 	}
 
-	zaap::Vec3 EntityRedirecter::setPositionValue(const zaap::Vec3& position)
+	void EntityRedirecter::setPositionValue(const zaap::Vec3& position)
 	{
 		m_Position = position;
 	}
-	zaap::Vec3 EntityRedirecter::setRotationValue(const zaap::Vec3& rotation)
+	void EntityRedirecter::setRotationValue(const zaap::Vec3& rotation)
 	{
 		m_Rotation = rotation;
 	}
-	zaap::Vec3 EntityRedirecter::setScaleValue(const zaap::Vec3& scale)
+	void EntityRedirecter::setScaleValue(const zaap::Vec3& scale)
 	{
 		m_Scale = scale;
 	}
