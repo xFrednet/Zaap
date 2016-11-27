@@ -96,7 +96,15 @@ namespace zaap { namespace graphics {
 	{
 		//load the Image
 		uint bitsPerPixel;
-		byte *bytes = ImageLoader::Load(file, &m_Width, &m_Height, &bitsPerPixel);
+		byte *bytes = nullptr;
+		ZA_RESULT result = ImageLoader::Load(file, &m_Width, &m_Height, &bitsPerPixel, &bytes);
+
+		//error test
+		if (ZA_FAILED(result))
+		{
+			ZA_SUBMIT_ERROR(result);
+			return;
+		}
 
 		//Format
 		if (bitsPerPixel == 32)

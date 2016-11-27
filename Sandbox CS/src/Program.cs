@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,10 @@ namespace Sandbox_CS
 		{
 			TerrainOptions tDesc = new TerrainOptions();
 			tDesc.setup();
-			//s.setTerrain(new Terrain("res//scene//", tDesc));
+			s.setTerrain(new Terrain("res//scene//", tDesc));
+
+			Terrain t = s.getTerrain();
+			Console.WriteLine("Tüdelü {0}", t.getHeight(new Vector2(10.0f, 2.0f)));
 		}
 		
 	}
@@ -23,13 +27,15 @@ namespace Sandbox_CS
 	{
 		static void Main(string[] args)
 		{
-			CLITest test = new CLITest(new Scene());
+			string path = Directory.GetCurrentDirectory();
+			Console.WriteLine("The current directory is {0}", path);
 
-			//Bitmap b = new Bitmap("res//scene//HeightMap.png");
+			CLITest test = new CLITest(new Scene());
 
 			test.start();
 			test.cleanup();
-			//Console.WriteLine(b.ToString());
+
+			Console.WriteLine("Tüdelü");
 		}
 	}
 }

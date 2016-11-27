@@ -294,6 +294,9 @@ int main(void)
 
 	//source
 	{
+		//Bitmap bm("lolo,guhdawzufgdauiwgfdazuiwetfrgdtauiwegfazuwefdr");
+		//cout << bm.contains(0, 0);
+
 		scene_ = new Scene();
 
 		Test t;

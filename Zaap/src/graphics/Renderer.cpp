@@ -8,6 +8,7 @@
 #include "API/DX/shader/types/DXMaterialShader.h"
 #include "API/DX/shader/types/DXTerrainShader.h"
 #include <events/Input.h>
+#include "camera/ControllableCamera.h"
 
 
 namespace zaap {
@@ -20,7 +21,7 @@ namespace graphics {
 	{
 		Input::AddWindowCallback(ZA_METHOD_1(Renderer::windowCallback));
 
-		m_Camera = new Camera();
+		m_Camera = new ControllableCamera();
 	}
 
 	void Renderer::startShader(ZA_SHADER_TYPE shader)

@@ -16,7 +16,7 @@ namespace zaap
 		static void Init();
 		static void Cleanup();
 
-		static byte* Load(const char *filePath, uint *width, uint *height, uint *bits, bool flipY = true);
-		static byte* Load(String &filePath, uint *width, uint *height, uint *bits, bool flipY = true);
+		static ZA_RESULT Load(const char *filePath, uint *width, uint *height, uint *bits, byte** bytes, bool flipY = true);
+		static ZA_RESULT Load(String &filePath, uint *width, uint *height, uint *bits, byte** bytes, bool flipY = true);
 	};
 }

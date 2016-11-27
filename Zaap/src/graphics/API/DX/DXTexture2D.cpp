@@ -8,7 +8,15 @@ namespace zaap { namespace graphics { namespace DX {
 	DXTexture2D::DXTexture2D(String name, String filePath)
 		: Texture2D(name)
 	{
-		byte* b = ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel);
+		byte* b = nullptr;
+		
+		ZA_RESULT res = ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel, &b);
+		if (ZA_FAILED(res))
+		{
+			ZA_SUBMIT_ERROR(res);
+			return;
+		}
+
 		if (m_BitsPerPixel == 32)
 			init(b, ZA_FORMAT_R8G8B8A8_UINT);
 		else 

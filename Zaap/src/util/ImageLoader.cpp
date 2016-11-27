@@ -14,10 +14,8 @@ namespace zaap
 	void ImageLoader::Cleanup()
 	{
 		if (!isFreeImageInit)
-		{
-			ZAAP_ALERT("FreeImage isn't Initialised");
 			return;
-		}
+		
 		FreeImage_DeInitialise();
 		isFreeImageInit = false;
 		ZAAP_CLEANUP_INFO();
@@ -26,15 +24,13 @@ namespace zaap
 	void ImageLoader::Init()
 	{
 		if (isFreeImageInit)
-		{
-			ZAAP_ALERT("FreeImage is already Initialised");
 			return;
-		}
+		
 		FreeImage_Initialise();
 		isFreeImageInit = true;
 	}
 
-	byte* ImageLoader::Load(const char *filePath, uint *width, uint *height, uint *bits, bool flipY)
+	ZA_RESULT ImageLoader::Load(const char *filePath, uint *width, uint *height, uint *bits, byte** bytes, bool flipY)
 	{
 		if (!isFreeImageInit)
 		{
@@ -54,19 +50,15 @@ namespace zaap
 		if (fif == FIF_UNKNOWN)
 			fif = FreeImage_GetFIFFromFilename(filePath);
 		if (fif == FIF_UNKNOWN)
-		{
-			ZAAP_ERROR("could not load image format for " + String(filePath));
-			return nullptr;
-		}
+			return ZA_ERROR_FILE_TYPE_UNKNOWN;
+		
 
 		//Loading Bitmap
 		if (FreeImage_FIFSupportsReading(fif))
 			bitmap = FreeImage_Load(fif, filePath);
 		if (!bitmap)
-		{
-			ZAAP_ERROR("could not load bitmap for " + String(filePath));
-			return nullptr;
-		}
+			return ZA_ERROR_FILE_FAILED_TO_LOAD_CONTENT;
+		
 
 		//bitmap options
 		FIBITMAP *bitmap32 = FreeImage_ConvertTo32Bits(bitmap);
@@ -82,15 +74,16 @@ namespace zaap
 		*bits = FreeImage_GetBPP(bitmap32);
 
 		int32 size = *width * *height * (*bits / 8);
-		byte* result = new byte[size];
-		memcpy(result, data, size);
+		*bytes = new byte[size];
+		memcpy(*bytes, data, size);
 		FreeImage_Unload(bitmap32);
-		return result;
+
+		return ZA_RESULT_SUCCESS;
 	}
 
-	byte* ImageLoader::Load(String &filePath, uint* width, uint* height, uint* bits, bool flipY)
+	ZA_RESULT ImageLoader::Load(String &filePath, uint* width, uint* height, uint* bits, byte** bytes, bool flipY)
 	{
-		return Load(filePath.c_str(), width, height, bits, flipY);
+		return Load(filePath.c_str(), width, height, bits, bytes, flipY);
 	}
 
 }
