@@ -17,6 +17,7 @@ namespace ZaapCLI {
 		Light(zaap::Light* instance);
 
 		Light();
+		Light(Vector3^ position);
 		Light(Vector3^ position, Color^ color);
 
 		virtual ~Light();

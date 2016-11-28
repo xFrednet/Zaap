@@ -11,29 +11,42 @@ namespace Sandbox_CS
 {
 	class CLITest : Application
 	{
-		public CLITest(Scene s) : base("lol", 800, 600, s)
+		ControllableCamera camera;
+		public CLITest(Scene s) : base("Sandbox C#", 800, 600, s)
 		{
 			TerrainOptions tDesc = new TerrainOptions();
 			tDesc.setup();
 			s.setTerrain(new Terrain("res//scene//", tDesc));
 
-			Terrain t = s.getTerrain();
-			Console.WriteLine("Tüdelü {0}", t.getHeight(new Vector2(10.0f, 2.0f)));
+			camera = new ControllableCamera(new Vector3(0.0f, 0.0f, 0.0f), -90.0f, 30.0f, 90.0f, 1.775f);
+			Renderer.SetCamera(camera);
+
+			Light sun = new Light(new Vector3(0.0f, 1000.0f, 0.0f));
+			LightSetup lightSetup = new LightSetup();
+			lightSetup.add(sun);
+
+			Renderer.LoadLightSetup(lightSetup);
 		}
 		
+		public override void update()
+		{
+			base.update();
+
+			camera.update();
+		}
+
 	}
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			string path = Directory.GetCurrentDirectory();
-			Console.WriteLine("The current directory is {0}", path);
-
 			CLITest test = new CLITest(new Scene());
 
 			test.start();
 			test.cleanup();
+
+			GC.Collect();
 
 			Console.WriteLine("Tüdelü");
 		}

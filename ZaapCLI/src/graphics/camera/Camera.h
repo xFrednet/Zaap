@@ -16,8 +16,9 @@ namespace ZaapCLI {
 	protected:
 		zaap::graphics::Camera* m_Instance;
 		
-		Camera(zaap::graphics::Camera* instance);
 	public:
+		Camera(zaap::graphics::Camera* instance);
+
 		~Camera();
 		!Camera();
 

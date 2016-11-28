@@ -11,6 +11,11 @@ namespace ZaapCLI
 		: m_Instance(new zaap::Light())
 	{
 	}
+	Light::Light(Vector3^ position)
+		: m_Instance(new zaap::Light(*position->getHandle()))
+	{
+		
+	}
 	Light::Light(Vector3^ position, Color^ color)
 		: m_Instance(new zaap::Light(*position->getHandle(), *color->getHandle()))
 	{

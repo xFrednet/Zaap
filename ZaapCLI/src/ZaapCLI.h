@@ -1,6 +1,7 @@
 #pragma once
 #include <msclr\marshal_cppstd.h>
 #using <mscorlib.dll>
+#include <iostream>
 
 #define ZA_CLI_VALUE(type, name, setName) \
 property type name {				\
@@ -62,16 +63,12 @@ namespace ZaapCLI
 
 		virtual ~ManagedClass()
 		{
-			if (m_Instance != nullptr)
-			{
-				delete m_Instance;
-				m_Instance = nullptr;
-			}
+			this->!ManagedClass();
 		}
 
 		!ManagedClass()
 		{
-			if (m_Instance != nullptr)
+			if (m_Instance)
 			{
 				delete m_Instance;
 				m_Instance = nullptr;

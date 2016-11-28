@@ -64,6 +64,9 @@
     <ClCompile Include="src\graphics\Scene.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\Renderer.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -130,6 +133,9 @@
       <Filter>Source Files\src\entity</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Scene.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Renderer.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>

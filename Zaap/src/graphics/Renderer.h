@@ -70,12 +70,6 @@ namespace zaap { namespace graphics {
 		static void StartShader(ZA_SHADER_TYPE shader);
 		static Shader* GetShader(ZA_SHADER_TYPE shader);
 
-		/*
-		MaterialShader *m_MaterialShader;
-		TextureShader *m_TextureShader;
-		TerrainShader *m_TerrainShader;
-		*/
-
 		//Render
 		static void Render(const scene::Terrain const *terrainTile);
 		static void Render(Entity* model);

@@ -226,7 +226,7 @@ namespace zaap { namespace graphics {
 		s_Instance->m_FontShader2D->cleanup();
 		delete s_Instance->m_FontShader2D;
 
-		if (s_Instance->m_Camera) delete s_Instance->m_Camera;
+		//if (s_Instance->m_Camera) delete s_Instance->m_Camera;
 
 		delete s_Instance;
 		ZAAP_CLEANUP_INFO();
