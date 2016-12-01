@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Renderer.h"
+#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 	Scene::~Scene()
@@ -13,6 +14,7 @@ namespace zaap { namespace graphics {
 			m_Terrain->cleanup();
 			delete m_Terrain;
 		}
+		ZAAP_ALERT("Scene deletion");
 	}
 
 	void Scene::addEntity(Entity* entity)

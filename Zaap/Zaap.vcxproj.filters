@@ -70,6 +70,9 @@
     <Filter Include="Source Files\src\entity\light">
       <UniqueIdentifier>{e146fc29-9ed3-416b-a68e-00ccfdabb270}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\system">
+      <UniqueIdentifier>{e5bf843d-25b7-48b4-95dd-ec5a32cc8d8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\Console.cpp">
@@ -236,6 +239,9 @@
     </ClCompile>
     <ClCompile Include="src\ZAError.cpp">
       <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\MemoryManager.cpp">
+      <Filter>Source Files\src\system</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +427,9 @@
     </ClInclude>
     <ClInclude Include="src\ZAError.h">
       <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\MemoryManager.h">
+      <Filter>Source Files\src\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

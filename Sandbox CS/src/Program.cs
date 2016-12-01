@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 using ZaapCLI;
 
+
+
 namespace Sandbox_CS
 {
 	class CLITest : Application
@@ -45,10 +47,6 @@ namespace Sandbox_CS
 
 			test.start();
 			test.cleanup();
-
-			GC.Collect();
-
-			Console.WriteLine("Tüdelü");
 		}
 	}
 }

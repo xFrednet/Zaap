@@ -19,8 +19,7 @@ Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
 
-// TODO LIGHT deletion
-// TODO pointer vector
+// TODO https://trello.com/b/vQItmmsf/zaap
 
 void loadEntitys()
 {
