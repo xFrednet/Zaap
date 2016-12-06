@@ -12,15 +12,15 @@ namespace zaap {
 		D(1.0f)
 	{
 	}
-	Plane3D::Plane3D(const float & a, const float & b, const float & c, const float & d)
+	Plane3D::Plane3D(const float&  a, const float&  b, const float&  c, const float&  d)
 		: N(a, b, c), D(d)
 	{
 	}
-	Plane3D::Plane3D(const Vec3 &n, const float & d)
+	Plane3D::Plane3D(const Vec3& n, const float&  d)
 		: N(n), D(d)
 	{
 	}
-	Plane3D::Plane3D(const Vec4 &p)
+	Plane3D::Plane3D(const Vec4& p)
 		: N(p.X, p.Y, p.Z), D(p.W)
 	{
 	}
@@ -37,7 +37,7 @@ namespace zaap {
 	{
 		*this = Normalize(*this);
 	}
-	bool  Plane3D::isPointOnPlane(const Vec3 &point) const
+	bool  Plane3D::isPointOnPlane(const Vec3& point) const
 	{
 		return IsPointOnPlane(*this, point);
 	}
@@ -66,7 +66,7 @@ namespace zaap {
 
 namespace zaap {
 	
-	bool Equal(const Plane3D &a, const Plane3D &b)
+	bool Equal(const Plane3D& a, const Plane3D& b)
 	{
 		return (a.N == b.N) && (a.D == b.D);
 	}

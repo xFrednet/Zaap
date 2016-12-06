@@ -1,6 +1,6 @@
 #pragma once
 
-#define ZAAP_API __declspec(dllexport)
+#define ZAAP_API			__declspec(dllexport)
 
 //OS selection
 #ifdef ZA_OS_WINDOWS
@@ -17,6 +17,8 @@
 #	pragma message("Zaap ERROR : The targeted operating system isn't specified. Use ZA_OS_WINDOWS")
 #endif
 
+//ZAAP Debug stuff
+//Do not enter!!!
 #ifdef ZAAP_DEBUG 
 
 #	ifdef ZAAP_INCLUDE_DIRECTX
@@ -41,6 +43,7 @@
 #include <map>
 #include <list>
 #include <unordered_map>
+#include <set>
 
 #include <time.h>
 #include <ctime>

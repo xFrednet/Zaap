@@ -23,7 +23,6 @@ namespace zaap
 			};
 		};
 
-		//TODO 0x00 at the start or end aren't written to string
 		//String format UUID(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
 		String toString() const;
 

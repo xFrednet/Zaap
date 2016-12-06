@@ -240,9 +240,6 @@
     <ClCompile Include="src\ZAError.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="src\system\MemoryManager.cpp">
-      <Filter>Source Files\src\system</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -427,9 +424,6 @@
     </ClInclude>
     <ClInclude Include="src\ZAError.h">
       <Filter>Source Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\system\MemoryManager.h">
-      <Filter>Source Files\src\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

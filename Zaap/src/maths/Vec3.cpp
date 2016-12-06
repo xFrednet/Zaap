@@ -1,5 +1,6 @@
 #include "Vec3.h"
 #include <util/Console.h>
+#include "Maths.h"
 
 namespace zaap {
 
@@ -15,8 +16,7 @@ namespace zaap {
 		Y = y;
 		Z = z;
 	}
-
-	Vec3::Vec3(Vec2 vec2, const float &z)
+	Vec3::Vec3(const Vec2& vec2, const float &z)
 	{
 		X = vec2.X;
 		Y = vec2.Y;
@@ -55,6 +55,15 @@ namespace zaap {
 	{
 		return Length(*this);
 	}
+	float Vec3::angleRad(const Vec3& other) const
+	{
+		return AngleRad(*this, other);
+	}
+	float Vec3::angleDeg(const Vec3& other) const
+	{
+		return AngleDeg(*this, other);
+	}
+
 
 	//
 	// operators
@@ -227,16 +236,24 @@ namespace zaap {
 			((a.Z * b.X) - (a.X * b.Z)),
 			((a.X * b.Y) - (a.Y * b.X)));
 	}
+	float Length(const Vec3& vec)
+	{
+		return sqrtf(vec.X * vec.X +
+			vec.Y * vec.Y + 
+			vec.Z * vec.Z);
+	}
 	float Dot(const Vec3& vec1, const Vec3& vec2)
 	{
 		return (vec1.X * vec2.X) +
 			(vec1.Y * vec2.Y) +
 			(vec1.Z * vec2.Z);
 	}
-	float Length(const Vec3& vec)
+	float AngleRad(const Vec3& a, const Vec3& b)
 	{
-		return sqrtf(vec.X * vec.X +
-			vec.Y * vec.Y + 
-			vec.Z * vec.Z);
+		return acosf(Dot(a, b) / (Length(a) * Length(b)));
+	}
+	float AngleDeg(const Vec3& a, const Vec3& b)
+	{
+		return AngleRad(a, b) * 180.0f / PI;
 	}
 }

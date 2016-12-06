@@ -14,11 +14,11 @@ namespace zaap {
 
 	Mat4 ZAAP_API CreateProjectionMatrix(const float &fov, const float &aspect, const float &nearPlane, const float &farPlane);
 
-	Mat4 ZAAP_API CreateViewMatrix(const Vec3 &position, const float yaw, const float pitch);
+	Mat4 ZAAP_API CreateViewMatrix(const Vec3 &position, const float& yaw, const float& pitch);
 	Mat4 ZAAP_API CreateViewMatrix(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up);
 
 	//Util
-	float ZAAP_API toRadians(const float &angdeg);
+	inline float ZAAP_API toRadians(const float &angdeg);
 
 	// Compute barycentric coordinates for
 	// Vec3 point with respect to triangle (a, b, c)

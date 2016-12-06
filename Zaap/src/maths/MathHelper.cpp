@@ -27,7 +27,7 @@ namespace zaap {
 		Mat4 mat(1.0f);
 
 		float difference = farPlane - nearPlane;
-		float f = atan(fov / 2.0f);
+		float f = atanf(fov / 2.0f);
 
 		mat.m11 = f / aspect;
 		mat.m22 = f;
@@ -39,7 +39,7 @@ namespace zaap {
 		return mat;
 	}
 
-	Mat4 CreateViewMatrix(const Vec3& position, const float yaw, const float pitch)
+	Mat4 CreateViewMatrix(const Vec3& position, const float& yaw, const float& pitch)
 	{
 		Mat4 mat(1.0f);
 		

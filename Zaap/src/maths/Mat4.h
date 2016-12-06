@@ -33,20 +33,20 @@ namespace zaap {
 		//
 		// util
 		//
-		void identify(const float &value = 1.0f);
+		inline void identify(const float &value = 1.0f);
 
-		void translate(const Vec3 &vec);
-		void translate(const float &x, const float &y, const float &z);
+		inline void translate(const Vec3 &vec);
+		inline void translate(const float &x, const float &y, const float &z);
 
-		void rotate(const float &angle, const Vec3 &axis);
-		void rotate(const float &angle, const float &x, const float &y, const float &z);
+		inline void rotate(const float &angle, const Vec3 &axis);
+		inline void rotate(const float &angle, const float &x, const float &y, const float &z);
 
-		void scale(const Vec3& scale);
-		void scale(const float &x, const float &y, const float &z);
+		inline void scale(const Vec3& scale);
+		inline void scale(const float &x, const float &y, const float &z);
 
 		// operators
-		bool operator==(const Mat4 &other) const;
-		bool operator!=(const Mat4 &other) const;
+		inline bool operator==(const Mat4 &other) const;
+		inline bool operator!=(const Mat4 &other) const;
 
 		Mat4& operator+=(const Mat4 &other);
 		Mat4& operator-=(const Mat4 &other);
@@ -55,33 +55,33 @@ namespace zaap {
 		Mat4& operator*=(const float &value);
 		Mat4& operator/=(const float &value);
 
-		Mat4 operator+(const Mat4 &other) const;
-		Mat4 operator-(const Mat4 &other) const;
-		Mat4 operator*(const Mat4 &other) const;
+		inline Mat4 operator+(const Mat4 &other) const;
+		inline Mat4 operator-(const Mat4 &other) const;
+		inline Mat4 operator*(const Mat4 &other) const;
 
-		Vec4 operator*(const Vec4 &other) const;
-		Mat4 operator*(const float &value) const;
-		Mat4 operator/(const float &value) const;
+		inline Vec4 operator*(const Vec4 &other) const;
+		inline Mat4 operator*(const float &value) const;
+		inline Mat4 operator/(const float &value) const;
 	};
 
 	//operations
-	ZAAP_API Mat4 Add(const Mat4 &a, const Mat4 &b);
-	ZAAP_API Mat4 Subtract(const Mat4 &a, const Mat4 &b);
-	ZAAP_API Mat4 Multiply(const Mat4 &a, const Mat4 &b);
+	ZAAP_API inline Mat4 Add(const Mat4 &a, const Mat4 &b);
+	ZAAP_API inline Mat4 Subtract(const Mat4 &a, const Mat4 &b);
+	ZAAP_API inline Mat4 Multiply(const Mat4 &a, const Mat4 &b);
 	
-	ZAAP_API Vec4 Multiply(const Mat4 &a, const Vec4 &b);
+	ZAAP_API inline Vec4 Multiply(const Mat4 &a, const Vec4 &b);
 
-	ZAAP_API Mat4 Multiply(const Mat4 &a, const float &b);
-	ZAAP_API Mat4 Divide(const Mat4 &a, const float &b);
+	ZAAP_API inline Mat4 Multiply(const Mat4 &a, const float &b);
+	ZAAP_API inline Mat4 Divide(const Mat4 &a, const float &b);
 
-	ZAAP_API bool Equal(const Mat4 &a, const Mat4 &b);
+	ZAAP_API inline bool Equal(const Mat4 &a, const Mat4 &b);
 
 	//operations 
-	ZAAP_API Mat4 Identify(const float &diagonal);
-	ZAAP_API Mat4 Traslate(const Mat4 &a, const Vec3 &b);
+	ZAAP_API inline Mat4 Identify(const float &diagonal);
+	ZAAP_API inline Mat4 Traslate(const Mat4 &a, const Vec3 &b);
 	ZAAP_API Mat4 Traslate(const Mat4 &a, const float &x, const float &y, const float &z);
-	ZAAP_API Mat4 Rotate(const Mat4 &a, const float &angle, const Vec3 &axis);
+	ZAAP_API inline Mat4 Rotate(const Mat4 &a, const float &angle, const Vec3 &axis);
 	ZAAP_API Mat4 Rotate(const Mat4 &a, const float &angle, const float &x, const float &y, const float &z);
-	ZAAP_API Mat4 Scale(const Mat4 &a, const Vec3& scale);
-	ZAAP_API Mat4 Scale(const Mat4 &a, const float &x, const float &y, const float &z);
+	ZAAP_API inline Mat4 Scale(const Mat4 &a, const Vec3& scale);
+	ZAAP_API inline Mat4 Scale(const Mat4 &a, const float &x, const float &y, const float &z);
 }

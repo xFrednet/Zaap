@@ -6,19 +6,19 @@ namespace zaap {
 	{
 		*this = Identify(diagonal);
 	}
-	Mat4::Mat4(const Mat4 &mat)
+	Mat4::Mat4(const Mat4& mat)
 	{
-		memcpy(this, &mat, sizeof(Mat4));
+		memcpy(this,& mat, sizeof(Mat4));
 	}
 	Mat4::Mat4(float mat[16])
 	{
-		memcpy(this, &mat[0], sizeof(Mat4));
+		memcpy(this,& mat[0], sizeof(Mat4));
 	}
 	Mat4::Mat4(Vec4 rows[4])
 	{
-		memcpy(this, &rows[0], sizeof(Mat4));
+		memcpy(this,& rows[0], sizeof(Mat4));
 	}
-	Mat4::Mat4(const Vec4 &row0, const Vec4 &row1, const Vec4 &row2, const Vec4 &row3)
+	Mat4::Mat4(const Vec4& row0, const Vec4& row1, const Vec4& row2, const Vec4& row3)
 	{
 		Row[0] = row0;
 		Row[1] = row1;
@@ -55,7 +55,7 @@ namespace zaap {
 	{
 		*this = Rotate(*this, angle, axis.X, axis.Y, axis.Z);
 	}
-	void Mat4::rotate(const float &angle, const float &x, const float &y, const float &z)
+	void Mat4::rotate(const float& angle, const float& x, const float& y, const float& z)
 	{
 		*this = Rotate(*this, angle, x, y, z);
 	}
@@ -64,7 +64,7 @@ namespace zaap {
 	{
 		*this = Scale(*this, scale.X, scale.Y, scale.Z);
 	}
-	void Mat4::scale(const float &x, const float &y, const float &z)
+	void Mat4::scale(const float& x, const float& y, const float& z)
 	{
 		*this = Scale(*this, x, y, z);
 	}
@@ -136,7 +136,7 @@ namespace zaap {
 }
 
 //
-// Operations && Util methods
+// Operations& & Util methods
 //
 namespace zaap {
 	
@@ -187,7 +187,7 @@ namespace zaap {
 			a.m14 * b.X + a.m24 * b.Y + a.m34 * b.Z + a.m44 * b.W);
 	}
 
-	Mat4 Multiply(const Mat4& a, const float &b)
+	Mat4 Multiply(const Mat4& a, const float& b)
 	{
 		return Mat4(
 			Multiply(a.Row[0], b),
@@ -195,7 +195,7 @@ namespace zaap {
 			Multiply(a.Row[2], b),
 			Multiply(a.Row[3], b));
 	}
-	Mat4 Divide(const Mat4& a, const float &b)
+	Mat4 Divide(const Mat4& a, const float& b)
 	{
 		if (b == 0)
 		{
@@ -211,7 +211,7 @@ namespace zaap {
 
 	bool Equal(const Mat4& a, const Mat4& b)
 	{
-		return (memcmp(&a, &b, sizeof(Mat4)) == 0);
+		return (memcmp(&a,& b, sizeof(Mat4)) == 0);
 	}
 
 	//

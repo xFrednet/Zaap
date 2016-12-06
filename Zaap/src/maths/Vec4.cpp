@@ -10,21 +10,21 @@ namespace zaap {
 		Z = 0;
 		W = 0;
 	}
-	Vec4::Vec4(const float &x, const float &y, const float &z, const float &w)
+	Vec4::Vec4(const float& x, const float& y, const float& z, const float& w)
 	{
 		X = x;
 		Y = y;
 		Z = z;
 		W = w;
 	}
-	Vec4::Vec4(Vec2 vec2, const float &z, const float &w)
+	Vec4::Vec4(const Vec2& vec2, const float& z, const float& w)
 	{
 		X = vec2.X;
 		Y = vec2.Y;
 		Z = z;
 		W = w;
 	}
-	Vec4::Vec4(Vec3 vec3, const float &w)
+	Vec4::Vec4(const Vec3& vec3, const float& w)
 	{
 		X = vec3.X;
 		Y = vec3.Y;
@@ -44,11 +44,11 @@ namespace zaap {
 	{
 		*this = Normalize(*this);
 	}
-	void Vec4::scale(const float &scale)
+	void Vec4::scale(const float& scale)
 	{
 		*this = Scale(*this, scale);
 	}
-	void Vec4::clamp(const float &min, const float &max)
+	void Vec4::clamp(const float& min, const float& max)
 	{
 		*this = Clamp(*this, min, max);
 	}
@@ -94,12 +94,12 @@ namespace zaap {
 		return *this;
 	}
 
-	Vec4& Vec4::operator*=(const float &value)
+	Vec4& Vec4::operator*=(const float& value)
 	{
 		*this = Multiply(*this, value);
 		return *this;
 	}
-	Vec4& Vec4::operator/=(const float &value)
+	Vec4& Vec4::operator/=(const float& value)
 	{
 		*this = Divide(*this, value);
 		return *this;
@@ -122,11 +122,11 @@ namespace zaap {
 		return Divide(*this, other);
 	}
 
-	Vec4 Vec4::operator*(const float &value) const
+	Vec4 Vec4::operator*(const float& value) const
 	{
 		return Multiply(*this, value);
 	}
-	Vec4 Vec4::operator/(const float &value) const
+	Vec4 Vec4::operator/(const float& value) const
 	{
 		return Divide(*this, value);
 	}
@@ -134,7 +134,7 @@ namespace zaap {
 }
 
 //
-// Operations && Util Methods
+// Operations& & Util Methods
 //
 namespace zaap {
 	
@@ -175,14 +175,14 @@ namespace zaap {
 			a.W / b.W);
 	}
 
-	Vec4 Multiply(const Vec4& a, const float &b)
+	Vec4 Multiply(const Vec4& a, const float& b)
 	{
 		return Vec4(a.X * b,
 			a.Y * b,
 			a.Z * b,
 			a.W * b);
 	}
-	Vec4 Divide(const Vec4& a, const float &b)
+	Vec4 Divide(const Vec4& a, const float& b)
 	{
 		if (b == 0)
 		{
@@ -210,11 +210,11 @@ namespace zaap {
 	{
 		return Divide(a, Length(a));
 	}
-	Vec4 Scale(const Vec4& a, const float &scale)
+	Vec4 Scale(const Vec4& a, const float& scale)
 	{
 		return Multiply(a, scale);
 	}
-	Vec4 Clamp(const Vec4& a, const float &min, const float &max)
+	Vec4 Clamp(const Vec4& a, const float& min, const float& max)
 	{
 		Vec4 rVec(a);
 		if (min > max)
