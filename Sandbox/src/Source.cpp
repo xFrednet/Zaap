@@ -306,6 +306,9 @@ int main(void)
 
 		t.cleanup();
 
+		
+		delete scene_;
+
 		return 0;
 	}
 }

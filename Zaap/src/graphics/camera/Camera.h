@@ -22,6 +22,7 @@ namespace zaap { namespace graphics {
 		float m_FOVRatio;
 
 		ViewFrustum m_Frustum;
+		
 	public:
 		virtual ~Camera()
 		{
@@ -32,8 +33,10 @@ namespace zaap { namespace graphics {
 
 		virtual void update();
 		virtual Mat4 getViewMatrix();
-		void calculateViewFrustum();
-		ViewFrustum getViewFrustum() const;
+		inline void calculateViewFrustum();
+		// This function returns the last calculated ViewFrustum use calculateViewFrustum()
+		// to calculate the frustum
+		inline ViewFrustum getViewFrustum() const;
 
 		//position
 		virtual void setPosition(const Vec3 &position);

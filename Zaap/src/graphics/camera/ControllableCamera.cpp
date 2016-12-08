@@ -52,6 +52,7 @@ namespace zaap { namespace graphics {
 			m_Yaw = -90.0;
 			m_Pitch = 30.0;
 		}
+		calculateViewFrustum();
 	}
 
 	float ControllableCamera::getSpeed() const

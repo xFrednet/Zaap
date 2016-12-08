@@ -21,7 +21,7 @@ namespace zaap
 			const Vec3& rotation = Vec3(0.0f, 0.0f, 0.0f), 
 			const Vec3& scale = Vec3(1.0f, 1.0f, 1.0f));
 		Entity();
-		~Entity() {}
+		virtual ~Entity() {}
 
 		//position
 		virtual void setPosition(const Vec3 &position);
@@ -46,9 +46,12 @@ namespace zaap
 		//Getters
 		virtual graphics::Mesh* getMesh();
 		virtual void getTransformationMatrix(Mat4& result) const;
-		
+		virtual bool isVisible();
+
 		// GameLoop util
 		virtual void update();
 		virtual void render();
+
+
 	};
 }

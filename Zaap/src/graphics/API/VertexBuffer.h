@@ -4,6 +4,7 @@
 #include <Types.h>
 #include <util/UUID.h>
 #include <graphics/shader/Shader.h>
+#include <graphics/camera/ViewFrustum.h>
 
 namespace zaap { namespace graphics { namespace API {
 	
@@ -11,22 +12,35 @@ namespace zaap { namespace graphics { namespace API {
 
 	class ZAAP_API VertexBuffer
 	{
-		//Static values
+		////////////////
+		// Management //
+		////////////////
 	private:
 		static std::vector<VertexBuffer*> s_VertexBuffers;
-		static uint s_TotalDrawCount;
-
-		//Static methods
 	public:
 		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader);
 		static void Delete(VertexBuffer* vertexbuffer);
-		static void Delete(UUID uuid);
+		static void Delete(const UUID& uuid);
 		static void Cleanup();
 
-		//draw count
-		static uint getTotalDrawCount();
-		static void clearTotalDrawCount();
+		///////////////////////
+		// Rendering options //
+		///////////////////////
+	private:
+		static uint s_TotalDrawCount;
+		static ViewFrustum s_ViewFrustum;
 
+	public:
+		//draw count
+		static inline uint GetTotalDrawCount();
+		static inline void ClearTotalDrawCount();
+
+		static inline void SetViewFrustum(const ViewFrustum& view);
+		static inline ViewFrustum GetViewFrustum();
+
+		/////////////////////////////////
+		// And finaly the actual class //
+		/////////////////////////////////
 	protected:
 		uint m_VertexCount;
 		UUID m_uuid;
@@ -36,11 +50,11 @@ namespace zaap { namespace graphics { namespace API {
 		VertexBuffer(uint vertexCount, ZA_SHADER_TYPE targetShader);
 
 	public:
-		~VertexBuffer() {}
+		virtual ~VertexBuffer() {}
 
 		//class methods
-		uint getVertexCount(void) const;
-		UUID getUUID(void) const;
+		inline uint getVertexCount(void) const;
+		inline UUID getUUID(void) const;
 
 		virtual void bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;

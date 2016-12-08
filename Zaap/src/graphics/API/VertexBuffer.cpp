@@ -3,15 +3,15 @@
 #include <graphics/API/DX/DXVertexBuffer.h>
 #include <util/Console.h>
 
-namespace zaap { namespace graphics { namespace API {
+namespace zaap { namespace graphics { 
+
+////////////////
+// Management //
+////////////////
+namespace API {
 
 	std::vector<VertexBuffer*> VertexBuffer::s_VertexBuffers;
-
-	uint VertexBuffer::s_TotalDrawCount = 0;
 	
-	//
-	// Static methods
-	//
 	VertexBuffer* VertexBuffer::CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader)
 	{
 		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertices, vertexSize, vCount, indices, indexCount, targetShader);
@@ -24,7 +24,7 @@ namespace zaap { namespace graphics { namespace API {
 	{
 		Delete(vertexbuffer->getUUID());
 	}
-	void VertexBuffer::Delete(UUID uuid)
+	void VertexBuffer::Delete(const UUID&  uuid)
 	{
 		for (uint i = 0; i < s_VertexBuffers.size(); i++)
 		{
@@ -48,19 +48,34 @@ namespace zaap { namespace graphics { namespace API {
 
 		ZAAP_CLEANUP_INFO();
 	}
+}
 
-	//
-	// Total Draw Count
-	//
-	uint VertexBuffer::getTotalDrawCount()
+///////////////////////
+// Rendering options //
+///////////////////////
+namespace API {
+	uint VertexBuffer::s_TotalDrawCount = 0;
+	ViewFrustum VertexBuffer::s_ViewFrustum = ViewFrustum();
+
+	uint VertexBuffer::GetTotalDrawCount()
 	{
 		return s_TotalDrawCount;
 	}
-	void VertexBuffer::clearTotalDrawCount()
+	void VertexBuffer::ClearTotalDrawCount()
 	{
 		s_TotalDrawCount = 0;
 	}
 
+	void VertexBuffer::SetViewFrustum(const ViewFrustum& view)
+	{
+		s_ViewFrustum = view;
+	}
+	ViewFrustum VertexBuffer::GetViewFrustum()
+	{
+		return s_ViewFrustum;
+	}
+}
+namespace API {
 	//
 	// Class methods
 	//

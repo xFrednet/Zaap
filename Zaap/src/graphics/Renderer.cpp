@@ -11,8 +11,7 @@
 #include "camera/ControllableCamera.h"
 
 
-namespace zaap {
-namespace graphics {
+namespace zaap { namespace graphics {
 
 	Renderer* Renderer::s_Instance = nullptr;
 
@@ -56,6 +55,13 @@ namespace graphics {
 		default:
 			return nullptr;
 		}
+	}
+
+	void Renderer::setViewMatrix(const Mat4& mat)
+	{
+		m_MaterialShader->setViewMatrix(mat);
+		m_TextureShader->setViewMatrix(mat);
+		m_TerrainShader->setViewMatrix(mat);
 	}
 
 	//
@@ -175,6 +181,11 @@ namespace zaap { namespace graphics {
 	//
 	//Camera
 	//
+	void Renderer::SetViewMatrix(const Mat4& mat)
+	{
+		if (s_Instance)
+			s_Instance->setViewMatrix(mat);
+	}
 	void Renderer::SetCamera(Camera* camera, bool deleteOldCamera)
 	{
 		s_Instance->setCamera(camera, deleteOldCamera);

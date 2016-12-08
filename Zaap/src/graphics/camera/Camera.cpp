@@ -9,13 +9,15 @@ namespace zaap { namespace graphics {
 		: m_Position(position),
 		m_Yaw(yaw), m_Pitch(pitch),
 		m_FOV(fov), m_FOVRatio(fovRatio)
-	{}
+	{
+		calculateViewFrustum();
+	}
 	Camera::Camera(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up)
 		: m_Position(position),
 		m_Yaw(0), m_Pitch(0),
 		m_FOV(90), m_FOVRatio(1.775f)
 	{
-
+		calculateViewFrustum();
 	}
 
 	void Camera::update()
@@ -26,9 +28,7 @@ namespace zaap { namespace graphics {
 	}
 	void Camera::calculateViewFrustum()
 	{
-		if (!Input::IsKeyDown(ZAAP_VK_V))
-			m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
-		
+		m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
 	}
 	ViewFrustum Camera::getViewFrustum() const
 	{
@@ -81,8 +81,8 @@ namespace zaap { namespace graphics {
 		if (m_Pitch < -90.0f)
 		{
 			m_Pitch = -90.0f;
+			return;
 		}
-
 	}
 
 	float Camera::getYaw() const

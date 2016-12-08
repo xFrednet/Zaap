@@ -45,6 +45,7 @@ namespace zaap { namespace graphics {
 		virtual void render(Entity* model) = 0;
 
 		//Camera
+		virtual void setViewMatrix(const Mat4& mat);
 		virtual void setCamera(Camera* camera, bool deleteOldCamera = true);
 		virtual Camera* getCamera();
 		virtual ViewFrustum getViewFrustum();
@@ -76,6 +77,7 @@ namespace zaap { namespace graphics {
 		static void RenderEntityArray(const std::vector<Entity*>& models);
 		
 		//Camera
+		static void SetViewMatrix(const Mat4& mat);
 		static void SetCamera(Camera* camera, bool deleteOldCamera = true);
 		static Camera* GetCamera();
 		static ViewFrustum GetViewFrustum();
