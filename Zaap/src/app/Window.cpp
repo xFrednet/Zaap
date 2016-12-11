@@ -113,26 +113,26 @@ namespace zaap {
 
 			//LButton
 		case WM_LBUTTONDOWN:
-			Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, true);
+			Input::MouseButtonEvent(ZA_MOUSE_LEFT, true);
 			break;
 		case WM_LBUTTONUP:
-			Input::MouseButtonEvent(ZAAP_MOUSE_LEFT, false);
+			Input::MouseButtonEvent(ZA_MOUSE_LEFT, false);
 			break;
 
 			//MButton
 		case WM_MBUTTONDOWN:
-			Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, true);
+			Input::MouseButtonEvent(ZA_MOUSE_MIDDLE, true);
 			break;
 		case WM_MBUTTONUP:
-			Input::MouseButtonEvent(ZAAP_MOUSE_MIDDLE, false);
+			Input::MouseButtonEvent(ZA_MOUSE_MIDDLE, false);
 			break;
 
 			//RButton
 		case WM_RBUTTONDOWN:
-			Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, true);
+			Input::MouseButtonEvent(ZA_MOUSE_RIGHT, true);
 			break;
 		case WM_RBUTTONUP:
-			Input::MouseButtonEvent(ZAAP_MOUSE_RIGHT, false);
+			Input::MouseButtonEvent(ZA_MOUSE_RIGHT, false);
 			break;
 
 			//

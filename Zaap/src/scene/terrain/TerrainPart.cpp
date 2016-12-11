@@ -41,10 +41,8 @@ namespace zaap { namespace scene {
 
 	}
 
-	bool TerrainPart::isVisible() const
+	bool TerrainPart::isVisible(const graphics::ViewFrustum& view) const
 	{
-		graphics::ViewFrustum view = graphics::Renderer::GetViewFrustum();
-		
 		return view.isCuboidVisible(Vec3(m_MinX, m_MinHeight, m_MinZ), Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
 
 	}
@@ -126,11 +124,11 @@ namespace zaap { namespace scene {
 
 	}
 
-	void TerrainTreePart::render()
+	void TerrainTreePart::render(const graphics::ViewFrustum& view)
 	{
-		if (isVisible())
+		if (isVisible(view))
 			for (uint i = 0; i < 4; i++)
-				m_Members[i]->render();
+				m_Members[i]->render(view);
 	}
 }}
 
@@ -202,13 +200,10 @@ namespace zaap { namespace scene {
 		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::ZA_TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size(), graphics::ZA_SHADER_TERRAIN_SHADER);
 	}
 
-	void TerrainTreeEndPart::render()
+	void TerrainTreeEndPart::render(const graphics::ViewFrustum& view) 
 	{
-		if (isVisible())
-		{
+		if (isVisible(view))
 			m_VBuffer->draw();
-		}
-		
 	}
 
 }}
@@ -222,5 +217,5 @@ namespace zaap { namespace scene {
 	{
 	}
 
-	void TerrainNullPart::render() {}
+	void TerrainNullPart::render(const graphics::ViewFrustum& view) {}
 }}

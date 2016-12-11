@@ -24,7 +24,9 @@ namespace zaap { namespace graphics {
 	{}
 	Mat4 Camera::getViewMatrix()
 	{
-		return CreateViewMatrix(m_Position, m_Yaw, m_Pitch);
+		Mat4 m;
+		CreateViewMatrix(&m, m_Position, m_Yaw, m_Pitch);
+		return m; 
 	}
 	void Camera::calculateViewFrustum()
 	{

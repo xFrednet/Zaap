@@ -14,7 +14,9 @@ namespace zaap { namespace scene {
 		: HeightMin(0.0f),
 		HeightMax(0.0f),
 		DefaultHeight(0.0f),
-		VertexSpacing(0.0f)
+		VertexSpacing(0.0f),
+		VerticesPerTexture(0),
+		MaxVerticesPerTerrainTile(0)
 	{
 	}
 	TERRAIN_DESC::TERRAIN_DESC(float heightMin, float heightMax, float defaultHeight, float vertexSpacing, uint verticesPerTexture)
@@ -22,7 +24,8 @@ namespace zaap { namespace scene {
 		HeightMax(heightMax),
 		DefaultHeight(defaultHeight),
 		VertexSpacing(vertexSpacing),
-		VerticesPerTexture(verticesPerTexture)
+		VerticesPerTexture(verticesPerTexture),
+		MaxVerticesPerTerrainTile(0)
 	{
 	}
 
@@ -81,7 +84,6 @@ namespace zaap { namespace scene {
 	//
 	void Terrain::initVertices(String heightMapFile, String texMapFile)
 	{
-
 		graphics::Bitmap heightMap(heightMapFile.c_str());
 
 		//error check
@@ -173,7 +175,6 @@ namespace zaap { namespace scene {
 				normal.Z = getVertexHeight(vX, vY - 1) - getVertexHeight(vX, vY + 1);
 		}
 
-
 		normal.normalize();
 		return normal;
 	}
@@ -224,9 +225,9 @@ namespace zaap { namespace scene {
 	{
 		uint vX = (uint)(point.X / m_TerrainDesc.VertexSpacing);
 		uint vY = (uint)(point.Y / m_TerrainDesc.VertexSpacing);
+
 		if (vX >= m_VCountHorizontal - 1 || vY >= m_VCountVertical - 1)
 			return 0.0f;
-
 
 		// true    | false  
 		// v0   v2 |      v2
@@ -254,12 +255,12 @@ namespace zaap { namespace scene {
 	void Terrain::update()
 	{
 	}
-	void Terrain::render()
+	void Terrain::render(const graphics::ViewFrustum& view) const
 	{
 		bindTextures();
-		graphics::Renderer::Render(this);
+		graphics::Renderer::StartShader(graphics::ZA_SHADER_TERRAIN_SHADER);
 
-		m_ParrentNode->render();
+		m_ParrentNode->render(view);
 	}
 
 	void Terrain::bindTextures() const

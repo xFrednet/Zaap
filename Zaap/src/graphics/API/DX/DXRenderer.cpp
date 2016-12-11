@@ -2,7 +2,6 @@
 
 #include <graphics/API/DX/DXContext.h>
 #include <graphics/API/VertexBuffer.h>
-#include <maths/MathHelper.h>
 #include <util/Console.h>
 #include <graphics/mesh/TexturedMesh.h>
 #include <graphics/mesh/MaterialMesh.h>
@@ -319,7 +318,7 @@ namespace zaap { namespace graphics { namespace DX {
 		Mesh* mesh = entity->getMesh();
 		
 		//Matrix
-		entity->getTransformationMatrix(matrix_);
+		entity->getTransformationMatrix(&matrix_);
 
 		//Texture
 		if (mesh->getType() == ZA_MESH_TYPE_TEXTURED)

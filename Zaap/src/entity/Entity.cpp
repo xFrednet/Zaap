@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-#include <maths/MathHelper.h>
+#include <maths/MathUtil.h>
 
 #include <graphics/Renderer.h>
 
@@ -99,9 +99,9 @@ namespace zaap {
 	{
 		return m_Mesh;
 	}
-	void Entity::getTransformationMatrix(Mat4& result) const
+	void Entity::getTransformationMatrix(Mat4* result) const
 	{
-		result = CreateTransformationMatrix(m_Position, m_Rotation, m_Scale);
+		CreateTransformationMatrix(result, m_Position, m_Rotation, m_Scale);
 	}
 	
 	//

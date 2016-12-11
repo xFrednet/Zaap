@@ -1,7 +1,7 @@
 #pragma once
 
 #include <graphics/API/DX/DXCommon.h>
-#include <maths/MathHelper.h>
+#include <maths/MathUtil.h>
 #include "ViewFrustum.h"
 
 #ifndef DEFAULT_FOV

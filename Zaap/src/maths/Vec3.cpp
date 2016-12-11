@@ -254,6 +254,6 @@ namespace zaap {
 	}
 	float AngleDeg(const Vec3& a, const Vec3& b)
 	{
-		return AngleRad(a, b) * 180.0f / PI;
+		return AngleRad(a, b) * 180.0f / ZA_PI;
 	}
 }

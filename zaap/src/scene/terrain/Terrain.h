@@ -74,7 +74,7 @@ namespace zaap { namespace scene {
 
 		//game loop methods
 		void update();
-		void render();
+		void render(const graphics::ViewFrustum& view) const;
 		
 		//render
 		void bindTextures() const;

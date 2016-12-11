@@ -1,6 +1,11 @@
 #pragma once
 
-#define PI 3.1415926535f
+#ifndef ZA_PI
+#	define ZA_PI 3.1415926535f
+#endif
+
+#define ZA_MAX(x, y) ((x > y) ? x : y)
+#define ZA_MIN(x, y) ((x < y) ? x : y) 
 
 #include <maths/Mat4.h>
 
@@ -10,4 +15,4 @@
 
 #include <maths/Plane3D.h>
 
-#include <maths/MathHelper.h>
+#include <maths/MathUtil.h>

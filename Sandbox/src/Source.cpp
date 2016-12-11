@@ -26,7 +26,7 @@ void loadEntitys()
 	clock_t timer = clock();
 	camera = new ControllableCamera(Vec3(12.0f, 12.0f, -1.0f), -90.0f, 30.0f);
 	((ControllableCamera*)camera)->setSpeed(0.25f);
-	Renderer::SetCamera(camera);
+	scene_->setCamera(camera);
 	{
 		lightSetup = new LightSetup();
 
@@ -245,7 +245,7 @@ public:
 			}
 		}
 
-		if (Input::IsKeyDown(ZAAP_VK_T))
+		if (Input::IsKeyDown(ZA_VK_T))
 		{
 			Vec3 p = camera->getPosition();
 			p.Y = terrain_->getHeight(Vec2(p.X, p.Z));
@@ -254,7 +254,7 @@ public:
 			if (log % 10 == 0)
 				ZAAP_INFO(std::to_string(p.Y));
 		}
-		if (Input::IsKeyDown(ZAAP_VK_X))
+		if (Input::IsKeyDown(ZA_VK_X))
 		{
 			Vec3 p = camera->getPosition();
 			p.Y = terrain_->getHeight(Vec2(p.X, p.Z)) + 1.9f;

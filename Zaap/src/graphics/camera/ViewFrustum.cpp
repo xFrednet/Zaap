@@ -31,7 +31,7 @@ namespace zaap { namespace graphics {
 		m_NearPlane = nearPlane;
 		m_FarPlane = farPlane;
 
-		float tang = tan(toRadians(m_Angle) / 2.0f);
+		float tang = tan(ToRadians(m_Angle) / 2.0f);
 
 		//nearPlane
 		m_NearPlaneHeight = tang * m_NearPlane;
@@ -216,14 +216,11 @@ namespace zaap { namespace graphics {
 			{
 				if (GetRelation(m_Sides[BACK], tPoints[i]) != ZA_POINT_BELOW)
 				{
-					isVisible = true;
-					break;
+					return true;
 				}
 			}
 
-			if (!isVisible)
-				return false; // behind the camera
+			return false; // behind the camera
 		}
-		return true;
 	}
 }}

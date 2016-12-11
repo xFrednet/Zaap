@@ -31,7 +31,7 @@ namespace zaap { namespace scene {
 		//creation
 		static TerrainPart* CreateTerrainPart(uint vertexX, uint vertexY, uint width, uint height, Terrain* terrain);
 
-		bool isVisible() const;
+		bool isVisible(const graphics::ViewFrustum& view) const;
 
 		//getters
 		uint getVCountHorizontal() const;
@@ -40,7 +40,7 @@ namespace zaap { namespace scene {
 		
 		virtual void cleanup();
 
-		virtual void render() = 0;
+		virtual void render(const graphics::ViewFrustum& view) = 0;
 	};
 	
 	class ZAAP_API TerrainTreePart : public TerrainPart
@@ -52,7 +52,7 @@ namespace zaap { namespace scene {
 
 		void cleanup() override;
 
-		void render() override;
+		void render(const graphics::ViewFrustum& view) override;
 	};
 
 	class ZAAP_API TerrainTreeEndPart : public TerrainPart
@@ -62,7 +62,7 @@ namespace zaap { namespace scene {
 	public:
 		TerrainTreeEndPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain* terrain);
 
-		void render() override;
+		void render(const graphics::ViewFrustum& view) override;
 	};
 
 	class ZAAP_API TerrainNullPart : public TerrainPart
@@ -70,6 +70,6 @@ namespace zaap { namespace scene {
 	public:
 		TerrainNullPart();
 
-		void render() override;
+		void render(const graphics::ViewFrustum& view) override;
 	};
 }}

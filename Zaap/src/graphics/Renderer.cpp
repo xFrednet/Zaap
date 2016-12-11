@@ -92,7 +92,9 @@ namespace zaap { namespace graphics {
 		if (camera)
 			return camera->getViewMatrix();
 		
-		return CreateViewMatrix(Vec3(), 0.0f, 0.0f);
+		Mat4 m;
+		CreateViewMatrix(&m, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
+		return m;
 	}
 
 	//
@@ -121,7 +123,7 @@ namespace zaap { namespace graphics {
 			m_Size.X = 16;
 			m_Size.Y = 9;
 		}
-		m_ProjectionMatrix = CreateProjectionMatrix(m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
+		CreateProjectionMatrix(&m_ProjectionMatrix, m_FOV, (m_Size.X / m_Size.Y), m_NearPlane, m_FarPlane);
 	}
 
 }}

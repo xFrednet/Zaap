@@ -85,7 +85,7 @@ namespace zaap {
 			//update stuff
 			if (update_prog >= 1.0f)
 			{
-				if (Input::IsKeyPressed(ZAAP_VK_P))
+				if (Input::IsKeyPressed(ZA_VK_P))
 				{
 					ZAAP_ALERT("PAUSE");
 					m_Paused = !m_Paused;

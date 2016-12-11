@@ -45,8 +45,8 @@ namespace zaap
 
 		//Getters
 		virtual graphics::Mesh* getMesh();
-		virtual void getTransformationMatrix(Mat4& result) const;
-		virtual bool isVisible();
+		virtual void getTransformationMatrix(Mat4* result) const;
+		//virtual bool isVisible();
 
 		// GameLoop util
 		virtual void update();

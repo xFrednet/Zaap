@@ -5,7 +5,7 @@ namespace zaap {
 	//mouse
 	Vec2 Input::m_MousePosition(0, 0);
 	Vec2 Input::m_MouseMotion(0, 0);
-	bool Input::m_MouseButtonPressed[ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED] = {false};
+	bool Input::m_MouseButtonPressed[ZA_MOUSE_BUTTON_COUNT_SUPPORTED] = {false};
 
 	//keyboard
 	bool Input::m_KeysDown[ZAAP_KEYBOARD_KEY_COUNT_SUPPORTED] = { false };
@@ -34,7 +34,7 @@ namespace zaap {
 	void Input::ClearButtons()
 	{
 		//mouse
-		memset(m_MouseButtonPressed, false, sizeof(bool) * ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED);
+		memset(m_MouseButtonPressed, false, sizeof(bool) * ZA_MOUSE_BUTTON_COUNT_SUPPORTED);
 	}
 
 	//
@@ -42,7 +42,7 @@ namespace zaap {
 	//
 	void Input::MouseButtonEvent(uint button, bool state)
 	{
-		if (button < 0 || button >= ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED) return;
+		if (button < 0 || button >= ZA_MOUSE_BUTTON_COUNT_SUPPORTED) return;
 
 		m_MouseButtonPressed[button] = state;
 	}
@@ -60,7 +60,7 @@ namespace zaap {
 	}
 	bool Input::IsButtonPressed(uint button)
 	{
-		if (button < 0 || button >= ZAAP_MOUSE_BUTTON_COUNT_SUPPORTED) return false;
+		if (button < 0 || button >= ZA_MOUSE_BUTTON_COUNT_SUPPORTED) return false;
 
 		return m_MouseButtonPressed[button];
 	}
@@ -80,6 +80,14 @@ namespace zaap {
 
 		return m_KeysDown[key];
 	}
+	bool Input::IsKeyDown(char key)
+	{
+		if (key >= 'a' && key <= 'z')
+			key -= 'a' - 'A';
+
+		return IsKeyDown((int)key);
+	}
+
 	bool Input::IsKeyPressed(int key)
 	{
 		if (key < 0 && key >= ZAAP_KEYBOARD_KEY_COUNT_SUPPORTED) return false;

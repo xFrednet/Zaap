@@ -12,7 +12,7 @@ namespace zaap { namespace graphics {
 
 	void ControllableCamera::update()
 	{
-		if (Input::IsButtonPressed(ZAAP_MOUSE_LEFT))
+		if (Input::IsButtonPressed(ZA_MOUSE_LEFT))
 		{
 			Vec2 m = Input::GetMouseMotion();
 			addToYaw(m.X * m_MouseSensitivity);
@@ -21,15 +21,15 @@ namespace zaap { namespace graphics {
 
 		Vec3 v(0.0f, 0.0f, 0.0f);
 
-		if (Input::IsKeyDown(ZAAP_VK_W))		v.Z -= m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_A))		v.X -= m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_S))		v.Z += m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_D))		v.X += m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_SPACE))	v.Y += m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_SHIFT))	v.Y -= m_Speed;
-		if (Input::IsKeyDown(ZAAP_VK_E))		v *= 4;
+		if (Input::IsKeyDown(ZA_VK_W))		v.Z -= m_Speed;
+		if (Input::IsKeyDown(ZA_VK_A))		v.X -= m_Speed;
+		if (Input::IsKeyDown(ZA_VK_S))		v.Z += m_Speed;
+		if (Input::IsKeyDown(ZA_VK_D))		v.X += m_Speed;
+		if (Input::IsKeyDown(ZA_VK_SPACE))	v.Y += m_Speed;
+		if (Input::IsKeyDown(ZA_VK_SHIFT))	v.Y -= m_Speed;
+		if (Input::IsKeyDown(ZA_VK_E))		v *= 4;
 
-		float angle = (PI / 180.0f) * m_Yaw;
+		float angle = (ZA_PI / 180.0f) * m_Yaw;
 
 		m_Position.X += v.Z * sin(-angle);
 		m_Position.Z += v.Z * cos(angle);
@@ -40,13 +40,13 @@ namespace zaap { namespace graphics {
 		m_Position.Y += v.Y;
 
 		//info
-		if (Input::IsKeyPressed(ZAAP_VK_I))
+		if (Input::IsKeyPressed(ZA_VK_I))
 		{
 			ZAAP_INFO("Position: " + m_Position.toString());
 		}
 
 		//reset
-		if (Input::IsKeyPressed(ZAAP_VK_R))
+		if (Input::IsKeyPressed(ZA_VK_R))
 		{
 			m_Position = Vec3(12.0f, 12.0f, -1.0f);
 			m_Yaw = -90.0;

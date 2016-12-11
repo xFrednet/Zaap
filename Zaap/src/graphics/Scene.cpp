@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Renderer.h"
 #include <util/Console.h>
+#include <events/Input.h>
 
 namespace zaap { namespace graphics {
 	Scene::~Scene()
@@ -90,6 +91,7 @@ namespace zaap { namespace graphics {
 	//
 	// Util
 	//
+	ViewFrustum frustum;
 	void Scene::render() const
 	{
 		//
@@ -99,10 +101,13 @@ namespace zaap { namespace graphics {
 		{
 			Renderer::SetViewMatrix(m_Camera->getViewMatrix());
 			m_Camera->calculateViewFrustum();
+			frustum = m_Camera->getViewFrustum();
 		}
 		else
 		{
-			Renderer::SetViewMatrix(CreateViewMatrix(Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f));
+			Mat4 m;
+			CreateViewMatrix(&m, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
+			Renderer::SetViewMatrix(m);
 		}
 
 		if (m_LightSetup)
@@ -112,7 +117,7 @@ namespace zaap { namespace graphics {
 		// rendering
 		//
 		if (m_Terrain)
-			m_Terrain->render();
+			m_Terrain->render(frustum);
 		
 		for (uint i = 0; i < m_Entities.size(); i++)
 		{
