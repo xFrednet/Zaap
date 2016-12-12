@@ -26,10 +26,10 @@ namespace zaap { namespace graphics	{ namespace DX {
 		DXContext();
 
 		//getters
-		static DXContext* GetContext(void);
-		static ID3D11Device* GetDevice(void);
-		static ID3D11DeviceContext* GetDevContext(void);
-		static IDXGISwapChain* GetSwapChain(void);
+		static inline DXContext* GetContext(void);
+		static inline ID3D11Device* GetDevice(void);
+		static inline ID3D11DeviceContext* GetDevContext(void);
+		static inline IDXGISwapChain* GetSwapChain(void);
 
 		//debug util
 		static void ReportLiveObjects(void);

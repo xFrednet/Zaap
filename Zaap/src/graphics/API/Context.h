@@ -3,9 +3,6 @@
 #include <Common.h>
 #include <Types.h>
 
-#include <util/Loader.h>
-#include <app/Window.h>
-
 namespace zaap { namespace graphics { namespace API {
 	
 	class ZAAP_API Context
@@ -20,8 +17,8 @@ namespace zaap { namespace graphics { namespace API {
 	public:
 		static void Create();
 
-		static void Cleanup();
-		static void SwapBuffers();
+		static inline void Cleanup();
+		static inline void SwapBuffers();
 	};
 
 }}}

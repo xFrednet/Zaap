@@ -108,6 +108,7 @@ namespace zaap { namespace graphics {
 			Mat4 m;
 			CreateViewMatrix(&m, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
 			Renderer::SetViewMatrix(m);
+			frustum.calculateFrustum(Renderer::GetProjectionMatrix(), m);
 		}
 
 		if (m_LightSetup)

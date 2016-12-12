@@ -1,5 +1,6 @@
 #include <Zaap.h>
 #include <graphics/Font.h>
+#include <util/Loader.h>
 
 using namespace zaap;
 using namespace graphics;
@@ -228,7 +229,7 @@ public:
 		camera->update();
 		lightCube->setPosition(light->getPosition());
 
-		if (camera->getViewFrustum().isVisible(m3->getPosition()))
+		if (camera->getViewFrustum().isSphereVisible(m3->getPosition(), 1))
 		{
 			if (!val)
 			{

@@ -3,6 +3,8 @@
 #include <maths/MathUtil.h>
 
 #include <graphics/Renderer.h>
+#include <graphics/mesh/TexturedMesh.h>
+#include <graphics/mesh/MaterialMesh.h>
 
 namespace zaap {
 	
@@ -112,6 +114,30 @@ namespace zaap {
 	}
 	void Entity::render()
 	{
-		graphics::Renderer::Render(this);
+		using namespace graphics;
+
+		switch (m_Mesh->getType())
+		{
+		case ZA_MESH_TYPE_TEXTURED:
+			Renderer::StartShader(ZA_SHADER_TEXTURE_SHADER);
+
+			((TexturedMesh*)m_Mesh)->getTexture()->bind(0);
+
+			break;
+		case ZA_MESH_TYPE_MATERIAL:
+			Renderer::StartShader(ZA_SHADER_MATERIAL_SHADER);
+
+			((MaterialShader*)Renderer::GetShader(ZA_SHADER_MATERIAL_SHADER))->loadMaterials(((MaterialMesh*)m_Mesh)->getMaterials(), ((MaterialMesh*)m_Mesh)->getMaterialCount());
+			
+			break;
+		default:
+			return;
+		}
+		
+		Mat4 mat;
+		getTransformationMatrix(&mat);
+		Renderer::SetTransformationMatrix(mat);
+
+		m_Mesh->getVertexBuffer()->draw();
 	}
 }

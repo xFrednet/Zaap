@@ -16,28 +16,24 @@ namespace zaap { namespace graphics {
 	Renderer* Renderer::s_Instance = nullptr;
 
 	Renderer::Renderer()
-		: m_ActiveShader(ZA_SHADER_UNKNOWN)
+		: m_ActiveShaderType(ZA_SHADER_UNKNOWN)
 	{
 		Input::AddWindowCallback(ZA_METHOD_1(Renderer::windowCallback));
-
-		m_Camera = new ControllableCamera();
 	}
 
 	void Renderer::startShader(ZA_SHADER_TYPE shader)
 	{
-		if (shader == m_ActiveShader || shader == ZA_SHADER_UNKNOWN) return;
+		if (shader == m_ActiveShaderType || shader == ZA_SHADER_UNKNOWN) return;
 		
-		Shader* cShader = getShader(m_ActiveShader);
+		Shader* cShader = getShader(m_ActiveShaderType);
 		if (cShader)
 			cShader->stop();
 
-		m_ActiveShader = shader;
+		m_ActiveShaderType = shader;
 		
-		cShader = getShader(m_ActiveShader);
+		cShader = getShader(m_ActiveShaderType);
 		if (cShader)
 			cShader->start();
-		
-		m_ActiveShader = ZA_SHADER_UNKNOWN;
 	}
 	Shader* Renderer::getShader(ZA_SHADER_TYPE shader)
 	{
@@ -57,44 +53,31 @@ namespace zaap { namespace graphics {
 		}
 	}
 
+	void Renderer::setTransformationMatrix(const Mat4& matrix)
+	{
+		switch (m_ActiveShaderType)
+		{
+		case ZA_SHADER_TEXTURE_SHADER:
+			m_TextureShader->setTransformationMatrix(matrix);
+			return;
+		case ZA_SHADER_MATERIAL_SHADER:
+			m_MaterialShader->setTransformationMatrix(matrix);
+			return;
+		case ZA_SHADER_TERRAIN_SHADER:
+			m_TerrainShader->setTransformationMatrix(matrix);
+			return;
+		case ZA_SHADER_FONT_SHADER_2D:
+		case ZA_SHADER_UNKNOWN:
+		default:
+			return;
+		}
+	}
+
 	void Renderer::setViewMatrix(const Mat4& mat)
 	{
 		m_MaterialShader->setViewMatrix(mat);
 		m_TextureShader->setViewMatrix(mat);
 		m_TerrainShader->setViewMatrix(mat);
-	}
-
-	//
-	// Camera
-	//
-	void Renderer::setCamera(Camera* camera, bool deleteOldCamera)
-	{
-		if (deleteOldCamera)
-			delete m_Camera;
-
-		m_Camera = camera;
-	}
-	Camera* Renderer::getCamera()
-	{
-		return m_Camera;
-	}
-	ViewFrustum Renderer::getViewFrustum()
-	{
-		Camera *camera = getCamera();
-		if (camera)
-			return camera->getViewFrustum();
-		else
-			return ViewFrustum();
-	}
-	Mat4 Renderer::getViewMatrix()
-	{
-		Camera *camera = getCamera();
-		if (camera)
-			return camera->getViewMatrix();
-		
-		Mat4 m;
-		CreateViewMatrix(&m, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
-		return m;
 	}
 
 	//
@@ -163,6 +146,11 @@ namespace zaap { namespace graphics {
 		return s_Instance->getShader(shader);
 	}
 
+	void Renderer::SetTransformationMatrix(const Mat4& matrix)
+	{
+		s_Instance->setTransformationMatrix(matrix);
+	}
+
 	//
 	//Render
 	//
@@ -187,18 +175,6 @@ namespace zaap { namespace graphics {
 	{
 		if (s_Instance)
 			s_Instance->setViewMatrix(mat);
-	}
-	void Renderer::SetCamera(Camera* camera, bool deleteOldCamera)
-	{
-		s_Instance->setCamera(camera, deleteOldCamera);
-	}
-	Camera* Renderer::GetCamera()
-	{
-		return s_Instance->getCamera();
-	}
-	ViewFrustum Renderer::GetViewFrustum()
-	{
-		return s_Instance->getViewFrustum();
 	}
 
 	//
@@ -229,7 +205,6 @@ namespace zaap { namespace graphics {
 	void Renderer::PrepareFrame()
 	{
 		s_Instance->prepareFrame();
-		s_Instance->m_Camera->calculateViewFrustum();
 	}
 	void Renderer::Cleanup()
 	{
@@ -244,7 +219,6 @@ namespace zaap { namespace graphics {
 		delete s_Instance;
 		ZAAP_CLEANUP_INFO();
 	}
-
 
 	//
 	//getters

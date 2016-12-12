@@ -9,14 +9,14 @@ namespace zaap {
 	//
 	Plane3D::Plane3D()
 		: N(0.0f, 1.0f, 0.0f), 
-		D(1.0f)
+		D(0.0f)
 	{
 	}
-	Plane3D::Plane3D(const float&  a, const float&  b, const float&  c, const float&  d)
+	Plane3D::Plane3D(const float& a, const float& b, const float&  c, const float&  d)
 		: N(a, b, c), D(d)
 	{
 	}
-	Plane3D::Plane3D(const Vec3& n, const float&  d)
+	Plane3D::Plane3D(const Vec3& n, const float& d)
 		: N(n), D(d)
 	{
 	}
@@ -44,6 +44,14 @@ namespace zaap {
 	float Plane3D::getSignedDistance(const Vec3& point) const
 	{
 		return GetSignedDistance(*this, point);
+	}
+	float Plane3D::getUnsignedDistance(const Vec3& point) const
+	{
+		return GetUnsignedDistance(*this, point);
+	}
+	Vec3  Plane3D::getClosestPoint(const Vec3& point) const
+	{
+		return GetClosestPoint(*this, point);
 	}
 	ZA_POINT_RELATION Plane3D::getRelation(const Vec3& point) const
 	{
@@ -82,17 +90,25 @@ namespace zaap {
 
 		return b;
 	}
-	bool    IsPointOnPlane(const Plane3D& a, const Vec3& p)
+	bool    IsPointOnPlane(const Plane3D& a, const Vec3& b)
 	{
-		return ((a.A * p.X + a.B * p.Y + a.C * p.Z + a.D) == 0);
+		return ((a.A * b.X + a.B * b.Y + a.C * b.Z + a.D) == 0);
 	}
-	float   GetSignedDistance(const Plane3D& a, const Vec3& p)
+	float   GetSignedDistance(const Plane3D& a, const Vec3& b)
 	{
-		return (a.A * p.X + a.B * p.Y + a.C * p.Z - a.D) / sqrtf(a.A * a.A + a.B * a.B + a.C * a.C);
+		return (a.A * b.X + a.B * b.Y + a.C * b.Z + a.D);
+	}
+	float GetUnsignedDistance(const Plane3D& a, const Vec3& b)
+	{
+		return abs(a.A * b.X + a.B * b.Y + a.C * b.Z + a.D);
+	}
+	Vec3 GetClosestPoint(const Plane3D& a, const Vec3& b)
+	{
+		return b - a.N * GetSignedDistance(a, b);
 	}
 	ZA_POINT_RELATION GetRelation(const Plane3D& plane, const Vec3& point)
 	{
-		float d = plane.A * point.X + plane.B * point.Y + plane.C * point.Z + plane.D;
+		float d = GetSignedDistance(plane, point);
 		
 		if (d > 0) return ZA_POINT_ABOVE;
 		if (d < 0) return ZA_POINT_BELOW;

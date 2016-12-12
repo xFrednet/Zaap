@@ -58,12 +58,12 @@ namespace zaap { namespace graphics {
 	public:
 
 		//vertex buffer
-		API::VertexBuffer* getVertexBuffer(void) const;
-		uint getVertexCount(void) const;
+		API::VertexBuffer* getVertexBuffer() const;
+		uint getVertexCount() const;
 
-		String getName(void) const;
+		String getName() const;
 
-		ZA_MESH_TYPE getType(void) const;
+		ZA_MESH_TYPE getType() const;
 		ZA_SHADER_TYPE getTargetShader() const;
 	};
 

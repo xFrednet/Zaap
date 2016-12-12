@@ -14,6 +14,7 @@
 #include <events/Input.h>
 
 #include <time.h>
+#include "Window.h"
 
 namespace zaap {
 

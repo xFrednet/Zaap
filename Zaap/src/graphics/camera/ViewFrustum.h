@@ -31,6 +31,7 @@ namespace zaap { namespace graphics {
 
 		bool isVisible(const Vec3 &point) const;
 		bool isCuboidVisible(const Vec3 &min, const Vec3 &max) const;
+		bool isSphereVisible(const Vec3& position, const float& radius) const;
 	};
 
 }}

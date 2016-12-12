@@ -14,15 +14,13 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon = DXContext::GetDevContext();
 		m_Dev = DXContext::GetDevice();
 		
-		resize(852, 480);
+		resize(Window::GetWidth(), Window::GetHeight());
 
 		initRasterizerState();
 		initBlendState();
 		initDepthBuffer();
 		
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-		setCamera(new Camera()); //TODO remove default camera 
 	}
 
 	//
@@ -262,7 +260,6 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXRenderer::setRenderTargets(ID3D11RenderTargetView* renderTargetView, ID3D11DepthStencilView* depthStencilView) const
 	{
 		m_Devcon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
-		//m_Devcon->OMSetRenderTargets(1, &renderTargetView, NULL);
 	}
 
 	void DXRenderer::setDepthTestState(bool enable)
@@ -293,17 +290,9 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-		Mat4 matrix = getViewMatrix();
-		m_TextureShader->setViewMatrix(matrix);
-		m_TerrainShader->setViewMatrix(matrix);
-		m_MaterialShader->setViewMatrix(matrix);
+		m_MaterialShader->setCameraPosition(Vec3());
 
-		if (m_Camera) 
-			m_MaterialShader->setCameraPosition(m_Camera->getPosition());
-		else 
-			m_MaterialShader->setCameraPosition(Vec3());
-
-		//TODO improve Method
+		//TODO improve Method 
 	}
 
 	void DXRenderer::render(const scene::Terrain const* terrain)
@@ -311,47 +300,6 @@ namespace zaap { namespace graphics { namespace DX {
 		m_TerrainShader->start();
 
 		m_TerrainShader->setTransformationMatrix(Mat4(1.0f));
-	}
-
-	void DXRenderer::render(Entity* entity)
-	{
-		Mesh* mesh = entity->getMesh();
-		
-		//Matrix
-		entity->getTransformationMatrix(&matrix_);
-
-		//Texture
-		if (mesh->getType() == ZA_MESH_TYPE_TEXTURED)
-		{
-			m_TextureShader->start();
-
-			((TexturedMesh*)mesh)->getTexture()->bind(0);
-
-			m_TextureShader->setTransformationMatrix(matrix_);
-
-			mesh->getVertexBuffer()->bind(0);
-		} else if (mesh->getType() == ZA_MESH_TYPE_MATERIAL)
-		{
-			m_MaterialShader->start();
-			MaterialMesh* mMesh = (MaterialMesh*)mesh;
-
-			m_MaterialShader->setTransformationMatrix(matrix_);
-			
-			m_MaterialShader->loadMaterials(mMesh->getMaterials(), mMesh->getMaterialCount());
-
-			mesh->getVertexBuffer()->bind(0);
-		} else
-		{
-			return;
-		}
-
-		//rendering
-		m_Devcon->DrawIndexed(mesh->getVertexCount(), 0, 0);
-	}
-
-	ViewFrustum DXRenderer::getViewFrustum()
-	{
-		return m_Camera->getViewFrustum();
 	}
 
 	void DXRenderer::cleanup()

@@ -31,7 +31,7 @@ namespace zaap { namespace graphics {
 		m_NearPlane = nearPlane;
 		m_FarPlane = farPlane;
 
-		float tang = tan(ToRadians(m_Angle) / 2.0f);
+		float tang = tanf(ToRadians(m_Angle) / 2.0f);
 
 		//nearPlane
 		m_NearPlaneHeight = tang * m_NearPlane;
@@ -210,8 +210,6 @@ namespace zaap { namespace graphics {
 
 		//far plane test
 		{
-			isVisible = false;
-
 			for (i = 0; i < 8; i++)
 			{
 				if (GetRelation(m_Sides[BACK], tPoints[i]) != ZA_POINT_BELOW)
@@ -222,5 +220,15 @@ namespace zaap { namespace graphics {
 
 			return false; // behind the camera
 		}
+	}
+
+	bool ViewFrustum::isSphereVisible(const Vec3& position, const float& radius) const
+	{
+		for (uint i = 0; i < 8; i++)
+		{
+			if (m_Sides[i].getSignedDistance(position) < -radius)
+				return false;
+		}
+		return true;
 	}
 }}

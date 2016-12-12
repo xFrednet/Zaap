@@ -178,6 +178,7 @@
     <ClCompile Include="src\graphics\mesh\TexturedMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshManager.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\types\FontShader2D.cpp" />
     <ClCompile Include="src\graphics\shader\types\MaterialShader.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="src\graphics\mesh\TexturedMesh.h" />
     <ClInclude Include="src\graphics\mesh\MeshManager.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
+    <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\types\FontShader2D.h" />

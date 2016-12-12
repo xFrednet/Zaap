@@ -24,9 +24,7 @@ namespace zaap { namespace graphics {
 		float m_FarPlane = 1000.0f;
 		Mat4 m_ProjectionMatrix;
 
-		Camera* m_Camera;
-
-		ZA_SHADER_TYPE m_ActiveShader;
+		ZA_SHADER_TYPE m_ActiveShaderType;
 		FontShader2D* m_FontShader2D;
 		MaterialShader *m_MaterialShader;
 		TextureShader *m_TextureShader;
@@ -41,15 +39,12 @@ namespace zaap { namespace graphics {
 		Shader* getShader(ZA_SHADER_TYPE shader);
 
 		//Render
+		void setTransformationMatrix(const Mat4& matrix);
 		virtual void render(const scene::Terrain const *terrainTile) = 0;
 		virtual void render(Entity* model) = 0;
 
 		//Camera
 		virtual void setViewMatrix(const Mat4& mat);
-		virtual void setCamera(Camera* camera, bool deleteOldCamera = true);
-		virtual Camera* getCamera();
-		virtual ViewFrustum getViewFrustum();
-		virtual Mat4 getViewMatrix();
 
 		//Render options
 		virtual void setDepthTestState(bool enable) = 0;
@@ -64,37 +59,39 @@ namespace zaap { namespace graphics {
 		void caluclateProjectionMatrix();
 
 	public:
+		virtual ~Renderer()
+		{
+		}
+
 		//Init
 		static void Init();
 
 		//Shader stuff
-		static void StartShader(ZA_SHADER_TYPE shader);
-		static Shader* GetShader(ZA_SHADER_TYPE shader);
+		static inline void StartShader(ZA_SHADER_TYPE shader);
+		static inline Shader* GetShader(ZA_SHADER_TYPE shader);
 
 		//Render
-		static void Render(const scene::Terrain const *terrainTile);
-		static void Render(Entity* model);
-		static void RenderEntityArray(const std::vector<Entity*>& models);
+		static inline void SetTransformationMatrix(const Mat4& matrix);
+		static inline void Render(const scene::Terrain const *terrainTile);
+		static inline void Render(Entity* model);
+		static inline void RenderEntityArray(const std::vector<Entity*>& models);
 		
 		//Camera
-		static void SetViewMatrix(const Mat4& mat);
-		static void SetCamera(Camera* camera, bool deleteOldCamera = true);
-		static Camera* GetCamera();
-		static ViewFrustum GetViewFrustum();
+		static inline void SetViewMatrix(const Mat4& mat);
 
 		//Setters
-		static void LoadLightSetup(LightSetup* lightSetup);
+		static inline void LoadLightSetup(LightSetup* lightSetup);
 
 		//Render options 
-		static void SetDepthTestState(bool enable);
-		static void SetAlphaChanelState(bool enable);
+		static inline void SetDepthTestState(bool enable);
+		static inline void SetAlphaChanelState(bool enable);
 		
 		//Util
-		static void PrepareFrame();
-		static void Cleanup();
+		static inline void PrepareFrame();
+		static inline void Cleanup();
 
 		//getters
-		static Mat4 GetProjectionMatrix();
+		static inline Mat4 GetProjectionMatrix();
 
 	};
 
