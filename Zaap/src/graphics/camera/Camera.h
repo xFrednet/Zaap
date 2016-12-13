@@ -4,10 +4,6 @@
 #include <maths/MathUtil.h>
 #include "ViewFrustum.h"
 
-#ifndef DEFAULT_FOV
-#	define DEFAULT_FOV 90.0f
-#endif
-
 namespace zaap { namespace graphics {
 		
 	class ZAAP_API Camera
@@ -17,9 +13,6 @@ namespace zaap { namespace graphics {
 
 		float m_Yaw;
 		float m_Pitch;
-		
-		float m_FOV;
-		float m_FOVRatio;
 
 		ViewFrustum m_Frustum;
 		
@@ -28,7 +21,7 @@ namespace zaap { namespace graphics {
 		{
 		}
 
-		Camera(const Vec3 &position = Vec3(), const float &yaw = 0, const float & pitch = 0, const float & fov = DEFAULT_FOV, const float & fovRatio = 1.775f);
+		Camera(const Vec3 &position = Vec3(), const float& yaw = 0, const float& pitch = 0);
 		Camera(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up);
 
 		virtual void update();

@@ -15,7 +15,7 @@ namespace zaap { namespace graphics {
 		float m_MouseSensitivity = 0.05f;
 
 	public:
-		ControllableCamera(const Vec3 &position = Vec3(), float yaw = 0, float pitch = 0, float fov = DEFAULT_FOV, float fovRatio = 1.775f);
+		ControllableCamera(const Vec3 &position = Vec3(), float yaw = 0, float pitch = 0, float fov = ZA_DEFAULT_FOV, float fovRatio = 1.775f);
 
 		void update() override;
 

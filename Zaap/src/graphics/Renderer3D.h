@@ -10,6 +10,10 @@
 #include "API/Texture2D.h"
 #include "camera/ViewFrustum.h"
 
+#ifndef ZA_DEFAULT_FOV
+#	define ZA_DEFAULT_FOV 90.0f
+#endif
+
 namespace zaap { namespace graphics {
 	class Scene;
 
@@ -47,12 +51,12 @@ namespace zaap { namespace graphics {
 		Mat4 m_ProjectionMatrix;
 
 		//ViewFrustum
-		ViewFrustum m_ViewFrustum; //TODO add a getter
+		ViewFrustum m_ViewFrustum;
 
 		//Render target
-		API::Texture2D* m_Rendertarget;
-		uint m_Width;
-		uint m_Height;
+		API::Texture2D* m_Rendertarget; //TODO add getters / setters
+		uint m_Width; //TODO add getters / setters
+		uint m_Height; //TODO add getters / setters
 
 		//Shader
 		ZA_SHADER_TYPE  m_ActiveShaderType;
@@ -112,6 +116,7 @@ namespace zaap { namespace graphics {
 		//
 		void loadScene(const Scene const* scene);
 
+
 		// <Function>
 		//      startShader
 		//
@@ -137,14 +142,151 @@ namespace zaap { namespace graphics {
 		//      Returns the requested shader instance or a nullptr in case of failure.
 		Shader* getShader(ZA_SHADER_TYPE shader);
 
+
 		// <Function>
 		//      setAlphaTestingState
 		//
 		// <Description> //TODO add desc
-		virtual void setAlphaTestingState(bool enabled) = 0;
+		virtual void setAlphaTestingState(bool enabled) const = 0;
 		//these two methods just access the "setAlphaTestingState(bool)" method
-		inline void enableAlphaTesting();
-		inline void disableAlphaTesting();
+		inline void enableAlphaTesting() const;
+		inline void disableAlphaTesting() const;
+
+		// <Function>
+		//      setDepthTestingState
+		//
+		// <Description>
+		// TODO Description
+		virtual void setDepthTestingState(bool enable) const = 0;
+		//accessing setDepthTestingState
+		inline void enableDepthTesting() const;
+		inline void disableDepthTesting() const;
+
+		//
+		// Values
+		//
+
+		// <Function>
+		//      getFOV
+		//
+		// <Description>
+		//      Returns the m_FOV value of this Renderer3D.
+		//      m_FOV is used create the m_ProjectionMatrix.
+		//
+		// <Return>
+		//      The current value of m_FOV.
+		//
+		inline float getFOV() const;
+
+		// <Function>
+		//      getFOV
+		//
+		// <Description>
+		//      Sets the m_FOV value of this Renderer3D.
+		//      m_FOV is used create the m_ProjectionMatrix.
+		//
+		// <Input>
+		//      A value for m_FOV.
+		//
+		inline void setFOV(const float& fov);
+
+		// <Function>
+		//      getNearPlane
+		//
+		// <Description>
+		//      Returns the m_NearPlane value of this Renderer3D.
+		//      m_NearPlane is used create the m_ProjectionMatrix.
+		//
+		// <Return>
+		//      The current value of m_NearPlane.
+		//
+		inline float getNearPlane() const;
+
+		// <Function>
+		//      setNearPlane
+		//
+		// <Description>
+		//      Sets the m_NearPlane value of this Renderer3D.
+		//      m_NearPlane is used create the m_ProjectionMatrix.
+		//
+		// <Input>
+		//      A new value for m_NearPlane.
+		//
+		inline void setNearPlane(const float& nearPlane);
+
+		// <Function>
+		//      getFarPlane
+		//
+		// <Description>
+		//      Returns the m_FarPlane value of this Renderer3D.
+		//      m_FarPlane is used create the m_ProjectionMatrix.
+		//
+		// <Return>
+		//      The current value of m_FarPlane.
+		//
+		inline float getFarPlane() const;
+
+		// <Function>
+		//      setFarPlane
+		//
+		// <Description>
+		//      Sets the m_FarPlane value of this Renderer3D.
+		//      m_FarPlane is used create the m_ProjectionMatrix.
+		//
+		// <Input>
+		//      A new value for m_FarPlane.
+		//
+		inline void setFarPlane(const float& farPlane);
+
+		// <Function>
+		//      calulateProjectionMatrix
+		//
+		// <Description>
+		//      Recalculates the current m_ProjectionMatrix for this Renderer3D.
+		//      This method uses the m_FOV, m_NearPlane, m_FarPlane and the size defined
+		//      by m_Width and m_Height.
+		//
+		inline void calulateProjectionMatrix();
+
+		// <Function>
+		//      getProjectionMatrix
+		//
+		// <Description>
+		//      Returns the current m_ProjectionMatrix for this Renderer3D.
+		//      This method only returns the m_ProjectionMatrix. Use 
+		//      calulateProjectionMatrix to recalculate the Matrix. 
+		//      (This is done usually automatically)
+		//
+		// <Returns>
+		//      Returns the current m_ProjectionMatrix.
+		//
+		inline Mat4 getProjectionMatrix() const;
+		
+		// <Function>
+		//      setProjectionmatrix
+		//
+		// <Description>
+		//      Sets the current m_ProjectionMatrix for this Renderer3D.
+		//      This method only sets the m_ProjectionMatrix until it's 
+		//      changed by a different method. this could be caused by resizing or other
+		//      changes.
+		//
+		// <Input>
+		//      The new value for m_ProjectionMatrix.
+		//
+		inline void setProjectionmatrix(const Mat4& projectionMatrix);
+
+		// <Function>
+		//      getViewFrustum
+		//
+		// <Description>
+		//      This returns the current ViewFrustum. It should be updated every
+		//      update by the scene class. (It's set by the camera in loadScene())
+		//
+		// <Resturn>
+		//      Returns the current m_ViewFrustum.
+		//
+		inline ViewFrustum getViewFrustum() const;
 	};
 
 }}
