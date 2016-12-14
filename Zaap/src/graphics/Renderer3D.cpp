@@ -5,7 +5,7 @@
 
 namespace zaap { namespace graphics {
 
-	Renderer3D* Renderer3D::Init()
+	Renderer3D* Renderer3D::CreateNewInstance()
 	{
 		//TODO create a D3D instance
 	}
@@ -22,6 +22,45 @@ namespace zaap { namespace graphics {
 	{
 		m_Width = Window::GetWidth();
 		m_Height = Window::GetWidth();
+	}
+
+	void Renderer3D::cleanupBaseRenderer3D()
+	{
+		if (m_TextureShader)
+		{
+			m_TextureShader->cleanup();
+			delete m_TextureShader;
+			m_TextureShader = nullptr;
+		}
+		if (m_MaterialShader)
+		{
+			m_MaterialShader->cleanup();
+			delete m_MaterialShader;
+			m_MaterialShader = nullptr;
+		}
+		if (m_TerrainShader)
+		{
+			m_TerrainShader->cleanup();
+			delete m_TerrainShader;
+			m_TerrainShader = nullptr;
+		}
+		if (m_FontShader2D)
+		{
+			m_FontShader2D->cleanup();
+			delete m_FontShader2D;
+			m_FontShader2D = nullptr;
+		}
+		if (m_Rendertarget)
+		{
+			//TODO use the Texture::Delete method when it exist
+		}
+
+	}
+
+	void Renderer3D::cleanup()
+	{
+		cleanupAPIRenderer();
+		cleanupBaseRenderer3D();
 	}
 
 	void Renderer3D::loadTransformationMatrix(const Mat4& transformationMatrix) const
@@ -60,6 +99,12 @@ namespace zaap { namespace graphics {
 
 	void Renderer3D::loadScene(const Scene* scene)
 	{
+		if (!scene)
+		{
+			//TODO add error message
+			return;
+		}
+		
 		Mat4 viewMat;
 		viewMat = scene->getCamera()->getViewMatrix();
 		

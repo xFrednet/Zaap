@@ -154,6 +154,7 @@
     <ClCompile Include="src\graphics\API\Context.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXVertexBuffer.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="src\graphics\API\DX\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DX\DXContext.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderer.h" />
+    <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h" />
     <ClInclude Include="src\graphics\API\DX\DXTexture2D.h" />
     <ClInclude Include="src\graphics\API\DX\DXVertexBuffer.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXShader.h" />

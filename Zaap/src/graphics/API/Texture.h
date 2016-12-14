@@ -5,6 +5,8 @@
 
 #pragma warning( disable : 4251)
 
+//TODO add a texture deletion option
+
 namespace zaap { namespace graphics { 
 	
 	class Bitmap;

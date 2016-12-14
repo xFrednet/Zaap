@@ -241,7 +241,10 @@
       <Filter>Source Files\src\maths</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Renderer3D.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -429,7 +432,10 @@
       <Filter>Source Files\src\maths</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Renderer3D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

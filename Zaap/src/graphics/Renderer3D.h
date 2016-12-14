@@ -25,7 +25,7 @@ namespace zaap { namespace graphics {
 	// <Description>
 	//      This class is an abstract class. It could/should be passed for rendering.
 	//      
-	//      The constructor is protected. Use @Init to create a 
+	//      The constructor is protected. Use CreateNewInstance to create a 
 	//      instance for the current API
 	//      
 	class ZAAP_API Renderer3D
@@ -33,7 +33,7 @@ namespace zaap { namespace graphics {
 		//Static constructor
 	public:
 		// <Function>
-		//      Init
+		//      CreateNewInstance
 		//
 		// <Description>
 		//      Creates a Renderer3D for the chosen API.
@@ -41,7 +41,7 @@ namespace zaap { namespace graphics {
 		// <Return>
 		//      The renderer for the chosen API or a nullptr in case of failure.
 		//      
-		Renderer3D* Init();
+		static Renderer3D* CreateNewInstance();
 
 	protected:
 		//Projection Matrix
@@ -55,6 +55,7 @@ namespace zaap { namespace graphics {
 
 		//Render target
 		API::Texture2D* m_Rendertarget; //TODO add getters / setters
+		API::Texture2D* m_DepthStencil; //TODO add getters / setters
 		uint m_Width; //TODO add getters / setters
 		uint m_Height; //TODO add getters / setters
 
@@ -67,13 +68,46 @@ namespace zaap { namespace graphics {
 
 		//Constructor to init values
 		Renderer3D();
+
+		// <Function>
+		//      cleanupBaseRenderer3D
+		//
+		// <Description>
+		//      This method deletes all the values that are created
+		//      using the new operator. (This only includes the values that
+		//      are inside this base Renderer3D)
+		// <Note>
+		//      This is called by the cleanup method. 
+		//      It's called after cleanupAPIRenderer.
+		//
+		void cleanupBaseRenderer3D();
+
+		// <Function>
+		//      cleanupAPIRenderer
+		//
+		// <Description>
+		//      This method should cleanup the content of the API Renderer3D
+		//
+		// <Note>
+		//      This is called by the cleanup method. 
+		//      It's called before cleanupBaseRenderer3D.
+		//
+		virtual void cleanupAPIRenderer() = 0;
 	public:
 		virtual ~Renderer3D() {}
 
-		//////////////////
-		// Shader stuff //
-		//////////////////
+		// <Function>
+		//      cleanup
+		//
+		// <Description>
+		//      This method calls the cleanupAPIRenderer and cleanupBaseRenderer3D
+		//      in the named order to cleanup this class before deleting it.
+		//
+		void cleanup();
 
+	protected:
+		// Shader stuff
+	public:
 		// <Function>
 		//      loadTransformationMatrix
 		//
@@ -112,9 +146,9 @@ namespace zaap { namespace graphics {
 		//          - Current @ViewFrustum
 		//
 		// <Input>
-		//      A Instance of the @Scene.
+		//      A valid instance of the @Scene please.
 		//
-		void loadScene(const Scene const* scene);
+		void loadScene(const Scene* scene);
 
 
 		// <Function>
@@ -142,30 +176,103 @@ namespace zaap { namespace graphics {
 		//      Returns the requested shader instance or a nullptr in case of failure.
 		Shader* getShader(ZA_SHADER_TYPE shader);
 
+	protected:
+		// Frame related
+	public:
+		// <Function>
+		//      prepareFrame
+		//
+		// <Description>
+		//      This method should be called at the start of every Frame.
+		//      It prepares the Frame in some different ways, just call it
+		//      for the greater good of the engine.
+		//      (Note: Some APIs might have some extra functions in here.)
+		//
+		virtual void prepareFrame() const = 0;
 
+		// <Function>
+		//      prepareFrame
+		//
+		// <Description>
+		//      This method should be called at the end of every Frame.
+		//      It presents the Frame by swapping the BackBuffer.
+		//      (Note: Some APIs might have some extra functions in here.)
+		//
+		virtual void presentFrame()  const = 0;
+
+	protected:
+		// Rendering options
+	public:
 		// <Function>
 		//      setAlphaTestingState
 		//
-		// <Description> //TODO add desc
+		// <Description>
+		//      This method disables/enables alpha testing.
+		//      This can be used to disable the alpha channel for 
+		//      objects that should be rendered without that. It should
+		//      also improve the performance. 
+		//      => Enable if you want/need a alpha value disable it 
+		//         otherwise to improve performance.
+		//      
+		// <Input>
+		//      enable      : indicates the new state 
+		//                        true = enabled
+		//                        false = disabled
+		//
 		virtual void setAlphaTestingState(bool enabled) const = 0;
-		//these two methods just access the "setAlphaTestingState(bool)" method
+		// <Function>
+		//      enableAlphaTesting
+		//
+		// <Description>
+		//      This methods excesses setAlphaTestingState to enable
+		//      the alpha testing. So it's just a easier method.
+		//      
 		inline void enableAlphaTesting() const;
+		// <Function>
+		//      disableAlphaTesting
+		//
+		// <Description>
+		//      This methods excesses setAlphaTestingState to disable
+		//      the alpha testing. So it's just a easier method.
+		//
 		inline void disableAlphaTesting() const;
 
 		// <Function>
 		//      setDepthTestingState
 		//
 		// <Description>
-		// TODO Description
+		//      This method disables/enables depth testing. 
+		//      This maybe useful for the GUI and other components
+		//      because they are always rendered in front this could
+		//      save some extra test. It's also useful to control which
+		//      models are rendered to the DepthStencil.
+		//      
+		// <Input>
+		//      enable      : indicates the new state 
+		//                        true = enabled
+		//                        false = disabled
+		//
 		virtual void setDepthTestingState(bool enable) const = 0;
-		//accessing setDepthTestingState
+		// <Function>
+		//      enableDepthTesting
+		//
+		// <Description>
+		//      This methods excesses setDepthTestingState to disable
+		//      depth testing. So it's just a easier method.
+		//
 		inline void enableDepthTesting() const;
+		// <Function>
+		//      disableDepthTesting
+		//
+		// <Description>
+		//      This methods excesses setDepthTestingState to disable
+		//      depth testing. So it's just a easier method.
+		//
 		inline void disableDepthTesting() const;
 
-		//
+	protected:
 		// Values
-		//
-
+	public:
 		// <Function>
 		//      getFOV
 		//
@@ -177,7 +284,6 @@ namespace zaap { namespace graphics {
 		//      The current value of m_FOV.
 		//
 		inline float getFOV() const;
-
 		// <Function>
 		//      getFOV
 		//
@@ -201,7 +307,6 @@ namespace zaap { namespace graphics {
 		//      The current value of m_NearPlane.
 		//
 		inline float getNearPlane() const;
-
 		// <Function>
 		//      setNearPlane
 		//
@@ -225,7 +330,6 @@ namespace zaap { namespace graphics {
 		//      The current value of m_FarPlane.
 		//
 		inline float getFarPlane() const;
-
 		// <Function>
 		//      setFarPlane
 		//
@@ -247,7 +351,6 @@ namespace zaap { namespace graphics {
 		//      by m_Width and m_Height.
 		//
 		inline void calulateProjectionMatrix();
-
 		// <Function>
 		//      getProjectionMatrix
 		//
@@ -261,7 +364,6 @@ namespace zaap { namespace graphics {
 		//      Returns the current m_ProjectionMatrix.
 		//
 		inline Mat4 getProjectionMatrix() const;
-		
 		// <Function>
 		//      setProjectionmatrix
 		//
