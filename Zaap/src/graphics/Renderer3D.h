@@ -66,6 +66,17 @@ namespace zaap { namespace graphics {
 		TerrainShader*  m_TerrainShader;
 		FontShader2D*   m_FontShader2D;
 
+	private:
+		// <Function>
+		//      windowCallback
+		//
+		// <Description>
+		//      The constructor adds this method as a windowCallback function.
+		//      Resize events are passed to the resize method
+		//      
+		void windowCallback(const Event& windowEvent);
+
+	protected:
 		//Constructor to init values
 		Renderer3D();
 
@@ -269,6 +280,23 @@ namespace zaap { namespace graphics {
 		//      depth testing. So it's just a easier method.
 		//
 		inline void disableDepthTesting() const;
+
+		// <Function>
+		//      resize
+		//
+		// <Description>
+		//      This method configures the RenderTarget size and
+		//      some API related things.
+		//      
+		// <Input>
+		//      width   : the new width
+		//      height  : the new height
+		//      
+		// <Note>
+		//      This method will be changed to add extra resize options 
+		//      or to enable the user to set a target frame part
+		//      
+		virtual void resize(uint width, uint height) = 0;
 
 	protected:
 		// Values

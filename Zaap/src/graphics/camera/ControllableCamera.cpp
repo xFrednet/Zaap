@@ -5,8 +5,8 @@
 
 namespace zaap { namespace graphics {
 	
-	ControllableCamera::ControllableCamera(const Vec3& position, float yaw, float pitch, float fov, float fovRatio)
-		: Camera(position, yaw, pitch, fov, fovRatio)
+	ControllableCamera::ControllableCamera(const Vec3& position, float yaw, float pitch)
+		: Camera(position, yaw, pitch)
 	{
 	}
 

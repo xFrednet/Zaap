@@ -2,18 +2,41 @@
 #include <app/Window.h>
 
 #include "Scene.h"
+#include <events/EventManager.h>
+#include <events/WindowEvent.h>
 
+#ifdef ZAAP_INCLUDE_DIRECTX
+#	include "API/DX/DXRenderer3D.h"
+#endif
 namespace zaap { namespace graphics {
 
 	Renderer3D* Renderer3D::CreateNewInstance()
 	{
-		//TODO create a D3D instance
+#ifdef ZAAP_INCLUDE_DIRECTX
+		return new DX::DXRenderer3D();
+#endif
+		return nullptr;
+	}
+
+	void Renderer3D::windowCallback(const Event& windowEvent)
+	{
+		if (windowEvent.getEventType() != WINDOW_RESIZE_EVENT) return;
+		
+		WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
+		m_Width = event->getWidth();
+		m_Height = event->getHeight();
+
+		calulateProjectionMatrix();
+
+		resize(m_Width, m_Height);
+
 	}
 
 	// The shaders should be internalized by API renderer
 	//
 	Renderer3D::Renderer3D()
 		: m_Rendertarget(nullptr),
+		m_DepthStencil(nullptr), 
 		m_ActiveShaderType(ZA_SHADER_UNKNOWN),
 		m_TextureShader(nullptr),
 		m_MaterialShader(nullptr),
@@ -230,7 +253,7 @@ namespace zaap { namespace graphics {
 		if (m_Height == 0) // TODO add a error message
 			aspect = 1.0f;
 		else
-			aspect = m_Width / m_Height;
+			aspect = (float)m_Width / (float)m_Height;
 
 		CreateProjectionMatrix(&m_ProjectionMatrix, m_FOV, aspect, m_NearPlane, m_FarPlane);
 	}
