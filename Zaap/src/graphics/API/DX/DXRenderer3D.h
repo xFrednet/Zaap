@@ -22,6 +22,11 @@ namespace zaap { namespace graphics { namespace DX {
 	class ZAAP_API DXRenderer3D : public Renderer3D
 	{
 	private:
+		//I befriend this class to have a friend. Lucky that isn't the
+		//actual reason. I wanted the constructor to be protected so I
+		//had to befriend him.
+		friend class Renderer3D;
+	private:
 		// <Value>
 		//      m_Dev
 		//
@@ -29,7 +34,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//     This value is only a pointer to the m_Dev value from
 		//     DXContext. So It's just set to null in the cleanup method.
 		//
-		ID3D11DeviceContext** m_Dev;
+		ID3D11Device* m_Dev;
 
 		// <Value>
 		//      m_Devcon
@@ -38,7 +43,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//     This value is only a pointer to the m_Devcon value from
 		//     DXContext. So It's just set to null in the cleanup method.
 		//
-		ID3D11Device**        m_Devcon;
+		ID3D11DeviceContext* m_Devcon;
 
 		// TODO add description
 		ID3D11RasterizerState *m_RasterizerState;
@@ -78,6 +83,10 @@ namespace zaap { namespace graphics { namespace DX {
 	protected:
 		//Constructor to init values
 		DXRenderer3D();
+
+		void initRasterizerState();
+		void initBlendState();
+		void initDepthBuffer();
 
 		// <Function>
 		//      cleanupAPIRenderer (overridden from Renderer3D)
