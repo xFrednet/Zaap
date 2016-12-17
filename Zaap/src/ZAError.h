@@ -1,28 +1,67 @@
 #pragma once
 #include "Common.h"
 
-//ZA_RESULT
+// <Name>
+//      ZA_RESULT
 //  
-//   1 1 1 1 1 1 1
-//   6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1
-//  +-+-------------+---------------+
-//  |R|---Source----|-----Code------|
-//  +-+-------------+---------------+
+// <Structure>
+//       1 1 1 1 1 1 1
+//       6 5 4 3 2 1 0 9 8 7 6 5 4 3 2 1
+//      +-+-------------+---------------+
+//      |R|---Source----|-----Code------|
+//      +-+-------------+---------------+
+//    
+//      R      - Result: 
+//                 0: success
+//                 1: error
+//      
+//      Source - Indicates the source (128 possible sources)
+//      
+//      Code   - The error code (256 possible codes)
 //
-//  R      - Result: 
-//             0: success
-//             1: error
+typedef int16									ZA_RESULT;
+
+// <Name>
+//      ZA_MULTI_RESULT
 //
-//  Source - Indicates the source (128 possible sources)
+// <Description>
+//      This value combines up to four errors. The first error indicates
+//      the main error the following errors are just better specifications.
+//      The first error is put into the first two bytes to support the 
+//      error specific macros like ZA_FAILED and ZA_SUCCEDED.
 //
-//  Code   - The error code (256 possible codes)
+// <Structure>
+//      bits:
+//       6       5       4       4       3       2       1              
+//       4       6       8       0       2       4       6       8      
+//      | byte1 | byte2 | byte3 | byte4 | byte5 | byte6 | byte7 | byte8 |
+//      |  ZA_RESULT 1  |  ZA_RESULT 2  |  ZA_RESULT 3  |  ZA_RESULT 3  |
+//      +---------------+---------------+---------------+---------------+
+//      |               |               |               |               |
+//      +---------------+---------------+---------------+---------------+
+//      
+//      ZA_RESULT 1     - The first ZA_RESULT is the main result use
+//                        ZA_FAILED and/or ZA_SUCCEDED to test if this 
+//                        is an error or a success. (This one should always
+//                        be filled the others are optional.)
 //
-typedef short									ZA_RESULT;
+//      ZA_RESULT 2     - This is the second result. This result is optional.
+//
+//      ZA_RESULT 3     - This is the third result. This result is optional.
+//
+//      ZA_RESULT 4     - This is the fourth result. This result 
+//                        is also optional.
+//
+typedef int64									ZA_MULTI_RESULT;
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // OPERATIONS //
 ////////////////////////////////////////////////////////////////////////////////
-#define ZAAP_TYPEDEF_ZARESULT(x)				short(x)
+#define ZAAP_TYPEDEF_ZARESULT(x)				ZA_RESULT(x)
 
 #define ZA_FAILED(x)   (x < 0)
 #define ZA_SUCCEDED(x) (x >= 0)
@@ -30,32 +69,110 @@ typedef short									ZA_RESULT;
 //submit result
 namespace zaap {
 	ZAAP_API void SubmitZAResult(ZA_RESULT result);
+
+	// <Function>
+	//      CombineZAResults
+	//
+	// <Descripion>
+	//      This method combines the given ZA_RESULTs into a 
+	//      ZA_MULTI_RESULT. The ZA_MULTI_RESULT can be split back into
+	//      the single results.
+	//
+	// <Input>
+	//      result1     : The first and main result. This indicates 
+	//                    result type. (positive / negative)
+	//
+	//      result2     : The second result is optional and logically 
+	//                    the second result.
+	//
+	//      result3     : The third result is optional and logically 
+	//                    the third result.
+	//
+	//      result4     : The fourth result is optional and logically 
+	//                    no not again it's a result okay!?!?!.
+	//
+	// <Return>
+	//      The combined sub-results in from of a ZA_MULTI_RESULT.
+	//
+	ZAAP_API ZA_MULTI_RESULT CombineZAResults(ZA_RESULT result1, 
+		ZA_RESULT result2 = 0x0000,
+		ZA_RESULT result3 = 0x0000,
+		ZA_RESULT result4 = 0x0000);
+
+	// <Function>
+	//      GetZAResults
+	//
+	// <Description>
+	//      This method splits the ZA_MULTI_RESULT into the four
+	//      sub-results.
+	//
+	// <Input>
+	//      multiResult : The ZA_MULTI_RESULT for the requested 
+	//                    sub-results
+	//
+	// <Return>
+	//      This returns a ZA_RESULT array with the fixed size of four.
+	//      The array is created in dynamic memory this means that it 
+	//      should resolve it self after use. (Don't use delete)
+	//      Array structure
+	//          ZA_RESULT[0] = result1
+	//          ZA_RESULT[1] = result2
+	//          ZA_RESULT[2] = result3
+	//          ZA_RESULT[3] = result4
+	//
+	ZAAP_API ZA_RESULT* GetZAResults(ZA_MULTI_RESULT multiResult);
 }
 #ifndef ZA_SUBMIT_ERROR
 #	define ZA_SUBMIT_ERROR(x) zaap::SubmitZAResult(x)
 #endif
+
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // Results //
 ////////////////////////////////////////////////////////////////////////////////
-
 #define ZA_RESULT_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8000)
 #define ZA_RESULT_SUCCESS						ZAAP_TYPEDEF_ZARESULT(0x0000)
 #define ZA_OK									ZAAP_TYPEDEF_ZARESULT(0x0000)
 
+
+
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // Sources //
 ////////////////////////////////////////////////////////////////////////////////
+#define ZA_RESULT_SOURCE_NO_SOURCE				ZAAP_TYPEDEF_ZARESULT(0x0000)
 #define ZA_RESULT_SOURCE_MATH					ZAAP_TYPEDEF_ZARESULT(0x0100)
 #define ZA_RESULT_SOURCE_SYSTEM					ZAAP_TYPEDEF_ZARESULT(0x0200)
 #define ZA_RESULT_SOURCE_API					ZAAP_TYPEDEF_ZARESULT(0x0D00) //API said NO!!!
-#define ZA_RESULT_SOURCE_DIRECTX			ZAAP_TYPEDEF_ZARESULT(0x0E00)
-#define ZA_RESULT_SOURCE_OPENGL				ZAAP_TYPEDEF_ZARESULT(0x0F00) //I'll do that. Some dark day.
+#define ZA_RESULT_SOURCE_DIRECTX				ZAAP_TYPEDEF_ZARESULT(0x0E00)
+#define ZA_RESULT_SOURCE_OPENGL					ZAAP_TYPEDEF_ZARESULT(0x0F00) //I'll do that. Some dark day.
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// ZA_RESULT_SOURCE_NO_SOURCE //
+////////////////////////////////////////////////////////////////////////////////
+#define ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT ZAAP_TYPEDEF_ZARESULT(0x8001)
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // ZA_RESULT_SOURCE_MATH codes //
 ////////////////////////////////////////////////////////////////////////////////
 #define ZA_ERROR_DIVISION_BY_ZERO				ZAAP_TYPEDEF_ZARESULT(0x8101)
 #define ZA_ERROR_MATH_WRONG_CLAMP_VALUES		ZAAP_TYPEDEF_ZARESULT(0x8102)
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // ZA_RESULT_SOURCE_SYSTEM codes //
@@ -92,6 +209,10 @@ namespace zaap {
 // ******************************
 // Memory management
 // ******************************
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // ZA_RESULT_SOURCE_API //
@@ -135,6 +256,10 @@ namespace zaap {
 //      This feature is missing from this API. (Sorry)
 //
 #define ZA_ERROR_API_MISSES_THIS_FEATURE			ZAAP_TYPEDEF_ZARESULT(0x8D02)
+
+
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // ZA_RESULT_SOURCE_API_DIRECTX //
