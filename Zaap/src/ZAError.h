@@ -1,6 +1,16 @@
 #pragma once
 #include "Common.h"
 
+#ifndef ZA_MULTI_RESULT_SIZE
+#	define ZA_MULTI_RESULT_SIZE 8
+#else
+#	if (ZA_MULTI_RESULT_SIZE <= 2) 
+#		pragma message("Zaap ERROR : ZA_MULTI_RESULT_SIZE should be above 2")
+#		undef ZA_MULTI_RESULT_SIZE
+#		define ZA_MULTI_RESULT_SIZE 8
+#	endif
+#endif
+
 // <Name>
 //      ZA_RESULT
 //  
@@ -25,35 +35,265 @@ typedef int16									ZA_RESULT;
 //      ZA_MULTI_RESULT
 //
 // <Description>
-//      This value combines up to four errors. The first error indicates
-//      the main error the following errors are just better specifications.
-//      The first error is put into the first two bytes to support the 
-//      error specific macros like ZA_FAILED and ZA_SUCCEDED.
+//      This value combines multiple ZA_RESULT. New results are added at the 
+//      start of the array. ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+//      indicates that there are too many ZA_RESULTS for ZA_MULTI_RESULT.
 //
-// <Structure>
-//      bits:
-//       6       5       4       4       3       2       1              
-//       4       6       8       0       2       4       6       8      
-//      | byte1 | byte2 | byte3 | byte4 | byte5 | byte6 | byte7 | byte8 |
-//      |  ZA_RESULT 1  |  ZA_RESULT 2  |  ZA_RESULT 3  |  ZA_RESULT 3  |
-//      +---------------+---------------+---------------+---------------+
-//      |               |               |               |               |
-//      +---------------+---------------+---------------+---------------+
+// <Components>
+//      Results : A array that can contain several ZA_RESULTs.
 //      
-//      ZA_RESULT 1     - The first ZA_RESULT is the main result use
-//                        ZA_FAILED and/or ZA_SUCCEDED to test if this 
-//                        is an error or a success. (This one should always
-//                        be filled the others are optional.)
-//
-//      ZA_RESULT 2     - This is the second result. This result is optional.
-//
-//      ZA_RESULT 3     - This is the third result. This result is optional.
-//
-//      ZA_RESULT 4     - This is the fourth result. This result 
-//                        is also optional.
-//
-typedef int64									ZA_MULTI_RESULT;
+//      
+//      
+typedef struct ZAAP_API ZA_MULTI_RESULT_ {
+	ZA_RESULT Results[ZA_MULTI_RESULT_SIZE];
 
+	// <Function>
+	//      operator[]
+	//
+	// <Description>
+	//      This enables the user to access the Results 
+	//      through the square brackets.
+	//      
+	// <Input>
+	//      index : The index of the requested ZA_RESULT.
+	//
+	// <Return>
+	//      The ZA_RESULT for the given index.
+	//
+	ZA_RESULT& operator[](int index);
+
+	// <Function>
+	//      operator[]
+	//
+	// <Description>
+	//      This enables the user to access the Results through
+	//      the square brackets. This method can be used by
+	//      a constant ZA_MULTI_RESULT.
+	//      
+	// <Input>
+	//      index : The index of the requested ZA_RESULT.
+	//
+	// <Return>
+	//      The ZA_RESULT for the given index.
+	//
+	const ZA_RESULT& operator[] (const int index) const;
+
+	// <Function>
+	//      operator+=
+	//
+	// <Descritpion>
+	//      This operator adds the given ZA_RESULT to the start of this 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT. The given arguments are still 
+	//      added in the right order.
+	//
+	// <Note>
+	//      This operator is just a link to AddZAResult()
+	//
+	// <Input>
+	//      other : The ZA_RESULT on the other side of the += operator.
+	//
+	// <Return>
+	//      This returns this instance of the ZA_MULTI_RESULT.
+	//
+	ZA_MULTI_RESULT_& operator+=(const ZA_RESULT& other);
+
+	// <Function>
+	//      operator+=
+	//
+	// <Descritpion>
+	//      This operator adds the given ZA_MULTI_RESULT to the start of this 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT. The given arguments are still 
+	//      added in the right order.
+	//
+	// <Note>
+	//      This operator is just a link to AddZAResult()
+	//
+	// <Input>
+	//      other : The ZA_MULTI_RESULT on the other side of the += operator.
+	//
+	// <Return>
+	//      This returns this instance of the ZA_MULTI_RESULT.
+	//
+	ZA_MULTI_RESULT_& operator+=(const ZA_MULTI_RESULT_& other);
+
+	// <Function>
+	//      operator+
+	//
+	// <Descritpion>
+	//      This operator adds the given ZA_RESULT to the start of this 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT. The given arguments are still 
+	//      added in the right order.
+	//
+	// <Note>
+	//      This operator is just a link to AddZAResult()
+	//
+	// <Input>
+	//      other : The ZA_RESULT on the other side of the + operator.
+	//
+	// <Return>
+	//      This returns the combined results.
+	//
+	inline ZA_MULTI_RESULT_ operator+(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator+
+	//
+	// <Descritpion>
+	//      This operator adds the given ZA_MULTI_RESULT to the start of this 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT. The given arguments are still 
+	//      added in the right order.
+	//
+	// <Note>
+	//      This operator is just a link to AddZAResult()
+	//
+	// <Input>
+	//      other : The ZA_MULTI_RESULT on the other side of the + operator.
+	//
+	// <Return>
+	//      This returns the combined results.
+	//
+	inline ZA_MULTI_RESULT_ operator+(const ZA_MULTI_RESULT_& other) const;
+
+	// <Function>
+	//      operator==
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator==(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator!=
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator!=(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator<
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator<(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator>
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator>(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator<=
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator<=(const ZA_RESULT& other) const;
+
+	// <Function>
+	//      operator>=
+	//
+	// <Description>
+	//      This operator performs the requested operation with
+	//      the first result in the array. This is a quicker excess
+	//      for the first ZA_RESULT.
+	//      This is also important for the test macros.
+	//      
+	// <Note>
+	//      Yes. Yes! I wrote it in a way that I could just copy and past
+	//      it for the other operators
+	//      
+	// <Input>
+	//      other : The ZA_RESULT on the right of the operator
+	//
+	// <Return>
+	//      Returns the test result.
+	//
+	inline bool operator>=(const ZA_RESULT& other) const;
+
+
+} ZA_MULTI_RESULT;
 
 
 
@@ -75,52 +315,163 @@ namespace zaap {
 	//
 	// <Descripion>
 	//      This method combines the given ZA_RESULTs into a 
-	//      ZA_MULTI_RESULT. The ZA_MULTI_RESULT can be split back into
-	//      the single results.
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT the given arguments are still 
+	//      added in the right order.
 	//
+	// <Note>
+	//      Use CombineZAResults({result_0, result_1, result_2}) to combine
+	//      multiple ZA_RESULTS.
+	//      
 	// <Input>
-	//      result1     : The first and main result. This indicates 
-	//                    result type. (positive / negative)
-	//
-	//      result2     : The second result is optional and logically 
-	//                    the second result.
-	//
-	//      result3     : The third result is optional and logically 
-	//                    the third result.
-	//
-	//      result4     : The fourth result is optional and logically 
-	//                    no not again it's a result okay!?!?!.
+	//      results     : This is a list that can take in multiple
+	//                    ZA_RESULT.
 	//
 	// <Return>
 	//      The combined sub-results in from of a ZA_MULTI_RESULT.
 	//
-	ZAAP_API ZA_MULTI_RESULT CombineZAResults(ZA_RESULT result1, 
-		ZA_RESULT result2 = 0x0000,
-		ZA_RESULT result3 = 0x0000,
-		ZA_RESULT result4 = 0x0000);
+	ZAAP_API ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results);
 
 	// <Function>
-	//      GetZAResults
+	//      AddZAResult
 	//
-	// <Description>
-	//      This method splits the ZA_MULTI_RESULT into the four
-	//      sub-results.
-	//
+	// <Descripion>
+	//      This method adds the given ZA_RESULT to the start of the 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT the given arguments are still 
+	//      added in the right order.
+	//      
+	// <Examples>
+	//      Example 1:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, 0x0000)
+	//           + 
+	//          Result_4
+	//           = 
+	//          ZA_MULTI_RESULT(Result_4, Result_1, Result_2, Result_3)
+	//      
+	//      Example 2:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, Result_4)
+	//           + 
+	//          Result_5
+	//           = 
+	//          ZA_MULTI_RESULT(Result_5, Result_1, Result_2, ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT)
+	//      
+	// <Note>
+	//      Use AddZAResults(ZA_MULTI_RESULT, {result_0, result_1, result_2})
+	//      to add multiple ZA_RESULTS.
+	//      
 	// <Input>
-	//      multiResult : The ZA_MULTI_RESULT for the requested 
-	//                    sub-results
+	//      srcResult   : The main ZA_MULTI_RESULT. The results are
+	//                    added at the start of the ZA_MULTI_RESULT.
+	//      result      : The result that should be added to the srcResult.
 	//
 	// <Return>
-	//      This returns a ZA_RESULT array with the fixed size of four.
-	//      The array is created in dynamic memory this means that it 
-	//      should resolve it self after use. (Don't use delete)
-	//      Array structure
-	//          ZA_RESULT[0] = result1
-	//          ZA_RESULT[1] = result2
-	//          ZA_RESULT[2] = result3
-	//          ZA_RESULT[3] = result4
+	//      The combined results in from of a ZA_MULTI_RESULT.
 	//
-	ZAAP_API ZA_RESULT* GetZAResults(ZA_MULTI_RESULT multiResult);
+	ZAAP_API ZA_MULTI_RESULT AddZAResult(ZA_MULTI_RESULT srcResult, ZA_RESULT result);
+
+	// <Function>
+	//      AddZAResults
+	//
+	// <Descripion>
+	//      This method adds the given ZA_RESULTs to the start of the 
+	//      ZA_MULTI_RESULT. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT the given arguments are still 
+	//      added in the right order.
+	//      
+	// <Examples>
+	//      Example 1:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, 0x0000)
+	//           + 
+	//          results(Result_4)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_4, Result_1, Result_2, Result_3)
+	//      
+	//      
+	//      Example 2:
+	//          ZA_MULTI_RESULT(0x0000, 0x0000, 0x0000, 0x0000)
+	//           + 
+	//          results(Result_1, Result_2)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_1, Result_2, 0x0000, 0x0000)
+	//      
+	//      
+	//      Example 3:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, 0x0000)
+	//           + 
+	//          results(Result_4, Result_5)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_4, Result_5, Result_1, ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT)
+	//      
+	// <Note>
+	//      Use AddZAResults(ZA_MULTI_RESULT, {result_0, result_1, result_2})
+	//      to add multiple ZA_RESULTS.
+	//      
+	// <Input>
+	//      srcResult   : The main ZA_MULTI_RESULT. The results are
+	//                    added at the start of the ZA_MULTI_RESULT.
+	//      results     : The results that are added to the srcResult.
+	//                    This is a list that can take in multiple ZA_RESULT.
+	//
+	// <Return>
+	//      The combined results in from of a ZA_MULTI_RESULT.
+	//
+	ZAAP_API ZA_MULTI_RESULT AddZAResults(ZA_MULTI_RESULT srcResult, std::initializer_list<ZA_RESULT> results);
+
+	// <Function>
+	//      CombineZAResult
+	//
+	// <Description>
+	//      This method combines two ZA_MULTI_RESULTS. This is done by
+	//      adding the results from the second ZA_MULTI_RESULTS to the
+	//      start of the new ZA_MULTI_RESULTS. 
+	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      in the last ZA_RESULT the given arguments are still 
+	//      added in the right order.
+	//      
+	// <Examples>
+	//      Example 1:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, 0x0000)
+	//           + 
+	//          ZA_MULTI_RESULT(Result_4, 0x0000, 0x0000, 0x0000)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_4, Result_1, Result_2, Result_3)
+	//      
+	//      
+	//      Example 2:
+	//          ZA_MULTI_RESULT(0x0000, 0x0000, 0x0000, 0x0000)
+	//           + 
+	//          ZA_MULTI_RESULT(Result_1, Result_2, 0x0000, 0x0000)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_1, Result_2, 0x0000, 0x0000)
+	//      
+	//      
+	//      Example 3:
+	//          ZA_MULTI_RESULT(Result_1, Result_2, Result_3, 0x0000)
+	//           + 
+	//          ZA_MULTI_RESULT(Result_4, Result_5, 0x0000, 0x0000)
+	//           = 
+	//          ZA_MULTI_RESULT(Result_4, Result_5, Result_1, ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT)
+	//      
+	//      
+	// <Input>
+	//      mResult1    : The base ZA_MULTI_RESULT
+	//      
+	//      mResult2    : The second ZA_MULTI_RESULT that gets added to
+	//                    the base ZA_MULTI_RESULT.
+	//      
+	// <Return>
+	//      The combined ZA_MULTI_RESULT in from of single a ZA_MULTI_RESULT.
+	//
+	ZAAP_API ZA_MULTI_RESULT CombineZAResults(ZA_MULTI_RESULT mResult1, 
+		ZA_MULTI_RESULT mResult2);
 }
 #ifndef ZA_SUBMIT_ERROR
 #	define ZA_SUBMIT_ERROR(x) zaap::SubmitZAResult(x)
@@ -159,7 +510,6 @@ namespace zaap {
 // ZA_RESULT_SOURCE_NO_SOURCE //
 ////////////////////////////////////////////////////////////////////////////////
 #define ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT ZAAP_TYPEDEF_ZARESULT(0x8001)
-
 
 
 
