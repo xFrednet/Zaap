@@ -14,6 +14,7 @@ Macro names:
 #pragma warning(disable: 4251)
 
 #include <Common.h>
+#include <ZAError.h>
 
 #include <app/Application.h>
 

@@ -159,13 +159,10 @@ namespace zaap { namespace graphics {
 		s_Instance->render(terrainTile);
 	}
 	void Renderer::Render(Entity* entity)
-	{ s_Instance->render(entity); }
+	{ }
 	void Renderer::RenderEntityArray(const std::vector<Entity*>& Entities)
 	{
-		for (uint i = 0; i < Entities.size(); i++)
-		{
-			s_Instance->render(Entities[i]);
-		}
+
 	}
 
 	//

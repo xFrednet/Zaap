@@ -286,7 +286,7 @@ public:
 	}
 };
 
-int main(void)
+int main2(void)
 {
 	zaap::UUID id;
 	RandomUUID(&id);

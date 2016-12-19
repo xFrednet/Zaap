@@ -84,10 +84,42 @@ namespace zaap { namespace graphics { namespace DX {
 		//Constructor to init values
 		DXRenderer3D();
 
-		void initRasterizerState();
-		void initBlendState();
-		void initDepthBuffer();
+	private:
+		// <Function>
+		//      initRasterizerState
+		//
+		// <Description>
+		//      This initializes m_RasterizerState with the 
+		//      requested options.
+		//
+		// <Note>
+		//      This is a part of the initializations process.
+		//
+		ZA_RESULT initRasterizerState();
 
+		// <Function>
+		//      initBlendState
+		//
+		// <Description>
+		//      This initializes the m_BlendState array.
+		//
+		// <Note>
+		//      This is a part of the initializations process.
+		//
+		ZA_RESULT initBlendState();
+		
+		// <Function>
+		//      initDepthBuffer
+		//
+		// <Description>
+		//      This initializes the values concerning the depth buffer.
+		//
+		// <Note>
+		//      This is a part of the initializations process.
+		//
+		ZA_RESULT initDepthBuffer();
+
+	protected:
 		// <Function>
 		//      cleanupAPIRenderer (overridden from Renderer3D)
 		//

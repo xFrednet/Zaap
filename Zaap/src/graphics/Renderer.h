@@ -41,7 +41,6 @@ namespace zaap { namespace graphics {
 		//Render
 		void setTransformationMatrix(const Mat4& matrix);
 		virtual void render(const scene::Terrain const *terrainTile) = 0;
-		virtual void render(Entity* model) = 0;
 
 		//Camera
 		virtual void setViewMatrix(const Mat4& mat);

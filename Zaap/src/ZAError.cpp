@@ -3,9 +3,16 @@
 #include <util/Console.h>
 #include "maths/Maths.h"
 
+
 //
 // ZA_MULTI_RESULT_
 //
+ZA_MULTI_RESULT_::ZA_MULTI_RESULT_()
+{
+	for (uint i = 0; i < ZA_MULTI_RESULT_SIZE; i++)
+		Results[i] = ZA_OK;
+}
+
 ZA_RESULT& ZA_MULTI_RESULT_::operator[](int index)
 {
 	if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
@@ -110,6 +117,8 @@ namespace zaap
 
 		//moves all results one back (- 1 to stay inbounds)
 		memcpy(&result[1], &srcResult[0], sizeof(ZA_RESULT) * (ZA_MULTI_RESULT_SIZE - 1));
+
+		result[0] = addResult;
 
 		if (!enoughSpace)
 			result[ZA_MULTI_RESULT_SIZE - 1] = ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT;

@@ -46,6 +46,8 @@ typedef int16									ZA_RESULT;
 //      
 typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 	ZA_RESULT Results[ZA_MULTI_RESULT_SIZE];
+	
+	ZA_MULTI_RESULT_();
 
 	// <Function>
 	//      operator[]
@@ -636,10 +638,26 @@ namespace zaap {
 // <Message>
 //      A error accord somewhere within a Direct X object.
 //
+#define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT		ZAAP_TYPEDEF_ZARESULT(0x8E01)
 
 // ******************************
 // Direct X component stuff
 // ******************************
+
+// ####################
+// # Direct X Texture #
+// ####################
+
+// <Name>
+//      ZA_ERROR_DIRECTX_TEXTURE_ERROR
+//
+// <Description>
+//      A error general concerning a texture from Direct X.
+//
+// <Message>
+//     A texture from Direct X caused a Error
+// 
+#define ZA_ERROR_DIRECTX_TEXTURE_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8E10)
 
 // <Name>
 //      ZA_ERROR_DIRECTX_TEXTURE2D_FILE_ERROR
@@ -663,3 +681,13 @@ namespace zaap {
 //
 #define ZA_ERROR_DIRECTX_TEXTURE2D_CREATION_ERROR	ZAAP_TYPEDEF_ZARESULT(0x8E12)
 
+// #######################
+// # Direct X BlendState #
+// #######################
+// <Name>
+//     ZA_ERROR_DIRECTX_BLENDSTATE_CREATION_ERROR
+//
+// <Message>
+//     Direct X failed to create a BlendState with the requested options.
+//
+#define ZA_ERROR_DIRECTX_BLENDSTATE_CREATION_ERROR	ZAAP_TYPEDEF_ZARESULT(0x8E21)
