@@ -182,7 +182,7 @@ namespace zaap { namespace graphics { namespace DX {
 		// release all renderTargetViews
 		//
 		{
-			m_Devcon->OMGetRenderTargets(0, nullptr, nullptr);
+			m_Devcon->OMSetRenderTargets(0, nullptr, nullptr);
 			ZAAP_DXRELEASE(m_RenderTargetView);
 			ZAAP_DXRELEASE(m_DepthStencil);
 			ZAAP_DXRELEASE(m_DepthStencilView);

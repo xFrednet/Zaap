@@ -286,6 +286,21 @@ public:
 	}
 };
 
+int main()
+{
+
+	Vec3 a(1, 2, 3);
+	Vec3 b(-4, 3, 1);
+
+	Vec3 n = Cross(a, b);
+
+	cout << n.toString() << endl;
+
+	system("pause");
+
+	return 0;
+}
+
 int main2(void)
 {
 	zaap::UUID id;
