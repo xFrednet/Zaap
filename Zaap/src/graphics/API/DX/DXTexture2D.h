@@ -25,11 +25,27 @@ namespace zaap { namespace graphics { namespace DX {
 		DXTexture2D(String name, String filePath);
 		DXTexture2D(String name, Bitmap image);
 
+		// <Constructor>
+		//      DXTexture2D
+		//
+		// <Description>
+		//      This method creates a DXTexture2D from a given 
+		//      direct X texture2D. 
+		//      The second parameter indicates if the other stuff 
+		//      should be created or not.
+		//      
+		// <Input>
+		//      texture           : The texture object from DirectX.
+		//      
+		//      createShaderStuff : Indicates if the other stuff 
+		//                          should be created.
+		DXTexture2D(ID3D11Texture2D *texture, bool createShaderStuff = true);
+
 	protected:
-		void init(byte const *byte, ZA_FORMAT format);
+		ZA_RESULT init(byte const *byte, ZA_FORMAT format);
 
 	public:
-		void bind(uint slot = 0) override;
+		ZA_RESULT bind(uint slot = 0) override;
 		void unbind(uint slot = 0) override;
 
 		void cleanup() override;

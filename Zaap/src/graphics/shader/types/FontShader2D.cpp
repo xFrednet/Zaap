@@ -5,6 +5,9 @@
 namespace zaap { namespace graphics {
 	void FontShader2D::calculateBaseMatrix(uint width, uint height)
 	{
+		if (width == 0 || height == 0)
+			ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+
 		m_XPixel = (2.0f / width);
 		m_YPixel = (2.0f / height);
 
@@ -16,8 +19,6 @@ namespace zaap { namespace graphics {
 
 	FontShader2D::FontShader2D()
 	{
-		Input::AddWindowCallback(ZA_METHOD_1(FontShader2D::windowCallback));
-		calculateBaseMatrix(Window::GetWidth(), Window::GetHeight());
 	}
 
 	void FontShader2D::setSize(float size)
@@ -38,16 +39,9 @@ namespace zaap { namespace graphics {
 		loadTextColor();
 	}
 
-	void FontShader2D::windowCallback(const Event& windowEvent)
+	void FontShader2D::setTargetSize(uint width, uint height)
 	{
-		std::cout << windowEvent.toString() << std::endl; //TODO remove debug code
-		if (windowEvent.getEventType() == WINDOW_RESIZE_EVENT)
-		{
-			uint width = ((WindowResizeEvent*)&windowEvent)->getWidth();
-			uint height = ((WindowResizeEvent*)&windowEvent)->getHeight();
-			
-			calculateBaseMatrix(width, height);
-		}
+		calculateBaseMatrix(width, height);
 	}
 
 	ZA_SHADER_TYPE FontShader2D::getShaderType() const

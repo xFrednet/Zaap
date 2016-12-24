@@ -38,7 +38,7 @@ namespace graphics {
 		void setPixelCoords(const uint& x, const uint& y);
 		void setColor(Color color);
 
-		void windowCallback(const Event& windowEvent);
+		void setTargetSize(uint width, uint height);
 
 		ZA_SHADER_TYPE getShaderType() const override;
 

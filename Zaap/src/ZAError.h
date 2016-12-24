@@ -582,7 +582,7 @@ namespace zaap {
 // <Message>
 //      A error accord somewhere within the API construct.
 //
-#define ZA_ERROR_API_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D00)
+#define ZA_ERROR_API_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8D00)
 
 // <Name>
 //      ZA_ERROR_API_UNAVALIlABLE_API
@@ -609,8 +609,57 @@ namespace zaap {
 //
 #define ZA_ERROR_API_MISSES_THIS_FEATURE			ZAAP_TYPEDEF_ZARESULT(0x8D02)
 
+// ******************************
+// * API Components *
+// ******************************
 
+// ###############
+// # API Texture #
+// ###############
 
+// <Name>
+//      ZA_ERROR_API_TEXTURE_ERROR
+//
+// <Description>
+//      A error general concerning a texture from the selected API.
+//
+// <Message>
+//     A texture from the current API caused a Error
+// 
+#define ZA_ERROR_API_TEXTURE_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8D10)
+
+// <Name>
+//      ZA_ERROR_API_TEXTURE2D_CREATION_ERROR
+//
+// <Description>
+//      The Texture2D could not be created for some reason.
+//
+// <Message>
+//      Failed to create a texture2D object for the current API.
+//
+#define ZA_ERROR_API_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D11)
+
+// <Name>
+//      ZA_ERROR_API_TEXTURE_FILE_ERROR
+//
+// <Description>
+//      The file given to Texture2D caused a error.
+//
+// <Note>
+//      The file error might also be included in a ZA_MULTI_RESULT.
+//      
+// <Message>
+//      The file given texture file caused an error.
+//
+#define ZA_ERROR_API_TEXTURE_FILE_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8D12)
+
+// <Name>
+//      ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS
+// 
+// <Message>
+//      The texture has invalid components.
+//      
+#define ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS				ZAAP_TYPEDEF_ZARESULT(0x8D13)
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -643,43 +692,6 @@ namespace zaap {
 // ******************************
 // Direct X component stuff
 // ******************************
-
-// ####################
-// # Direct X Texture #
-// ####################
-
-// <Name>
-//      ZA_ERROR_DIRECTX_TEXTURE_ERROR
-//
-// <Description>
-//      A error general concerning a texture from Direct X.
-//
-// <Message>
-//     A texture from Direct X caused a Error
-// 
-#define ZA_ERROR_DIRECTX_TEXTURE_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8E10)
-
-// <Name>
-//      ZA_ERROR_DIRECTX_TEXTURE2D_FILE_ERROR
-//
-// <Description>
-//      A error inside the DXTexture2D class concerning the given file.
-//
-// <Message>
-//      DXTexture2D revived a error from the file loader.
-//
-#define ZA_ERROR_DIRECTX_TEXTURE2D_FILE_ERROR					ZAAP_TYPEDEF_ZARESULT(0x8E11)
-
-// <Name>
-//      ZA_ERROR_DIRECTX_TEXTURE2D_CREATION_ERROR
-//
-// <Description>
-//      The DXTexture2D could not be created for some reason.
-//
-// <Message>
-//      Failed to create a Direct X texture object.
-//
-#define ZA_ERROR_DIRECTX_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8E12)
 
 // #######################
 // # Direct X BlendState #

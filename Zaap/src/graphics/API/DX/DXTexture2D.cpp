@@ -35,7 +35,7 @@ namespace zaap { namespace graphics { namespace DX {
 		init(image.getPixelArray(), image.getFormat());
 	}
 
-	void DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
+	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
 	{
 		//general declarations
 		HRESULT result;
@@ -127,20 +127,26 @@ namespace zaap { namespace graphics { namespace DX {
 			ZAAP_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));
 		}
 
+		return ZA_OK;
 	}
 
-	void DXTexture2D::bind(uint slot)
+	ZA_RESULT DXTexture2D::bind(uint slot)
 	{
+		
+		if (!m_TextureView && !m_SamplerState)
+			return ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS;
+
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, &m_TextureView);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, &m_SamplerState);
+		return ZA_OK;
 	}
 	void DXTexture2D::unbind(uint slot)
 	{
-		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, 0);
-		DXContext::GetDevContext()->PSSetSamplers(slot, 1, 0);
+		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, nullptr);
+		DXContext::GetDevContext()->PSSetSamplers(slot, 1, nullptr);
 	}
 
-	void DXTexture2D::cleanup() 
+	void DXTexture2D::cleanup()
 	{
 		ZAAP_DXRELEASE(m_Texture);
 		ZAAP_DXRELEASE(m_TextureView);

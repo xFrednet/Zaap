@@ -19,7 +19,7 @@ namespace zaap { namespace graphics { namespace API {
 		uint getWidth(void) const;
 		uint getHeight(void) const;
 
-		virtual void bind(uint slot) = 0;
+		virtual ZA_RESULT bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;
 
 		bool operator==(Texture2D& texture2D) const;

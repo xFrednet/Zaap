@@ -53,8 +53,24 @@ namespace zaap { namespace graphics {
 		//ViewFrustum
 		ViewFrustum m_ViewFrustum;
 
+		// <Value>
+		//      m_HasCustomRenderTarget
+		//
+		// <Description>
+		//      This value indicates the type of render target.
+		//                  
+		//          false:  means that m_RenderTarget is the Texture from the 
+		//                  actual screen. This also means that WindowResizeEvents
+		//                  are handled automatically.
+		//                  
+		//          true:   This means that m_RenderTarget is set by someone
+		//                  or something. WindowResizeEvents are ignored by this
+		//                  renderer.
+		//      
+		bool m_HasCustomRenderTarget = false;
+		
 		//Render target
-		API::Texture2D* m_Rendertarget; //TODO add getters / setters
+		API::Texture2D* m_RenderTarget; //TODO add getters / setters
 		API::Texture2D* m_DepthStencil; //TODO add getters / setters
 		uint m_Width; //TODO add getters / setters
 		uint m_Height; //TODO add getters / setters
@@ -190,6 +206,28 @@ namespace zaap { namespace graphics {
 	protected:
 		// Frame related
 	public:
+		// <Function>
+		//      setCustomRenderTarget
+		//      
+		// <Description>
+		//      This sets a custom render target.
+		//      
+		// <Note>
+		//   1. The API renderers have to bin the texture as a resource 
+		//      this can take time and therefor reduce performance. So please
+		//      please don't change the render target every frame.
+		//      
+		//   2. This method should affect m_HasCustomRenderTarget
+		//        - A valid pointer means that a custom render target is set.
+		//        - A null pointer sets m_HasCustomRenderTarget back to false.
+		//          rendered scenes are now rendered to the screen and 
+		//          WindowResizeEvents effect the render target again.
+		//
+		// <Input>
+		//      target: The new render target. Null is also a valid input.
+		//
+		virtual void setCustomRenderTarget(API::Texture2D* target, uint width, uint height) = 0;
+
 		// <Function>
 		//      prepareFrame
 		//
@@ -378,7 +416,19 @@ namespace zaap { namespace graphics {
 		//      This method uses the m_FOV, m_NearPlane, m_FarPlane and the size defined
 		//      by m_Width and m_Height.
 		//
-		inline void calulateProjectionMatrix();
+		void calulateProjectionMatrix();
+		// <Function>
+		//      updateProjectionMatrix
+		//
+		// <Description>
+		//      This uses calulateProjectionMatrix to calculate a new 
+		//      ProjectionMatrix to load to the shaders. 
+		//
+		// <Note>
+		//      The font shader also need the width and hight for the
+		//      TransformationMatrix. The values are also passed along
+		//
+		void updateProjectionMatrix();
 		// <Function>
 		//      getProjectionMatrix
 		//

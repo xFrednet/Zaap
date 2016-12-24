@@ -31,8 +31,8 @@ namespace zaap { namespace graphics { namespace DX {
 		//      m_Dev
 		//
 		// <Note>
-		//     This value is only a pointer to the m_Dev value from
-		//     DXContext. So It's just set to null in the cleanup method.
+		//      This value is only a pointer to the m_Dev value from
+		//      DXContext. So It's just set to null in the cleanup method.
 		//
 		ID3D11Device* m_Dev;
 
@@ -40,10 +40,18 @@ namespace zaap { namespace graphics { namespace DX {
 		//      m_Devcon
 		//
 		// <Note>
-		//     This value is only a pointer to the m_Devcon value from
-		//     DXContext. So It's just set to null in the cleanup method.
+		//      This value is only a pointer to the m_Devcon value from
+		//      DXContext. So It's just set to null in the cleanup method.
 		//
 		ID3D11DeviceContext* m_Devcon;
+
+		// <Value>
+		//      m_RenderTargetView
+		// 
+		// <Description>
+		//      This is the ling between the render target and direct X.
+		//
+		ID3D11RenderTargetView* m_RenderTargetView;
 
 		// TODO add description
 		ID3D11RasterizerState *m_RasterizerState;
@@ -132,6 +140,31 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		void cleanupAPIRenderer() override;
 	public:
+		// <Function>
+		//      setCustomRenderTarget
+		//      
+		// <Description>
+		//      This sets a custom render target.
+		//      
+		// <Note>
+		//   1. The API renderers have to bin the texture as a resource 
+		//      this can take time and therefor reduce performance. So please
+		//      please don't change the render target every frame.
+		//      
+		//   2. This method should affect m_HasCustomRenderTarget
+		//        - A valid pointer means that a custom render target is set.
+		//        - A null pointer sets m_HasCustomRenderTarget back to false.
+		//          rendered scenes are now rendered to the screen and 
+		//          WindowResizeEvents effect the render target again.
+		//
+		// <Input>
+		//      target: The new render target. Null is also a valid input.
+		//
+		// <Source>
+		//      Copied from Render3D
+		//
+		void setCustomRenderTarget(API::Texture2D* target, uint width, uint height);
+		
 		// <Function>
 		//      prepareFrame (overridden from Renderer3D)
 		//

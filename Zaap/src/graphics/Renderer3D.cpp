@@ -35,7 +35,7 @@ namespace zaap { namespace graphics {
 	// The shaders should be internalized by API renderer
 	//
 	Renderer3D::Renderer3D()
-		: m_Rendertarget(nullptr),
+		: m_RenderTarget(nullptr),
 		m_DepthStencil(nullptr), 
 		m_ActiveShaderType(ZA_SHADER_UNKNOWN),
 		m_TextureShader(nullptr),
@@ -45,6 +45,8 @@ namespace zaap { namespace graphics {
 	{
 		m_Width = Window::GetWidth();
 		m_Height = Window::GetWidth();
+
+		updateProjectionMatrix();
 	}
 
 	void Renderer3D::cleanupBaseRenderer3D()
@@ -73,7 +75,7 @@ namespace zaap { namespace graphics {
 			delete m_FontShader2D;
 			m_FontShader2D = nullptr;
 		}
-		if (m_Rendertarget)
+		if (m_RenderTarget)
 		{
 			//TODO use the Texture::Delete method when it exist
 		}
@@ -179,7 +181,6 @@ namespace zaap { namespace graphics {
 		}
 	}
 
-
 	//
 	// Alpha testing
 	//
@@ -214,7 +215,7 @@ namespace zaap { namespace graphics {
 	void Renderer3D::setFOV(const float& fov)
 	{
 		m_FOV = fov;
-		calulateProjectionMatrix();
+		updateProjectionMatrix();
 	}
 	
 	//
@@ -227,7 +228,7 @@ namespace zaap { namespace graphics {
 	void Renderer3D::setNearPlane(const float& nearPlane)
 	{
 		m_NearPlane = nearPlane;
-		calulateProjectionMatrix();
+		updateProjectionMatrix();
 	}
 
 	//
@@ -240,7 +241,7 @@ namespace zaap { namespace graphics {
 	void Renderer3D::setFarPlane(const float& farPlane)
 	{
 		m_FarPlane = farPlane;
-		calulateProjectionMatrix();
+		updateProjectionMatrix();
 	}
 
 	//
@@ -256,6 +257,20 @@ namespace zaap { namespace graphics {
 			aspect = (float)m_Width / (float)m_Height;
 
 		CreateProjectionMatrix(&m_ProjectionMatrix, m_FOV, aspect, m_NearPlane, m_FarPlane);
+	}
+	void Renderer3D::updateProjectionMatrix()
+	{
+		calulateProjectionMatrix();
+
+		if (m_TextureShader)
+			m_TextureShader->setProjectionMatrix(m_ProjectionMatrix);
+		if (m_MaterialShader)
+			m_MaterialShader->setProjectionMatrix(m_ProjectionMatrix);
+		if (m_TerrainShader)
+			m_TerrainShader->setProjectionMatrix(m_ProjectionMatrix);
+
+		if (m_FontShader2D)
+			m_FontShader2D->setTargetSize(m_Width, m_Height);
 	}
 	Mat4 Renderer3D::getProjectionMatrix() const
 	{

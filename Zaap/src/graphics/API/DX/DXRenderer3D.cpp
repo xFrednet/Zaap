@@ -150,6 +150,53 @@ namespace zaap { namespace graphics { namespace DX {
 		return ZA_OK;
 	}
 
+	void DXRenderer3D::setCustomRenderTarget(API::Texture2D* target, uint width, uint height)
+	{
+		if (!target)
+		{
+			m_HasCustomRenderTarget = false;
+			resize(Window::GetWidth(), Window::GetHeight());
+			return;
+		}
+		//else the texture is a custom render target
+		
+		m_HasCustomRenderTarget = true;
+		m_RenderTarget = target;
+
+		updateProjectionMatrix();
+	}
+	void DXRenderer3D::resize(uint width, uint height)
+	{
+		if (m_HasCustomRenderTarget) return;
+
+		HRESULT hr;
+		m_Width = width;
+		m_Height = height;
+		updateProjectionMatrix();
+
+		//Delete all old objects
+		{
+			m_Devcon->OMSetRenderTargets(0, nullptr, nullptr);
+		
+			//render target
+			ZAAP_DXRELEASE(m_RenderTargetView);
+			m_RenderTarget->cleanup();
+			delete m_RenderTarget;
+
+			//depth stencil
+			ZAAP_DXRELEASE(m_DepthStencilView);
+			m_DepthStencil->cleanup();
+			delete m_DepthStencil;
+		}
+
+		//resizing the buffers
+		{
+			DXContext::GetSwapChain()->ResizeBuffers(0, m_Width, m_Height, DXGI_FORMAT_UNKNOWN, 0);
+
+			ID3D11Texture2D* backbuffer;
+			
+		}
+	}
 	void DXRenderer3D::prepareFrame() const
 	{
 		//m_Devcon->ClearRenderTargetView()
@@ -167,9 +214,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 	}
 
-	void DXRenderer3D::resize(uint width, uint height)
-	{
-	}
 
 	void DXRenderer3D::cleanupAPIRenderer()
 	{
@@ -177,4 +221,5 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Dev = nullptr;
 		m_Devcon = nullptr;
 	}
+
 }}}
