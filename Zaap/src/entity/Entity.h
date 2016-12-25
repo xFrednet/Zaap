@@ -8,6 +8,10 @@
 
 namespace zaap
 {
+	namespace graphics {
+		class Renderer3D;
+	}
+
 	class ZAAP_API Entity
 	{
 	protected:
@@ -50,7 +54,7 @@ namespace zaap
 
 		// GameLoop util
 		virtual void update();
-		virtual void render();
+		virtual void render(graphics::Renderer3D* renderer);
 
 
 	};

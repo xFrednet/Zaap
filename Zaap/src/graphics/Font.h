@@ -11,6 +11,7 @@
 #pragma warning(disable: 4251)
 
 namespace zaap { namespace graphics {
+	class Renderer3D;
 
 	// x = origin                 | x = origin                |   x = origin     (zoomed in) |
 	//                   ^        |                           |   ^                          |
@@ -106,7 +107,7 @@ namespace zaap { namespace graphics {
 
 		//render
 		API::VertexBuffer* getVertexBuffer(String string);
-		void render(API::VertexBuffer *vb);
+		void render(API::VertexBuffer *vb, Renderer3D* renderer);
 
 		//util
 		uint getCharIndex(char c) const;

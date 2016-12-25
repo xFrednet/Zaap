@@ -1,9 +1,15 @@
 #include "Scene.h"
-#include "Renderer.h"
 #include <util/Console.h>
 #include <events/Input.h>
 
 namespace zaap { namespace graphics {
+	Scene::Scene()
+		: m_Terrain(nullptr),
+		m_Camera(nullptr),
+		m_Renderer(nullptr)
+	{
+	}
+
 	Scene::~Scene()
 	{
 		for (uint i = 0; i < m_Entities.size(); i++)
@@ -18,6 +24,11 @@ namespace zaap { namespace graphics {
 			delete m_Terrain;
 		}
 		ZAAP_ALERT("Scene deletion");
+	}
+
+	void Scene::init()
+	{
+		m_Renderer = Renderer3D::CreateNewInstance();
 	}
 
 	/////////////////////
@@ -58,7 +69,6 @@ namespace zaap { namespace graphics {
 	void Scene::setLightSetup(LightSetup* lightSetup)
 	{
 		m_LightSetup = lightSetup;
-		Renderer::LoadLightSetup(lightSetup);
 	}
 	LightSetup* Scene::getLightSetup() const
 	{
@@ -97,33 +107,25 @@ namespace zaap { namespace graphics {
 		//
 		//render preparations
 		//
-		if (m_Camera)
-		{
-			Renderer::SetViewMatrix(m_Camera->getViewMatrix());
-			m_Camera->calculateViewFrustum();
-			frustum = m_Camera->getViewFrustum();
-		}
-		else
-		{
-			Mat4 m;
-			CreateViewMatrix(&m, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
-			Renderer::SetViewMatrix(m);
-			frustum.calculateFrustum(Renderer::GetProjectionMatrix(), m);
-		}
+		m_Renderer->loadScene(this);
 
 		if (m_LightSetup)
-			Renderer::LoadLightSetup(m_LightSetup);
+			m_Renderer->loadLightSetup(*m_LightSetup);
 		
+		m_Renderer->prepareFrame();
+
 		//
 		// rendering
 		//
 		if (m_Terrain)
-			m_Terrain->render(frustum);
+			m_Terrain->render(m_Renderer);
 		
 		for (uint i = 0; i < m_Entities.size(); i++)
 		{
-			m_Entities[i]->render();
+			m_Entities[i]->render(m_Renderer);
 		}
+
+		m_Renderer->presentFrame();
 	}
 	void Scene::update()
 	{
@@ -135,5 +137,8 @@ namespace zaap { namespace graphics {
 		}
 	}
 
-
+	Renderer3D* Scene::getRenderer()
+	{
+		return m_Renderer;
+	}
 }}

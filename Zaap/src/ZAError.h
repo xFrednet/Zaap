@@ -11,6 +11,8 @@
 #	endif
 #endif
 
+
+
 // <Name>
 //      ZA_RESULT
 //  
@@ -629,6 +631,17 @@ namespace zaap {
 #define ZA_ERROR_API_TEXTURE_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8D10)
 
 // <Name>
+//      ZA_ERROR_API_TEXTURE1D_CREATION_ERROR
+//
+// <Description>
+//      The Texture1D could not be created for some reason.
+//
+// <Message>
+//      Failed to create a texture1D object for the current API.
+//
+#define ZA_ERROR_API_TEXTURE1D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D11)
+
+// <Name>
 //      ZA_ERROR_API_TEXTURE2D_CREATION_ERROR
 //
 // <Description>
@@ -637,7 +650,18 @@ namespace zaap {
 // <Message>
 //      Failed to create a texture2D object for the current API.
 //
-#define ZA_ERROR_API_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D11)
+#define ZA_ERROR_API_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D12)
+
+// <Name>
+//      ZA_ERROR_API_TEXTURE3D_CREATION_ERROR
+//
+// <Description>
+//      The Texture3D could not be created for some reason.
+//
+// <Message>
+//      Failed to create a texture3D object for the current API.
+//
+#define ZA_ERROR_API_TEXTURE3D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D13)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE_FILE_ERROR
@@ -651,7 +675,7 @@ namespace zaap {
 // <Message>
 //      The file given texture file caused an error.
 //
-#define ZA_ERROR_API_TEXTURE_FILE_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8D12)
+#define ZA_ERROR_API_TEXTURE_FILE_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8D14)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS
@@ -659,8 +683,7 @@ namespace zaap {
 // <Message>
 //      The texture has invalid components.
 //      
-#define ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS				ZAAP_TYPEDEF_ZARESULT(0x8D13)
-
+#define ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS				ZAAP_TYPEDEF_ZARESULT(0x8D15)
 
 ////////////////////////////////////////////////////////////////////////////////
 // ZA_RESULT_SOURCE_API_DIRECTX //

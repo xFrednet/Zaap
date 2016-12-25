@@ -153,7 +153,6 @@
     <ClCompile Include="src\events\WindowEvent.cpp" />
     <ClCompile Include="src\graphics\API\Context.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp" />
-    <ClCompile Include="src\graphics\API\DX\DXRenderer.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXVertexBuffer.cpp" />
@@ -178,7 +177,6 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\mesh\TexturedMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshManager.cpp" />
-    <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\types\FontShader2D.cpp" />
@@ -214,7 +212,6 @@
     <ClInclude Include="src\graphics\API\Context.h" />
     <ClInclude Include="src\graphics\API\DX\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DX\DXContext.h" />
-    <ClInclude Include="src\graphics\API\DX\DXRenderer.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h" />
     <ClInclude Include="src\graphics\API\DX\DXTexture2D.h" />
     <ClInclude Include="src\graphics\API\DX\DXVertexBuffer.h" />
@@ -239,7 +236,6 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\mesh\TexturedMesh.h" />
     <ClInclude Include="src\graphics\mesh\MeshManager.h" />
-    <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />

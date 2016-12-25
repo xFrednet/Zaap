@@ -84,9 +84,6 @@
     <ClCompile Include="src\util\ImageLoader.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Renderer.cpp">
-      <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\API\Context.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClCompile>
@@ -192,9 +189,6 @@
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\DXRenderer.cpp">
-      <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
@@ -262,9 +256,6 @@
     </ClInclude>
     <ClInclude Include="src\util\ImageLoader.h">
       <Filter>Source Files\src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\Renderer.h">
-      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\shader\Shader.h">
       <Filter>Source Files\src\graphics\shader</Filter>
@@ -379,9 +370,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\VertexBuffer.h">
       <Filter>Source Files\src\graphics\API</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\DXRenderer.h">
-      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXTexture2D.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>

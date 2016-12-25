@@ -26,7 +26,7 @@ namespace zaap { namespace graphics {
 
 		virtual void update();
 		virtual Mat4 getViewMatrix();
-		inline void calculateViewFrustum();
+		inline void calculateViewFrustum(const Mat4& projectionMatrix);
 		// This function returns the last calculated ViewFrustum use calculateViewFrustum()
 		// to calculate the frustum
 		inline ViewFrustum getViewFrustum() const;

@@ -1,7 +1,6 @@
 ﻿#include "TerrainPart.h"
 
 #include "Terrain.h"
-#include <graphics/Renderer.h>
 
 //
 // Terrain

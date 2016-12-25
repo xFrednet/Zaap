@@ -26,7 +26,7 @@ Macro names:
 #include <scene/terrain/Terrain.h>
 
 #include <graphics/Scene.h>
-#include <graphics/Renderer.h>
+#include <graphics/Renderer3D.h>
 #include <graphics/Bitmap.h>
 #include <graphics/Color.h>
 #include <graphics/Material.h>

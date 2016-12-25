@@ -9,7 +9,7 @@ namespace zaap { namespace graphics { namespace API {
 	
 	std::vector<Texture*> Texture::s_Textures;
 
-	Texture::Texture(String &textureName, TextureType textureType)
+	Texture::Texture(const String &textureName, TextureType textureType)
 		: m_TextureName(textureName),
 		m_TextureType(textureType)
 	{

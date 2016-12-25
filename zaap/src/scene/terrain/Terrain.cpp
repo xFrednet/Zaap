@@ -2,7 +2,7 @@
 #include <util/Console.h>
 #include <graphics/TextureManager.h>
 #include <graphics/mesh/Mesh.h>
-#include <graphics/Renderer.h>
+#include <graphics/Renderer3D.h>
 
 //
 // Terrain Desc
@@ -255,12 +255,12 @@ namespace zaap { namespace scene {
 	void Terrain::update()
 	{
 	}
-	void Terrain::render(const graphics::ViewFrustum& view) const
+	void Terrain::render(graphics::Renderer3D* renderer) const
 	{
 		bindTextures();
-		graphics::Renderer::StartShader(graphics::ZA_SHADER_TERRAIN_SHADER);
+		renderer->startShader(graphics::ZA_SHADER_TERRAIN_SHADER);
 
-		m_ParrentNode->render(view);
+		m_ParrentNode->render(renderer->getViewFrustum());
 	}
 
 	void Terrain::bindTextures() const

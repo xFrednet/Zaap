@@ -130,22 +130,27 @@ namespace zaap { namespace graphics {
 			return;
 		}
 		
-		Mat4 viewMat;
-		viewMat = scene->getCamera()->getViewMatrix();
-		
-		//view matrix
-		if (m_TextureShader)
-			m_TextureShader->setViewMatrix(viewMat);
-		if (m_MaterialShader)
+		if (scene->getCamera())
 		{
-			m_MaterialShader->setViewMatrix(viewMat);
-			m_MaterialShader->setCameraPosition(scene->getCamera()->getPosition());
-		}
-		if (m_TerrainShader)
-			m_TerrainShader->setViewMatrix(viewMat);
+			Camera* camera = scene->getCamera();
+			Mat4 viewMat = camera->getViewMatrix();
+		
+			//view matrix
+			if (m_TextureShader)
+				m_TextureShader->setViewMatrix(viewMat);
+			if (m_MaterialShader)
+			{
+				m_MaterialShader->setViewMatrix(viewMat);
+				m_MaterialShader->setCameraPosition(camera->getPosition());
+			}
+			if (m_TerrainShader)
+				m_TerrainShader->setViewMatrix(viewMat);
 
-		//view frustum
-		m_ViewFrustum = scene->getCamera()->getViewFrustum();
+			//view frustum
+			camera->calculateViewFrustum(getProjectionMatrix());
+			m_ViewFrustum = camera->getViewFrustum();
+		}
+
 	}
 
 	void Renderer3D::startShader(ZA_SHADER_TYPE shader)

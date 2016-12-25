@@ -6,6 +6,8 @@
 #pragma warning( disable : 4251)
 
 //TODO add a texture deletion option
+//TODO put texture into a wrapper
+//TODO add a validation method
 
 namespace zaap { namespace graphics { 
 	
@@ -26,7 +28,7 @@ namespace zaap { namespace graphics {
 	*/
 	class ZAAP_API Texture
 	{
-	private:
+	protected:
 		static std::vector<Texture*> s_Textures;
 
 	protected:
@@ -34,7 +36,7 @@ namespace zaap { namespace graphics {
 
 		TextureType m_TextureType;
 	public:
-		Texture(String &textureName, TextureType textureType);
+		Texture(const String &textureName, TextureType textureType);
 		virtual ~Texture();
 
 		// texture creation

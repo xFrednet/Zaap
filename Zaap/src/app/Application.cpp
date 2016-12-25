@@ -5,7 +5,6 @@
 #include <util/Console.h>
 #include <util/StringUtil.h>
 
-#include <graphics/Renderer.h>
 #include <graphics/API/Context.h>
 #include <graphics/TextureManager.h>
 #include <graphics/MaterialManager.h>
@@ -23,7 +22,6 @@ namespace zaap {
 	{
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
-		graphics::Renderer::Init();
 	}
 	void Application::cleanup() const
 	{
@@ -31,7 +29,6 @@ namespace zaap {
 		graphics::MeshManager::Cleanup();
 		graphics::MaterialManager::Cleanup();
 		//TODO add auto (problem with CLI) delete m_Scene;
-		graphics::Renderer::Cleanup();
 		graphics::API::Context::Cleanup();
 		graphics::API::Texture::Cleanup();
 		graphics::API::VertexBuffer::Cleanup();
@@ -123,8 +120,6 @@ namespace zaap {
 
 	void Application::render()
 	{
-		graphics::Renderer::PrepareFrame();
-
 		if (m_Scene) 
 			m_Scene->render();
 	}

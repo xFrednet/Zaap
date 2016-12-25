@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include <util/Console.h>
 #include <events/Input.h>
-#include <graphics/Renderer.h>
+#include <graphics/Renderer3D.h>
 
 namespace zaap { namespace graphics {
 	
@@ -9,13 +9,11 @@ namespace zaap { namespace graphics {
 		: m_Position(position),
 		m_Yaw(yaw), m_Pitch(pitch)
 	{
-		calculateViewFrustum();
 	}
 	Camera::Camera(const Vec3 &position, const Vec3 &lookAt, const Vec3 &up)
 		: m_Position(position),
 		m_Yaw(0), m_Pitch(0)
 	{
-		calculateViewFrustum();
 	}
 
 	void Camera::update()
@@ -26,9 +24,9 @@ namespace zaap { namespace graphics {
 		CreateViewMatrix(&m, m_Position, m_Yaw, m_Pitch);
 		return m; 
 	}
-	void Camera::calculateViewFrustum()
+	void Camera::calculateViewFrustum(const Mat4& projectionMatrix)
 	{
-		m_Frustum.calculateFrustum(Renderer::GetProjectionMatrix(), getViewMatrix());
+		m_Frustum.calculateFrustum(projectionMatrix, getViewMatrix());
 	}
 	ViewFrustum Camera::getViewFrustum() const
 	{

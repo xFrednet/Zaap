@@ -8,6 +8,11 @@
 #include <graphics/mesh/Mesh.h>
 #include <scene/terrain/TerrainPart.h>
 
+namespace zaap {namespace graphics {
+	class Renderer3D;
+}
+}
+
 namespace zaap { namespace scene {
 	
 	struct ZAAP_API TERRAIN_DESC
@@ -74,7 +79,7 @@ namespace zaap { namespace scene {
 
 		//game loop methods
 		void update();
-		void render(const graphics::ViewFrustum& view) const;
+		void render(graphics::Renderer3D* renderer) const;
 		
 		//render
 		void bindTextures() const;

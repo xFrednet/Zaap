@@ -6,7 +6,8 @@
 namespace zaap { namespace graphics { namespace DX {
 	
 	DXTexture2D::DXTexture2D(String name, String filePath)
-		: Texture2D(name)
+		: Texture2D(name),
+		m_Texture(nullptr)
 	{
 		byte* b = nullptr;
 		
@@ -26,13 +27,27 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 
 	DXTexture2D::DXTexture2D(String name, Bitmap image)
-		: Texture2D(name)
+		: Texture2D(name),
+		m_Texture(nullptr)
 	{
 		m_Width = image.getWidth();
 		m_Height = image.getHeight();
 		m_BitsPerPixel = image.getBitsPerPixel();
 
 		init(image.getPixelArray(), image.getFormat());
+	}
+
+	DXTexture2D::DXTexture2D(ID3D11Texture2D* texture, bool createShaderStuff)
+		: Texture2D("given Texture"),
+		m_Texture(texture)
+	{
+		m_Texture->GetDesc(&m_TextureDesc);
+		m_Width = m_TextureDesc.Width;
+		m_Height = m_TextureDesc.Height;
+
+		init(nullptr, ZA_FORMAT_UNKNOWN);
+
+		s_Textures.push_back(this);
 	}
 
 	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
@@ -47,6 +62,10 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		// Texture
 		//
+		if (!bytes && !m_Texture)
+			return ZA_ERROR_API_TEXTURE2D_CREATION_ERROR;
+
+		if (!m_Texture)
 		{
 			//sub resource
 			D3D11_SUBRESOURCE_DATA resource;
@@ -73,9 +92,13 @@ namespace zaap { namespace graphics { namespace DX {
 			if (FAILED(result))
 			{
 				ZAAP_ERROR("Failed to create a Texture2D with the given data.");
-				return;
+				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
+		} else
+		{
+			m_Texture->GetDesc(&m_TextureDesc);
+			DXformat = m_TextureDesc.Format;
 		}
 
 		//
@@ -94,7 +117,7 @@ namespace zaap { namespace graphics { namespace DX {
 			if (FAILED(result))
 			{
 				ZAAP_ERROR("Failed to create a ShaderResourceView.");
-				return;
+				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
 			//TODO add devcon->GenerateMips(m_TextureView);
@@ -122,7 +145,7 @@ namespace zaap { namespace graphics { namespace DX {
 			if (FAILED(result))
 			{
 				ZAAP_ERROR("Failed to create a ShaderResourceView.");
-				return;
+				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));
 		}
@@ -138,6 +161,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, &m_TextureView);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, &m_SamplerState);
+		
 		return ZA_OK;
 	}
 	void DXTexture2D::unbind(uint slot)

@@ -267,22 +267,14 @@ public:
 		//light->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 
-			camera->calculateViewFrustum();
 	}
 	uint timer = 0;
 	bool bTemp = true;
 	void render() override 
 	{
-		if (timer % 100 == 0)
-		{
-			timer++;
-			Renderer::SetAlphaChanelState(bTemp);
-			bTemp = !bTemp;
-		}
-		Renderer::SetAlphaChanelState(true);
 		Application::render();
 
-		font_.render(fontVB);
+		font_.render(fontVB, scene_->getRenderer());
 	}
 };
 
@@ -300,6 +292,8 @@ int main(void)
 		scene_ = new Scene();
 
 		Test t;
+
+		scene_->init();
 	
 		loadEntitys();
 

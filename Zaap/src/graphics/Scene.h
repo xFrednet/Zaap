@@ -7,6 +7,7 @@
 #include <entity/light/LightSetup.h>
 #include <scene/terrain/Terrain.h>
 #include "camera/Camera.h"
+#include "Renderer3D.h"
 
 namespace zaap { namespace graphics {
 	
@@ -20,11 +21,15 @@ namespace zaap { namespace graphics {
 		LightSetup *m_LightSetup = nullptr;
 
 		// Rendering
+		Renderer3D* m_Renderer;
 		Camera *m_Camera;
 
 
 	public:
+		Scene();
 		virtual ~Scene(void);
+
+		void init();
 
 		//
 		// The Environment 
@@ -55,7 +60,6 @@ namespace zaap { namespace graphics {
 		//
 		virtual void render() const;
 		virtual void update();
-		
-
+		inline Renderer3D* getRenderer();
 	};
 }}

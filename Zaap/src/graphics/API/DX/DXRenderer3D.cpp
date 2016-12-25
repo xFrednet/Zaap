@@ -1,13 +1,29 @@
 ﻿#include "DXRenderer3D.h"
+#include "DXTexture2D.h"
+#include "shader/types/DXTextureShader.h"
+#include "shader/types/DXTerrainShader.h"
+#include "shader/types/DXMaterialShader.h"
+#include "shader/types/DXFontShader2D.h"
 
 namespace zaap { namespace graphics { namespace DX {
+	
 	DXRenderer3D::DXRenderer3D()
 	{
 		m_Dev = DXContext::GetDevice();
 		m_Devcon = DXContext::GetDevContext();
 
+		m_TextureShader = new DXTextureShader();
+		m_MaterialShader = new DXMaterialShader();
+		m_TerrainShader = new DXTerrainShader();
+		m_FontShader2D = new DXFontShader2D();
+
 		resize(Window::GetWidth(), Window::GetHeight());
 
+		initRasterizerState();
+		initBlendState();
+		initDepthBuffer();
+
+		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 
 	//
@@ -164,6 +180,22 @@ namespace zaap { namespace graphics { namespace DX {
 		m_RenderTarget = target;
 
 		updateProjectionMatrix();
+		
+		//
+		// View port
+		//
+		D3D11_VIEWPORT viewport;
+		{
+			viewport.TopLeftX = 0;
+			viewport.TopLeftY = 0;
+			viewport.Width = (float)target->getWidth();
+			viewport.Height = (float)target->getHeight();
+			viewport.MinDepth = 0.0f;
+			viewport.MaxDepth = 1.0f;
+
+			m_Devcon->RSSetViewports(1, &viewport);
+		}
+
 	}
 	void DXRenderer3D::resize(uint width, uint height)
 	{
@@ -179,14 +211,20 @@ namespace zaap { namespace graphics { namespace DX {
 			m_Devcon->OMSetRenderTargets(0, nullptr, nullptr);
 		
 			//render target
-			ZAAP_DXRELEASE(m_RenderTargetView);
-			m_RenderTarget->cleanup();
-			delete m_RenderTarget;
+			if (m_RenderTarget)
+			{
+				ZAAP_DXRELEASE(m_RenderTargetView);
+				m_RenderTarget->cleanup();
+				delete m_RenderTarget;
+			}
 
 			//depth stencil
-			ZAAP_DXRELEASE(m_DepthStencilView);
-			m_DepthStencil->cleanup();
-			delete m_DepthStencil;
+			if (m_DepthStencilView)
+			{
+				ZAAP_DXRELEASE(m_DepthStencilView);
+				m_DepthStencil->cleanup();
+				delete m_DepthStencil;
+			}
 		}
 
 		//resizing the buffers
@@ -194,24 +232,92 @@ namespace zaap { namespace graphics { namespace DX {
 			DXContext::GetSwapChain()->ResizeBuffers(0, m_Width, m_Height, DXGI_FORMAT_UNKNOWN, 0);
 
 			ID3D11Texture2D* backbuffer;
-			
+			hr = DXContext::GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backbuffer);
+			//TODO add a error message for hr
+			ZAAP_DXNAME(backbuffer, "DXRenderer3D::m_BackBuffer");
+
+			ZAAP_DXNAME(m_RenderTargetView, "DXRenderer3D::m_RenderTargetView");
+			hr = m_Dev->CreateRenderTargetView(backbuffer, nullptr, &m_RenderTargetView);
+			//TODO add a error message for hr
+
+			m_RenderTarget = new DXTexture2D(backbuffer);
 		}
+
+		//
+		//DepthBuffer
+		//
+		D3D11_TEXTURE2D_DESC dsDesc;
+		{
+			ID3D11Texture2D* depthStencil;
+			
+			dsDesc.Width = width;
+			dsDesc.Height = height;
+			dsDesc.MipLevels = 1;
+			dsDesc.ArraySize = 1;
+			dsDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+			dsDesc.SampleDesc.Count = 1;
+			dsDesc.SampleDesc.Quality = 0;
+			dsDesc.Usage = D3D11_USAGE_DEFAULT;
+			dsDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+			dsDesc.CPUAccessFlags = 0;
+			dsDesc.MiscFlags = 0;
+
+			hr = m_Dev->CreateTexture2D(&dsDesc, NULL, &depthStencil); //NULL = no init data
+			//TODO add a error message for hr
+			ZAAP_DXNAME(depthStencil, "DXRenderer::DepthStencil");
+			hr = m_Dev->CreateDepthStencilView(depthStencil, NULL, &m_DepthStencilView);
+			//TODO add a error message for hr
+			ZAAP_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView");
+
+			m_DepthStencil = new DXTexture2D(depthStencil);
+		}
+		
+		//
+		// View port
+		//
+		D3D11_VIEWPORT viewport;
+		{
+			viewport.TopLeftX = 0;
+			viewport.TopLeftY = 0;
+			viewport.Width = (float)width;
+			viewport.Height = (float)height;
+			viewport.MinDepth = 0.0f;
+			viewport.MaxDepth = 1.0f;
+
+			m_Devcon->RSSetViewports(1, &viewport);
+		}
+
+		m_Devcon->OMSetRenderTargets(1, &m_RenderTargetView, m_DepthStencilView);
+
 	}
 	void DXRenderer3D::prepareFrame() const
 	{
-		//m_Devcon->ClearRenderTargetView()
+		m_Devcon->ClearRenderTargetView(m_RenderTargetView, D3DXCOLOR(1, 0, 1, 1));
+		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	}
 
 	void DXRenderer3D::presentFrame() const
 	{
+		DXContext::SwapBuffers();
 	}
 
 	void DXRenderer3D::setAlphaTestingState(bool enabled) const
 	{
+		float blendFactor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		uint sampleMask = 0xffffffff;
+
+		if (enabled)
+			m_Devcon->OMSetBlendState(m_BlendState[0], blendFactor, sampleMask);
+		else
+			m_Devcon->OMSetBlendState(m_BlendState[1], blendFactor, sampleMask);
 	}
 
 	void DXRenderer3D::setDepthTestingState(bool enable) const
 	{
+		if (enable)
+			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[1], 1);
+		else
+			m_Devcon->OMSetDepthStencilState(m_DepthStencilState[0], 1);
 	}
 
 

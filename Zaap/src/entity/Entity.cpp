@@ -2,9 +2,10 @@
 
 #include <maths/MathUtil.h>
 
-#include <graphics/Renderer.h>
+#include <graphics/Renderer3D.h>
 #include <graphics/mesh/TexturedMesh.h>
 #include <graphics/mesh/MaterialMesh.h>
+#include <graphics/shader/types/MaterialShader.h>
 
 namespace zaap {
 	
@@ -112,22 +113,25 @@ namespace zaap {
 	void Entity::update()
 	{
 	}
-	void Entity::render()
+	void Entity::render(graphics::Renderer3D* renderer)
 	{
 		using namespace graphics;
+
+		if (!renderer->getViewFrustum().isVisible(m_Position))
+			return;
 
 		switch (m_Mesh->getType())
 		{
 		case ZA_MESH_TYPE_TEXTURED:
-			Renderer::StartShader(ZA_SHADER_TEXTURE_SHADER);
+			renderer->startShader(ZA_SHADER_TEXTURE_SHADER);
 
 			((TexturedMesh*)m_Mesh)->getTexture()->bind(0);
 
 			break;
 		case ZA_MESH_TYPE_MATERIAL:
-			Renderer::StartShader(ZA_SHADER_MATERIAL_SHADER);
+			renderer->startShader(ZA_SHADER_MATERIAL_SHADER);
 
-			((MaterialShader*)Renderer::GetShader(ZA_SHADER_MATERIAL_SHADER))->loadMaterials(((MaterialMesh*)m_Mesh)->getMaterials(), ((MaterialMesh*)m_Mesh)->getMaterialCount());
+			((MaterialShader*)renderer->getShader(ZA_SHADER_MATERIAL_SHADER))->loadMaterials(((MaterialMesh*)m_Mesh)->getMaterials(), ((MaterialMesh*)m_Mesh)->getMaterialCount());
 			
 			break;
 		default:
@@ -136,7 +140,7 @@ namespace zaap {
 		
 		Mat4 mat;
 		getTransformationMatrix(&mat);
-		Renderer::SetTransformationMatrix(mat);
+		renderer->loadTransformationMatrix(mat);
 
 		m_Mesh->getVertexBuffer()->draw();
 	}

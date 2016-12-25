@@ -14,7 +14,7 @@ namespace zaap { namespace graphics { namespace API {
 		uint m_Height;
 		uint m_BitsPerPixel;
 	public:
-		Texture2D(String &textureName);
+		Texture2D(const String& textureName);
 
 		uint getWidth(void) const;
 		uint getHeight(void) const;

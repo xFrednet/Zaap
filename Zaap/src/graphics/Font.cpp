@@ -4,7 +4,8 @@
 #include <ft2build.h>
 #include <freetype/freetype.h>
 #include "API/Texture.h"
-#include "Renderer.h"
+#include "shader/types/FontShader2D.h"
+#include "Renderer3D.h"
 
 //
 // ZA_CharMatrix
@@ -386,7 +387,7 @@ namespace zaap { namespace graphics {
 	bool up = true;
 	float size = 0.0;
 	Color color(0.3f, 0.3f, 0.3f, 1.0f);
-	void Font::render(API::VertexBuffer *vb)
+	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
 	{
 		temp += 0.005f;
 		size = 40 + 20 * sin(temp);
@@ -408,14 +409,14 @@ namespace zaap { namespace graphics {
 			}
 		}*/
 
-		Renderer::SetDepthTestState(false);
-		Renderer::StartShader(ZA_SHADER_FONT_SHADER_2D);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
-		((FontShader2D*)Renderer::GetShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
+		renderer->disableDepthTesting();
+		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
 		vb->draw();
-		Renderer::SetDepthTestState(true);
+		renderer->enableDepthTesting();
 
 
 	}
