@@ -38,6 +38,11 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//      Creates a Renderer3D for the chosen API.
 		//
+		// <Note>
+		//      The instance is created using the new statement the requester 
+		//      has to delete the new instance. Please call cleanup beforehand.,
+
+		//      
 		// <Return>
 		//      The renderer for the chosen API or a nullptr in case of failure.
 		//      
@@ -53,11 +58,15 @@ namespace zaap { namespace graphics {
 		//ViewFrustum
 		ViewFrustum m_ViewFrustum;
 
+		////////////////////////////////////////////////////////////////////////////////
+		// render-target
+		////////////////////////////////////////////////////////////////////////////////
+
 		// <Value>
 		//      m_HasCustomRenderTarget
 		//
 		// <Description>
-		//      This value indicates the type of render target.
+		//      This value indicates the type of render-target.
 		//                  
 		//          false:  means that m_RenderTarget is the Texture from the 
 		//                  actual screen. This also means that WindowResizeEvents
@@ -68,10 +77,44 @@ namespace zaap { namespace graphics {
 		//                  renderer.
 		//      
 		bool m_HasCustomRenderTarget = false;
-		
-		//Render target
+
+		// <Value>
+		//      m_RenderTarget
+		// 
+		// <Description>
+		//      This is the rendering target. It can be set 
+		//      to a custom render-target.
+		//
+		// <Note>
+		//      This usually gets created by the API renderer. 
+		//      The last instance gets deleted in the 
+		//      cleanupBaseRenderer3D method. This is only done if 
+		//      m_HasCustomRenderTarget is false.
+		//
 		API::Texture2D* m_RenderTarget; //TODO add getters / setters
-		API::Texture2D* m_DepthStencil; //TODO add getters / setters
+		
+		// <Value>
+		//      m_DepthStencil
+		// 
+		// <Description>
+		//      This is the depth stencil. It has the same 
+		//      size as the render-target. It can't be set by
+		//      from the outside because it corresponds with
+		//      the render-target.
+		//
+		// <Note>
+		//      This usually gets created by the API renderer. 
+		//      The last instance gets deleted in the 
+		//      cleanupBaseRenderer3D method. This is only done if 
+		//      m_HasCustomRenderTarget is false.
+		//
+		API::Texture2D* m_DepthStencil; //TODO add getter
+
+		// <Value>
+		//      m_Width
+		// 
+		// <Description>
+		//      The width of the current render-target
 		uint m_Width; //TODO add getters / setters
 		uint m_Height; //TODO add getters / setters
 
@@ -210,21 +253,21 @@ namespace zaap { namespace graphics {
 		//      setCustomRenderTarget
 		//      
 		// <Description>
-		//      This sets a custom render target.
+		//      This sets a custom render-target.
 		//      
 		// <Note>
-		//   1. The API renderers have to bin the texture as a resource 
+		//   1. The API renderer have to bind the texture as a resource 
 		//      this can take time and therefor reduce performance. So please
-		//      please don't change the render target every frame.
+		//      please don't change the render-target every frame.
 		//      
 		//   2. This method should affect m_HasCustomRenderTarget
-		//        - A valid pointer means that a custom render target is set.
+		//        - A valid pointer means that a custom render-target is set.
 		//        - A null pointer sets m_HasCustomRenderTarget back to false.
 		//          rendered scenes are now rendered to the screen and 
-		//          WindowResizeEvents effect the render target again.
+		//          WindowResizeEvents effect the render-target again.
 		//
 		// <Input>
-		//      target: The new render target. Null is also a valid input.
+		//      target: The new render-target. Null is also a valid input.
 		//
 		virtual void setCustomRenderTarget(API::Texture2D* target, uint width, uint height) = 0;
 

@@ -45,9 +45,9 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Width = m_TextureDesc.Width;
 		m_Height = m_TextureDesc.Height;
 
-		init(nullptr, ZA_FORMAT_UNKNOWN);
+		//init(nullptr, ZA_FORMAT_UNKNOWN);
 
-		s_Textures.push_back(this);
+		//s_Textures.push_back(this);
 	}
 
 	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)

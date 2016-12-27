@@ -10,9 +10,22 @@ namespace ZaapCLI {
 
 	public ref class Scene : public ManagedClass<zaap::graphics::Scene>
 	{
-	private:
 	public:
+		
+		// <Constructor>
+		//      Scene
+		//
+		// <Descripton>
+		//      This creates a new instance of the scene class.
+		//
 		Scene();
+		
+		// <Constructor>
+		//      Scene
+		//
+		// <Descripton>
+		//      This creates a CLIScene using the given instance.
+		//
 		Scene(zaap::graphics::Scene* instance);
 
 		void addEntity(Entity^ entity);

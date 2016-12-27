@@ -4,23 +4,27 @@
 #include "Scene.h"
 #include <events/EventManager.h>
 #include <events/WindowEvent.h>
+#include <events/Input.h>
 
 #ifdef ZAAP_INCLUDE_DIRECTX
 #	include "API/DX/DXRenderer3D.h"
 #endif
 namespace zaap { namespace graphics {
-
+	
 	Renderer3D* Renderer3D::CreateNewInstance()
 	{
+		// the scene deletes it's own instance
+
 #ifdef ZAAP_INCLUDE_DIRECTX
-		return new DX::DXRenderer3D();
+		return new DX::DXRenderer3D(); 
 #endif
 		return nullptr;
 	}
 
 	void Renderer3D::windowCallback(const Event& windowEvent)
 	{
-		if (windowEvent.getEventType() != WINDOW_RESIZE_EVENT) return;
+		if (windowEvent.getEventType() != WINDOW_RESIZE_EVENT || 
+			m_HasCustomRenderTarget) return;
 		
 		WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
 		m_Width = event->getWidth();
@@ -29,7 +33,6 @@ namespace zaap { namespace graphics {
 		calulateProjectionMatrix();
 
 		resize(m_Width, m_Height);
-
 	}
 
 	// The shaders should be internalized by API renderer
@@ -47,6 +50,8 @@ namespace zaap { namespace graphics {
 		m_Height = Window::GetWidth();
 
 		updateProjectionMatrix();
+
+		Input::AddWindowCallback(ZA_METHOD_1(Renderer3D::windowCallback));
 	}
 
 	void Renderer3D::cleanupBaseRenderer3D()
@@ -75,9 +80,20 @@ namespace zaap { namespace graphics {
 			delete m_FontShader2D;
 			m_FontShader2D = nullptr;
 		}
-		if (m_RenderTarget)
+		if (!m_HasCustomRenderTarget)
 		{
-			//TODO use the Texture::Delete method when it exist
+			if (m_RenderTarget)
+			{
+				m_RenderTarget->cleanup();
+				delete m_RenderTarget;
+				m_RenderTarget = nullptr;
+			}
+			if (m_DepthStencil)
+			{
+				m_DepthStencil->cleanup();
+				delete m_DepthStencil;
+				m_DepthStencil = nullptr;
+			}
 		}
 
 	}

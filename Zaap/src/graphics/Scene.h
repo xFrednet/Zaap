@@ -17,23 +17,48 @@ namespace zaap { namespace graphics {
 	protected:
 		//environment 
 		std::vector<Entity*> m_Entities;
-		scene::Terrain *m_Terrain;
-		LightSetup *m_LightSetup = nullptr;
+		scene::Terrain* m_Terrain;
+		LightSetup* m_LightSetup;
 
 		// Rendering
 		Renderer3D* m_Renderer;
-		Camera *m_Camera;
+		Camera* m_Camera;
 
 
 	public:
+		
+		// <Constructor>
+		//      Scene
+		//
+		// <Descripton>
+		//      This creates a new instance of the scene class.
+		//
+		// <Note>
+		//      init is called by the Application class. The init method
+		//      should still be called in case of a unconventional use.
 		Scene();
+
+		// <Deconstructor>
+		//      Scene
+		//
+		// <Description>
+		//      This deletes all valid pointers.
+		//
 		virtual ~Scene(void);
 
+		// <Function>
+		//      init
+		// 
+		// <Description>
+		//      This internalizes some values that are based on the 
+		//      initialization of the API.
+		//
 		void init();
 
-		//
-		// The Environment 
-		//
+		////////////////////////////////////////////////////////////////////////////////
+		// The Environment //
+		////////////////////////////////////////////////////////////////////////////////
+
 		//entitys
 		virtual void addEntity(Entity* entity);
 		virtual void removeEntity(Entity* entity);
@@ -46,18 +71,19 @@ namespace zaap { namespace graphics {
 		inline virtual void setLightSetup(LightSetup* lightSetup);
 		inline virtual LightSetup* getLightSetup() const;
 		
-		//
-		// Rendering
-		//
+		////////////////////////////////////////////////////////////////////////////////
+		// Rendering //
+		////////////////////////////////////////////////////////////////////////////////
+		
 		//Camera
 		inline virtual void setCamera(Camera* camera);
 		inline virtual Mat4 getViewMatrix() const;
 		inline virtual Camera* getCamera() const;
 		inline virtual ViewFrustum getViewFrustum() const;
 
-		//
-		// Util
-		//
+		////////////////////////////////////////////////////////////////////////////////
+		// Util //
+		////////////////////////////////////////////////////////////////////////////////
 		virtual void render() const;
 		virtual void update();
 		inline Renderer3D* getRenderer();

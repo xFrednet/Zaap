@@ -55,6 +55,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		return ZA_OK;
 	}
+	
 	ZA_RESULT DXRenderer3D::initBlendState()
 	{
 		HRESULT hr;

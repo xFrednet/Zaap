@@ -27,7 +27,7 @@ namespace Sandbox_CS
 			LightSetup lightSetup = new LightSetup();
 			lightSetup.add(sun);
 
-			Renderer.LoadLightSetup(lightSetup);
+			;
 		}
 		
 		public override void update()

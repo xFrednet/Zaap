@@ -5,8 +5,9 @@
 namespace zaap { namespace graphics {
 	Scene::Scene()
 		: m_Terrain(nullptr),
-		m_Camera(nullptr),
-		m_Renderer(nullptr)
+		m_LightSetup(nullptr),
+		m_Renderer(nullptr),
+		m_Camera(nullptr)
 	{
 	}
 
@@ -22,8 +23,15 @@ namespace zaap { namespace graphics {
 		{
 			m_Terrain->cleanup();
 			delete m_Terrain;
+			m_Terrain = nullptr;
 		}
-		ZAAP_ALERT("Scene deletion");
+		
+		if (m_Renderer)
+		{
+			m_Renderer->cleanup();
+			delete m_Renderer;
+			m_Renderer = nullptr;
+		}
 	}
 
 	void Scene::init()
