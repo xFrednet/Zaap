@@ -84,14 +84,12 @@ namespace zaap { namespace graphics {
 		{
 			if (m_RenderTarget)
 			{
-				m_RenderTarget->cleanup();
-				delete m_RenderTarget;
+				m_RenderTarget->destroy();
 				m_RenderTarget = nullptr;
 			}
 			if (m_DepthStencil)
 			{
-				m_DepthStencil->cleanup();
-				delete m_DepthStencil;
+				m_DepthStencil->destroy();
 				m_DepthStencil = nullptr;
 			}
 		}

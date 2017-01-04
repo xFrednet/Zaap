@@ -13,11 +13,11 @@ namespace ZaapCLI {
 	//
 	// Red
 	//
-	bool Format::Is_R_Readable(ZA_FORMAT format)
+	bool Format::Format_is_R_Readable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_R_Readable(to_CPP_ZAFormat(format));
 	}
-	bool Format::Is_R_Setable(ZA_FORMAT format)
+	bool Format::Format_is_R_Setable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_R_Setable(to_CPP_ZAFormat(format));
 	}
@@ -25,11 +25,11 @@ namespace ZaapCLI {
 	//
 	// Green
 	//
-	bool Format::Is_G_Readable(ZA_FORMAT format)
+	bool Format::Format_is_G_Readable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_G_Readable(to_CPP_ZAFormat(format));
 	}
-	bool Format::Is_G_Setable(ZA_FORMAT format)
+	bool Format::Format_is_G_Setable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_G_Setable(to_CPP_ZAFormat(format));
 	}
@@ -37,11 +37,11 @@ namespace ZaapCLI {
 	//
 	// Blue
 	//
-	bool Format::Is_B_Readable(ZA_FORMAT format)
+	bool Format::Format_is_B_Readable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_B_Readable(to_CPP_ZAFormat(format));
 	}
-	bool Format::Is_B_Setable(ZA_FORMAT format)
+	bool Format::Format_is_B_Setable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_B_Setable(to_CPP_ZAFormat(format));
 	}
@@ -49,11 +49,11 @@ namespace ZaapCLI {
 	//
 	// Alpha
 	//
-	bool Format::Is_A_Readable(ZA_FORMAT format)
+	bool Format::Format_is_A_Readable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_A_Readable(to_CPP_ZAFormat(format));
 	}
-	bool Format::Is_A_Setable(ZA_FORMAT format)
+	bool Format::Format_is_A_Setable(ZA_FORMAT format)
 	{
 		return zaap::Format_is_A_Setable(to_CPP_ZAFormat(format));
 	}

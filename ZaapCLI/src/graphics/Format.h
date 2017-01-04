@@ -6,7 +6,6 @@
 
 namespace ZaapCLI {
 
-
 	public enum ZA_FORMAT
 	{
 		ZA_FORMAT_UNKNOWN		= zaap::ZA_FORMAT_UNKNOWN,
@@ -31,20 +30,20 @@ namespace ZaapCLI {
 		static uint GetFormatSize(ZA_FORMAT format);
 
 		//returns if the red value can be read in the format
-		static bool Is_R_Readable(ZA_FORMAT format);
+		static bool Format_is_R_Readable(ZA_FORMAT format);
 		//returns if the red value can be set in the format
-		static bool Is_R_Setable(ZA_FORMAT format);
+		static bool Format_is_R_Setable(ZA_FORMAT format);
 		//returns if the green value can be read in the format
-		static bool Is_G_Readable(ZA_FORMAT format);
+		static bool Format_is_G_Readable(ZA_FORMAT format);
 		//returns if the green value can be set in the format
-		static bool Is_G_Setable(ZA_FORMAT format);
+		static bool Format_is_G_Setable(ZA_FORMAT format);
 		//returns if the blue value can be read in the format
-		static bool Is_B_Readable(ZA_FORMAT format);
+		static bool Format_is_B_Readable(ZA_FORMAT format);
 		//returns if the blue value can be set in the format
-		static bool Is_B_Setable(ZA_FORMAT format);
+		static bool Format_is_B_Setable(ZA_FORMAT format);
 		//returns if the alpha value can be read in the format
-		static bool Is_A_Readable(ZA_FORMAT format);
+		static bool Format_is_A_Readable(ZA_FORMAT format);
 		//returns if the alpha value can be set in the format
-		static bool Is_A_Setable(ZA_FORMAT format);
+		static bool Format_is_A_Setable(ZA_FORMAT format);
 	};
 }

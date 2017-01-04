@@ -22,6 +22,15 @@ namespace zaap { namespace graphics {
 
 		// Rendering
 		Renderer3D* m_Renderer;
+
+		// <Value>
+		//      m_Camera
+		//
+		// <Description>
+		//      This is the current @Camera. 
+		//      The @Camera is used to create the ViewMatrix, calculate the
+		//      @ViewFrustum and for rendering effects by the @Renderer3D.
+		//
 		Camera* m_Camera;
 
 
@@ -59,27 +68,122 @@ namespace zaap { namespace graphics {
 		// The Environment //
 		////////////////////////////////////////////////////////////////////////////////
 
-		//entitys
+		// <Function>
+		//      addEntity
+		//
+		// <Description>
+		//      This method adds the given entity to the entity list.
+		//      
+		// <Input>
+		//      entity : the entity that is added to the list.
+		//      
 		virtual void addEntity(Entity* entity);
+		
+		// <Function>
+		//      removeEntity
+		//
+		// <Description>
+		//      This method removes the given entity from the entity list.
+		//      
+		// <Input>
+		//      entity : The entity that should be removed from the list.
+		//      
 		virtual void removeEntity(Entity* entity);
 		
-		//terrain
+		// <Function>
+		//      setTerrain
+		//
+		// <Description>
+		//      This method is used to set the terrain.
+		//
+		// <Input>
+		//      terrain : the new terrain that should be used.
+		//
 		inline virtual void setTerrain(scene::Terrain* terrain);
+		
+		// <Function>
+		//      getTerrain
+		//
+		// <Description>
+		//      This method returns the current terrain.
+		//
+		// <Return>
+		//      The current terrain or a nullptr.
+		//
 		inline virtual scene::Terrain* getTerrain() const;
 
-		//lightSetup
+		// <Function>
+		//      setLightSetup
+		//
+		// <Description>
+		//      This method is used to set the current @LightSetup
+		//
+		// <Input>
+		//      lightSetup : The new LightSetup.
+		//
 		inline virtual void setLightSetup(LightSetup* lightSetup);
+
+		// <Function>
+		//      getLightSetup
+		//
+		// <Description>
+		//      This method returns the current @LightSetup
+		//
+		// <Return>
+		//      Returns the current @LightSetup.
+		//
 		inline virtual LightSetup* getLightSetup() const;
 		
 		////////////////////////////////////////////////////////////////////////////////
 		// Rendering //
 		////////////////////////////////////////////////////////////////////////////////
 		
-		//Camera
-		inline virtual void setCamera(Camera* camera);
-		inline virtual Mat4 getViewMatrix() const;
-		inline virtual Camera* getCamera() const;
-		inline virtual ViewFrustum getViewFrustum() const;
+		// <Function>
+		//      setCamera
+		//
+		// <Description>
+		//      This sets the current Camera.
+		//      The @Camera is used to create the ViewMatrix, calculate the
+		//      @ViewFrustum and for rendering effects by the @Renderer3D.
+		//      
+		// <Input>
+		//      camera : The new Camera.
+		//      
+		inline void setCamera(Camera* camera);
+
+		// <Function>
+		//      getViewMatrix
+		//
+		// <Description>
+		//      This returns the ViewMatrix from the current @Camera.
+		//
+		// <Return>
+		//      This return the ViewMatrix from the current @Camera or 
+		//      a basic ViewMatrix if the @Camera is null.
+		//
+		inline Mat4 getViewMatrix() const;
+
+		// <Function>
+		//      getCamera
+		//
+		// <Description>
+		//      This returns the value of the current @Camera:
+		//
+		// <Return>
+		//      This returns the value of the current @Camera.
+		//
+		inline Camera* getCamera() const;
+
+		// <Function>
+		//      getViewFrustum
+		//
+		// <Description>
+		//      This Returns a ViewFrustum from the current @Camera.
+		//
+		// <Returns>
+		//      This Returns a ViewFrustum from the current @Camera.
+		//
+		inline ViewFrustum getViewFrustum() const;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Util //

@@ -27,7 +27,7 @@ namespace Sandbox_CS
 			LightSetup lightSetup = new LightSetup();
 			lightSetup.add(sun);
 
-			;
+			//s.setLightSetup(lightSetup);
 		}
 		
 		public override void update()

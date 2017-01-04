@@ -3,7 +3,7 @@
 namespace zaap { namespace graphics { namespace API {
 	
 	Texture2D::Texture2D(const String& textureName)
-		: Texture(textureName, TextureType::Texture2D)
+		: Texture(textureName, ZA_TEXTURE_TYPE_TEXTURE_2D)
 	{
 		m_Width = 0;
 		m_Height = 0;

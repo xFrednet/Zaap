@@ -86,16 +86,19 @@ namespace zaap { namespace graphics {
 	///////////////
 	// Rendering //
 	///////////////
-	//
-	// Camera
-	//
+	
 	void Scene::setCamera(Camera* camera)
 	{
 		m_Camera = camera;
 	}
 	Mat4 Scene::getViewMatrix() const
 	{
-		return m_Camera->getViewMatrix();
+		if (m_Camera)
+			return m_Camera->getViewMatrix();
+
+		Mat4 viewMatrix;
+		CreateViewMatrix(&viewMatrix, Vec3(0.0f, 0.0f, 0.0f), 0.0f, 0.0f);
+		return viewMatrix;
 	}
 	Camera* Scene::getCamera() const
 	{
@@ -103,13 +106,15 @@ namespace zaap { namespace graphics {
 	}
 	ViewFrustum Scene::getViewFrustum() const
 	{
-		return m_Camera->getViewFrustum();
+		if (m_Camera)
+			return m_Camera->getViewFrustum();
+
+		return ViewFrustum();
 	}
 
 	//
 	// Util
 	//
-	ViewFrustum frustum;
 	void Scene::render() const
 	{
 		//

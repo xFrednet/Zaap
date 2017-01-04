@@ -5,7 +5,16 @@ namespace zaap {
 	LightSetup::~LightSetup()
 	{
 		for (Light *light : m_Lights)
-			delete light;
+		{
+			if (light)
+			{
+				delete light;
+				light = nullptr;
+			}
+		}
+
+		m_Lights.clear();
+
 	}
 
 	//
@@ -55,12 +64,18 @@ namespace zaap {
 	{
 		return m_Lights.size();
 	}
-	Light* LightSetup::getLight(int index)
+	Light* LightSetup::getLight(uint index)
 	{
+		if (index < 0 || index >= m_Lights.size())
+			return m_Lights[0];
+
 		return m_Lights[index];
 	}
-	const Light* LightSetup::getConstLight(int index) const
+	const Light* LightSetup::getConstLight(uint index) const
 	{
+		if (index < 0 || index >= m_Lights.size())
+			return m_Lights[0];
+
 		return m_Lights[index];
 	}
 

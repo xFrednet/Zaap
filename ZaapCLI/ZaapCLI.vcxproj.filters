@@ -64,8 +64,11 @@
     <ClCompile Include="src\graphics\Scene.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Renderer.cpp">
+    <ClCompile Include="src\graphics\Renderer3D.cpp">
       <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\Shader.cpp">
+      <Filter>Source Files\src\graphics\shader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -135,8 +138,14 @@
     <ClInclude Include="src\graphics\Scene.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\Renderer.h">
+    <ClInclude Include="src\graphics\Renderer3D.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\Shader.h">
+      <Filter>Source Files\src\graphics\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\components\Texture.h">
+      <Filter>Source Files\src\graphics\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,7 +179,10 @@
     <Filter Include="Source Files\src\entity\light">
       <UniqueIdentifier>{0f236bf1-7c36-47ec-97f4-c398a9ff3bff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\graphics\API">
+    <Filter Include="Source Files\src\graphics\shader">
+      <UniqueIdentifier>{4680cde2-092d-4bbc-a536-314fd119244b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\components">
       <UniqueIdentifier>{481c9227-bdab-4fe9-a461-5bed2f883314}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

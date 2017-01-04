@@ -27,7 +27,9 @@
 
 namespace zaap { namespace graphics {
 	
-	typedef  ZAAP_API enum ZA_SHADER_TYPE_ {
+	// I left out the "API" namespace because I'm too lazy to type it every time
+
+	typedef ZAAP_API enum ZA_SHADER_TYPE_ {
 		ZA_SHADER_UNKNOWN			= 0,
 		ZA_SHADER_TEXTURE_SHADER	= 1,
 		ZA_SHADER_MATERIAL_SHADER	= 2,
@@ -35,6 +37,13 @@ namespace zaap { namespace graphics {
 		ZA_SHADER_FONT_SHADER_2D	= 4
 	} ZA_SHADER_TYPE;
 
+	// <Class>
+	//      Shader
+	//
+	// <Description>
+	//      This is a abstract class for all the other
+	//      shader classes.
+	//      
 	class ZAAP_API Shader
 	{
 	public:
@@ -101,12 +110,32 @@ namespace zaap { namespace graphics {
 			ZA_PS_SHADER_MATERIAL Materials[ZAAP_SHADER_MATERIAL_COUNT];
 		};
 
-
+		// <Function>
+		//      start
+		//
+		// <Description>
+		//      This method starts the shader instance.
+		//      This method is overridden by the API shaders.
+		//      
 		virtual void start() const = 0;
+		
+		// <Function>
+		//      stop
+		//
+		// <Description>
+		//      This method stops the shader instance.
+		//      This method is overridden by the API shaders.
+		//      
 		virtual void stop() const = 0;
 
 		virtual void cleanup() = 0;
 
+		// <Function>
+		//      getShaderType
+		//
+		// <Description>
+		//      This returns the current shader type.
+		//      
 		virtual ZA_SHADER_TYPE getShaderType() const = 0;
 		
 	};

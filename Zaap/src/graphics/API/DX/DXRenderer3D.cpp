@@ -215,16 +215,14 @@ namespace zaap { namespace graphics { namespace DX {
 			if (m_RenderTarget)
 			{
 				ZAAP_DXRELEASE(m_RenderTargetView);
-				m_RenderTarget->cleanup();
-				delete m_RenderTarget;
+				m_RenderTarget->destroy();
 			}
 
 			//depth stencil
 			if (m_DepthStencilView)
 			{
 				ZAAP_DXRELEASE(m_DepthStencilView);
-				m_DepthStencil->cleanup();
-				delete m_DepthStencil;
+				m_DepthStencil->destroy();
 			}
 		}
 

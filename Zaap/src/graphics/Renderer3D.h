@@ -32,6 +32,7 @@ namespace zaap { namespace graphics {
 	{
 		//Static constructor
 	public:
+
 		// <Function>
 		//      CreateNewInstance
 		//
@@ -41,7 +42,6 @@ namespace zaap { namespace graphics {
 		// <Note>
 		//      The instance is created using the new statement the requester 
 		//      has to delete the new instance. Please call cleanup beforehand.,
-
 		//      
 		// <Return>
 		//      The renderer for the chosen API or a nullptr in case of failure.
@@ -171,13 +171,15 @@ namespace zaap { namespace graphics {
 		//
 		// <Description>
 		//      This method calls the cleanupAPIRenderer and cleanupBaseRenderer3D
-		//      in the named order to cleanup this class before deleting it.
+		//      in the named order. This method is called to 
+		//      cleanup the Renderer3D It should be called before deletion.
 		//
 		void cleanup();
 
-	protected:
-		// Shader stuff
-	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Shader stuff //
+		////////////////////////////////////////////////////////////////////////////////
+		
 		// <Function>
 		//      loadTransformationMatrix
 		//
@@ -237,18 +239,20 @@ namespace zaap { namespace graphics {
 		//
 		// <Description>
 		//      Returns the shader that is specified by the input.
-		//      This does not create changes or starts any shaders by it self.0.
+		//      This does not create changes or starts any shaders by it self.
 		//
 		// <Input>
-		//      @ZA_SHADER_TYPE the requested shader type
+		//      shader : The @ZA_SHADER_TYPE of the requested shader.
 		//
 		// <Returns>
 		//      Returns the requested shader instance or a nullptr in case of failure.
+		//
 		Shader* getShader(ZA_SHADER_TYPE shader);
 
-	protected:
-		// Frame related
-	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Frame related // 
+		////////////////////////////////////////////////////////////////////////////////
+
 		// <Function>
 		//      setCustomRenderTarget
 		//      
@@ -292,9 +296,10 @@ namespace zaap { namespace graphics {
 		//
 		virtual void presentFrame()  const = 0;
 
-	protected:
-		// Rendering options
-	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Rendering options //
+		////////////////////////////////////////////////////////////////////////////////
+
 		// <Function>
 		//      setAlphaTestingState
 		//
@@ -379,9 +384,10 @@ namespace zaap { namespace graphics {
 		//      
 		virtual void resize(uint width, uint height) = 0;
 
-	protected:
-		// Values
-	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Values //
+		////////////////////////////////////////////////////////////////////////////////
+		
 		// <Function>
 		//      getFOV
 		//

@@ -22,6 +22,9 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11SamplerState *m_SamplerState;
 
 	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Constructors / Deconstructor // 
+		////////////////////////////////////////////////////////////////////////////////
 		DXTexture2D(String name, String filePath);
 		DXTexture2D(String name, Bitmap image);
 
@@ -41,13 +44,22 @@ namespace zaap { namespace graphics { namespace DX {
 		//                          should be created.
 		DXTexture2D(ID3D11Texture2D *texture, bool createShaderStuff = true);
 
+		// <Deconstructor>
+		//      DXTexture2D
+		//
+		// <Description>
+		//      The deconstructor releases the created DirectX objects.
+		//
+		~DXTexture2D();
+
 	protected:
 		ZA_RESULT init(byte const *byte, ZA_FORMAT format);
 
 	public:
+		////////////////////////////////////////////////////////////////////////////////
+		// Abstract members // 
+		////////////////////////////////////////////////////////////////////////////////
 		ZA_RESULT bind(uint slot = 0) override;
 		void unbind(uint slot = 0) override;
-
-		void cleanup() override;
 	};
 }}}

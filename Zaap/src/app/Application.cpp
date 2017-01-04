@@ -22,6 +22,7 @@ namespace zaap {
 	{
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
+		scene->init();
 	}
 	void Application::cleanup() const
 	{

@@ -280,9 +280,9 @@ public:
 
 int main(void)
 {
-	zaap::UUID id;
-	RandomUUID(&id);
-	ZAAP_INFO(id.toString());
+	zaap::UUID id1;
+	RandomUUID(&id1);
+	ZAAP_INFO(id1.toString());
 
 	//source
 	{
@@ -292,15 +292,12 @@ int main(void)
 		scene_ = new Scene();
 
 		Test t;
-
-		scene_->init();
 	
 		loadEntitys();
 
 		t.start();
 
 		t.cleanup();
-
 		
 		delete scene_;
 

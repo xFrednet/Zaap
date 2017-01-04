@@ -144,9 +144,11 @@
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
     <ClInclude Include="src\graphics\Color.h" />
+    <ClInclude Include="src\graphics\components\Texture.h" />
     <ClInclude Include="src\graphics\Format.h" />
-    <ClInclude Include="src\graphics\Renderer.h" />
+    <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />
+    <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\maths\Matrix4.h" />
     <ClInclude Include="src\maths\Plane3D.h" />
     <ClInclude Include="src\maths\Vector2.h" />
@@ -170,8 +172,9 @@
     <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
-    <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
+    <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\maths\Matrix4.cpp" />
     <ClCompile Include="src\maths\Plane3D.cpp" />
     <ClCompile Include="src\maths\Vector2.cpp" />

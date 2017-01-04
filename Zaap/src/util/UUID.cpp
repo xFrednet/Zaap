@@ -15,6 +15,24 @@ namespace zaap
 		return !Equal(*this, other);
 	}
 
+	bool UUID::operator<(const UUID& other) const
+	{
+		return Less(*this, other);
+	}
+	bool UUID::operator>(const UUID& other) const
+	{
+		return Greater(*this, other);
+	}
+
+	bool UUID::operator<=(const UUID& other) const
+	{
+		return Less(*this, other) || Equal(*this, other);
+	}
+	bool UUID::operator>=(const UUID& other) const
+	{
+		return Greater(*this, other) || Equal(*this, other);
+	}
+
 	//
 	//To String
 	//
@@ -39,10 +57,10 @@ namespace zaap
 			ss << setfill('0') << setw(8) << hex << hexValue;
 		}
 		String s = ss.str();
-		s.insert(20, "-");
-		s.insert(16, "-");
-		s.insert(12, "-");
-		s.insert( 8, "-");
+		s.insert(25, "-");
+		s.insert(21, "-");
+		s.insert(17, "-");
+		s.insert(13, "-");
 		s += ")";
 		return s;
 	}
@@ -50,6 +68,17 @@ namespace zaap
 	bool Equal(const UUID& a, const UUID& b)
 	{
 		return (memcmp(&a, &b, sizeof(UUID)) == 0);
+	}
+
+	bool Less(const UUID& a, const UUID& b)
+	{
+		return Greater(b, a);
+	}
+
+	bool Greater(const UUID& a, const UUID& b)
+	{
+		//memcmp(&a, &b, sizeof(UUID) > 0) == a is greater
+		return memcmp(&a, &b, sizeof(UUID)) > 0;
 	}
 }
 

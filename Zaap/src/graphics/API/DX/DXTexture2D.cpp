@@ -5,6 +5,9 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
+	////////////////////////////////////////////////////////////////////////////////
+	// Constructors / Deconstructor // 
+	////////////////////////////////////////////////////////////////////////////////
 	DXTexture2D::DXTexture2D(String name, String filePath)
 		: Texture2D(name),
 		m_Texture(nullptr)
@@ -25,7 +28,6 @@ namespace zaap { namespace graphics { namespace DX {
 
 		delete b;
 	}
-
 	DXTexture2D::DXTexture2D(String name, Bitmap image)
 		: Texture2D(name),
 		m_Texture(nullptr)
@@ -39,15 +41,22 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXTexture2D::DXTexture2D(ID3D11Texture2D* texture, bool createShaderStuff)
 		: Texture2D("given Texture"),
-		m_Texture(texture)
+		m_Texture(texture),
+		m_TextureView(nullptr),
+		m_SamplerState(nullptr)
 	{
 		m_Texture->GetDesc(&m_TextureDesc);
 		m_Width = m_TextureDesc.Width;
 		m_Height = m_TextureDesc.Height;
 
 		//init(nullptr, ZA_FORMAT_UNKNOWN);
+	}
 
-		//s_Textures.push_back(this);
+	DXTexture2D::~DXTexture2D()
+	{
+		ZAAP_DXRELEASE(m_Texture);
+		ZAAP_DXRELEASE(m_TextureView);
+		ZAAP_DXRELEASE(m_SamplerState);
 	}
 
 	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
@@ -153,6 +162,9 @@ namespace zaap { namespace graphics { namespace DX {
 		return ZA_OK;
 	}
 
+	////////////////////////////////////////////////////////////////////////////////
+	// Abstract members // 
+	////////////////////////////////////////////////////////////////////////////////
 	ZA_RESULT DXTexture2D::bind(uint slot)
 	{
 		
@@ -168,13 +180,6 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, nullptr);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, nullptr);
-	}
-
-	void DXTexture2D::cleanup()
-	{
-		ZAAP_DXRELEASE(m_Texture);
-		ZAAP_DXRELEASE(m_TextureView);
-		ZAAP_DXRELEASE(m_SamplerState);
 	}
 
 }}}

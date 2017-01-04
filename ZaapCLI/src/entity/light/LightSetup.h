@@ -13,6 +13,7 @@ namespace ZaapCLI {
 	private:
 	public:
 		LightSetup();
+		LightSetup(zaap::LightSetup* instance);
 
 		//util
 		void add(Light^ light);

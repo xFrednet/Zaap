@@ -9,6 +9,11 @@
 
 namespace zaap {
 	
+	// <Class>
+	//      LightSetup
+	// 
+	// <Description>
+	//
 	class ZAAP_API LightSetup
 	{
 	private:
@@ -30,8 +35,8 @@ namespace zaap {
 
 		//getters
 		uint getSize() const;
-		Light* getLight(int index);
-		const Light* getConstLight(int index) const;
+		Light* getLight(uint index);
+		const Light* getConstLight(uint index) const;
 	};
 
 }

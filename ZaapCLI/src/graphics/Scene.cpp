@@ -11,6 +11,11 @@ namespace ZaapCLI {
 	{
 	}
 
+	////////////////////////////////////////////////////////////////////////////////
+	// The Environment //
+	////////////////////////////////////////////////////////////////////////////////
+
+	//entity
 	void Scene::addEntity(Entity^ entity)
 	{
 		m_Instance->addEntity(entity->getHandle());
@@ -19,16 +24,7 @@ namespace ZaapCLI {
 	{
 		m_Instance->removeEntity(entity->getHandle());
 	}
-
-	void Scene::render()
-	{
-		m_Instance->render();
-	}
-	void Scene::update()
-	{
-		m_Instance->update();
-	}
-
+	
 	//terrain
 	void Scene::setTerrain(Terrain^ terrain)
 	{
@@ -38,4 +34,47 @@ namespace ZaapCLI {
 	{
 		return gcnew Terrain(m_Instance->getTerrain());
 	}
+
+	// LightSetup
+	void Scene::setLightSetup(LightSetup^ lightSetup)
+	{
+		m_Instance->setLightSetup(lightSetup->getHandle());
+	}
+	LightSetup^ Scene::getLightSetup()
+	{
+		return gcnew LightSetup(m_Instance->getLightSetup());
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Rendering //
+	////////////////////////////////////////////////////////////////////////////////
+	void Scene::setCamera(Camera^ camera)
+	{
+		m_Instance->setCamera(camera->getHandle());
+	}
+	Matrix4^ Scene::getViewMatrix()
+	{
+		return gcnew Matrix4(&m_Instance->getViewMatrix());
+	}
+	Camera^ Scene::getCamera()
+	{
+		return gcnew Camera(m_Instance->getCamera());
+	}
+	ViewFrustum^ Scene::getViewFrustum()
+	{
+		return gcnew ViewFrustum(&m_Instance->getViewFrustum());
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Util //
+	////////////////////////////////////////////////////////////////////////////////
+	void Scene::render()
+	{
+		m_Instance->render();
+	}
+	void Scene::update()
+	{
+		m_Instance->update();
+	}
+
 }

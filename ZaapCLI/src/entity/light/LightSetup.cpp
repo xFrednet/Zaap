@@ -6,6 +6,11 @@ namespace ZaapCLI {
 	{
 	}
 
+	LightSetup::LightSetup(zaap::LightSetup* instance)
+		: ManagedClass(instance)
+	{
+	}
+
 	//util
 	void LightSetup::add(Light^ light)
 	{
