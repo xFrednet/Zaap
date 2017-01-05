@@ -24,7 +24,8 @@ namespace zaap {
 		graphics::API::Context::Create();
 		scene->init();
 	}
-	void Application::cleanup() const
+
+	Application::~Application()
 	{
 		ImageLoader::Cleanup();
 		graphics::MeshManager::Cleanup();

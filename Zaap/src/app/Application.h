@@ -26,7 +26,7 @@ namespace zaap
 		virtual void update();
 	public:
 		Application(String title, uint width, uint height, graphics::Scene *scene);
-		virtual ~Application(){}
+		virtual ~Application();
 
 		void start();
 		void stop();
@@ -34,7 +34,6 @@ namespace zaap
 		void pause();
 		void resume();
 
-		void cleanup() const;
 		/*
 		This method pulls events from the window, like button presses and mouse interactions.
 		This method is implemented in the default gameloop, it can be used if a different gameloop is used.

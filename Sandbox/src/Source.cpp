@@ -299,7 +299,7 @@ int main(void)
 
 		t.cleanup();
 		
-		delete scene_;
+		//delete scene_;
 
 		return 0;
 	}

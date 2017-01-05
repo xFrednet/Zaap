@@ -171,6 +171,7 @@
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
+    <ClCompile Include="src\graphics\components\Texture.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
     <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />

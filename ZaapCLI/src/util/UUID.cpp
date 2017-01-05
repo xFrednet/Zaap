@@ -9,6 +9,10 @@ namespace ZaapCLI {
 		: ManagedClass(new zaap::UUID())
 	{
 	}
+	UUID::UUID(zaap::UUID* instance)
+		: ManagedClass(instance)
+	{
+	}
 	UUID::UUID(UUID^ uuid)
 		: ManagedClass(new zaap::UUID())
 	{

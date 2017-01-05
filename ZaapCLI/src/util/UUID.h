@@ -12,6 +12,7 @@ namespace ZaapCLI {
 	public:
 		//init
 		UUID();
+		UUID(zaap::UUID* instance);
 		UUID(UUID^ uuid);
 
 		//Generate a random UUID

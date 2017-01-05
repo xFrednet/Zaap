@@ -6,8 +6,6 @@
 
 #pragma warning( disable : 4251)
 
-//TODO add a texture deletion option
-//TODO put texture into a wrapper
 //TODO add a validation method
 
 

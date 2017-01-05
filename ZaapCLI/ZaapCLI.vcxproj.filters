@@ -70,6 +70,9 @@
     <ClCompile Include="src\graphics\shader\Shader.cpp">
       <Filter>Source Files\src\graphics\shader</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\components\Texture.cpp">
+      <Filter>Source Files\src\graphics\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
