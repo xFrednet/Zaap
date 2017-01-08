@@ -1,24 +1,70 @@
 #pragma once
 
-#include <Common.h>
-#include <Types.h>
-
+#include <ZaapCLI.h>
 #include "Texture.h"
-#include <app/Application.h>
 
-namespace zaap { namespace graphics { namespace API {
 
-	class ZAAP_API Texture2D : public Texture
-	{
-	protected:
-		uint m_Width;
-		uint m_Height;
-		ZA_FORMAT m_Format;
+#include <graphics\API\Texture2D.h>
+#include <graphics\API\Texture.h>
+#include "..\Bitmap.h"
+
+namespace ZaapCLI
+{
+	public ref class Texture2D : public Texture {
+
 	public:
 		////////////////////////////////////////////////////////////////////////////////
 		// Constructors //
 		////////////////////////////////////////////////////////////////////////////////
-		Texture2D(const String& textureName);
+
+		// <Constructor>
+		//      Texture2D
+		//
+		// <Description>
+		//      This constructor creates a @Texture2D object for the current 
+		//      API from the given file path.
+		//
+		// <Input>
+		//      name:   
+		//          The name for the @TextureManager. The name is 
+		//          also used for debugging.
+		//      
+		//      filePath:   
+		//          The path for the image file.
+		//      
+		//      addToTextureManager :   
+		//          This boolean indicated if the created @Texture2D should be 
+		//          added to the @TextureManager.
+		//      
+		//      
+		Texture2D(System::String^ name, System::String^ filePath, bool addToTextureManager);
+		
+		// <Constructor>
+		//      Texture2D
+		//
+		// <Description>
+		//      This constructor creates a @Texture2D object for the current 
+		//      API from the given @Bitmap.
+		//
+		// <Note>
+		//      Loading a file to a @Bitmap can take some more time
+		//      than just loading the bytes to the @Texture2D.
+		//      So don't just use a @Bitmap to load a file for
+		//      a @Texture.
+		//
+		// <Input>
+		//      name:   
+		//          The name for the @TextureManager. The name is 
+		//          also used for debugging.
+		//      
+		//      bitmap:   
+		//          A Bitmap that is used to create a @Texture2D.
+		//      
+		//      addToTextureManager :   
+		//          This boolean indicated if the created @Texture2D should be 
+		//          added to the @TextureManager.
+		//      
+		Texture2D(System::String^ name, Bitmap bitmap, bool addToTextureManager);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Util // 
@@ -38,7 +84,7 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be bound to.
 		//
-		virtual void bind(uint slot) = 0;
+		void bind(uint slot);
 
 		// <Function>
 		//      unbind
@@ -54,12 +100,12 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be unbound from.
 		//
-		virtual void unbind(uint slot) = 0;
+		void unbind(uint slot);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Getters // 
 		////////////////////////////////////////////////////////////////////////////////
-
+		
 		// <Function>
 		//      getWidth
 		// 
@@ -73,7 +119,7 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Width.
 		//
-		uint getWidth(void) const;
+		uint getWidth();
 
 		// <Function>
 		//      getHeight
@@ -88,7 +134,6 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Height.
 		//
-		uint getHeight(void) const;
+		uint getHeight();
 	};
-
-}}}
+}

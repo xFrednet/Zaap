@@ -13,7 +13,7 @@ namespace ZaapCLI {
 		zaap::graphics::ControllableCamera* getInstance();
 	public:
 		ControllableCamera();
-		ControllableCamera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio);
+		ControllableCamera(Vector3^ position, float yaw, float pitch);
 
 		float getSpeed();
 		void setSpeed(float speed);

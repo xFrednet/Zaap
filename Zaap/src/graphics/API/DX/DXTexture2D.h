@@ -59,7 +59,37 @@ namespace zaap { namespace graphics { namespace DX {
 		////////////////////////////////////////////////////////////////////////////////
 		// Abstract members // 
 		////////////////////////////////////////////////////////////////////////////////
-		ZA_RESULT bind(uint slot = 0) override;
+
+		// <Function>
+		//      bind
+		//
+		// <Description>
+		//      This method binds the @Texture2D to the given slot.
+		//
+		// <Note>
+		//      This method is overridden by the API classes so it could
+		//      also do some other stuff. 
+		//
+		// <Input>
+		//      slot:
+		//          The slot that the @Texture should be bound to.
+		//
+		void bind(uint slot = 0) override;
+		
+		// <Function>
+		//      unbind
+		//
+		// <Description>
+		//      This method unbinds the @Texture2D from the given slot.
+		//
+		// <Note>
+		//      This method is overridden by the API classes so it could
+		//      also do some other stuff. 
+		//
+		// <Input>
+		//      slot:
+		//          The slot that the @Texture should be unbound from.
+		//
 		void unbind(uint slot = 0) override;
 	};
 }}}

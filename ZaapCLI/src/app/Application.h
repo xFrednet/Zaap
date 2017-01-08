@@ -40,7 +40,6 @@ namespace ZaapCLI {
 		virtual void render();
 		virtual void update();
 
-		void cleanup();
 		/*
 		This method pulls events from the window, like button presses and mouse interactions.
 		This method is implemented in the default gameloop, it can be used if a different gameloop is used.

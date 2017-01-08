@@ -100,8 +100,83 @@ namespace zaap { namespace graphics {
 		//******************************
 		// Texture2D
 		//******************************
+		
+		// <Function>
+		//      CreateTexture2D
+		//
+		// <Description>
+		//      This constructor creates a @Texture2D object for the current 
+		//      API from the given file path.
+		//
+		// <Input>
+		//      name:   
+		//          The name for the @TextureManager. The name is 
+		//          also used for debugging.
+		//      
+		//      filePath:   
+		//          The path for the image file.
+		//      
+		//      addToTextureManager :   
+		//          This boolean indicated if the created @Texture2D should be 
+		//          added to the @TextureManager.
+		//      
+		// <Return>
+		//      The created Texture2D.
+		//
 		static Texture2D* CreateTexture2D(char const* name, char const* filePath, bool addToTextureManager = true);
+		
+		// <Function>
+		//      CreateTexture2D
+		//
+		// <Description>
+		//      This constructor creates a @Texture2D object for the current 
+		//      API from the given file path.
+		//
+		// <Input>
+		//      name:   
+		//          The name for the @TextureManager. The name is 
+		//          also used for debugging.
+		//      
+		//      filePath:   
+		//          The path for the image file.
+		//      
+		//      addToTextureManager :   
+		//          This boolean indicated if the created @Texture2D should be 
+		//          added to the @TextureManager.
+		//      
+		// <Return>
+		//      The created Texture2D.
+		//
 		static Texture2D* CreateTexture2D(String name, String filePath, bool addToTextureManager = true);
+		
+		// <Function>
+		//      CreateTexture2D
+		//
+		// <Description>
+		//      This constructor creates a @Texture2D object for the current 
+		//      API from the given @Bitmap.
+		//
+		// <Note>
+		//      Loading a file to a @Bitmap can take some more time
+		//      than just loading the bytes to the @Texture2D.
+		//      So don't just use a @Bitmap to load a file for
+		//      a @Texture.
+		//
+		// <Input>
+		//      name:   
+		//          The name for the @TextureManager. The name is 
+		//          also used for debugging.
+		//      
+		//      bitmap:   
+		//          A Bitmap that is used to create a @Texture2D.
+		//      
+		//      addToTextureManager :   
+		//          This boolean indicated if the created @Texture2D should be 
+		//          added to the @TextureManager.
+		//      
+		// <Return>
+		//      The created Texture2D.
+		//
 		static Texture2D* CreateTexture2D(String name, Bitmap bitmap, bool addToTextureManager = true);
 
 		////////////////////////////////////////////////////////////////////////////////
@@ -122,8 +197,9 @@ namespace zaap { namespace graphics {
 		ZA_TEXTURE_TYPE m_TextureType;
 		
 		Texture(const String& textureName, ZA_TEXTURE_TYPE textureType);
-		virtual ~Texture();
 	public:
+		virtual ~Texture();
+
 		// <Function>
 		//      destroy
 		//

@@ -18,18 +18,14 @@ namespace ZaapCLI {
 		zaap::Vec3 getPositionValue();
 		float getYawValue();
 		float getPitchValue();
-		float getFOVValue();
-		float getFOVRatioValue();
 
 		void setPositionValue(zaap::Vec3 position);
 		void setYawValue(float yaw);
 		void setPitchValue(float pitch);
-		void setFOVValue(float fov);
-		void setFOVRatioValue(float fovRatio);
 
 		//Actual class
 		CameraRedirector(ZaapCLI::BaseCamera^ owner);
-		CameraRedirector(ZaapCLI::BaseCamera^ owner, zaap::Vec3 position, float yaw, float pitch, float fov, float fovRatio);
+		CameraRedirector(ZaapCLI::BaseCamera^ owner, zaap::Vec3 position, float yaw, float pitch);
 		CameraRedirector(ZaapCLI::BaseCamera^ owner, zaap::Vec3 position, zaap::Vec3 lookAt, zaap::Vec3 up);
 
 		//
@@ -53,62 +49,39 @@ namespace ZaapCLI {
 	private:
 		CameraRedirector* getInstance();
 	protected:
-// __FILE__ is always defined
-#ifdef __FILE__
-			property Vector3^ m_Position {
-				Vector3^ get()
-				{
-					return gcnew Vector3(&getInstance()->getPositionValue());
-				}
-				void set(Vector3^ position)
-				{
-					getInstance()->setPositionValue(*position->getHandle());
-				}
+		property Vector3^ m_Position {
+			Vector3^ get()
+			{
+				return gcnew Vector3(&getInstance()->getPositionValue());
 			}
-			property float m_Yaw {
-				float get()
-				{
-					return getInstance()->getYawValue();
-				}
-				void set(float yaw)
-				{
-					getInstance()->setYawValue(yaw);
-				}
+			void set(Vector3^ position)
+			{
+				getInstance()->setPositionValue(*position->getHandle());
 			}
-			property float m_Pitch {
-				float get()
-				{
-					return getInstance()->getPitchValue();
-				}
-				void set(float pitch)
-				{
-					getInstance()->setPitchValue(pitch);
-				}
+		}
+		property float m_Yaw {
+			float get()
+			{
+				return getInstance()->getYawValue();
 			}
-			property float m_FOV {
-				float get()
-				{
-					return getInstance()->getFOVValue();
-				}
-				void set(float fov)
-				{
-					getInstance()->setFOVValue(fov);
-				}
+			void set(float yaw)
+			{
+				getInstance()->setYawValue(yaw);
 			}
-			property float m_FOVRatio {
-				float get()
-				{
-					return getInstance()->getFOVRatioValue();
-				}
-				void set(float FOVRatio)
-				{
-					getInstance()->setFOVRatioValue(FOVRatio);
-				}
+		}
+		property float m_Pitch {
+			float get()
+			{
+				return getInstance()->getPitchValue();
 			}
-#endif
+			void set(float pitch)
+			{
+				getInstance()->setPitchValue(pitch);
+			}
+		}
 	public:
 		BaseCamera();
-		BaseCamera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio);
+		BaseCamera(Vector3^ position, float yaw, float pitch);
 		BaseCamera(Vector3^ position, Vector3^ lookAt, Vector3^ up);
 
 		virtual void update() override;

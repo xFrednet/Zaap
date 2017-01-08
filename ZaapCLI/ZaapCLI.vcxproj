@@ -145,6 +145,7 @@
     <ClInclude Include="src\graphics\camera\ViewFrustum.h" />
     <ClInclude Include="src\graphics\Color.h" />
     <ClInclude Include="src\graphics\components\Texture.h" />
+    <ClInclude Include="src\graphics\components\Texture2D.h" />
     <ClInclude Include="src\graphics\Format.h" />
     <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />

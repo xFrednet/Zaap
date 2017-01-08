@@ -100,7 +100,7 @@ namespace ZaapCLI {
 	}
 	void Terrain::render()
 	{
-		m_Instance->render();
+		// TODO m_Instance->render();
 	}
 
 	//render

@@ -61,7 +61,7 @@ namespace ZaapCLI
 		// GameLoop util
 		void update() override;
 		void callDefault_update();
-		void render() override;
+		void render(zaap::graphics::Renderer3D* renderer) override;
 		void callDefault_render();
 	};
 

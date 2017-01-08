@@ -296,8 +296,6 @@ int main(void)
 		loadEntitys();
 
 		t.start();
-
-		t.cleanup();
 		
 		//delete scene_;
 

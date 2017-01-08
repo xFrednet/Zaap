@@ -129,13 +129,13 @@ namespace ZaapCLI
 	{
 		Entity::update();
 	}
-	void EntityRedirecter::render()
+	void EntityRedirecter::render(zaap::graphics::Renderer3D* renderer)
 	{
 		m_Owner->render();
 	}
 	void EntityRedirecter::callDefault_render()
 	{
-		Entity::render();
+		//TODO Entity::render();
 	}
 }
 

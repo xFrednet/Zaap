@@ -11,8 +11,8 @@ namespace ZaapCLI {
 		: Camera(new zaap::graphics::ControllableCamera())
 	{
 	}
-	ControllableCamera::ControllableCamera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio)
-		: Camera(new zaap::graphics::ControllableCamera(*position->getHandle(), yaw, pitch, fov, fovRatio))
+	ControllableCamera::ControllableCamera(Vector3^ position, float yaw, float pitch)
+		: Camera(new zaap::graphics::ControllableCamera(*position->getHandle(), yaw, pitch))
 	{
 	}
 

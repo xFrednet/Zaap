@@ -52,6 +52,32 @@ namespace ZaapCLI
 		Texture(zaap::graphics::API::Texture* instance);
 		
 		////////////////////////////////////////////////////////////////////////////////
+		// Operators // 
+		////////////////////////////////////////////////////////////////////////////////
+
+		// <Function>
+		//      operator==
+		//
+		// <Description>
+		//      This method compares this and the given texture.
+		//      
+		// <Return>
+		//      This returns the test result in from of a boolean.
+		//      
+		bool operator==(Texture^ other);
+
+		// <Function>
+		//      operator!=
+		//
+		// <Description>
+		//      This method compares this and the given texture.
+		//      
+		// <Return>
+		//      This returns the test result in from of a boolean.
+		//      
+		bool operator!=(Texture^ other);
+
+		////////////////////////////////////////////////////////////////////////////////
 		// Getters // 
 		////////////////////////////////////////////////////////////////////////////////
 

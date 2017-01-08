@@ -150,6 +150,9 @@
     <ClInclude Include="src\graphics\components\Texture.h">
       <Filter>Source Files\src\graphics\components</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\components\Texture2D.h">
+      <Filter>Source Files\src\graphics\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

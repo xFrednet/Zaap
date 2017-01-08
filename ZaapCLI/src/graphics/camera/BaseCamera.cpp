@@ -17,14 +17,6 @@ namespace ZaapCLI {
 	{
 		return m_Pitch;
 	}
-	float CameraRedirector::getFOVValue()
-	{
-		return m_FOV;
-	}
-	float CameraRedirector::getFOVRatioValue()
-	{
-		return m_FOVRatio;
-	}
 
 	void CameraRedirector::setPositionValue(zaap::Vec3 position)
 	{
@@ -38,14 +30,6 @@ namespace ZaapCLI {
 	{
 		m_Pitch = pitch;
 	}
-	void CameraRedirector::setFOVValue(float fov)
-	{
-		m_FOV = fov;
-	}
-	void CameraRedirector::setFOVRatioValue(float fovRatio)
-	{
-		m_FOVRatio = fovRatio;
-	}
 
 	//Actual class
 	CameraRedirector::CameraRedirector(ZaapCLI::BaseCamera^ owner)
@@ -53,8 +37,8 @@ namespace ZaapCLI {
 		m_Owner(owner)
 	{
 	}
-	CameraRedirector::CameraRedirector(ZaapCLI::BaseCamera^ owner, zaap::Vec3 position, float yaw, float pitch, float fov, float fovRatio)
-		: zaap::graphics::Camera(position, yaw, pitch, fov, fovRatio),
+	CameraRedirector::CameraRedirector(ZaapCLI::BaseCamera^ owner, zaap::Vec3 position, float yaw, float pitch)
+		: zaap::graphics::Camera(position, yaw, pitch),
 		m_Owner(owner)
 	{
 	}
@@ -113,8 +97,8 @@ namespace ZaapCLI {
 		: Camera(new CameraRedirector(this))
 	{
 	}
-	BaseCamera::BaseCamera(Vector3^ position, float yaw, float pitch, float fov, float fovRatio)
-		: Camera(new CameraRedirector(this, *position->getHandle(), yaw, pitch, fov, fovRatio))
+	BaseCamera::BaseCamera(Vector3^ position, float yaw, float pitch)
+		: Camera(new CameraRedirector(this, *position->getHandle(), yaw, pitch))
 	{
 	}
 	BaseCamera::BaseCamera(Vector3^ position, Vector3^ lookAt, Vector3^ up) 

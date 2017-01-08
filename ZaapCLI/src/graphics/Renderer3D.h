@@ -54,7 +54,7 @@ namespace ZaapCLI
 		// <Input>
 		//      A valid TransformationMatrix.
 		//
-		void loadTransformationMatrix(Matrix4 transformationMatrix);
+		void loadTransformationMatrix(Matrix4^ transformationMatrix);
 
 		// <Function>
 		//      loadLightSetup
@@ -66,7 +66,7 @@ namespace ZaapCLI
 		// <Input>
 		//      A valid LightSetup.
 		//
-		void loadLightSetup(LightSetup LightSetup);
+		void loadLightSetup(LightSetup^ LightSetup);
 
 		// <Function>
 		//      loadScene

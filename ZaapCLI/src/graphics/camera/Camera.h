@@ -24,7 +24,7 @@ namespace ZaapCLI {
 
 		virtual void update();
 		virtual Matrix4^ getViewMatrix();
-		void calculateViewFrustum();
+		void calculateViewFrustum(Matrix4^ projectionMatrix);
 		ViewFrustum^ getViewFrustum();
 
 		//position

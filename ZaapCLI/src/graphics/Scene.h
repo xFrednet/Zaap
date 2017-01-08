@@ -30,6 +30,18 @@ namespace ZaapCLI {
 		//
 		Scene(zaap::graphics::Scene* instance);
 
+		// <Deconstructor>
+		//      Scene
+		//
+		// <Description>
+		//      This deconstructor sets m_Instance to null do stop the ManagedClass
+		//      from deleting is. This is done in the application class.
+		//
+		// <Note>
+		//      Please ignore it and don't kill me. I know that this is stupid.
+		//
+		~Scene();
+
 		////////////////////////////////////////////////////////////////////////////////
 		// The Environment //
 		////////////////////////////////////////////////////////////////////////////////

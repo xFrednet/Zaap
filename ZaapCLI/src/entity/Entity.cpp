@@ -77,7 +77,7 @@ namespace ZaapCLI {
 	//virtual graphics::Mesh* getMesh();
 	void Entity::getTransformationMatrix(Matrix4^ result)
 	{
-		m_Instance->getTransformationMatrix(*result->getHandle());
+		m_Instance->getTransformationMatrix(result->getHandle());
 	}
 
 	// GameLoop util
@@ -87,7 +87,7 @@ namespace ZaapCLI {
 	}
 	void Entity::render()
 	{
-		m_Instance->render();
+		// TODO m_Instance->render();
 	}
 
 	zaap::Entity* Entity::getHandle()

@@ -32,9 +32,9 @@ namespace ZaapCLI {
 	{
 		return gcnew Matrix4(&m_Instance->getViewMatrix());
 	}
-	void Camera::calculateViewFrustum()
+	void Camera::calculateViewFrustum(Matrix4^ projectionMatrix)
 	{
-		m_Instance->calculateViewFrustum();
+		m_Instance->calculateViewFrustum(*projectionMatrix->getHandle());
 	}
 	ViewFrustum^ Camera::getViewFrustum()
 	{

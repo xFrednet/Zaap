@@ -66,11 +66,6 @@ namespace ZaapCLI {
 	{
 		m_Instance->callDefaultUpdate();
 	}
-
-	void Application::cleanup()
-	{
-		m_Instance->cleanup();
-	}
 	
 	void Application::pullEvents()
 	{

@@ -13,15 +13,16 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Texture(nullptr)
 	{
 		byte* b = nullptr;
-		
-		ZA_RESULT res = ImageLoader::Load(filePath, &m_Width, &m_Height, &m_BitsPerPixel, &b);
+		uint bytesperPixel;
+
+		ZA_RESULT res = ImageLoader::Load(filePath, &m_Width, &m_Height, &bytesperPixel, &b);
 		if (ZA_FAILED(res))
 		{
 			ZA_SUBMIT_ERROR(res);
 			return;
 		}
 
-		if (m_BitsPerPixel == 32)
+		if (bytesperPixel == 32)
 			init(b, ZA_FORMAT_R8G8B8A8_UINT);
 		else 
 			init(b, ZA_FORMAT_R8G8B8_UINT);
@@ -34,7 +35,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		m_Width = image.getWidth();
 		m_Height = image.getHeight();
-		m_BitsPerPixel = image.getBitsPerPixel();
+		m_Format = image.getFormat();
 
 		init(image.getPixelArray(), image.getFormat());
 	}
@@ -165,16 +166,16 @@ namespace zaap { namespace graphics { namespace DX {
 	////////////////////////////////////////////////////////////////////////////////
 	// Abstract members // 
 	////////////////////////////////////////////////////////////////////////////////
-	ZA_RESULT DXTexture2D::bind(uint slot)
+	void DXTexture2D::bind(uint slot)
 	{
 		
 		if (!m_TextureView && !m_SamplerState)
-			return ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS;
+			return;
 
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, &m_TextureView);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, &m_SamplerState);
 		
-		return ZA_OK;
+		return;
 	}
 	void DXTexture2D::unbind(uint slot)
 	{
