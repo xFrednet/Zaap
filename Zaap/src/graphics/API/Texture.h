@@ -97,9 +97,9 @@ namespace zaap { namespace graphics {
 		// Texture creation // 
 		////////////////////////////////////////////////////////////////////////////////
 		
-		//******************************
-		// Texture2D
-		//******************************
+		// *********************************************************
+		// * Texture2D *
+		// *********************************************************
 		
 		// <Function>
 		//      CreateTexture2D
@@ -216,10 +216,10 @@ namespace zaap { namespace graphics {
 		//      operator==
 		//
 		// <Description>
-		//      This method compares this and the given texture.
+		//      This method compares this and the given @Texture.
 		//      
 		// <Return>
-		//      This returns the test result in from of a boolean.
+		//      This returns the test result in form of a boolean.
 		//      
 		inline bool operator==(Texture const* other) const;
 
@@ -230,7 +230,7 @@ namespace zaap { namespace graphics {
 		//      This method compares this and the given texture.
 		//      
 		// <Return>
-		//      This returns the test result in from of a boolean.
+		//      This returns the test result in form of a boolean.
 		//      
 		inline bool operator!=(Texture const* other) const;
 
@@ -270,12 +270,11 @@ namespace zaap { namespace graphics {
 	//      Equal
 	//      
 	// <Description>
-	//      This tests if the given textures are the same.
+	//      This tests if the given @Textures are the same.
 	//      
 	// <Return>
-	//      This returns the test result in from of a boolean.
+	//      This returns the test result in form of a boolean.
 	//      
 	ZAAP_API inline bool Equal(Texture const* a, const Texture const* b);
-
 
 }}}

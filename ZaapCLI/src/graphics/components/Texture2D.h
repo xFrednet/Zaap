@@ -3,7 +3,6 @@
 #include <ZaapCLI.h>
 #include "Texture.h"
 
-
 #include <graphics\API\Texture2D.h>
 #include <graphics\API\Texture.h>
 #include "..\Bitmap.h"
@@ -65,6 +64,22 @@ namespace ZaapCLI
 		//          added to the @TextureManager.
 		//      
 		Texture2D(System::String^ name, Bitmap bitmap, bool addToTextureManager);
+
+		// <Constructor>
+		//      Texture2D
+		//
+		// <Description>
+		//      This creates a new CLI class from the given
+		//      pointer instance.
+		//
+		// <Note> 
+		//      This is only used for ZaapCLI intern stuff.
+		//
+		// <Input>
+		//      instance:
+		//          The existing instance of this class.
+		//
+		Texture2D(zaap::graphics::API::Texture2D* instance);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Util // 
@@ -135,5 +150,16 @@ namespace ZaapCLI
 		//      This returns the value of m_Height.
 		//
 		uint getHeight();
+
+		// <Function>
+		//      getHandle
+		//
+		// <Description>
+		//      This returns the handle casted to a pointer from a @Texture2D.
+		//
+		// <Return>
+		//      This returns the handle to the c++ @Texture2D.
+		//
+		zaap::graphics::API::Texture2D* getHandle() new;
 	};
 }

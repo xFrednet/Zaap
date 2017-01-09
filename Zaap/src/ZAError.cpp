@@ -146,7 +146,7 @@ namespace zaap
 			memcpy(&result[size], &srcResult[0], sizeof(ZA_RESULT) * (ZA_MULTI_RESULT_SIZE - size));
 
 		//add new results
-		int i = 0;
+		uint i = 0;
 		for (ZA_RESULT subResult : list)
 		{
 			if (i < size) //yes awesome for loop

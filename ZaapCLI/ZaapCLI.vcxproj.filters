@@ -73,6 +73,15 @@
     <ClCompile Include="src\graphics\components\Texture.cpp">
       <Filter>Source Files\src\graphics\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\components\Texture2D.cpp">
+      <Filter>Source Files\src\graphics\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Material.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\MaterialManager.cpp">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ZaapCLI.h">
@@ -152,6 +161,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\components\Texture2D.h">
       <Filter>Source Files\src\graphics\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\MaterialManager.h">
+      <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Material.h">
+      <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

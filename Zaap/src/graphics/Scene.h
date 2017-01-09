@@ -9,6 +9,14 @@
 #include "camera/Camera.h"
 #include "Renderer3D.h"
 
+namespace zaap
+{
+	namespace scene
+	{
+		class Terrain;
+	}
+}
+
 namespace zaap { namespace graphics {
 	
 	class ZAAP_API Scene

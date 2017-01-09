@@ -17,4 +17,20 @@ namespace zaap { namespace graphics {
 	{
 		return "Material(" + Color.toString() + ", Reflectivity: " + std::to_string(Reflectivity) + ")";
 	}
+
+	bool Material::operator==(const Material& other) const
+	{
+		return Equal(*this, other);
+	}
+
+	bool Material::operator!=(const Material& other) const
+	{
+		return !Equal(*this, other);
+	}
+
+	bool Equal(const Material& a, const Material& b)
+	{
+		return Equal(a.Color, b.Color) &&
+			(a.Reflectivity == b.Reflectivity);
+	}
 }}

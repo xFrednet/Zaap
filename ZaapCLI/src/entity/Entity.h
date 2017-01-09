@@ -6,6 +6,8 @@
 #include <maths\Vector3.h>
 #include <maths\Matrix4.h>
 
+#include "..\graphics\Renderer3D.h"
+
 namespace ZaapCLI {
 
 	public ref class Entity
@@ -41,7 +43,7 @@ namespace ZaapCLI {
 
 		// GameLoop util
 		virtual void update();
-		virtual void render();
+		virtual void render(Renderer3D^ renderer);
 
 		zaap::Entity* getHandle();
 	};

@@ -3,13 +3,14 @@
 #include <ZaapCLI.h>
 
 #include <graphics/Scene.h>
-#include "..\entity\Entity.h"
 #include "..\scene\Terrain.h"
 #include "..\graphics\camera\Camera.h"
 #include "..\graphics\camera\ViewFrustum.h"
 #include "..\entity\light\LightSetup.h"
 
 namespace ZaapCLI {
+
+	ref class Entity;
 
 	public ref class Scene : public ManagedClass<zaap::graphics::Scene>
 	{
@@ -18,7 +19,7 @@ namespace ZaapCLI {
 		//      Scene
 		//
 		// <Descripton>
-		//      This creates a new instance of the scene class.
+		//      This creates a new instance of the @Scene class.
 		//
 		Scene();
 		

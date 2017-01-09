@@ -43,9 +43,7 @@ typedef int16									ZA_RESULT;
 //
 // <Components>
 //      Results : A array that can contain several ZA_RESULTs.
-//      
-//      
-//      
+//
 typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 	ZA_RESULT Results[ZA_MULTI_RESULT_SIZE];
 	
@@ -59,10 +57,11 @@ typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 	//      through the square brackets.
 	//      
 	// <Input>
-	//      index : The index of the requested ZA_RESULT.
+	//      index: 
+	//         The index of the requested @ZA_RESULT.
 	//
 	// <Return>
-	//      The ZA_RESULT for the given index.
+	//      The @ZA_RESULT for the given index.
 	//
 	ZA_RESULT& operator[](int index);
 
@@ -72,10 +71,11 @@ typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 	// <Description>
 	//      This enables the user to access the Results through
 	//      the square brackets. This method can be used by
-	//      a constant ZA_MULTI_RESULT.
+	//      a constant @ZA_MULTI_RESULT.
 	//      
 	// <Input>
-	//      index : The index of the requested ZA_RESULT.
+	//      index: 
+	//          The index of the requested ZA_RESULT.
 	//
 	// <Return>
 	//      The ZA_RESULT for the given index.
@@ -533,9 +533,9 @@ namespace zaap {
 ////////////////////////////////////////////////////////////////////////////////
 //     - File stuff (input/output)
 //     - Memory management
-// ******************************
+// *********************************************************
 // File stuff
-// ******************************
+// *********************************************************
 #define ZA_ERROR_DIRECTORY_DOES_NOT_EXIST		ZAAP_TYPEDEF_ZARESULT(0x8201)
 #define ZA_ERROR_DIRECTORY_FAILED_TO_OPEN		ZAAP_TYPEDEF_ZARESULT(0x8202)
 #define ZA_ERROR_DIRECTORY_FAILED_TO_CREATE		ZAAP_TYPEDEF_ZARESULT(0x8203)
@@ -560,9 +560,9 @@ namespace zaap {
 #define ZA_ERROR_FILE_TYPE_UNSUPPORTED			ZAAP_TYPEDEF_ZARESULT(0x821B)
 #define ZA_ERROR_FILE_TYPE_UNEXPECTED			ZAAP_TYPEDEF_ZARESULT(0x821C)
 
-// ******************************
-// Memory management
-// ******************************
+// *********************************************************
+// * Memory management *
+// *********************************************************
 
 
 
@@ -611,13 +611,13 @@ namespace zaap {
 //
 #define ZA_ERROR_API_MISSES_THIS_FEATURE			ZAAP_TYPEDEF_ZARESULT(0x8D02)
 
-// ******************************
+// *********************************************************
 // * API Components *
-// ******************************
+// *********************************************************
 
-// ###############
+// #####################################
 // # API Texture #
-// ###############
+// #####################################
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE_ERROR
@@ -712,13 +712,13 @@ namespace zaap {
 //
 #define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT						ZAAP_TYPEDEF_ZARESULT(0x8E01)
 
-// ******************************
-// Direct X component stuff
-// ******************************
+// *********************************************************
+// * Direct X component stuff *
+// *********************************************************
 
-// #######################
+// #####################################
 // # Direct X BlendState #
-// #######################
+// #####################################
 
 // <Name>
 //      ZA_ERROR_DIRECTX_BLENDSTATE_CREATION_ERROR

@@ -1,45 +1,15 @@
-﻿#pragma once
+#pragma once
 
-#include <Common.h>
-#include <Types.h>
+#include "Material.h"
 
-#include <graphics/Material.h>
+#include <graphics\MaterialManager.h>
 
-namespace zaap { namespace graphics {
-	
-	// <Class>
-	//      MaterialManager
-	//
-	// <Description>
-	//      This manages all loaded @Materials. They can be accessed by name.
-	//
-	//
-	class ZAAP_API MaterialManager
-	{
-	private:
-		static std::map<String, Material> s_Materials;
-
-		MaterialManager() {}
+namespace ZaapCLI
+{
+	public ref class MaterialManager {
 	public:
-		// <Function>
-		//      LoadMTLFile
-		//
-		// <Description>
-		//      This load the @Materials from the submitted MTL file.
-		//
-		// <Note>
-		//      The @Materials are directly added to this manager.
-		//
-		// <Input>
-		//      file:
-		//          The file path for the MTLFile.
-		//
-		// <Return>
-		//      This returns a @ZA_RESULT which indicates if the method 
-		//      executed successfully. 
-		//
-		static ZA_RESULT LoadMTLFile(String file);
-
+		//TODO add LoadMTLFile
+		
 		// <Function>
 		//      Add
 		//
@@ -57,7 +27,7 @@ namespace zaap { namespace graphics {
 		//      material:
 		//          The @Material that should be stored under the name.
 		//
-		static void Add(String name, Material material);
+		static void Add(System::String^ name, Material^ material);
 
 		// <Function>
 		//      Get
@@ -77,7 +47,7 @@ namespace zaap { namespace graphics {
 		//      This function returns the stored @Material or a default
 		//      @Material if there is no entry under the name
 		//
-		static Material Get(const String& name);
+		static Material^ Get(System::String^ name);
 
 		// <Function>
 		//      Contains
@@ -93,7 +63,7 @@ namespace zaap { namespace graphics {
 		// <Return>
 		//      This returns the test result.
 		//
-		static bool Contains(const String& name);
+		static bool Contains(System::String^ name);
 
 		// <Function>
 		//      Cleanup
@@ -110,6 +80,7 @@ namespace zaap { namespace graphics {
 		//          rendering after calling this could lead to some errors.
 		//
 		static void Cleanup();
+
 	};
-		
-}}
+
+}

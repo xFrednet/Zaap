@@ -16,11 +16,11 @@ namespace ZaapCLI
 	////////////////////////////////////////////////////////////////////////////////
 	bool Texture::operator==(Texture^ other)
 	{
-		return Equal(m_Instance, other->getHandle);
+		return Equal(m_Instance, other->getHandle());
 	}
 	bool Texture::operator!=(Texture^ other)
 	{
-		return !Equal(m_Instance, other->getHandle);
+		return !Equal(m_Instance, other->getHandle());
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

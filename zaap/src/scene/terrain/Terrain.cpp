@@ -1,5 +1,6 @@
 ﻿#include "Terrain.h"
 #include <util/Console.h>
+#include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
 #include <graphics/mesh/Mesh.h>
 #include <graphics/Renderer3D.h>

@@ -21,7 +21,7 @@ namespace zaap {
 
 	String Vec2::toString() const
 	{
-		return "Vec2(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ")";
+		return "Vec2(X:" + std::to_string(X) + ", Y:" + std::to_string(Y) + ")";
 	}
 
 	//

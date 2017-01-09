@@ -57,7 +57,56 @@ namespace zaap { namespace graphics {
 		int getIntB(void) const;
 		int getIntA(void) const;
 
-		String toString(void) const;
+		// <Function>
+		//      toString
+		//
+		// <Description>
+		//      This combines the values of this @Color into a string.
+		//
+		// <Example>
+		//      "Color(R 1.0, G 1.0, B 1.0, A 1.0)"
+		//
+		// <Return>
+		//      The String containing the information from this instance.
+		//
+		String toString() const;
+
+		////////////////////////////////////////////////////////////////////////////////
+		// Operators // 
+		////////////////////////////////////////////////////////////////////////////////
+
+		// <Function>
+		//      operator==
+		//
+		// <Description>
+		//      This method compares this and the given @Color.
+		//      
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//      
+		inline bool operator==(const Color& other) const;
+
+		// <Function>
+		//      operator!=
+		//
+		// <Description>
+		//      This method compares this and the given @Color.
+		//      
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//      
+		inline bool operator!=(const Color& other) const;
 	};
+
+	// <Function>
+	//      Equal
+	//      
+	// <Description>
+	//      This tests if the given @Textures are the same.
+	//      
+	// <Return>
+	//      This returns the test result in form of a boolean.
+	//      
+	ZAAP_API bool Equal(const Color& a, const Color& b);
 
 }}

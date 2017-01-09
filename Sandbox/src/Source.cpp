@@ -62,7 +62,7 @@ void loadEntitys()
 	
 	//Test Model
 	{
-		Loader::LoadMTLFile("res/oakTree.mtl");
+		MaterialManager::LoadMTLFile("res/oakTree.mtl");
 		
 		MeshManager::AddMesh(Loader::LoadOBJFile("oakTree", "res/oakTree.obj", false));
 		
@@ -78,7 +78,7 @@ void loadEntitys()
 	}
 	
 	{
-		Loader::LoadMTLFile("res/spear.mtl");
+		MaterialManager::LoadMTLFile("res/spear.mtl");
 
 		MeshManager::AddMesh(Loader::LoadOBJFile("spear", "res/spear.obj", false));
 
@@ -87,7 +87,7 @@ void loadEntitys()
 		scene_->addEntity(new Entity(MeshManager::GetMesh("spear"), v, Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f)));
 	}
 	{
-		Loader::LoadMTLFile("res/bush.mtl");
+		MaterialManager::LoadMTLFile("res/bush.mtl");
 
 		MeshManager::AddMesh(Loader::LoadOBJFile("bush", "res/bush.obj", false));
 
@@ -283,7 +283,6 @@ int main(void)
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZAAP_INFO(id1.toString());
-
 	//source
 	{
 		//Bitmap bm("lolo,guhdawzufgdauiwgfdazuiwetfrgdtauiwegfazuwefdr");

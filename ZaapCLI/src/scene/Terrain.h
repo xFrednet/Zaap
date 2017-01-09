@@ -5,6 +5,7 @@
 #include <scene/terrain/Terrain.h>
 
 #include <maths/Vector2.h>
+#include "..\graphics\Renderer3D.h"
 
 namespace ZaapCLI {
 
@@ -54,7 +55,7 @@ namespace ZaapCLI {
 
 		//game loop methods
 		void update();
-		void render();
+		void render(Renderer3D^ renderer);
 
 		//render
 		void bindTextures();

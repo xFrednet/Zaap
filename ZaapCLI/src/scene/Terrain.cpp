@@ -98,9 +98,9 @@ namespace ZaapCLI {
 	{
 		m_Instance->update();
 	}
-	void Terrain::render()
+	void Terrain::render(Renderer3D^ renderer)
 	{
-		// TODO m_Instance->render();
+		m_Instance->render(renderer->getHandle());
 	}
 
 	//render

@@ -137,4 +137,23 @@ namespace zaap { namespace graphics {
 			", B " + std::to_string(getIntB()) +
 			", A " + std::to_string(getIntA()) + ")";
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// Operators // 
+	////////////////////////////////////////////////////////////////////////////////
+
+	bool Color::operator==(const Color& other) const
+	{
+		return Equal(*this, other);
+	}
+
+	bool Color::operator!=(const Color& other) const
+	{
+		return !Equal(*this, other);
+	}
+
+	bool Equal(const Color& a, const Color& b)
+	{
+		return Equal(a.RGBA, b.RGBA);
+	}
 }}

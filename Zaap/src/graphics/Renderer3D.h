@@ -66,16 +66,21 @@ namespace zaap { namespace graphics {
 		//      m_HasCustomRenderTarget
 		//
 		// <Description>
-		//      This value indicates the type of render-target.
+		//      This boolean indicates the type of render-target.
 		//                  
-		//          false:  means that m_RenderTarget is the Texture from the 
-		//                  actual screen. This also means that WindowResizeEvents
-		//                  are handled automatically.
+		//          true:   
+		//              This means that m_RenderTarget is set by someone
+		//              or something. WindowResizeEvents are ignored by this
+		//              renderer.
 		//                  
-		//          true:   This means that m_RenderTarget is set by someone
-		//                  or something. WindowResizeEvents are ignored by this
-		//                  renderer.
+		//          false:  
+		//              means that m_RenderTarget is the Texture from the 
+		//              actual screen. This also means that WindowResizeEvents
+		//              are handled automatically.
 		//      
+		// <Note>
+		//      It is set to false by default.
+		//
 		bool m_HasCustomRenderTarget = false;
 
 		// <Value>
@@ -114,8 +119,16 @@ namespace zaap { namespace graphics {
 		//      m_Width
 		// 
 		// <Description>
-		//      The width of the current render-target
+		//      The width of the current render-target.
+		//
 		uint m_Width; //TODO add getters / setters
+		
+		// <Value>
+		//      m_Height
+		// 
+		// <Description>
+		//      The height of the current render-target.
+		//
 		uint m_Height; //TODO add getters / setters
 
 		//Shader
@@ -186,13 +199,15 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//      This method loads the given TransformationMatrix into the 
 		//      currently active shader (defined by @m_ActiveShaderType).
-		// 
+		//
+		// <Note>
 		//      In case that @m_ActiveShaderType points to a shader that does
 		//      not support a TransformationMatrix it'll just return without
 		//      any actions.
 		//
 		// <Input>
-		//      A valid TransformationMatrix.
+		//      transformationMatrix:
+		//          A 4x4 Matrix that is loaded as a TransformationMatrix.
 		//
 		void loadTransformationMatrix(const Mat4& transformationMatrix) const;
 		
@@ -204,9 +219,10 @@ namespace zaap { namespace graphics {
 		//      that support it.
 		//
 		// <Input>
-		//      A valid LightSetup.
+		//      lightSetup:
+		//          A @LightSetup that is loaded to the shaders.
 		//
-		void loadLightSetup(const LightSetup& LightSetup);
+		void loadLightSetup(const LightSetup& lightSetup);
 		
 		// <Function>
 		//      loadScene
@@ -218,7 +234,8 @@ namespace zaap { namespace graphics {
 		//          - Current @ViewFrustum
 		//
 		// <Input>
-		//      A valid instance of the @Scene please.
+		//      scene:
+		//          A pointer to a instance of the @Scene class.
 		//
 		void loadScene(const Scene* scene);
 
@@ -230,7 +247,8 @@ namespace zaap { namespace graphics {
 		//      Starts the shader specified by the input.
 		//
 		// <Input>
-		//      @ZA_SHADER_TYPE the requested shader to start
+		//      shader:
+		//         The @ZA_SHADER_TYPE of the requested shader to start.
 		//
 		void startShader(ZA_SHADER_TYPE shader);
 		
@@ -242,7 +260,8 @@ namespace zaap { namespace graphics {
 		//      This does not create changes or starts any shaders by it self.
 		//
 		// <Input>
-		//      shader : The @ZA_SHADER_TYPE of the requested shader.
+		//      shader: 
+		//          The @ZA_SHADER_TYPE of the requested shader.
 		//
 		// <Returns>
 		//      Returns the requested shader instance or a nullptr in case of failure.
@@ -255,23 +274,30 @@ namespace zaap { namespace graphics {
 
 		// <Function>
 		//      setCustomRenderTarget
-		//      
+		//
 		// <Description>
 		//      This sets a custom render-target.
-		//      
+		//
 		// <Note>
-		//   1. The API renderer have to bind the texture as a resource 
-		//      this can take time and therefor reduce performance. So please
-		//      please don't change the render-target every frame.
+		//      -   The API renderer has to bind the texture as a resource 
+		//          this can take time and therefor reduce performance. So please
+		//          please don't change the render-target every frame.
 		//      
-		//   2. This method should affect m_HasCustomRenderTarget
-		//        - A valid pointer means that a custom render-target is set.
-		//        - A null pointer sets m_HasCustomRenderTarget back to false.
-		//          rendered scenes are now rendered to the screen and 
-		//          WindowResizeEvents effect the render-target again.
+		//      - This method should affect m_HasCustomRenderTarget
+		//          - A valid pointer means that a custom render-target is set.
+		//          - A null pointer sets m_HasCustomRenderTarget back to false.
+		//            rendered scenes are now rendered to the screen and 
+		//            WindowResizeEvents effect the render-target again.
 		//
 		// <Input>
-		//      target: The new render-target. Null is also a valid input.
+		//      target: 
+		//          The new render-target. Null is also a valid input.
+		//      width:
+		//          The width of the render-target. This can be 0 if the target is also
+		//          set to null.
+		//      height:
+		//          The height of the render-target. This can be 0 if the target is also
+		//          set to null.
 		//
 		virtual void setCustomRenderTarget(API::Texture2D* target, uint width, uint height) = 0;
 
@@ -294,7 +320,7 @@ namespace zaap { namespace graphics {
 		//      It presents the Frame by swapping the BackBuffer.
 		//      (Note: Some APIs might have some extra functions in here.)
 		//
-		virtual void presentFrame()  const = 0;
+		virtual void presentFrame() const = 0;
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Rendering options //
@@ -312,11 +338,12 @@ namespace zaap { namespace graphics {
 		//         otherwise to improve performance.
 		//      
 		// <Input>
-		//      enable      : indicates the new state 
-		//                        true = enabled
-		//                        false = disabled
+		//      enable: 
+		//          indicates the new state 
+		//              true = enabled
+		//              false = disabled
 		//
-		virtual void setAlphaTestingState(bool enabled) const = 0;
+		virtual void setAlphaTestingState(bool enable) const = 0;
 		// <Function>
 		//      enableAlphaTesting
 		//
@@ -345,9 +372,10 @@ namespace zaap { namespace graphics {
 		//      models are rendered to the DepthStencil.
 		//      
 		// <Input>
-		//      enable      : indicates the new state 
-		//                        true = enabled
-		//                        false = disabled
+		//      enable: 
+		//          indicates the new state 
+		//              true = enabled
+		//              false = disabled
 		//
 		virtual void setDepthTestingState(bool enable) const = 0;
 		// <Function>
@@ -375,8 +403,10 @@ namespace zaap { namespace graphics {
 		//      some API related things.
 		//      
 		// <Input>
-		//      width   : the new width
-		//      height  : the new height
+		//      width: 
+		//          the new width.
+		//      height: 
+		//          the new height.
 		//      
 		// <Note>
 		//      This method will be changed to add extra resize options 
@@ -407,7 +437,8 @@ namespace zaap { namespace graphics {
 		//      m_FOV is used create the m_ProjectionMatrix.
 		//
 		// <Input>
-		//      A value for m_FOV.
+		//      fov:
+		//          A value for m_FOV.
 		//
 		inline void setFOV(const float& fov);
 
@@ -430,7 +461,8 @@ namespace zaap { namespace graphics {
 		//      m_NearPlane is used create the m_ProjectionMatrix.
 		//
 		// <Input>
-		//      A new value for m_NearPlane.
+		//      nearPlane:
+		//          A new value for m_NearPlane.
 		//
 		inline void setNearPlane(const float& nearPlane);
 
@@ -453,7 +485,8 @@ namespace zaap { namespace graphics {
 		//      m_FarPlane is used create the m_ProjectionMatrix.
 		//
 		// <Input>
-		//      A new value for m_FarPlane.
+		//      farPlane:
+		//          A new value for m_FarPlane.
 		//
 		inline void setFarPlane(const float& farPlane);
 
@@ -492,7 +525,7 @@ namespace zaap { namespace graphics {
 		//
 		inline Mat4 getProjectionMatrix() const;
 		// <Function>
-		//      setProjectionmatrix
+		//      setProjectionMatrix
 		//
 		// <Description>
 		//      Sets the current m_ProjectionMatrix for this Renderer3D.
@@ -501,9 +534,10 @@ namespace zaap { namespace graphics {
 		//      changes.
 		//
 		// <Input>
-		//      The new value for m_ProjectionMatrix.
+		//      projectionMatrix:
+		//          The new 4x4 matrix for m_ProjectionMatrix.
 		//
-		inline void setProjectionmatrix(const Mat4& projectionMatrix);
+		inline void setProjectionMatrix(const Mat4& projectionMatrix);
 
 		// <Function>
 		//      getViewFrustum

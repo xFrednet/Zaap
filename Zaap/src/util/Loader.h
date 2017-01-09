@@ -12,7 +12,6 @@ namespace zaap {
 	{
 	public:
 		static graphics::Mesh* LoadOBJFile(String name, String file, bool texturedMesh = true);
-		static void LoadMTLFile(String file);
 
 		static String LoadFile(String file);
 	};

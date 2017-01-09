@@ -8,6 +8,8 @@
 #include <maths\Vector3.h>
 #include <maths\Matrix4.h>
 
+#include "..\graphics\Renderer3D.h"
+
 namespace ZaapCLI
 {
 	ref class BaseEntity;
@@ -62,7 +64,7 @@ namespace ZaapCLI
 		void update() override;
 		void callDefault_update();
 		void render(zaap::graphics::Renderer3D* renderer) override;
-		void callDefault_render();
+		void callDefault_render(Renderer3D^ renderer);
 	};
 
 	public ref class BaseEntity : public Entity
@@ -124,7 +126,7 @@ namespace ZaapCLI
 
 		// GameLoop util
 		virtual void update() override;
-		virtual void render() override;
+		virtual void render(Renderer3D^ renderer) override;
 	};
 	
 }

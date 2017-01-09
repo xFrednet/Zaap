@@ -85,9 +85,9 @@ namespace ZaapCLI {
 	{
 		m_Instance->update();
 	}
-	void Entity::render()
+	void Entity::render(Renderer3D^ renderer)
 	{
-		// TODO m_Instance->render();
+		m_Instance->render(renderer->getHandle());
 	}
 
 	zaap::Entity* Entity::getHandle()

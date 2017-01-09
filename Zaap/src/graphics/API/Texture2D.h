@@ -4,7 +4,7 @@
 #include <Types.h>
 
 #include "Texture.h"
-#include <app/Application.h>
+#include "graphics/Format.h"
 
 namespace zaap { namespace graphics { namespace API {
 

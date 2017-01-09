@@ -34,7 +34,7 @@ namespace zaap {
 
 	String Vec4::toString() const
 	{
-		return "Vec4(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ", W:" + StringUtil::to_string(W) + ")";
+		return "Vec4(X:" + std::to_string(X) + ", Y:" + std::to_string(Y) + ", Z:" + std::to_string(Z) + ", W:" + std::to_string(W) + ")";
 	}
 
 	//

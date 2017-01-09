@@ -295,7 +295,7 @@ namespace zaap { namespace graphics {
 	{
 		return m_ProjectionMatrix;
 	}
-	void Renderer3D::setProjectionmatrix(const Mat4& projectionMatrix)
+	void Renderer3D::setProjectionMatrix(const Mat4& projectionMatrix)
 	{
 		m_ProjectionMatrix = projectionMatrix;
 	}

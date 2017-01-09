@@ -35,6 +35,7 @@ namespace ZaapCLI
 	//      
 	public ref class Texture : public ManagedClass<zaap::graphics::API::Texture> {
 		
+	public:
 		////////////////////////////////////////////////////////////////////////////////
 		// Constructor //
 		////////////////////////////////////////////////////////////////////////////////
@@ -48,7 +49,11 @@ namespace ZaapCLI
 		//
 		// <Note> 
 		//      This is only used for ZaapCLI intern stuff.
-		//      
+		//
+		// <Input>
+		//      instance:
+		//          The existing instance of this class.
+		//
 		Texture(zaap::graphics::API::Texture* instance);
 		
 		////////////////////////////////////////////////////////////////////////////////
@@ -60,9 +65,13 @@ namespace ZaapCLI
 		//
 		// <Description>
 		//      This method compares this and the given texture.
-		//      
+		//
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//
 		// <Return>
-		//      This returns the test result in from of a boolean.
+		//      This returns the test result in form of a boolean.
 		//      
 		bool operator==(Texture^ other);
 
@@ -71,9 +80,13 @@ namespace ZaapCLI
 		//
 		// <Description>
 		//      This method compares this and the given texture.
-		//      
+		//
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//
 		// <Return>
-		//      This returns the test result in from of a boolean.
+		//      This returns the test result in form of a boolean.
 		//      
 		bool operator!=(Texture^ other);
 

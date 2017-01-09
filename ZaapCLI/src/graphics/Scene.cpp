@@ -1,5 +1,7 @@
 ﻿#include "Scene.h"
 
+#include "..\entity\Entity.h"
+
 namespace ZaapCLI {
 	
 	Scene::Scene()

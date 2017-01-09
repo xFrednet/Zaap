@@ -11,27 +11,6 @@ namespace zaap {
 	//
 	// Loader
 	//
-	bool startWith(std::string str, std::string str2, int count)
-	{
-		for (int i = 0; i < count; i++)
-		{
-			if (str[i] != str2[i]) return false;
-		}
-		return true;
-	}
-	std::vector<std::string> split(std::string str, std::string delimiter)
-	{
-		std::vector<std::string> returnStr;
-
-		size_t pos = 0;
-		while ((pos = str.find(delimiter)) != std::string::npos)
-		{
-			returnStr.push_back(str.substr(0, pos));
-			str.erase(0, pos + delimiter.length());
-		}
-		returnStr.push_back(str);
-		return returnStr;
-	}
 	int vecContains(std::vector<uint> &vec, int &value)
 	{
 		for (unsigned int i = 0; i < vec.size(); i++)
@@ -79,9 +58,9 @@ namespace zaap {
 			std::getline(fileStream, line);
 
 			//vertices
-			if (startWith(line, "v ", 2))
+			if (StringUtil::StartsWith(line, "v "))
 			{
-				str = split(line, " ");
+				str = StringUtil::Split(line, " ");
 
 				position_unsorted.push_back(
 					Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
@@ -89,17 +68,17 @@ namespace zaap {
 				continue;
 			}
 			//textureCoords
-			if (startWith(line, "vt", 2) && isTMesh)
+			if (StringUtil::StartsWith(line, "vt") && isTMesh)
 			{
-				str = split(line, " ");
+				str = StringUtil::Split(line, " ");
 				texCoords_unsorted.push_back(Vec2((float)atof(str[1].c_str()), (float)atof(str[2].c_str())));
 
 				continue;
 			}
 			//normals
-			if (startWith(line, "vn", 2))
+			if (StringUtil::StartsWith(line, "vn"))
 			{
-				str = split(line, " ");
+				str = StringUtil::Split(line, " ");
 
 				normals_unsorted.push_back(
 					Vec3((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str())));
@@ -107,12 +86,12 @@ namespace zaap {
 				continue;
 			}
 
-			if (startWith(line, "usemtl", 6) && !isTMesh)
+			if (StringUtil::StartsWith(line, "usemtl") && !isTMesh)
 			{
 				if (materialCount >= 8) continue;
 				
-				str = split(line, " ");
-				materials[materialCount] = *MaterialManager::Get(str[1]);
+				str = StringUtil::Split(line, " ");
+				materials[materialCount] = MaterialManager::Get(str[1]);
 				if (&materials[materialCount] == nullptr)
 				{
 					ZAAP_ALERT("requested material is null name: \"" + str[1] + "\" current file: " + file);
@@ -123,12 +102,12 @@ namespace zaap {
 			}
 
 			//indices
-			if (startWith(line, "f", 1))
+			if (StringUtil::StartsWith(line, "f"))
 			{
-				std::vector<std::string> splstr = split(line, " ");
+				std::vector<std::string> splstr = StringUtil::Split(line, " ");
 				for (uint i = 1; i < splstr.size(); i++)
 				{
-					str = split(splstr[i], "/");
+					str = StringUtil::Split(splstr[i], "/");
 					int vertexIndex = atoi(str[0].c_str()) - 1;
 					if (isTMesh) textureIndex = atoi(str[1].c_str()) - 1;
 					int normalIndex = atoi(str[2].c_str()) - 1;
@@ -192,68 +171,6 @@ namespace zaap {
 		ZAAP_INFO(String("loaded ") + file + " as a " + (isTMesh ? "TexturedMesh" : "MaterialMesh"));
 
 		return rMesh;
-	}
-
-	void Loader::LoadMTLFile(String file)
-	{
-	/*	newmtl Material
-		Ns 96.078431
-		Ka 0.000000 0.000000 0.000000
-		Kd 0.597895 0.597895 0.597895 //Color
-		Ks 0.666000 0.666000 0.666000 //Specular
-		Ni 1.000000
-		d 1.000000
-		illum 2
-		*/
-		using namespace graphics;
-
-		std::ifstream fileStream;
-		fileStream.open(file);
-
-		//error check
-		if (!fileStream.is_open())
-		{
-			ZAAP_ERROR(String("could not open: " + file));
-			return;
-		}
-
-		Color color;
-		float reflectivity = 0.0f;
-		String name;
-		bool commit = false;
-		String line;
-		std::vector<std::string> str;
-		while (!fileStream.eof())
-		{
-			getline(fileStream, line);
-			if (startWith(line, "newmtl", 6))
-			{
-				if (commit)
-				{
-					if (!MaterialManager::Contains(name))
-						MaterialManager::Add(name, new Material(color, reflectivity));
-
-				} else commit = true;
-					
-				name = split(line, " ")[1];
-			}
-
-			if (startWith(line, "Kd ", 3))
-			{
-				str = split(line, " ");
-				color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
-			}
-
-			if (startWith(line, "Ks ", 3))
-			{
-				str = split(line, " ");
-				reflectivity = (float)atof(str[1].c_str());
-			}
-		}
-
-		if (!MaterialManager::Contains(name))
-			MaterialManager::Add(name, new Material(color, reflectivity));
-
 	}
 
 	String Loader::LoadFile(String file)

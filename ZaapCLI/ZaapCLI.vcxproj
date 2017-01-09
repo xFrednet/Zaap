@@ -147,6 +147,8 @@
     <ClInclude Include="src\graphics\components\Texture.h" />
     <ClInclude Include="src\graphics\components\Texture2D.h" />
     <ClInclude Include="src\graphics\Format.h" />
+    <ClInclude Include="src\graphics\Material.h" />
+    <ClInclude Include="src\graphics\MaterialManager.h" />
     <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
@@ -173,7 +175,10 @@
     <ClCompile Include="src\graphics\camera\ViewFrustum.cpp" />
     <ClCompile Include="src\graphics\Color.cpp" />
     <ClCompile Include="src\graphics\components\Texture.cpp" />
+    <ClCompile Include="src\graphics\components\Texture2D.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
+    <ClCompile Include="src\graphics\Material.cpp" />
+    <ClCompile Include="src\graphics\MaterialManager.cpp" />
     <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />

@@ -1,0 +1,152 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// General documentation // 
+////////////////////////////////////////////////////////////////////////////////
+{
+	// <Class>
+	//      Texture
+	//
+	// <Description>
+	//      This class is the base class for all the other textures.
+	//
+	// <Note>
+	//      This is only a representational object for the API textures.
+	//      
+	public class ZAAP_API Texture [...]
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Operators // 
+	////////////////////////////////////////////////////////////////////////////////
+
+	{		
+		// <Function>
+		//      operator==
+		//
+		// <Description>
+		//      This method compares this and the given @Class.
+		//
+		// <Note>
+		//      This calls the Equal method for this class.
+		//      
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//	
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//
+		inline bool operator==(const Class& other) const;
+
+		// <Function>
+		//      operator!=
+		//
+		// <Description>
+		//      This method compares this and the given @Class.
+		//
+		// <Note>
+		//      This calls the Equal method for this class.
+		//  
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//    
+		inline bool operator!=(const Class& other) const;
+		
+		// <Function>
+		//      Equal
+		//      
+		// <Description>
+		//      This tests if the given @Classes are the same.
+		//
+		// <Note>
+		//      This info is totaly not coppied and pasted for every Equal function.
+		//
+		// <Input>
+		//      a:
+		//          The first object for comparison.
+		//      b:
+		//          The second object for comparison.
+		//       
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//      
+		ZAAP_API bool Equal(const Class& a, const Class& b);
+	}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// ZaapCLI documentation // 
+////////////////////////////////////////////////////////////////////////////////
+{
+	////////////////////////////////////////////////////////////////////////////////
+	// Constructor / Deconstructor //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// <Constructor>
+		//      Class
+		//
+		// <Description>
+		//      This creates a new CLI class from the given
+		//      pointer instance.
+		//
+		// <Note> 
+		//      This is only used for ZaapCLI intern stuff.
+		//
+		// <Input>
+		//      instance:
+		//          The existing instance of this class.
+		//
+		Class(zaap::Class* instance);
+	
+		// <Deconstructor>
+		//      Class
+		//
+		// <Description>
+		//      This deconstructor calls the cleanup method from 
+		//      the original class.
+		//
+		// <Note>
+		//      Just ignore it.
+		//
+		~Class();	
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Operators // 
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// <Function>
+		//      operator==
+		//
+		// <Description>
+		//      This method compares this and the given @Class.
+		//
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//	
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//
+		bool operator==(Class^ other);
+
+		// <Function>
+		//      operator!=
+		//
+		// <Description>
+		//      This method compares this and the given @Class.
+		//
+		// <Input>
+		//      other:
+		//          The second object for comparison.
+		//
+		// <Return>
+		//      This returns the test result in form of a boolean.
+		//    
+		bool operator!=(Class^ other);
+	}
+}

@@ -1,18 +1,16 @@
-﻿#pragma once
+#pragma once
 
-#include <Common.h>
-#include <Types.h>
+#include <ZaapCLI.h>
 
-#include <graphics/Color.h>
+#include <graphics\Material.h>
+#include "Color.h"
 
-namespace zaap { namespace graphics {
+namespace ZaapCLI
+{
 	
-	struct ZAAP_API Material
-	{
-		////////////////////////////////////////////////////////////////////////////////
-		// Values //
-		////////////////////////////////////////////////////////////////////////////////
+	public ref class Material : public ManagedClass<zaap::graphics::Material> {
 
+	public:
 		// <Value>
 		//      Color
 		//
@@ -23,7 +21,17 @@ namespace zaap { namespace graphics {
 		// <Note>
 		//      It is set to white by default.
 		//      
-		Color Color;
+		property Color^ Color_ {
+			Color^ get()
+			{
+				return gcnew Color(&m_Instance->Color);
+			}
+			
+			void set(Color^ color)
+			{
+				m_Instance->Color = *color->getHandle();
+			}
+		}
 
 		// <Value>
 		//      Reflectivity
@@ -35,7 +43,7 @@ namespace zaap { namespace graphics {
 		// <Note>
 		//      It is set to 0 by default.
 		//      
-		float Reflectivity;
+		ZA_CLI_VALUE(float, Reflectivity, reflectivity);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Constructor //
@@ -45,7 +53,7 @@ namespace zaap { namespace graphics {
 		//      Material
 		//
 		// <Descripton>
-		//      This creates a new instance of the @Material struct.
+		//      This creates a new instance of the @Material class.
 		//
 		Material();
 
@@ -53,7 +61,7 @@ namespace zaap { namespace graphics {
 		//      Material
 		//
 		// <Descripton>
-		//      This creates a new instance of the @Material struct.
+		//      This creates a new instance of the @Material class.
 		//
 		// <Input>
 		//      color:
@@ -63,25 +71,23 @@ namespace zaap { namespace graphics {
 		//          The reflectivity of this @Material. It is used by some
 		//          shaders.
 		//
-		Material(graphics::Color color, float reflectivity);
+		Material(Color^ color, float reflectivity);
 
-		////////////////////////////////////////////////////////////////////////////////
-		// Util //
-		////////////////////////////////////////////////////////////////////////////////
-
-		// <Function>
-		//      toString
+		// <Constructor>
+		//      Material
 		//
 		// <Description>
-		//      This combines the values of this @Material into a string.
+		//      This creates a new CLI class from the given
+		//      pointer instance.
 		//
-		// <Example>
-		//      "Material(Color(R 1.0, G 1.0, B 1.0, A 1.0), Reflectivity: 0.0)"
+		// <Note> 
+		//      This is only used for ZaapCLI intern stuff.
 		//
-		// <Return>
-		//      The String containing the information from this instance.
+		// <Input>
+		//      instance:
+		//          The existing instance of this class.
 		//
-		String toString() const;
+		Material(zaap::graphics::Material* instance);
 
 		////////////////////////////////////////////////////////////////////////////////
 		// Operators // 
@@ -92,48 +98,31 @@ namespace zaap { namespace graphics {
 		//
 		// <Description>
 		//      This method compares this and the given @Material.
-		//      
+		//
 		// <Input>
 		//      other:
 		//          The second object for comparison.
-		//      
+		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
 		//
-		inline bool operator==(const Material& other) const;
+		bool operator==(Material^ other);
 
 		// <Function>
 		//      operator!=
 		//
 		// <Description>
 		//      This method compares this and the given @Material.
-		//      
+		//
 		// <Input>
 		//      other:
 		//          The second object for comparison.
-		//      
+		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
-		//
-		inline bool operator!=(const Material& other) const;
+		//    
+		bool operator!=(Material^ other);
 
 	};
 
-	// <Function>
-	//      Equal
-	//      
-	// <Description>
-	//      This tests if the given @Materials are the same.
-	//      
-	// <Input>
-	//      a:
-	//          The first object for comparison.
-	//      b:
-	//          The second object for comparison.
-	//
-	// <Return>
-	//      This returns the test result in form of a boolean.
-	//      
-	ZAAP_API bool Equal(const Material& a, const Material& b);
-
-}}
+}

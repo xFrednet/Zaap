@@ -25,7 +25,7 @@ namespace zaap {
 
 	String Vec3::toString() const
 	{
-		return "Vec3(X:" + StringUtil::to_string(X) + ", Y:" + StringUtil::to_string(Y) + ", Z:" + StringUtil::to_string(Z) + ")";
+		return "Vec3(X:" + std::to_string(X) + ", Y:" + std::to_string(Y) + ", Z:" + std::to_string(Z) + ")";
 	}
 
 	//

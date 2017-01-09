@@ -40,9 +40,9 @@ namespace zaap { namespace graphics { namespace API {
 	// Texture creation // 
 	////////////////////////////////////////////////////////////////////////////////
 
-	//******************************
-	// Texture2D
-	//******************************
+	// *********************************************************
+	// * Texture2D *
+	// *********************************************************
 	Texture2D* Texture::CreateTexture2D(char const* name, char const* filePath, bool addToTextureManager)
 	{
 		return CreateTexture2D(String(name), String(filePath), addToTextureManager);

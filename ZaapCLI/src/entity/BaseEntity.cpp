@@ -131,11 +131,11 @@ namespace ZaapCLI
 	}
 	void EntityRedirecter::render(zaap::graphics::Renderer3D* renderer)
 	{
-		m_Owner->render();
+		m_Owner->render(gcnew Renderer3D);
 	}
-	void EntityRedirecter::callDefault_render()
+	void EntityRedirecter::callDefault_render(Renderer3D^ renderer)
 	{
-		//TODO Entity::render();
+		Entity::render(renderer->getHandle());
 	}
 }
 
@@ -205,9 +205,9 @@ namespace ZaapCLI
 	{
 		getInstance()->callDefault_update();
 	}
-	void BaseEntity::render()
+	void BaseEntity::render(Renderer3D^ renderer)
 	{
-		getInstance()->callDefault_render();
+		getInstance()->callDefault_render(renderer);
 	}
 }
 
