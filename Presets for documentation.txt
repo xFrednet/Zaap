@@ -3,21 +3,161 @@
 // General documentation // 
 ////////////////////////////////////////////////////////////////////////////////
 {
-	// <Class>
-	//      Texture
-	//
-	// <Description>
-	//      This class is the base class for all the other textures.
-	//
-	// <Note>
-	//      This is only a representational object for the API textures.
-	//      
-	public class ZAAP_API Texture [...]
 	
+	////////////////////////////////////////////////////////////////////////////////
+	// Format stuff //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ Headlines ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		////////////////////////////////////////////////////////////////////////////////
+		// HEADLINE 1 //
+		////////////////////////////////////////////////////////////////////////////////
+		
+		// *********************************************************
+		// * HEADLINE 2 *
+		// *********************************************************
+		
+		// #####################################
+		// # HEADLINE 3 #
+		// #####################################
+		
+		
+		
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ List ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		// <Something>
+		//    - List item 1 
+		//      plus some extra text in the next line.
+		//    - List item 2
+		//    - List item 3
+		//        - List item 3.1
+		//        - List item 3.2
+		//        - List item 3.3
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Values //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// <Class>
+		//      Class
+		//
+		// <Description>
+		//      This class is super awesome.
+		//
+		// <Note>
+		//      You can create a instance of this class but you have to 
+		//      love it. You have to hug it every day and also kiss it 
+		//      it every once in a while. 
+		//      Do not treat this class as a object!
+		//
+		public class ZAAP_API Class [...]
+		
+		// <Struct>
+		//      ZA_SUPER_STRUCT_,
+		//      ZA_SUPER_STRUCT
+		//
+		// <Description>
+		//      This struct is super but it's never used, sorry.
+		//
+		// <Note>
+		//      This struct is super because I said so.
+		//
+		// <Members>
+		//      IsSuper:
+		//          This boolean is always true becuase this struct is always super.
+		//      IsSuper2:
+		//          This is just a second boolean to show of the formating.
+		//
+		typedef struct ZAAP_API ZA_SUPER_STRUCT_ {
+			bool IsSuper;
+			bool IsSuper2;
+		} ZA_SUPER_STRUCT;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Values //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// <Value>
+		//      ValueName
+		//
+		// <Description>
+		//      This value indicates something.
+		//
+		// <Note>
+		//      It is set to <DEFAULT> by default.
+		//      
+		Value ValueName = DEFAULT;
+		
+		// <Value>
+		//      ValueName
+		//
+		// <Description>
+		//      This boolean indicates something.
+		//                    
+		//          true:   
+		//              This means that ValueName is awesome.
+		//                  
+		//          false:  
+		//              This means that ValueName is kind of awesome.
+		//      
+		// <Note>
+		//      It is set to <DEFAULT> by default.
+		//
+		bool ValueName = DEFAULT;
+	}
+	
+	////////////////////////////////////////////////////////////////////////////////
+	// Util //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ Return with a ZA_RESULT ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		// <Return>
+		//      This returns a @ZA_RESULT which indicates if the method 
+		//      executed successfully. 
+		
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ toString ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		// <Function>
+		//      toString
+		//
+		// <Description>
+		//      This combines the values of this @Class into a string.
+		//
+		// <Example>
+		//      "Class(Color(R 1.0, G 1.0, B 1.0, A 1.0), Reflectivity: 0.0)"
+		//
+		// <Return>
+		//      The String containing the information from this instance.
+		//
+		String toString() const;
+	}
+	////////////////////////////////////////////////////////////////////////////////
+	// Constructor / Deconstructor //
+	////////////////////////////////////////////////////////////////////////////////
+	{
+		// <Constructor>
+		//      Class
+		//
+		// <Descripton>
+		//      This creates a new instance of the @Class class.
+		//
+		Class();
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	// Operators // 
 	////////////////////////////////////////////////////////////////////////////////
-
 	{		
 		// <Function>
 		//      operator==
@@ -112,7 +252,7 @@
 		// <Note>
 		//      Just ignore it.
 		//
-		~Class();	
+		~Class();
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////

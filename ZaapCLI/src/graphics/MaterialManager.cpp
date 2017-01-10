@@ -2,6 +2,11 @@
 
 namespace ZaapCLI
 {
+	void MaterialManager::LoadMTLFile(System::String^ filePath)
+	{
+		zaap::graphics::MaterialManager::LoadMTLFile(to_CPP_String(filePath));
+	}
+
 	void MaterialManager::Add(System::String^ name, Material^ material)
 	{
 		zaap::graphics::MaterialManager::Add(to_CPP_String(name), *material->getHandle());

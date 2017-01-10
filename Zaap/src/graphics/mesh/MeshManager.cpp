@@ -1,63 +1,59 @@
 ﻿#include "MeshManager.h"
 
 #include <util/Console.h>
+#include "TexturedMesh.h"
 
 namespace zaap { namespace graphics {
 	
-	std::vector<Mesh*> MeshManager::s_Meshs;
+	std::map<String, MeshManager::ZA_MESHMANAGER_MESH_INFO> MeshManager::s_MeshMap;
 
-	Mesh* MeshManager::AddMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture)
+	void MeshManager::Add(Mesh* mesh)
 	{
-		return AddMesh(new TexturedMesh(name, vertexBuffer, texture));
-	}
+		if (!mesh)
+		{
+			ZAAP_ALERT("The submitted Mesh is null");
+			return;
+		}
+		if (Contains(mesh))
+		{
+			ZAAP_ALERT("This manager already contains a Mesh with the name: \"" + mesh->getName() + "\"");
+			return;
+		}
 
-	Mesh* MeshManager::AddMesh(Mesh* mesh)
-	{
+		ZA_MESHMANAGER_MESH_INFO newMeshInfo;
 		
-		if (mesh->getName() == "NULL")
-		{
-			ZAAP_ERROR("submitted TMesh has no name");
-		} else
-		{
-//This code only runs in debug mode because it could influence the performance
-#ifdef ZAAP_DEBUG
-			if (HasName(mesh->getName())) {
-				ZAAP_ALERT("submitted TMesh has a name that is already included");
-			}
-#endif //ZAAP_DEBUG
+		newMeshInfo.Mesh = mesh;
+		newMeshInfo.UseCount = 1; //This is set to 1 because the added Mesh will be used too.
 
-			s_Meshs.push_back(mesh);
+		s_MeshMap[mesh->getName()] = newMeshInfo;
 
-		}
-		return mesh;
+		ZAAP_INFO("added: \"" + mesh->getName() + "\"");
 	}
 
-	Mesh* MeshManager::GetMesh(String name)
+	Mesh* MeshManager::Get(const String& name)
 	{
-		for (uint i = 0; i < s_Meshs.size(); i++)
-		{
-			if (s_Meshs[i]->getName() == name)
-				return s_Meshs[i];
-		}
+		std::map<String, ZA_MESHMANAGER_MESH_INFO>::iterator it;
+		if ((it = s_MeshMap.find(name)) == s_MeshMap.end())
+			return nullptr;
+		
+		it->second.UseCount++;
 
-		ZAAP_ALERT("Requested TMesh was not found. Requested name: " + name);
-		return nullptr;
+		return it->second.Mesh;
 	}
 
-	bool MeshManager::HasName(String name)
+	bool MeshManager::Contains(const Mesh* mesh)
 	{
-		for (uint i = 0; i < s_Meshs.size(); i++)
-		{
-			if (s_Meshs[i]->getName() == name)
-				return true;
-		}
-		return false;
+		return Contains(mesh->getName());
+	}
+
+	bool MeshManager::Contains(const String& name)
+	{
+		return s_MeshMap.find(name) != s_MeshMap.end();
 	}
 
 	void MeshManager::Cleanup()
 	{
-		for (uint i = 0; i < s_Meshs.size(); i++)
-			delete s_Meshs[i];
-		ZAAP_CLEANUP_INFO();
+		// TODO MeshManager cleanup
+		//ZAAP_CLEANUP_INFO();
 	}
 }}

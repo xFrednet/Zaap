@@ -13,7 +13,6 @@ namespace zaap { namespace graphics {
 	// <Description>
 	//      This manages all loaded @Materials. They can be accessed by name.
 	//
-	//
 	class ZAAP_API MaterialManager
 	{
 	private:
@@ -44,7 +43,7 @@ namespace zaap { namespace graphics {
 		//      Add
 		//
 		// <Description>
-		//      Adds the submitted @Material to the @Material list.
+		//      Adds the submitted @Material to the @Material map.
 		//
 		// <Note>
 		//      This method also checks if the submitted name already 
@@ -63,7 +62,7 @@ namespace zaap { namespace graphics {
 		//      Get
 		//
 		// <Description>
-		//      Returns the submitted @Material from the @Material list.
+		//      Returns the submitted @Material from the @Material map.
 		//
 		// <Note>
 		//      This method returns a default @Material if there is no
@@ -100,14 +99,14 @@ namespace zaap { namespace graphics {
 		//
 		// <Description>
 		//      This method releases all materials that are in the 
-		//      @Material list.
+		//      @Material map.
 		//
 		// <Note>
-		//      -   This method is called by the @Application class. It should
-		//          only be called if the @Application class isn't used for some
-		//          reason.
-		//      -   Calling this method causes all materials to be released. 
-		//          rendering after calling this could lead to some errors.
+		//  -   This method is called by the @Application class. It should
+		//      only be called if the @Application class isn't used for some
+		//      reason.
+		//  -   Calling this method causes all materials to be released. 
+		//      rendering after calling this could lead to some errors.
 		//
 		static void Cleanup();
 	};

@@ -6,9 +6,33 @@
 
 namespace ZaapCLI
 {
+	
+	// <Class>
+	//      MaterialManager
+	//
+	// <Description>
+	//      This manages all loaded @Materials. They can be accessed by name.
+	//
 	public ref class MaterialManager {
 	public:
-		//TODO add LoadMTLFile
+		// <Function>
+		//      LoadMTLFile
+		//
+		// <Description>
+		//      This load the @Materials from the submitted MTL file.
+		//
+		// <Note>
+		//      The @Materials are directly added to this manager.
+		//
+		// <Input>
+		//      filePath:
+		//          The file path for the MTLFile.
+		//
+		// <Return>
+		//      This returns a @ZA_RESULT which indicates if the method 
+		//      executed successfully. 
+		//
+		static void LoadMTLFile(System::String^ filePath);
 		
 		// <Function>
 		//      Add
