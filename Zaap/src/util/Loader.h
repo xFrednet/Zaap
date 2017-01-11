@@ -11,7 +11,7 @@ namespace zaap {
 	class ZAAP_API Loader
 	{
 	public:
-		static graphics::Mesh* LoadOBJFile(String name, String file, bool texturedMesh = true);
+		static graphics::Mesh* LoadOBJFile(String file, bool texturedMesh = true);
 
 		static String LoadFile(String file);
 	};

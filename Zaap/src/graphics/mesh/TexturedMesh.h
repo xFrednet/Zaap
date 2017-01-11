@@ -14,7 +14,6 @@ namespace zaap { namespace graphics {
 
 	public:
 		TexturedMesh(String name, API::VertexBuffer* vertexBuffer, API::Texture2D* texture);
-		TexturedMesh(void);
 
 		API::Texture2D* getTexture(void) const;
 		void setTexture(API::Texture2D *texture);

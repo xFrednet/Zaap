@@ -48,6 +48,8 @@ namespace zaap { namespace graphics {
 
 	class ZAAP_API Mesh
 	{
+	public:
+		static Mesh* GetOrLoad(const String& file, bool isTexturedMesh = true);
 	protected:
 		String m_Name;
 		API::VertexBuffer* m_VertexBuffer;

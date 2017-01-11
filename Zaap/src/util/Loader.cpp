@@ -20,7 +20,7 @@ namespace zaap {
 		return -1;
 	}
 
-	graphics::Mesh* Loader::LoadOBJFile(String name, String file, bool isTMesh)
+	graphics::Mesh* Loader::LoadOBJFile(String file, bool isTMesh)
 	{
 		using namespace graphics;
 
@@ -153,7 +153,7 @@ namespace zaap {
 			
 			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_TEXTURE_VERTEX), size, &indices[0], indices.size(), ZA_SHADER_TEXTURE_SHADER);
 
-			rMesh = new TexturedMesh(name, vBuffer, nullptr);
+			rMesh = new TexturedMesh(file, vBuffer, nullptr);
 		} else
 		{
 			std::vector<ZA_MATERIAL_VERTEX> vertices(size);
@@ -165,7 +165,7 @@ namespace zaap {
 
 			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_MATERIAL_VERTEX), size, &indices[0], indices.size(), ZA_SHADER_MATERIAL_SHADER);
 			
-			rMesh = new MaterialMesh(name, vBuffer, materials, materialCount);
+			rMesh = new MaterialMesh(file, vBuffer, materials, materialCount);
 		}
 
 		ZAAP_INFO(String("loaded ") + file + " as a " + (isTMesh ? "TexturedMesh" : "MaterialMesh"));

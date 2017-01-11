@@ -15,7 +15,6 @@ namespace zaap { namespace graphics {
 		Material m_Materials[ZAAP_SHADER_MATERIAL_COUNT];
 		uint m_MaterialCount;
 	public:
-		MaterialMesh();
 		MaterialMesh(String name, API::VertexBuffer *vertexBuffer, Material materials[], uint materialCount);
 
 		//getters

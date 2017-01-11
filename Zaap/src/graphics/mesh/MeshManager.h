@@ -25,6 +25,8 @@ namespace zaap { namespace graphics {
 	//
 	class ZAAP_API MeshManager
 	{
+	private:
+		friend class Mesh;
 	public:
 		// <Struct>
 		//      ZA_MESHMANAGER_MESH_INFO_,
@@ -62,7 +64,7 @@ namespace zaap { namespace graphics {
 		//      user from creating a instance of this class.
 		//
 		MeshManager(void) {}
-	public:
+		
 		// <Function>
 		//      AddMesh
 		//
@@ -70,14 +72,68 @@ namespace zaap { namespace graphics {
 		//      This method adds the @Mesh to the @Mesh map.
 		//
 		// <Note>
-		//      The use count of the submitted @Mesh is set to 1
+		//    - The use count of the submitted @Mesh is set to 1
 		//      because the submitted @Mesh is counted as a use.
+		//    - This method will be called by the @Mesh class.
 		//
 		// <Input>
 		//      mesh:
 		//          The @Mesh that should be added to the @Mesh map.
 		//
 		static void Add(Mesh* mesh);
+
+		// <Function>
+		//      ReleasedMesh
+		//
+		// <Description>
+		//      This function subtracts one from the use count
+		//      of the submitted @Mesh. The @Mesh will be deleted
+		//      if the use count hits zero.
+		//
+		// <Note>
+		//      This function is private it'll be called by the @Mesh
+		//      class and other friends... Oh wait it has no other
+		//      friends.
+		//
+		// <Input>
+		//      mesh:
+		//          The @Mesh that should that was released.
+		//
+		static void ReleasedMesh(Mesh* mesh);
+
+		
+		// <Function>
+		//      RemoveMesh
+		//
+		// <Description>
+		//      This removes the entered @Mesh from the @Mesh map
+		//      this is done without checking the use count or
+		//      any other values.
+		//
+		// <Note>
+		//      This calls the RemoveMesh method with the name
+		//      of the submitted @Mesh.
+		//
+		// <Input>
+		//      mesh:
+		//          The @Mesh that should be removed from the map.
+		//
+		static void RemoveMesh(Mesh* mesh);
+		// <Function>
+		//      RemoveMesh
+		//
+		// <Description>
+		//      This removes the @Mesh that is stored under the 
+		//      entered name this is done without checking the
+		//      use count or any other values.
+		//
+		// <Input>
+		//      name:
+		//          The name of the @Mesh that should be removed
+		//          from the map.
+		//
+		static void RemoveMesh(const String& name);
+	public:
 		// <Function>
 		//      GetMesh
 		//
@@ -95,6 +151,44 @@ namespace zaap { namespace graphics {
 		//      linked to the name.
 		//
 		static Mesh* Get(const String& name);
+
+
+		// <Function>
+		//      GetUseCount
+		//
+		// <Description>
+		//      This returns the use count of the @Mesh.
+		//      This can also return 0 if the @Mesh isn't a 
+		//      member of the @Mesh map
+		//
+		// <Note>
+		//      This calls the second GetUseCount method with
+		//      the name of this @Mesh
+		//
+		// <Input>
+		//      mesh:
+		//          The @Mesh to receive the requested use count.
+		//
+		// <Return>
+		//      This returns the use count value of the @Mesh.
+		//
+		static uint GetUseCount(Mesh const* mesh);
+		// <Function>
+		//      GetUseCount
+		//
+		// <Description>
+		//      This returns the use count of the @Mesh that is 
+		//      stored under the name. This can also return 0
+		//      if the name is no a member of the @Mesh map.
+		//
+		// <Input>
+		//      mesh:
+		//          The @Mesh to receive the requested use count.
+		//
+		// <Return>
+		//      This returns the use count value of the @Mesh.
+		//
+		static uint GetUseCount(const String& name);
 
 
 		// <Function>
@@ -117,7 +211,7 @@ namespace zaap { namespace graphics {
 		// <Return>
 		//      This returns the test result.
 		//
-		static bool Contains(const Mesh const* mesh);
+		static bool Contains(Mesh const* mesh);
 		// <Function>
 		//      Contains
 		//

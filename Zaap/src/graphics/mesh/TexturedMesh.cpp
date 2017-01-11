@@ -7,10 +7,6 @@ namespace zaap { namespace graphics {
 		m_Texture(texture)
 	{}
 
-	TexturedMesh::TexturedMesh()
-		: m_Texture(nullptr)
-	{}
-
 	API::Texture2D* TexturedMesh::getTexture() const
 	{
 		return m_Texture;
