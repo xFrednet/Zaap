@@ -13,6 +13,10 @@
 namespace zaap { namespace graphics {
 	class Renderer3D;
 
+	// <Struct>
+	//      ZA_CharMarix
+	//
+	// <Descripton>
 	// x = origin                 | x = origin                |   x = origin     (zoomed in) |
 	//                   ^        |                           |   ^                          |
 	//    ##########     |        |    ##########    ^        |   |                          |
@@ -71,9 +75,9 @@ namespace zaap { namespace graphics {
 		ZAAP_FONT_UNKNOWN_CHARACTERS = 1
 	} FONT_FORMAT;
 
-	//
-	// Font class
-	//
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Font class //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	class ZAAP_API Font
 	{
 		//static methods

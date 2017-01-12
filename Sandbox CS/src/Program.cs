@@ -9,11 +9,14 @@ using ZaapCLI;
 
 namespace Sandbox_CS
 {
+
 	class CLITest : Application
 	{
+		Scene scene;
 		ControllableCamera camera;
 		public CLITest(Scene s) : base("Sandbox C#", 800, 600, s)
 		{
+			scene = s;
 			TerrainOptions tDesc = new TerrainOptions();
 			tDesc.setup();
 			s.setTerrain(new Terrain("res//scene//", tDesc));
@@ -33,6 +36,13 @@ namespace Sandbox_CS
 			base.update();
 
 			camera.update();
+		}
+
+		public override void render()
+		{
+			base.render();
+
+			scene.presentFrame();
 		}
 
 	}

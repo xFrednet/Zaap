@@ -7,9 +7,9 @@
 #include "shader/types/FontShader2D.h"
 #include "Renderer3D.h"
 
-//
-// ZA_CharMatrix
-//
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_CharMatrix //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
 	ZA_CharMarix::ZA_CharMarix()
 		: OrigenXOffset(0),
@@ -46,12 +46,10 @@ namespace zaap { namespace graphics {
 	}
 }}
 
-//
-// ZA_CharacterInfo
-//
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_CharacterInfo //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
-	
-
 	ZA_CharacterInfo::ZA_CharacterInfo()
 		: Character(0)
 	{
@@ -65,9 +63,9 @@ namespace zaap { namespace graphics {
 
 namespace zaap { namespace graphics {
 
-	//
-	//Static Methods
-	//
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// //Static Methods //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	Mat4 Font::CreateFontTransformationMatrix(const Vec3& position, const float& fontSize)
 	{
 		Mat4 mat(fontSize);
@@ -90,9 +88,9 @@ namespace zaap { namespace graphics {
 		}
 	}
 
-	//
-	// FTT loader
-	//
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // FTT loader // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
 	{
 		uint xx, yy, xa, ya;
@@ -125,11 +123,13 @@ namespace zaap { namespace graphics {
 		FT_Library FTLib;
 		FT_Face face;
 		
-		//Init
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Init //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
-			//
-			// Init FreeType
-			//
+			/* ********************************************************* */
+			// * Init FreeType *
+			/* ********************************************************* */
 			error = FT_Init_FreeType(&FTLib);
 			if (error)
 			{
@@ -137,9 +137,9 @@ namespace zaap { namespace graphics {
 				return Font();
 			}
 
-			//
-			// Init face
-			//
+			/* ********************************************************* */
+			// * Init face *
+			/* ********************************************************* */
 			error = FT_New_Face(FTLib, file.c_str(), 0, &face);
 			if (error != FT_Err_Ok){
 				//TODO add error message
@@ -180,9 +180,9 @@ namespace zaap { namespace graphics {
 		uint bitMapX = 0;
 		uint bitmapY = 0;
 
-		//
-		// init charSheet
-		//
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // init charSheet //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		Bitmap charSheet;
 		{
 			for (uint i = 0; i < chars.size(); i++)
@@ -211,15 +211,17 @@ namespace zaap { namespace graphics {
 			
 		}
 
-		//
-		// Loading the chars
-		//
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Loading the chars //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		for (uint i = 0; i < chars.size(); i++)
 		{
 			FT_Load_Char(face, chars.at(i), FT_LOAD_RENDER);
 			bitmap = charFTInfo->bitmap;
 
-			//setting charInfo
+			/* ********************************************************* */
+			// * setting charInfo *
+			/* ********************************************************* */
 			{
 				ftCharMatrix = charFTInfo->metrics;
 				charInfo = ZA_CharacterInfo(chars.at(i));
@@ -230,9 +232,6 @@ namespace zaap { namespace graphics {
 				charMatirx.Height			= float(ftCharMatrix.height / 64.0f);
 				charMatirx.TotalWidth		= float(ftCharMatrix.horiAdvance / 64.0f);
 				charMatirx.TotalHeight		= float(ftCharMatrix.vertAdvance / 64.0f);
-
-				//if (charMatirx.Width != float(ftCharMatrix.width / 64.0f))
-				//	std::cout << chars.at(i) << " DifferenSize " << charMatirx.Width << " " << float(ftCharMatrix.width / 64.0f)  <<  std::endl;
 
 				charInfo.CharMatirx = charMatirx;
 
@@ -245,8 +244,9 @@ namespace zaap { namespace graphics {
 				if (charMatirx.OrigenYOffset > font.m_MaxCharSize.OrigenYOffset)
 					font.m_MaxCharSize.OrigenYOffset = charMatirx.OrigenYOffset;
 			}
-
-			//test bitmapX and bitmapY
+			/* ********************************************************* */
+			// * test bitmapX and bitmapY *
+			/* ********************************************************* */
 			{
 				if (bitMapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
 				{
@@ -260,7 +260,9 @@ namespace zaap { namespace graphics {
 				}
 			}
 
-			//filling charInfo
+			/* ********************************************************* */
+			// * filling charInfo *
+			/* ********************************************************* */
 			{
 				charInfo.TexMinCoords = charSheet.getPixelCoord(bitMapX, bitmapY);
 				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitMapX + uint(charMatirx.Width), bitmapY + uint(charMatirx.Height));
@@ -292,9 +294,9 @@ namespace zaap { namespace graphics {
 		return font;
 	}
 
-	//
-	// Class Members
-	//
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Class Members //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	Font::Font()
 		: m_Size(11),
 		m_Chars(),
@@ -348,8 +350,8 @@ namespace zaap { namespace graphics {
 
 				// v0, v2, v3
 				indices[iIndex++] = v0;
-				indices[iIndex++] = v2;
 				indices[iIndex++] = v3;
+				indices[iIndex++] = v2;
 			}
 			// 0 3
 			// 1 2 
@@ -384,46 +386,25 @@ namespace zaap { namespace graphics {
 	}
 
 	float temp = 0;
-	bool up = true;
 	float size = 0.0;
-	Color color(0.3f, 0.3f, 0.3f, 1.0f);
 	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
 	{
 		temp += 0.005f;
 		size = 40 + 20 * sin(temp);
-		/*if (up)
-		{
-			temp += 1;
-			if (temp >= 255)
-			{
-				up = false;
-				color = Color(rand() % 255, rand() % 255, rand() % 255);
-			}
-		} else
-		{
-			temp -= 1;
-			if (temp <= 125)
-			{
-				up = true;
-				color = Color(rand() % 255, rand() % 255, rand() % 255);
-			}
-		}*/
-
 		renderer->disableDepthTesting();
+		renderer->setAlphaTestingState(true);
 		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(Color());
 		m_CharSheet->bind(0);
 		vb->draw();
 		renderer->enableDepthTesting();
-
-
 	}
 
-	//
-	// Util
-	//
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Util //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint Font::getCharIndex(char c) const
 	{
 		return (uint)m_Chars.find(c);

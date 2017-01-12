@@ -58,8 +58,7 @@ void loadEntitys()
 	}
 
 	Vec3 v;
-	Mesh* mesh;
-	TexturedMesh *textured_mesh = nullptr;
+	TexturedMesh *textured_mesh;
 	
 
 	//Test Model
@@ -264,6 +263,7 @@ public:
 		Application::render();
 
 		font_.render(fontVB, scene_->getRenderer());
+		scene_->getRenderer()->presentFrame();
 	}
 };
 

@@ -55,7 +55,6 @@ namespace zaap { namespace graphics {
 		API::VertexBuffer* m_VertexBuffer;
 		const ZA_MESH_TYPE m_TYPE;
 
-		Mesh();
 		Mesh(String name, API::VertexBuffer* vertexBuffer, ZA_MESH_TYPE type);
 	public:
 

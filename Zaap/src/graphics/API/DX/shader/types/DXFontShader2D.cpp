@@ -9,7 +9,7 @@ namespace zaap { namespace graphics { namespace DX {
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT	, 0, sizeof(float) * 3	, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
-	String DXFontShader2DSrc =
+	String DXFontShader2DSrc = 
 #include <graphics/API/DX/shader/types/DXFontShader2D.shader>
 		;
 

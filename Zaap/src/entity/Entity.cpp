@@ -116,6 +116,7 @@ namespace zaap {
 	void Entity::render(graphics::Renderer3D* renderer)
 	{
 		using namespace graphics;
+		TexturedMesh* tMesh;
 
 		if (!renderer->getViewFrustum().isVisible(m_Position))
 			return;
@@ -125,7 +126,10 @@ namespace zaap {
 		case ZA_MESH_TYPE_TEXTURED:
 			renderer->startShader(ZA_SHADER_TEXTURE_SHADER);
 
-			((TexturedMesh*)m_Mesh)->getTexture()->bind(0);
+			tMesh = (TexturedMesh*)m_Mesh;
+			
+			if (tMesh->getTexture())
+				tMesh->getTexture()->bind(0);
 
 			break;
 		case ZA_MESH_TYPE_MATERIAL:

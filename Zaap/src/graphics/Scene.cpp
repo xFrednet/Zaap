@@ -137,8 +137,6 @@ namespace zaap { namespace graphics {
 		{
 			m_Entities[i]->render(m_Renderer);
 		}
-
-		m_Renderer->presentFrame();
 	}
 	void Scene::update()
 	{

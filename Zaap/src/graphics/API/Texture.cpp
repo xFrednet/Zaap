@@ -73,11 +73,8 @@ namespace zaap { namespace graphics { namespace API {
 		TextureManager::ClearTextures();
 
 		std::map<UUID, Texture*>::iterator it;
-		uint i = 0;
 		for (it = s_Textures.begin(); it != s_Textures.end(); it++)
 		{
-			i++;
-			printf("Texture deletion[%i] : %s \n", i, it->first.toString().c_str());
 			delete it->second;
 		}
 
@@ -95,8 +92,6 @@ namespace zaap { namespace graphics { namespace API {
 		m_TextureType(textureType)
 	{
 		RandomUUID(&m_UUID);
-
-		printf("Texture(%s, %s) \n", m_UUID.toString().c_str(), textureName.c_str());
 
 		AddTexture(this);
 	}

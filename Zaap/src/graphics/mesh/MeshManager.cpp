@@ -106,7 +106,7 @@ namespace zaap { namespace graphics {
 
 	bool MeshManager::Contains(const String& name)
 	{
-		return s_MeshMap.find(name) == s_MeshMap.end();
+		return s_MeshMap.find(name) != s_MeshMap.end();
 	}
 
 	void MeshManager::Cleanup()
