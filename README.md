@@ -1,6 +1,6 @@
 # Zaap
 ![Zaap](res/ZaapLogo1920x1080.png)
-Zaap is a C++ game engien I am currenty developing.
+Zaap is a C++ game engine I am currenty developing.
 At the moment I focus my development Low-poly models and shader.
 
 Special thanks to:
@@ -8,5 +8,5 @@ Special thanks to:
 - [Textures.com](http://www.textures.com/) for some textures.
 
 Credits:
-- Portions of this software are copyright © 2016 The FreeType
+- Portions of this software are copyright Â© 2016 The FreeType
   Project (www.freetype.org). All rights reserved.
