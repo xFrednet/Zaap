@@ -92,6 +92,17 @@ namespace zaap { namespace graphics {
 		static Font LoadFTTFile(String file, FONT_FORMAT format);
 		static Font LoadFTTFile(String file, String chars);
 
+		// <Function>
+		//      LoadFontFromTXT
+		//
+		// <Description>
+		//      This file loads the needed information from a text file.
+		//
+		// <Note>
+		//      This method will be rewritten. It's just a temporary loader for leit2.
+		//
+		static Font LoadFontFromTXT(String file, String textureFile, uint size);
+
 		//Members
 	private:
 		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;

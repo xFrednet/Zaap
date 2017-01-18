@@ -51,7 +51,7 @@ namespace zaap { namespace graphics {
 /* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
 	ZA_CharacterInfo::ZA_CharacterInfo()
-		: Character(0)
+		: Character('\0')
 	{
 	}
 	
@@ -294,6 +294,129 @@ namespace zaap { namespace graphics {
 		return font;
 	}
 
+	Font Font::LoadFontFromTXT(String file, String textureFile, uint size)
+	{
+		using namespace std;
+		
+		clock_t timer = clock();
+
+		Font font;
+		font.m_Size = size;
+		uint width;
+		uint height;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Texture / m_CharSheet loading //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		{
+			font.m_CharSheet = API::Texture::CreateTexture2D(textureFile, textureFile, false);
+			if (!font.m_CharSheet 
+				|| (width = font.m_CharSheet->getWidth()) == 0
+				|| (height = font.m_CharSheet->getHeight()) == 0)
+			{
+				ZAAP_ERROR("The texture could not be loaded");
+				return font;
+			}
+		}
+		
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // file loading //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		{
+
+			font.m_CharInfo = vector<ZA_CharacterInfo>(); //font sets the size to zero
+			
+			fstream fileStream;
+			fileStream.open(file);
+			if (!fileStream.is_open())
+			{
+				ZAAP_ERROR("The given file could not be opened. File: " + file);
+				return font;
+			}
+
+			String line;
+			stringstream lStream;
+			ZA_CharacterInfo charInfo;
+			ZA_CharMarix charMatrix;
+			uint xPixel, yPixel, widthPixel, heightPixel;
+			while (!fileStream.eof())
+			{
+				getline(fileStream, line);
+				if (StringUtil::StartsWith(line, "##") || line.length() <= 1)
+					continue; // it's a command
+				
+				/* ##################################### */
+				// # init charInfo && charMatrix #
+				/* ##################################### */
+				{
+					font.m_Chars += line[0];
+					//char info
+					charInfo = ZA_CharacterInfo(line[0]);
+
+					charInfo.TexMinCoords.X = -1;
+					charInfo.TexMinCoords.Y = -1;
+					charInfo.TexMaxCoords.X = -1;
+					charInfo.TexMaxCoords.Y = -1;
+
+					// charMatrix;
+					charMatrix = charInfo.CharMatirx;
+
+					charMatrix.OrigenXOffset = -1;
+					charMatrix.OrigenYOffset = -1;
+					charMatrix.TotalWidth = -1;
+					charMatrix.TotalHeight = -1;
+					charMatrix.Width = -1;
+					charMatrix.Height = -1;
+
+				}
+
+				/* ##################################### */
+				// # line processing #
+				/* ##################################### */
+				{
+					line[0] = ' ';
+					lStream = stringstream(line);
+
+					// char- <     Bitmap stuff      >-<               char matrix                  >
+					// char-xPixel-yPixel-width-height-lineXOffset-lineYOffset-totalWidth-totalHeight
+					// A    0      0      610   724    723         25          660        724
+					
+					//
+					// Bitmap stuff;
+					//
+					lStream >> xPixel;
+					charInfo.TexMinCoords.X = (float)xPixel / (float)width;
+					lStream >> yPixel;
+					charInfo.TexMinCoords.Y = (float)yPixel / (float)height;
+
+					lStream >> widthPixel;
+					charInfo.TexMaxCoords.X = (float)(xPixel + widthPixel) / (float)width;
+					lStream >> heightPixel;
+					charInfo.TexMaxCoords.Y = (float)(yPixel + heightPixel) / (float)height;
+
+					//
+					// char matrix
+					//
+					lStream >> charMatrix.OrigenXOffset;
+					lStream >> charMatrix.OrigenYOffset;
+					lStream >> charMatrix.TotalWidth;
+					lStream >> charMatrix.TotalHeight;
+					charMatrix.Width = charMatrix.TotalWidth;
+					charMatrix.Height = charMatrix.TotalHeight;
+
+					charMatrix = charMatrix / (float)size;
+				}
+
+				font.m_CharInfo.push_back(charInfo);
+			}
+		}
+
+		long time = clock() - timer;
+		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
+
+		return font;
+	}
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Class Members //
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -314,6 +437,9 @@ namespace zaap { namespace graphics {
 	API::VertexBuffer* Font::getVertexBuffer(String string)
 	{
 		using namespace std;
+
+		if (m_CharInfo.size() == 0)
+			return nullptr;
 
 		vector<ZA_CharVertex> vertices(string.size() * 4);
 		vector<uint> indices(string.size() * 6);
@@ -389,6 +515,9 @@ namespace zaap { namespace graphics {
 	float size = 0.0;
 	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
 	{
+		if (!vb) 
+			return;
+		
 		temp += 0.005f;
 		size = 40 + 20 * sin(temp);
 		renderer->disableDepthTesting();
@@ -407,7 +536,7 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint Font::getCharIndex(char c) const
 	{
-		return (uint)m_Chars.find(c);
+		return 0;// (uint)m_Chars.find(c);
 	}
 	uint Font::getCharCount() const
 	{

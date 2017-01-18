@@ -45,6 +45,8 @@ void loadEntitys()
 	//
 	{
 		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
+		String s = Loader::LoadFile("res/leitice/leitice.txt");
+		//font_ = Font::LoadFontFromTXT("res/leitice/leitice.txt", "res/leitice/leitice.png", 723);
 		fontVB = font_.getVertexBuffer("WELCOME to ZAAP (@) A_.,'~* x v w # ");
 		if (!fontVB)
 			ZAAP_INFO("fontVB is NULL");
