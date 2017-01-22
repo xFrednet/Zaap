@@ -77,7 +77,7 @@ namespace zaap { namespace graphics {
 		return mat;
 	}
 
-	String Font::GetFormatCharacters(FONT_FORMAT format)
+	String Font::GetFormatCharacters(ZA_FONT_CHAR_FORMAT format)
 	{
 		switch (format)
 		{
@@ -110,7 +110,7 @@ namespace zaap { namespace graphics {
 			}
 		}
 	}
-	Font Font::LoadFTTFile(String file, FONT_FORMAT format)
+	Font Font::LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format)
 	{
 		return LoadFTTFile(file, GetFormatCharacters(format));
 	}
@@ -301,7 +301,7 @@ namespace zaap { namespace graphics {
 		clock_t timer = clock();
 
 		Font font;
-		font.m_Size = size;
+		font.m_Size = (float)size;
 		uint width;
 		uint height;
 
@@ -309,7 +309,7 @@ namespace zaap { namespace graphics {
 		// // Texture / m_CharSheet loading //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
-			font.m_CharSheet = API::Texture::CreateTexture2D(textureFile, textureFile, false);
+			font.m_CharSheet = API::Texture::CreateTexture2D(textureFile, textureFile, true);
 			if (!font.m_CharSheet 
 				|| (width = font.m_CharSheet->getWidth()) == 0
 				|| (height = font.m_CharSheet->getHeight()) == 0)
@@ -337,7 +337,7 @@ namespace zaap { namespace graphics {
 			String line;
 			stringstream lStream;
 			ZA_CharacterInfo charInfo;
-			ZA_CharMarix charMatrix;
+			ZA_CharMarix* charMatrix;
 			uint xPixel, yPixel, widthPixel, heightPixel;
 			while (!fileStream.eof())
 			{
@@ -353,21 +353,8 @@ namespace zaap { namespace graphics {
 					//char info
 					charInfo = ZA_CharacterInfo(line[0]);
 
-					charInfo.TexMinCoords.X = -1;
-					charInfo.TexMinCoords.Y = -1;
-					charInfo.TexMaxCoords.X = -1;
-					charInfo.TexMaxCoords.Y = -1;
-
 					// charMatrix;
-					charMatrix = charInfo.CharMatirx;
-
-					charMatrix.OrigenXOffset = -1;
-					charMatrix.OrigenYOffset = -1;
-					charMatrix.TotalWidth = -1;
-					charMatrix.TotalHeight = -1;
-					charMatrix.Width = -1;
-					charMatrix.Height = -1;
-
+					charMatrix = &charInfo.CharMatirx;
 				}
 
 				/* ##################################### */
@@ -397,14 +384,14 @@ namespace zaap { namespace graphics {
 					//
 					// char matrix
 					//
-					lStream >> charMatrix.OrigenXOffset;
-					lStream >> charMatrix.OrigenYOffset;
-					lStream >> charMatrix.TotalWidth;
-					lStream >> charMatrix.TotalHeight;
-					charMatrix.Width = charMatrix.TotalWidth;
-					charMatrix.Height = charMatrix.TotalHeight;
+					lStream >> charMatrix->OrigenXOffset;
+					lStream >> charMatrix->OrigenYOffset;
+					lStream >> charMatrix->TotalWidth;
+					lStream >> charMatrix->TotalHeight;
+					charMatrix->Width = charMatrix->TotalWidth;
+					charMatrix->Height = charMatrix->TotalHeight;
 
-					charMatrix = charMatrix / (float)size;
+					charInfo.CharMatirx = *charMatrix / (float)size;
 				}
 
 				font.m_CharInfo.push_back(charInfo);
@@ -512,20 +499,26 @@ namespace zaap { namespace graphics {
 	}
 
 	float temp = 0;
-	float size = 0.0;
+	Color color;
+	float size = 400.0;
 	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
 	{
 		if (!vb) 
 			return;
 		
+		float c = 0.5 + 0.5 * sin(temp);
+		color.R = c;
+		color.G = c;
+		color.B = c;
+
 		temp += 0.005f;
-		size = 40 + 20 * sin(temp);
+		size = 40 + 20 * sin(temp*0.1);
 		renderer->disableDepthTesting();
 		renderer->setAlphaTestingState(true);
 		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(Color());
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
 		vb->draw();
 		renderer->enableDepthTesting();
@@ -536,7 +529,11 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint Font::getCharIndex(char c) const
 	{
-		return 0;// (uint)m_Chars.find(c);
+		std::string::size_type n = m_Chars.find(c);
+		if (n != std::string::npos)
+			return (uint)n;
+
+		return 0;
 	}
 	uint Font::getCharCount() const
 	{

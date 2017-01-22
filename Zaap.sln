@@ -20,32 +20,45 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
+		Release (MT)|x86 = Release (MT)|x86
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Debug|x86.ActiveCfg = Debug|Win32
 		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Debug|x86.Build.0 = Debug|Win32
+		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Release (MT)|x86.ActiveCfg = Release (MT)|Win32
+		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Release (MT)|x86.Build.0 = Release (MT)|Win32
 		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Release|x86.ActiveCfg = Release|Win32
 		{ACA3D3D0-54EE-487F-A89E-3CD97A084C1B}.Release|x86.Build.0 = Release|Win32
 		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Debug|x86.ActiveCfg = Debug|Win32
 		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Debug|x86.Build.0 = Debug|Win32
+		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Release (MT)|x86.ActiveCfg = Release (MT)|Win32
+		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Release (MT)|x86.Build.0 = Release (MT)|Win32
 		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Release|x86.ActiveCfg = Release|Win32
 		{6F2FF135-E343-4138-A6FB-2D1F2540A3F8}.Release|x86.Build.0 = Release|Win32
 		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Debug|x86.ActiveCfg = Debug|Win32
 		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Debug|x86.Build.0 = Debug|Win32
 		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Debug|x86.Deploy.0 = Debug|Win32
+		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Release (MT)|x86.ActiveCfg = Release (MT)|Win32
+		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Release (MT)|x86.Build.0 = Release (MT)|Win32
 		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Release|x86.ActiveCfg = Release|Win32
 		{5CF0B32A-0867-4AB2-B8F9-92EA3E4F21EC}.Release|x86.Build.0 = Release|Win32
 		{401AD31C-02B5-42EA-A158-72B2F4517308}.Debug|x86.ActiveCfg = Debug|Win32
 		{401AD31C-02B5-42EA-A158-72B2F4517308}.Debug|x86.Build.0 = Debug|Win32
+		{401AD31C-02B5-42EA-A158-72B2F4517308}.Release (MT)|x86.ActiveCfg = Release (MT)|Win32
+		{401AD31C-02B5-42EA-A158-72B2F4517308}.Release (MT)|x86.Build.0 = Release (MT)|Win32
 		{401AD31C-02B5-42EA-A158-72B2F4517308}.Release|x86.ActiveCfg = Release|Win32
 		{401AD31C-02B5-42EA-A158-72B2F4517308}.Release|x86.Build.0 = Release|Win32
 		{73B0E374-0689-42CF-BCE6-30538852136E}.Debug|x86.ActiveCfg = Debug|Win32
 		{73B0E374-0689-42CF-BCE6-30538852136E}.Debug|x86.Build.0 = Debug|Win32
+		{73B0E374-0689-42CF-BCE6-30538852136E}.Release (MT)|x86.ActiveCfg = Release (MT)|Win32
+		{73B0E374-0689-42CF-BCE6-30538852136E}.Release (MT)|x86.Build.0 = Release (MT)|Win32
 		{73B0E374-0689-42CF-BCE6-30538852136E}.Release|x86.ActiveCfg = Release|Win32
 		{73B0E374-0689-42CF-BCE6-30538852136E}.Release|x86.Build.0 = Release|Win32
 		{CB811388-9891-4A86-9A04-50DFC904B296}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{CB811388-9891-4A86-9A04-50DFC904B296}.Debug|x86.Build.0 = Debug|Any CPU
+		{CB811388-9891-4A86-9A04-50DFC904B296}.Release (MT)|x86.ActiveCfg = Release (MT)|Any CPU
+		{CB811388-9891-4A86-9A04-50DFC904B296}.Release (MT)|x86.Build.0 = Release (MT)|Any CPU
 		{CB811388-9891-4A86-9A04-50DFC904B296}.Release|x86.ActiveCfg = Release|Any CPU
 		{CB811388-9891-4A86-9A04-50DFC904B296}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection

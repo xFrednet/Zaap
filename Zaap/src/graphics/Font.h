@@ -67,13 +67,13 @@ namespace zaap { namespace graphics {
 		Vec2 TexCoord;
 	};
 
-	typedef ZAAP_API enum FONT_FORMAT
+	typedef ZAAP_API enum ZA_FONT_CHAR_FORMAT_
 	{
 		// !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 		ZAAP_FONT_128_CHARACTERS     = 0,
 		//This format requires the user to set the chars to load
 		ZAAP_FONT_UNKNOWN_CHARACTERS = 1
-	} FONT_FORMAT;
+	} ZA_FONT_CHAR_FORMAT;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Font class //
@@ -85,11 +85,11 @@ namespace zaap { namespace graphics {
 
 		static Mat4 CreateFontTransformationMatrix(const Vec3 &position, const float &fontSize);
 
-		//This methods returns all the characters that are supported by a certain FONT_FORMAT
-		static String GetFormatCharacters(FONT_FORMAT format);
+		//This methods returns all the characters that are supported by a certain ZA_FONT_CHAR_FORMAT
+		static String GetFormatCharacters(ZA_FONT_CHAR_FORMAT format);
 
 		//This methods loads a FTT file and creates a Font object from it
-		static Font LoadFTTFile(String file, FONT_FORMAT format);
+		static Font LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format);
 		static Font LoadFTTFile(String file, String chars);
 
 		// <Function>

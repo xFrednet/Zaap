@@ -45,9 +45,8 @@ void loadEntitys()
 	//
 	{
 		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
-		String s = Loader::LoadFile("res/leitice/leitice.txt");
 		//font_ = Font::LoadFontFromTXT("res/leitice/leitice.txt", "res/leitice/leitice.png", 723);
-		fontVB = font_.getVertexBuffer("WELCOME to ZAAP (@) A_.,'~* x v w # ");
+		fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
 		if (!fontVB)
 			ZAAP_INFO("fontVB is NULL");
 	}
@@ -179,7 +178,7 @@ void loadEntitys()
 	{
 		API::Texture::CreateTexture2D("zaap", "res/zaapLogo.png");
 		textured_mesh = (TexturedMesh*)Mesh::GetOrLoad("res/zaapFrame.obj");
-		textured_mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("font"));
+		textured_mesh->setTexture((API::Texture2D*)TextureManager::GetTexture("res/leitice/leitice.png"));
 
 		v = Vec3(-7, 5, 0);
 		scene_->addEntity(new Entity(textured_mesh, v, Vec3(0.0f, 0.0f, 35.0f), Vec3(4.0f, 4.0f, 4.0f)));

@@ -43,7 +43,7 @@ namespace zaap { namespace graphics {
 	// The Environment //
 	/////////////////////
 	//
-	// Entitys
+	// Entities
 	//
 	void Scene::addEntity(Entity* entity)
 	{
