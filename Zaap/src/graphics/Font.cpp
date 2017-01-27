@@ -160,9 +160,9 @@ namespace zaap { namespace graphics {
 		//Bitmap values
 		uint charSize;
 		if (chars.size() < 200)
-			charSize = 60;
+			charSize = 64;
 		else
-			charSize = 10;
+			charSize = 16;
 		
 
 		//Setting size
@@ -177,7 +177,7 @@ namespace zaap { namespace graphics {
 		ZA_CharMarix charMatirx;
 		FT_Bitmap bitmap;
 		ZA_CharacterInfo charInfo;
-		uint bitMapX = 0;
+		uint bitmapX = 0;
 		uint bitmapY = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -248,9 +248,9 @@ namespace zaap { namespace graphics {
 			// * test bitmapX and bitmapY *
 			/* ********************************************************* */
 			{
-				if (bitMapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
+				if (bitmapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
 				{
-					bitMapX = 0;
+					bitmapX = 0;
 					bitmapY += charSize * 2;
 					if (bitmapY + charSize >= charSheet.getHeight())
 					{
@@ -264,18 +264,19 @@ namespace zaap { namespace graphics {
 			// * filling charInfo *
 			/* ********************************************************* */
 			{
-				charInfo.TexMinCoords = charSheet.getPixelCoord(bitMapX, bitmapY);
-				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitMapX + uint(charMatirx.Width), bitmapY + uint(charMatirx.Height));
+				
+				charInfo.TexMinCoords = charSheet.getPixelCoord(bitmapX + 1, bitmapY-1);
+				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitmapX + uint(charMatirx.Width + 3), bitmapY + uint(charMatirx.Height + 1));
 			}
 
-			copyToBitmap(bitMapX, bitmapY, bitmap, charSheet);
+			copyToBitmap(bitmapX, bitmapY, bitmap, charSheet);
 
 			//resizing the charMatrix to a fontSize of 1
 			charInfo.CharMatirx = charInfo.CharMatirx / float(charSize); 
 			//adding the char
 			font.m_CharInfo[i] = charInfo;
 
-			bitMapX += uint(charMatirx.Width  * 1.5f);
+			bitmapX += uint(charMatirx.Width  * 1.5f);
 		}
 
 		//resize the MaxCharSize
@@ -468,28 +469,33 @@ namespace zaap { namespace graphics {
 			}
 			// 0 3
 			// 1 2 
+			
 			//v0
-			vertices[v0].Position = Vec3(
-				cMatrix.OrigenXOffset + drawX,
-				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v0].Position.X = cMatrix.OrigenXOffset + drawX;
+			vertices[v0].Position.X = 0 + drawX;
+			vertices[v0].Position.Y = (-cMatrix.OrigenYOffset);
+			vertices[v0].Position.Z = zValue;
 			vertices[v0].TexCoord = cInfo.TexMinCoords;
 
 			//v1
-			vertices[v1].Position = Vec3(
-				cMatrix.OrigenXOffset + drawX, 
-				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v1].Position.X = cMatrix.OrigenXOffset + drawX;
+			vertices[v1].Position.X = 0 + drawX;
+			vertices[v1].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
+			vertices[v1].Position.Z = zValue;
 			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
 
 			//v2
-			vertices[v2].Position = Vec3(
-				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
-				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v2].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
+			vertices[v2].Position.X = 0 + cMatrix.Width + drawX;
+			vertices[v2].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
+			vertices[v2].Position.Z = zValue;
 			vertices[v2].TexCoord = cInfo.TexMaxCoords;
 
 			//v3
-			vertices[v3].Position = Vec3(
-				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
-				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v3].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
+			vertices[v3].Position.X = 0 + cMatrix.Width + drawX;
+			vertices[v3].Position.Y = (-cMatrix.OrigenYOffset);
+			vertices[v3].Position.Z = zValue;
 			vertices[v3].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
 
 			drawX += cMatrix.TotalWidth;
@@ -512,15 +518,18 @@ namespace zaap { namespace graphics {
 		color.B = c;
 
 		temp += 0.005f;
-		size = 40 + 20 * sin(temp*0.1);
-		renderer->disableDepthTesting();
+		size = 100 + 50 * sin(temp);
 		renderer->setAlphaTestingState(true);
+		renderer->disableDepthTesting();
 		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(10, 10);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
+
 		vb->draw();
+
+		renderer->setAlphaTestingState(false);
 		renderer->enableDepthTesting();
 	}
 

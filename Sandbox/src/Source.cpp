@@ -46,7 +46,8 @@ void loadEntitys()
 	{
 		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
 		//font_ = Font::LoadFontFromTXT("res/leitice/leitice.txt", "res/leitice/leitice.png", 723);
-		fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
+		//fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
+		fontVB = font_.getVertexBuffer("This is some awesome text");
 		if (!fontVB)
 			ZAAP_INFO("fontVB is NULL");
 	}
