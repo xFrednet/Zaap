@@ -53,6 +53,7 @@ namespace zaap { namespace graphics {
 		// <Note>
 		//      init is called by the Application class. The init method
 		//      should still be called in case of a unconventional use.
+		//
 		Scene();
 
 		// <Deconstructor>

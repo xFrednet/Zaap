@@ -51,7 +51,7 @@ namespace zaap { namespace graphics {
 /* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
 	ZA_CharacterInfo::ZA_CharacterInfo()
-		: Character(0)
+		: Character('\0')
 	{
 	}
 	
@@ -77,7 +77,7 @@ namespace zaap { namespace graphics {
 		return mat;
 	}
 
-	String Font::GetFormatCharacters(FONT_FORMAT format)
+	String Font::GetFormatCharacters(ZA_FONT_CHAR_FORMAT format)
 	{
 		switch (format)
 		{
@@ -110,7 +110,7 @@ namespace zaap { namespace graphics {
 			}
 		}
 	}
-	Font Font::LoadFTTFile(String file, FONT_FORMAT format)
+	Font Font::LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format)
 	{
 		return LoadFTTFile(file, GetFormatCharacters(format));
 	}
@@ -160,9 +160,9 @@ namespace zaap { namespace graphics {
 		//Bitmap values
 		uint charSize;
 		if (chars.size() < 200)
-			charSize = 60;
+			charSize = 64;
 		else
-			charSize = 10;
+			charSize = 16;
 		
 
 		//Setting size
@@ -177,7 +177,7 @@ namespace zaap { namespace graphics {
 		ZA_CharMarix charMatirx;
 		FT_Bitmap bitmap;
 		ZA_CharacterInfo charInfo;
-		uint bitMapX = 0;
+		uint bitmapX = 0;
 		uint bitmapY = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -248,9 +248,9 @@ namespace zaap { namespace graphics {
 			// * test bitmapX and bitmapY *
 			/* ********************************************************* */
 			{
-				if (bitMapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
+				if (bitmapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
 				{
-					bitMapX = 0;
+					bitmapX = 0;
 					bitmapY += charSize * 2;
 					if (bitmapY + charSize >= charSheet.getHeight())
 					{
@@ -264,18 +264,19 @@ namespace zaap { namespace graphics {
 			// * filling charInfo *
 			/* ********************************************************* */
 			{
-				charInfo.TexMinCoords = charSheet.getPixelCoord(bitMapX, bitmapY);
-				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitMapX + uint(charMatirx.Width), bitmapY + uint(charMatirx.Height));
+				
+				charInfo.TexMinCoords = charSheet.getPixelCoord(bitmapX + 1, bitmapY-1);
+				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitmapX + uint(charMatirx.Width + 3), bitmapY + uint(charMatirx.Height + 1));
 			}
 
-			copyToBitmap(bitMapX, bitmapY, bitmap, charSheet);
+			copyToBitmap(bitmapX, bitmapY, bitmap, charSheet);
 
 			//resizing the charMatrix to a fontSize of 1
 			charInfo.CharMatirx = charInfo.CharMatirx / float(charSize); 
 			//adding the char
 			font.m_CharInfo[i] = charInfo;
 
-			bitMapX += uint(charMatirx.Width  * 1.5f);
+			bitmapX += uint(charMatirx.Width  * 1.5f);
 		}
 
 		//resize the MaxCharSize
@@ -287,6 +288,116 @@ namespace zaap { namespace graphics {
 		//cleaning up the FreeType library
 		FT_Done_Face(face);
 		FT_Done_FreeType(FTLib);
+
+		long time = clock() - timer;
+		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
+
+		return font;
+	}
+
+	Font Font::LoadFontFromTXT(String file, String textureFile, uint size)
+	{
+		using namespace std;
+		
+		clock_t timer = clock();
+
+		Font font;
+		font.m_Size = (float)size;
+		uint width;
+		uint height;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Texture / m_CharSheet loading //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		{
+			font.m_CharSheet = API::Texture::CreateTexture2D(textureFile, textureFile, true);
+			if (!font.m_CharSheet 
+				|| (width = font.m_CharSheet->getWidth()) == 0
+				|| (height = font.m_CharSheet->getHeight()) == 0)
+			{
+				ZAAP_ERROR("The texture could not be loaded");
+				return font;
+			}
+		}
+		
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // file loading //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		{
+
+			font.m_CharInfo = vector<ZA_CharacterInfo>(); //font sets the size to zero
+			
+			fstream fileStream;
+			fileStream.open(file);
+			if (!fileStream.is_open())
+			{
+				ZAAP_ERROR("The given file could not be opened. File: " + file);
+				return font;
+			}
+
+			String line;
+			stringstream lStream;
+			ZA_CharacterInfo charInfo;
+			ZA_CharMarix* charMatrix;
+			uint xPixel, yPixel, widthPixel, heightPixel;
+			while (!fileStream.eof())
+			{
+				getline(fileStream, line);
+				if (StringUtil::StartsWith(line, "##") || line.length() <= 1)
+					continue; // it's a command
+				
+				/* ##################################### */
+				// # init charInfo && charMatrix #
+				/* ##################################### */
+				{
+					font.m_Chars += line[0];
+					//char info
+					charInfo = ZA_CharacterInfo(line[0]);
+
+					// charMatrix;
+					charMatrix = &charInfo.CharMatirx;
+				}
+
+				/* ##################################### */
+				// # line processing #
+				/* ##################################### */
+				{
+					line[0] = ' ';
+					lStream = stringstream(line);
+
+					// char- <     Bitmap stuff      >-<               char matrix                  >
+					// char-xPixel-yPixel-width-height-lineXOffset-lineYOffset-totalWidth-totalHeight
+					// A    0      0      610   724    723         25          660        724
+					
+					//
+					// Bitmap stuff;
+					//
+					lStream >> xPixel;
+					charInfo.TexMinCoords.X = (float)xPixel / (float)width;
+					lStream >> yPixel;
+					charInfo.TexMinCoords.Y = (float)yPixel / (float)height;
+
+					lStream >> widthPixel;
+					charInfo.TexMaxCoords.X = (float)(xPixel + widthPixel) / (float)width;
+					lStream >> heightPixel;
+					charInfo.TexMaxCoords.Y = (float)(yPixel + heightPixel) / (float)height;
+
+					//
+					// char matrix
+					//
+					lStream >> charMatrix->OrigenXOffset;
+					lStream >> charMatrix->OrigenYOffset;
+					lStream >> charMatrix->TotalWidth;
+					lStream >> charMatrix->TotalHeight;
+					charMatrix->Width = charMatrix->TotalWidth;
+					charMatrix->Height = charMatrix->TotalHeight;
+
+					charInfo.CharMatirx = *charMatrix / (float)size;
+				}
+
+				font.m_CharInfo.push_back(charInfo);
+			}
+		}
 
 		long time = clock() - timer;
 		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
@@ -314,6 +425,9 @@ namespace zaap { namespace graphics {
 	API::VertexBuffer* Font::getVertexBuffer(String string)
 	{
 		using namespace std;
+
+		if (m_CharInfo.size() == 0)
+			return nullptr;
 
 		vector<ZA_CharVertex> vertices(string.size() * 4);
 		vector<uint> indices(string.size() * 6);
@@ -355,28 +469,33 @@ namespace zaap { namespace graphics {
 			}
 			// 0 3
 			// 1 2 
+			
 			//v0
-			vertices[v0].Position = Vec3(
-				cMatrix.OrigenXOffset + drawX,
-				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v0].Position.X = cMatrix.OrigenXOffset + drawX;
+			vertices[v0].Position.X = 0 + drawX;
+			vertices[v0].Position.Y = (-cMatrix.OrigenYOffset);
+			vertices[v0].Position.Z = zValue;
 			vertices[v0].TexCoord = cInfo.TexMinCoords;
 
 			//v1
-			vertices[v1].Position = Vec3(
-				cMatrix.OrigenXOffset + drawX, 
-				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v1].Position.X = cMatrix.OrigenXOffset + drawX;
+			vertices[v1].Position.X = 0 + drawX;
+			vertices[v1].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
+			vertices[v1].Position.Z = zValue;
 			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
 
 			//v2
-			vertices[v2].Position = Vec3(
-				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
-				(-cMatrix.OrigenYOffset - cMatrix.Height), zValue);
+			vertices[v2].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
+			vertices[v2].Position.X = 0 + cMatrix.Width + drawX;
+			vertices[v2].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
+			vertices[v2].Position.Z = zValue;
 			vertices[v2].TexCoord = cInfo.TexMaxCoords;
 
 			//v3
-			vertices[v3].Position = Vec3(
-				cMatrix.OrigenXOffset + cMatrix.Width + drawX, 
-				(-cMatrix.OrigenYOffset), zValue);
+			vertices[v3].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
+			vertices[v3].Position.X = 0 + cMatrix.Width + drawX;
+			vertices[v3].Position.Y = (-cMatrix.OrigenYOffset);
+			vertices[v3].Position.Z = zValue;
 			vertices[v3].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
 
 			drawX += cMatrix.TotalWidth;
@@ -386,19 +505,31 @@ namespace zaap { namespace graphics {
 	}
 
 	float temp = 0;
-	float size = 0.0;
+	Color color;
+	float size = 400.0;
 	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
 	{
+		if (!vb) 
+			return;
+		
+		float c = 0.5 + 0.5 * sin(temp);
+		color.R = c;
+		color.G = c;
+		color.B = c;
+
 		temp += 0.005f;
-		size = 40 + 20 * sin(temp);
-		renderer->disableDepthTesting();
+		size = 100 + 50 * sin(temp);
 		renderer->setAlphaTestingState(true);
+		renderer->disableDepthTesting();
 		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
 		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(0, 2);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(Color());
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(10, 10);
+		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
 		m_CharSheet->bind(0);
+
 		vb->draw();
+
+		renderer->setAlphaTestingState(false);
 		renderer->enableDepthTesting();
 	}
 
@@ -407,7 +538,11 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint Font::getCharIndex(char c) const
 	{
-		return (uint)m_Chars.find(c);
+		std::string::size_type n = m_Chars.find(c);
+		if (n != std::string::npos)
+			return (uint)n;
+
+		return 0;
 	}
 	uint Font::getCharCount() const
 	{
