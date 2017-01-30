@@ -59,7 +59,6 @@
 		public class ZAAP_API Class [...]
 		
 		// <Struct>
-		//      ZA_SUPER_STRUCT_,
 		//      ZA_SUPER_STRUCT
 		//
 		// <Description>
@@ -69,10 +68,10 @@
 		//      This struct is super because I said so.
 		//
 		// <Members>
-		//      IsSuper:
-		//          This boolean is always true becuase this struct is always super.
-		//      IsSuper2:
-		//          This is just a second boolean to show of the formating.
+		//      IsSuper::
+		//          This boolean is always true becuase this struct is always super.;;
+		//      IsSuper2::
+		//          This is just a second boolean to show of the formating.;;
 		//
 		typedef struct ZAAP_API ZA_SUPER_STRUCT_ {
 			bool IsSuper;
@@ -149,7 +148,7 @@
 	{
 		
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		// ~ toString ~
+		// ~ default constructor ~
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
 		// <Constructor>
@@ -160,7 +159,17 @@
 		//
 		Class();
 
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ virtual deconstructor ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		
+		// <Deconstructor>
+		//      Class
+		//
+		// <Description>
+		//      This is a virtual deconstructor to support the deconstructors
+		//      of the sub classes.
+		//
 	}
 	////////////////////////////////////////////////////////////////////////////////
 	// Operators // 

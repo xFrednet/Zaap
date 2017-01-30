@@ -15,7 +15,7 @@ namespace zaap { namespace graphics { namespace DX {
 	//This gives in error while the file is open in Visual Studio 
 	//but it works fine when it gets compiled. 
 	String terrainShaderSrc =
-#include <graphics/API/DX/shader/types/DXTerrainShader.shader>
+#include <graphics/API/DX/shader/DXTerrainShader.shader>
 		;
 
 

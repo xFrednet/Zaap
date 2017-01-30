@@ -156,18 +156,6 @@
     <ClCompile Include="src\util\UUID.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXFontShader2D.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXMaterialShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXTerrainShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXTextureShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\API\Texture.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClCompile>
@@ -185,9 +173,6 @@
     </ClCompile>
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\util\Loader.cpp">
       <Filter>Source Files\src\util</Filter>
@@ -239,6 +224,27 @@
     </ClCompile>
     <ClCompile Include="src\graphics\shader\TextureShader.cpp">
       <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DefaultShader.cpp">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXTerrainShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXTextureShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXFontShader2D.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXMaterialShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXDefaultShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -335,18 +341,6 @@
     <ClInclude Include="src\util\UUID.h">
       <Filter>Source Files\src\util</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXFontShader2D.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXMaterialShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXTerrainShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXTextureShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\API\Texture.h">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClInclude>
@@ -367,9 +361,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXContext.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\DXShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\util\Loader.h">
       <Filter>Source Files\src\util</Filter>
@@ -425,18 +416,42 @@
     <ClInclude Include="src\graphics\shader\TextureShader.h">
       <Filter>Source Files\src\graphics\shader\types</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\shader\DefaultShader.h">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXTerrainShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXTextureShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXFontShader2D.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXMaterialShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXDefaultShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\graphics\API\DX\shader\types\DXFontShader2D.shader">
+    <None Include="src\graphics\API\DX\shader\DXTerrainShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
-    <None Include="src\graphics\API\DX\shader\types\DXMaterialShader.shader">
+    <None Include="src\graphics\API\DX\shader\DXTextureShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
-    <None Include="src\graphics\API\DX\shader\types\DXTerrainShader.shader">
+    <None Include="src\graphics\API\DX\shader\DXMaterialShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
-    <None Include="src\graphics\API\DX\shader\types\DXTextureShader.shader">
+    <None Include="src\graphics\API\DX\shader\DXFontShader2D.shader">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </None>
+    <None Include="src\graphics\API\DX\shader\DXDefaultShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
   </ItemGroup>

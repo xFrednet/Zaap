@@ -10,7 +10,7 @@ namespace zaap { namespace graphics { namespace DX {
 	};
 
 	String DXFontShader2DSrc = 
-#include <graphics/API/DX/shader/types/DXFontShader2D.shader>
+#include <graphics/API/DX/shader/DXFontShader2D.shader>
 		;
 
 	DXFontShader2D::DXFontShader2D()
@@ -52,6 +52,12 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 	}
 
+	DXFontShader2D::~DXFontShader2D()
+	{
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_ColorBuffer);
+	}
+
 	//
 	// Buffer loader 
 	//
@@ -74,17 +80,6 @@ namespace zaap { namespace graphics { namespace DX {
 		devcon->Map(m_ColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 		memcpy(ms.pData, &m_TextColor, sizeof(Color));
 		devcon->Unmap(m_ColorBuffer, NULL);
-	}
-
-
-	void DXFontShader2D::cleanup()
-	{
-		ZAAP_DXRELEASE(m_MatrixBuffer);
-		ZAAP_DXRELEASE(m_ColorBuffer);
-		
-		cleanDXShader();
-
-		ZAAP_CLEANUP_INFO();
 	}
 
 	void DXFontShader2D::start() const

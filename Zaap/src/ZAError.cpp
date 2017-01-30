@@ -13,6 +13,13 @@ ZA_MULTI_RESULT_::ZA_MULTI_RESULT_()
 		Results[i] = ZA_OK;
 }
 
+ZA_MULTI_RESULT_::ZA_MULTI_RESULT_(ZA_RESULT result)
+{
+	Results[0] = result;
+	for (uint i = 1; i < ZA_MULTI_RESULT_SIZE; i++)
+		Results[i] = ZA_OK;
+}
+
 ZA_RESULT& ZA_MULTI_RESULT_::operator[](int index)
 {
 	if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)

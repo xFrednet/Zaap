@@ -4,6 +4,7 @@
 #include <Types.h>
 #include <maths/Mat4.h>
 #include <graphics/Color.h>
+#include <graphics/Material.h>
 
 #ifdef ZA_SHADER_LIGHT_COUNT
 #	if (ZA_SHADER_LIGHT_COUNT == 0) || (ZA_SHADER_LIGHT_COUNT > 8)
@@ -101,7 +102,7 @@ namespace zaap { namespace graphics {
 	//			set in the loaded @Scene. <\n>
 	//			(This is loaded at the start of every frame.);;
 	//		VSSceneBufferPadding::
-	//			Some padding to make the size dividable by four.<\n>
+	//			Some padding to make the size dividable by 16.<\n>
 	//			(This should never be touched.);;
 	//
 	typedef struct ZAAP_API ZA_VS_SCENE_BUFFER_ {
@@ -122,7 +123,7 @@ namespace zaap { namespace graphics {
 	//
 	// <Note>
 	//		The size of this struct depends on ZA_SHADER_LIGHT_COUNT.
-	//		It can be calculated like this: 4 + 4 * ZA_SHADER_LIGHT_COUNT.
+	//		It can be calculated like this: 16 + 16 * ZA_SHADER_LIGHT_COUNT.
 	//
 	// <Members>
 	//		VSLightCount::
@@ -133,7 +134,7 @@ namespace zaap { namespace graphics {
 	//			every frame.);;
 	//		VSLightBufferPadding::
 	//			This is some padding to make the total size dividable 
-	//			by 4. That is a requirement of DirectX. <\n>
+	//			by 16. That is a requirement of DirectX. <\n>
 	//			(This is never changes, at least not to my knowledge...
 	//			says the only developer.);;
 	//		LightPositions::
@@ -147,11 +148,11 @@ namespace zaap { namespace graphics {
 	//			indices up to the light count.);;
 	//
 	typedef struct ZAAP_API ZA_VS_LIGHT_BUFFER_ {
-		//4 Bytes
+		//16 Bytes
 		uint VSLightCount;
 		Vec3 VSLightBufferPadding;
 
-		// 4 Bytes * ZA_SHADER_LIGHT_COUNT
+		// 16 Bytes * ZA_SHADER_LIGHT_COUNT
 		Vec4 LightPositions[ZA_SHADER_LIGHT_COUNT];
 	} ZA_VS_LIGHT_BUFFER;
 
@@ -164,7 +165,7 @@ namespace zaap { namespace graphics {
 	//
 	// <Note>
 	//		The size of this struct depends on ZA_SHADER_LIGHT_COUNT.
-	//		It can be calculated like this: 4 + 4 * ZA_SHADER_LIGHT_COUNT or
+	//		It can be calculated like this: 16 + 16 * ZA_SHADER_LIGHT_COUNT or
 	//		you could just use sizeof() but that would be boring I understand 
 	//		that.
 	//
@@ -178,7 +179,7 @@ namespace zaap { namespace graphics {
 	//		AmbientLight::
 	//			This is a Vector that keeps ambient lighting it is
 	//			also used as some padding for the PSLightCount value.
-	//			To make this struct dividable by 4. this is a requirement 
+	//			To make this struct dividable by 16. this is a requirement 
 	//			of DirectX. <\n>
 	//			(This also changes every time that the @LightSetup is loaded.
 	//			I won't copy the text a third time... I mean: "I don't use
@@ -194,37 +195,17 @@ namespace zaap { namespace graphics {
 	//			indices up to the light count.);;
 	//
 	typedef struct ZAAP_API ZA_PS_LIGHT_BUFFER_ {
-		//4 Bytes
+		//16 Bytes
 		uint PSLightCount;
 		Vec3 AmbientLight;
 
-		//4 Bytes * ZA_SHADER_LIGHT_COUNT
+		//16 Bytes * ZA_SHADER_LIGHT_COUNT
 		Color LightColors[ZA_SHADER_LIGHT_COUNT];
 	} ZA_PS_LIGHT_BUFFER;
 
 	/* ********************************************************* */
 	// * Material *
 	/* ********************************************************* */
-
-	// <Struct>
-	//		ZA_PS_SHADER_MATERIAL
-	//
-	// <Description>
-	//		This is a struct that keeps the base information
-	//		of a @Material. It is dividable by 4.
-	//
-	// <Members>
-	//		DiffuseReflectivity::
-	//			This holds the reflectivity information for the 
-	//			red, green and blue color channel.;;
-	//		SpectralReflectivity::
-	//			This value is used to calculate the reflectivity
-	//			of the spectral lighting.
-	//
-	typedef struct ZAAP_API ZA_PS_SAHDER_MATERIAL_ {
-		Vec3 DiffuseReflectivity;
-		float SpectralReflectivity;
-	} ZA_PS_SHADER_MATERIAL;
 
 	// <Struct>
 	//		ZA_PS_MATERIAL_BUFFER
@@ -235,7 +216,7 @@ namespace zaap { namespace graphics {
 	//
 	// <Members>
 	//		Materials::
-	//			This is an array of @ZA_PS_SHADER_MATERIAL s.
+	//			This is an array of Materials.
 	//			The @Materials are used to calculate the effects
 	//			that light sources have on the rendered meshes.<\n>
 	//			(This matrix is changed for every object that is rendered.<\n>
@@ -244,11 +225,14 @@ namespace zaap { namespace graphics {
 	//			specific to the current object.);;
 	//
 	typedef struct ZAAP_API ZA_PS_MATERIAL_BUFFER_ {
-		ZA_PS_SHADER_MATERIAL Materials[ZA_SHADER_MATERIAL_COUNT];
+		Material Materials[ZA_SHADER_MATERIAL_COUNT];
 	} ZA_PS_MATERIAL_BUFFER;
 
 }}
 
+////////////////////////////////////////////////////////////////////////////////
+// Shader class //
+////////////////////////////////////////////////////////////////////////////////
 namespace zaap { namespace graphics {
 	
 	// I left out the "API" namespace because I'm too lazy to type it every time

@@ -49,6 +49,8 @@ typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 	
 	ZA_MULTI_RESULT_();
 
+	ZA_MULTI_RESULT_(ZA_RESULT result);
+
 	// <Function>
 	//      operator[]
 	//
