@@ -3,94 +3,105 @@
 #include <util/Console.h>
 #include "maths/Maths.h"
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_MULTI_RESULT //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap {
+	ZA_MULTI_RESULT_::ZA_MULTI_RESULT_()
+	{
+		for (uint i = 0; i < ZA_MULTI_RESULT_SIZE; i++)
+			Results[i] = ZA_OK;
+	}
 
-//
-// ZA_MULTI_RESULT_
-//
-ZA_MULTI_RESULT_::ZA_MULTI_RESULT_()
-{
-	for (uint i = 0; i < ZA_MULTI_RESULT_SIZE; i++)
-		Results[i] = ZA_OK;
+	ZA_MULTI_RESULT_::ZA_MULTI_RESULT_(ZA_RESULT result)
+	{
+		for (uint i = 0; i < ZA_MULTI_RESULT_SIZE; i++)
+			Results[i] = ZA_OK;
+
+		*this += result;
+	}
+
+	ZA_RESULT& ZA_MULTI_RESULT_::operator[](int index)
+	{
+		if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
+			return Results[index];
+
+		if (index < 0)
+			return Results[0];
+		else
+			return Results[ZA_MULTI_RESULT_SIZE - 1];
+	}
+	const ZA_RESULT& ZA_MULTI_RESULT_::operator[](const int index) const
+	{
+		if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
+			return Results[index];
+
+		if (index < 0)
+			return Results[0];
+		else
+			return Results[ZA_MULTI_RESULT_SIZE - 1];
+	}
+
+	ZA_MULTI_RESULT_& ZA_MULTI_RESULT_::operator+=(const ZA_RESULT& other)
+	{
+		*this = zaap::AddZAResult(*this, other);
+		return *this;
+	}
+	ZA_MULTI_RESULT_& ZA_MULTI_RESULT_::operator+=(const ZA_MULTI_RESULT_& other)
+	{
+		*this = zaap::CombineZAResults(*this, other);
+		return *this;
+	}
+
+	ZA_MULTI_RESULT_ ZA_MULTI_RESULT_::operator+(const ZA_RESULT& other) const
+	{
+		return zaap::AddZAResult(*this, other);
+	}
+	ZA_MULTI_RESULT_ ZA_MULTI_RESULT_::operator+(const ZA_MULTI_RESULT_& other) const
+	{
+		return zaap::CombineZAResults(*this, other);
+	}
+
+	bool ZA_MULTI_RESULT_::operator==(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] == other);
+	}
+	bool ZA_MULTI_RESULT_::operator!=(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] != other);
+	}
+	bool ZA_MULTI_RESULT_::operator<(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] < other);
+	}
+	bool ZA_MULTI_RESULT_::operator>(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] > other);
+	}
+	bool ZA_MULTI_RESULT_::operator<=(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] <= other);
+	}
+	bool ZA_MULTI_RESULT_::operator>=(const ZA_RESULT& other) const
+	{
+		return (this->Results[0] >= other);
+	}
 }
 
-ZA_MULTI_RESULT_::ZA_MULTI_RESULT_(ZA_RESULT result)
-{
-	Results[0] = result;
-	for (uint i = 1; i < ZA_MULTI_RESULT_SIZE; i++)
-		Results[i] = ZA_OK;
-}
-
-ZA_RESULT& ZA_MULTI_RESULT_::operator[](int index)
-{
-	if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
-		return Results[index];
-
-	if (index < 0)
-		return Results[0];
-	else
-		return Results[ZA_MULTI_RESULT_SIZE - 1];
-}
-const ZA_RESULT& ZA_MULTI_RESULT_::operator[](const int index) const
-{
-	if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
-		return Results[index];
-
-	if (index < 0)
-		return Results[0];
-	else
-		return Results[ZA_MULTI_RESULT_SIZE - 1];
-}
-
-ZA_MULTI_RESULT_& ZA_MULTI_RESULT_::operator+=(const ZA_RESULT& other)
-{
-	*this = zaap::AddZAResult(*this, other);
-	return *this;
-}
-ZA_MULTI_RESULT_& ZA_MULTI_RESULT_::operator+=(const ZA_MULTI_RESULT_& other)
-{
-	*this = zaap::CombineZAResults(*this, other);
-	return *this;
-}
-
-ZA_MULTI_RESULT_ ZA_MULTI_RESULT_::operator+(const ZA_RESULT& other) const
-{
-	return zaap::AddZAResult(*this, other);
-}
-ZA_MULTI_RESULT_ ZA_MULTI_RESULT_::operator+(const ZA_MULTI_RESULT_& other) const
-{
-	return zaap::CombineZAResults(*this, other);
-}
-
-bool ZA_MULTI_RESULT_::operator==(const ZA_RESULT& other) const
-{
-	return (this->Results[0] == other);
-}
-bool ZA_MULTI_RESULT_::operator!=(const ZA_RESULT& other) const
-{
-	return (this->Results[0] != other);
-}
-bool ZA_MULTI_RESULT_::operator<(const ZA_RESULT& other) const
-{
-	return (this->Results[0] < other);
-}
-bool ZA_MULTI_RESULT_::operator>(const ZA_RESULT& other) const
-{
-	return (this->Results[0] > other);
-}
-bool ZA_MULTI_RESULT_::operator<=(const ZA_RESULT& other) const
-{
-	return (this->Results[0] <= other);
-}
-bool ZA_MULTI_RESULT_::operator>=(const ZA_RESULT& other) const
-{
-	return (this->Results[0] >= other);
-}
-
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT util //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap
 {
 	void SubmitZAResult(ZA_RESULT result)
 	{
 		ZAAP_ERROR(std::to_string(result));
+	}
+
+
+	void SubmitZAResult(const ZA_RESULT& result, const String& file, const uint& line)
+	{
+		console::Println(file, line, ZA_CON_MESSAGE_ERROR, std::to_string(result));
 	}
 
 	ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results)
@@ -205,4 +216,21 @@ namespace zaap
 
 		return result;
 	}
+}
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT messages //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap
+{
+	ZA_RESULT GetResultSource(const ZA_RESULT& result)
+	{
+		// 16 bits
+		return;
+	}
+
+	String GetResultMessage(ZA_RESULT result)
+	{
+	}
+	
 }
