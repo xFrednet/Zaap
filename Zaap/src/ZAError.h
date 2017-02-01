@@ -33,6 +33,10 @@
 //
 typedef int16									ZA_RESULT;
 
+#define ZA_RESULT_RESULT_MASK					ZA_RESULT(0x8000)
+#define ZA_RESULT_SOURCE_MASK					ZA_RESULT(0x7F00)
+#define ZA_RESULT_CODE_MASK						ZA_RESULT(0x00ff)
+
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_MULTI_RESULT //
@@ -538,7 +542,24 @@ namespace zaap
 	// <Return>
 	//		This returns the source result.
 	//
-	ZA_RESULT GetResultSource(const ZA_RESULT& result);
+	ZAAP_API inline ZA_RESULT GetResultSource(const ZA_RESULT& result);
+
+	// <Function>
+	//		GetResultMessage
+	//
+	// <Description>
+	//		This returns the messages of the ZA_RESULT that
+	//		are inside the ZA_MULTI_RESULT.
+	//
+	// <Input>
+	//		result::
+	//			The ZA_MULTI_RESULT of the requested messages.;;
+	//
+	// <Return>
+	//		The message of the ZA_MULTI_RESULT or a default
+	//		"missing message" message.
+	//
+	ZAAP_API String GetResultMessage(const ZA_MULTI_RESULT& result);
 
 	// <Function>
 	//		GetResultMessage
@@ -546,18 +567,15 @@ namespace zaap
 	// <Description>
 	//		This returns the message of the submitted ZA_RESULT. </n>
 	//
-	// <Note>
-	//		This function forwards the ZA_RESULT to the source specific 
-	//		getters.
-	//
 	// <Input>
 	//		result::
 	//			The ZA_RESULT of the requested message.;;
 	//
 	// <Return>
 	//		The message of the ZA_RESULT or a default
+	//		"missing message" message.
 	//
-	String GetResultMessage(const ZA_RESULT& result);
+	ZAAP_API String GetResultMessage(const ZA_RESULT& result);
 }
 
 
@@ -718,7 +736,7 @@ namespace zaap
 // <Message>
 //		The vertex shader couldn't be compiled.
 //
-#define ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR		ZAAP_TYPEDEF_ZARESULT(0x8D11)
+#define ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8D11)
 
 // <Macro>
 //		ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR
@@ -728,9 +746,9 @@ namespace zaap
 //		printed to the console.
 //
 // <Message>
-//		The pixel shader couldn't be compiled.
+//		The geometry shader couldn't be compiled.
 //
-#define ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR		ZAAP_TYPEDEF_ZARESULT(0x8D13)
+#define ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR		ZAAP_TYPEDEF_ZARESULT(0x8D12)
 
 // <Macro>
 //		ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR
@@ -742,7 +760,7 @@ namespace zaap
 // <Message>
 //		The pixel shader couldn't be compiled.
 //
-#define ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR		ZAAP_TYPEDEF_ZARESULT(0x8D13)
+#define ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8D13)
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ~ CBUFFER_ERROR ~

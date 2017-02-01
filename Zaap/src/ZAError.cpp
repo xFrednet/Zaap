@@ -3,6 +3,10 @@
 #include <util/Console.h>
 #include "maths/Maths.h"
 
+#define _and_ &
+#define _or_  |
+#define _xor_ ^
+
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_MULTI_RESULT //
 /* //////////////////////////////////////////////////////////////////////////////// */
@@ -225,12 +229,83 @@ namespace zaap
 {
 	ZA_RESULT GetResultSource(const ZA_RESULT& result)
 	{
-		// 16 bits
-		return;
+		// I use a bit and operator to remove all the extra info
+		return (result _and_ ZA_RESULT_SOURCE_MASK);
 	}
 
-	String GetResultMessage(ZA_RESULT result)
+	String GetResultMessage(const ZA_MULTI_RESULT& result)
 	{
+		String resultMessage = "";
+
+		for (uint i = 1; i < ZA_MULTI_RESULT_SIZE; i++)
+		{
+			
+		}
+	}
+
+	String GetResultMessage(const ZA_RESULT& result)
+	{
+		ZA_RESULT resultSource = GetResultSource(result);
+
+		switch (resultSource)
+		{
+		case ZA_RESULT_SOURCE_NO_SOURCE:
+		case ZA_RESULT_SOURCE_MATH:
+		case ZA_RESULT_SOURCE_SYSTEM:
+			return "Sorry no error message jet. Error " + std::to_string(result);
+		case ZA_RESULT_SOURCE_API:
+		{
+			switch (result)
+			{
+			case ZA_ERROR_API_ERROR:
+				return "A error accord somewhere within the API construct.";
+			case ZA_ERROR_API_UNAVALIlABLE_API:
+				return "The chosen API is unavailable.";
+			case ZA_ERROR_API_MISSES_THIS_FEATURE:
+				return "This feature is missing from this API. (Sorry)";
+
+				/* ********************************************************* */
+				// * API Components *
+				/* ********************************************************* */
+				/* ##################################### */
+				// # Shader #
+				/* ##################################### */
+			case ZA_ERROR_API_SHADER_ERROR:
+				return "The shader threw a Error.";
+			case ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR:
+				return "The vertex shader couldn't be compiled.";
+			case ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR:
+				return "The geometry shader couldn't be compiled.";
+			case ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR:
+				return "The pixel shader couldn't be compiled.";
+
+				/* ##################################### */
+				// # API Texture #
+				/* ##################################### */
+
+			case ZA_ERROR_API_TEXTURE_ERROR:
+				return "A texture from the current API caused an error.";
+			case ZA_ERROR_API_TEXTURE1D_CREATION_ERROR:
+				return "Failed to create a texture1D object for the current API.";
+			case ZA_ERROR_API_TEXTURE2D_CREATION_ERROR:
+				return "Failed to create a texture2D object for the current API.";
+			case ZA_ERROR_API_TEXTURE3D_CREATION_ERROR:
+				return "Failed to create a texture3D object for the current API.";
+			case ZA_ERROR_API_TEXTURE_FILE_ERROR:
+				return "The file given texture file caused an error.";
+
+				/* ##################################### */
+				// # DEFAULT #
+				/* ##################################### */
+			default:
+				return "A API error. The API says sorry. Error: " + std::to_string(result);
+			}
+		}
+		case ZA_RESULT_SOURCE_DIRECTX:
+		case ZA_RESULT_SOURCE_OPENGL:
+		default:
+			return "This result has no massage(scream at the developer xFrednet to make him add a message for this: " + std::to_string(result) + ")";
+		}
 	}
 	
 }
