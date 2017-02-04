@@ -3,10 +3,10 @@
 #include <Common.h>
 #include <maths/Maths.h>
 
-#include "shader/types/FontShader2D.h"
-#include "shader/types/MaterialShader.h"
-#include "shader/types/TextureShader.h"
-#include "shader/types/TerrainShader.h"
+#include "shader/FontShader2D.h"
+#include "shader/MaterialShader.h"
+#include "shader/TextureShader.h"
+#include "shader/TerrainShader.h"
 #include "API/Texture2D.h"
 #include "camera/ViewFrustum.h"
 

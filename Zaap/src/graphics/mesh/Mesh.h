@@ -28,6 +28,36 @@ namespace zaap { namespace graphics {
 		ZA_MATERIAL_VERTEX();
 	};
 
+	// <Struct>
+	//		ZA_D_VERTEX
+	//
+	// <Description>
+	//		This struct represents a vertex  for the @DefaultShader.
+	//
+	// <Note>
+	//		... Yes that is a "d" joke I'm sorry!!!<\n>
+	//		Just be happy that I didn't add anything about the 
+	//		"sizeof" function.... ups.
+	//
+	// <Members>
+	//		Position::
+	//			The position of this vertex.;;
+	//		Normal::
+	//			The Normal of this Vertex.;;
+	//		TexCoord::
+	//			The texture coordinate of this vertex.;;
+	//		Material::
+	//			The index of the material in the @Mesh class and therefor also
+	//			in the shader.;;
+	//
+	struct ZAAP_API ZA_D_VERTEX
+	{
+		Vec3 Position;
+		Vec3 Normal;
+		Vec2 TexCoord;
+		uint Material;
+	};
+
 	struct ZAAP_API ZA_TERRAIN_VERTEX
 	{
 		Vec3 Position;

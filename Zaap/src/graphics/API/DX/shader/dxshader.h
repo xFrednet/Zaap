@@ -38,6 +38,25 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		static bool CreateConstBuffer(ID3D11Buffer** buffer, const uint& size, void const* data);
 
+		// <Function>
+		//		LoadResource
+		//
+		// <Description>
+		//		This loads the given date to the given buffer.
+		//
+		// <Note>
+		//		TODO run performance test on this function vs directly writing it into the shader
+		//
+		// <Input>
+		//		buffer::
+		//			The buffer that should be written to.;;
+		//		data::
+		//			A pointer to the memory that should be loaded.;;
+		//		size::
+		//			The size of the buffer. (Just use sizeof() on the buffer struct);;
+		//
+		inline void LoadResource(ID3D11Resource* buffer, void const* data, const uint& size);
+
 	private:
 		// <Function>
 		//		compileShader

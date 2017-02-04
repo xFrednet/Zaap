@@ -26,6 +26,14 @@ namespace zaap { namespace graphics { namespace DX {
 		return !FAILED(DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, buffer));
 	}
 
+	void DXShader::LoadResource(ID3D11Resource* buffer, void const* data, const uint& size)
+	{
+		D3D11_MAPPED_SUBRESOURCE ms;
+		DXContext::GetDevContext()->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		memcpy(ms.pData, &data, size);
+		DXContext::GetDevContext()->Unmap(buffer, NULL);
+	}
+
 	ID3D10Blob* DXShader::CompileShader(const String &shaderSrc, const String& version, const String& methodName)
 	{
 		ID3D10Blob *shaderBlob;

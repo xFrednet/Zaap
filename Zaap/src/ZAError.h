@@ -72,6 +72,12 @@ namespace zaap {
 		//
 		ZA_MULTI_RESULT_(ZA_RESULT result);
 
+		uint size() const;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Operators // 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+
 		// <Function>
 		//      operator[]
 		//
@@ -545,7 +551,7 @@ namespace zaap
 	ZAAP_API inline ZA_RESULT GetResultSource(const ZA_RESULT& result);
 
 	// <Function>
-	//		GetResultMessage
+	//		GetZAResultMessage
 	//
 	// <Description>
 	//		This returns the messages of the ZA_RESULT that
@@ -559,10 +565,10 @@ namespace zaap
 	//		The message of the ZA_MULTI_RESULT or a default
 	//		"missing message" message.
 	//
-	ZAAP_API String GetResultMessage(const ZA_MULTI_RESULT& result);
+	ZAAP_API String GetZAResultMessage(const ZA_MULTI_RESULT& result);
 
 	// <Function>
-	//		GetResultMessage
+	//		GetZAResultMessage
 	//
 	// <Description>
 	//		This returns the message of the submitted ZA_RESULT. </n>
@@ -575,7 +581,7 @@ namespace zaap
 	//		The message of the ZA_RESULT or a default
 	//		"missing message" message.
 	//
-	ZAAP_API String GetResultMessage(const ZA_RESULT& result);
+	ZAAP_API String GetZAResultMessage(const ZA_RESULT& result);
 }
 
 

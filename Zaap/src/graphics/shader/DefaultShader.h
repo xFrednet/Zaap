@@ -67,21 +67,21 @@ namespace zaap { namespace graphics {
 		/* ##################################### */
 
 		// <Value>
-		//		m_VSLightBifferStruct
+		//		m_VSLightBufferStruct
 		//
 		// <Description>
 		//		This struct holds the needed @Light information
 		//		of the loaded @LightSetup.
 		//
-		ZA_VS_LIGHT_BUFFER m_VSLightBifferStruct;
+		ZA_VS_LIGHT_BUFFER m_VSLightBufferStruct;
 		// <Value>
-		//		m_PSLightBifferStruct
+		//		m_PSLightBufferStruct
 		//
 		// <Description>
 		//		This struct holds the required @Light information
 		//		of the loaded @LightSetup.
 		//
-		ZA_PS_LIGHT_BUFFER m_PSLightBifferStruct;
+		ZA_PS_LIGHT_BUFFER m_PSLightBufferStruct;
 
 		// <Function>
 		//		loadLightBuffers

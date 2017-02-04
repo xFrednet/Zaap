@@ -25,6 +25,22 @@ namespace zaap {
 		*this += result;
 	}
 
+	uint ZA_MULTI_RESULT_::size() const
+	{
+		for (uint i = ZA_MULTI_RESULT_SIZE - 1; i >= 0; i--)
+		{
+			if (Results[i] != ZA_OK)
+				return i + 1;
+
+			if (i == 0)
+				return 0;
+		}
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Operators // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+
 	ZA_RESULT& ZA_MULTI_RESULT_::operator[](int index)
 	{
 		if (index >= 0 || index < ZA_MULTI_RESULT_SIZE)
@@ -102,10 +118,9 @@ namespace zaap
 		ZAAP_ERROR(std::to_string(result));
 	}
 
-
 	void SubmitZAResult(const ZA_RESULT& result, const String& file, const uint& line)
 	{
-		console::Println(file, line, ZA_CON_MESSAGE_ERROR, std::to_string(result));
+		console::Println(file, line, ZA_CON_MESSAGE_ERROR, GetZAResultMessage(result));
 	}
 
 	ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results)
@@ -233,18 +248,24 @@ namespace zaap
 		return (result _and_ ZA_RESULT_SOURCE_MASK);
 	}
 
-	String GetResultMessage(const ZA_MULTI_RESULT& result)
+	String GetZAResultMessage(const ZA_MULTI_RESULT& result)
 	{
-		String resultMessage = "";
+		String resultMessage = GetZAResultMessage(result.Results[0]);
 
-		for (uint i = 1; i < ZA_MULTI_RESULT_SIZE; i++)
+		uint size = result.size();
+		for (uint i = 1; i < size; i++)
 		{
-			
+			resultMessage += "\t" + GetZAResultMessage(result.Results[i]);
 		}
+
+		return resultMessage;
 	}
 
-	String GetResultMessage(const ZA_RESULT& result)
+	String GetZAResultMessage(const ZA_RESULT& result)
 	{
+		if (result == ZA_OK)
+			return "Everything is a okay!";
+		
 		ZA_RESULT resultSource = GetResultSource(result);
 
 		switch (resultSource)

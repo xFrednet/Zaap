@@ -63,7 +63,7 @@ namespace zaap { namespace graphics {
 
 	void DefaultShader::loadLightSetup(const LightSetup& lightSetup)
 	{
-		m_PSLightBifferStruct.AmbientLight = lightSetup.getAmbientColor().getRGB();
+		m_PSLightBufferStruct.AmbientLight = lightSetup.getAmbientColor().getRGB();
 
 		if (lightSetup.getSize() < ZA_SHADER_LIGHT_COUNT)
 		{
@@ -71,8 +71,8 @@ namespace zaap { namespace graphics {
 			{
 				Light const* light = lightSetup.getConstLight(i);
 				
-				m_VSLightBifferStruct.LightPositions[i] = light->getPosition();
-				m_PSLightBifferStruct.LightColors[i] = light->getColor();
+				m_VSLightBufferStruct.LightPositions[i] = light->getPosition();
+				m_PSLightBufferStruct.LightColors[i] = light->getColor();
 			}
 		} else
 		{
@@ -82,8 +82,8 @@ namespace zaap { namespace graphics {
 			{
 				Light const* light = lightSetup.getConstLight(i);
 
-				m_VSLightBifferStruct.LightPositions[i] = light->getPosition();
-				m_PSLightBifferStruct.LightColors[i] = light->getColor();
+				m_VSLightBufferStruct.LightPositions[i] = light->getPosition();
+				m_PSLightBufferStruct.LightColors[i] = light->getColor();
 			}
 		}
 
@@ -92,12 +92,12 @@ namespace zaap { namespace graphics {
 
 	ZA_VS_LIGHT_BUFFER DefaultShader::getVSLightBuffer() const
 	{
-		return m_VSLightBifferStruct;
+		return m_VSLightBufferStruct;
 	}
 
 	ZA_PS_LIGHT_BUFFER DefaultShader::getPSLightBuffer() const
 	{
-		return m_PSLightBifferStruct;
+		return m_PSLightBufferStruct;
 	}
 
 	/* ##################################### */
