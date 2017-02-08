@@ -26,7 +26,7 @@ namespace zaap { namespace graphics { namespace DX {
 		return !FAILED(DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, buffer));
 	}
 
-	void DXShader::LoadResource(ID3D11Resource* buffer, void const* data, const uint& size)
+	void DXShader::LoadResource(ID3D11Resource* buffer, void const* data, const uint& size) const
 	{
 		D3D11_MAPPED_SUBRESOURCE ms;
 		DXContext::GetDevContext()->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
@@ -34,10 +34,14 @@ namespace zaap { namespace graphics { namespace DX {
 		DXContext::GetDevContext()->Unmap(buffer, NULL);
 	}
 
-	ID3D10Blob* DXShader::CompileShader(const String &shaderSrc, const String& version, const String& methodName)
+	ID3D10Blob* DXShader::CompileShader(String shaderSrc, const String& version, const String& methodName)
 	{
 		ID3D10Blob *shaderBlob;
 		ID3D10Blob *errorBlob;
+		
+		shaderSrc = StringUtil::Replace(shaderSrc, "ZA_SHADER_LIGHT_COUNT", std::to_string(ZA_SHADER_LIGHT_COUNT));
+		shaderSrc = StringUtil::Replace(shaderSrc, "ZA_SHADER_MATERIAL_COUNT", std::to_string(ZA_SHADER_MATERIAL_COUNT));
+
 		HRESULT result = D3DCompile(shaderSrc.c_str(), shaderSrc.size(), NULL, NULL, NULL, methodName.c_str(), version.c_str(), D3DCOMPILE_DEBUG, 0, &shaderBlob, &errorBlob);
 		if (result == S_OK)
 			return shaderBlob;
@@ -79,7 +83,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	bool DXShader::createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
 	{
-		String shaderSrc = Loader::LoadFile(shaderFile);
+		String shaderSrc = zaap::Loader::LoadFile(shaderFile);
 		return createShaderFromString(shaderSrc, ied, eCount, vSMain, pSMain);
 	}
 

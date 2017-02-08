@@ -1,4 +1,5 @@
 #include "EventManager.h"
+#include <util/StringUtil.h>
 
 namespace zaap {
 	

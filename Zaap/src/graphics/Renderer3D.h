@@ -4,8 +4,7 @@
 #include <maths/Maths.h>
 
 #include "shader/FontShader2D.h"
-#include "shader/MaterialShader.h"
-#include "shader/TextureShader.h"
+#include "shader/DefaultShader.h"
 #include "shader/TerrainShader.h"
 #include "API/Texture2D.h"
 #include "camera/ViewFrustum.h"
@@ -133,8 +132,7 @@ namespace zaap { namespace graphics {
 
 		//Shader
 		ZA_SHADER_TYPE  m_ActiveShaderType;
-		TextureShader*  m_TextureShader;
-		MaterialShader* m_MaterialShader;
+		DefaultShader*  m_DefaultShader;
 		TerrainShader*  m_TerrainShader;
 		FontShader2D*   m_FontShader2D;
 

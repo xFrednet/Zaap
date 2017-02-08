@@ -55,7 +55,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//		size::
 		//			The size of the buffer. (Just use sizeof() on the buffer struct);;
 		//
-		inline void LoadResource(ID3D11Resource* buffer, void const* data, const uint& size);
+		inline void LoadResource(ID3D11Resource* buffer, void const* data, const uint& size) const;
 
 	private:
 		// <Function>
@@ -78,7 +78,7 @@ namespace zaap { namespace graphics { namespace DX {
 		// <Return>
 		//		This returns the compiled shader or a nullptr in case of a failure.
 		//
-		static ID3D10Blob* CompileShader(const String &shaderSrc, const String& version, const String &methodName);
+		static ID3D10Blob* CompileShader(String shaderSrc, const String& version, const String &methodName);
 		
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // DXShader class //

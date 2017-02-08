@@ -15,12 +15,12 @@ namespace zaap
 	class ZAAP_API Entity
 	{
 	protected:
-		graphics::Mesh* m_Mesh;
+		graphics::Mesh m_Mesh;
 		Vec3 m_Position;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;
 	public:
-		Entity(graphics::Mesh *mesh, 
+		Entity(graphics::Mesh mesh, 
 			const Vec3& position = Vec3(0.0f, 0.0f, 0.0f),
 			const Vec3& rotation = Vec3(0.0f, 0.0f, 0.0f), 
 			const Vec3& scale = Vec3(1.0f, 1.0f, 1.0f));
@@ -48,7 +48,7 @@ namespace zaap
 		Vec3* getScaleP();
 
 		//Getters
-		virtual graphics::Mesh* getMesh();
+		virtual graphics::Mesh getMesh();
 		virtual void getTransformationMatrix(Mat4* result) const;
 		//virtual bool isVisible();
 

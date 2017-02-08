@@ -1,7 +1,19 @@
 ﻿#include "DefaultShader.h"
 
+#include "../Scene.h"
+#include <graphics/API/Texture2D.h>
+
 namespace zaap { namespace graphics {
 	
+	void DefaultShader::loadMesh(const Mesh& mesh)
+	{
+		loadMaterials(mesh.getMaterials(), mesh.getMaterialCount());
+
+		API::Texture2D* texture = mesh.getTexture();
+		if (texture)
+			texture->bind(0);
+	}
+
 	/* ##################################### */
 	// # Matrix buffer #
 	/* ##################################### */
@@ -52,6 +64,9 @@ namespace zaap { namespace graphics {
 
 	void DefaultShader::loadScene(const Scene* scene)
 	{
+		if (!scene->getCamera())
+			return;
+
 		m_SceneBufferStruct.CameraPosition = scene->getCamera()->getPosition();
 
 		loadSceneBuffer();
@@ -106,9 +121,12 @@ namespace zaap { namespace graphics {
 
 	void DefaultShader::loadMaterials(const Material* materials, uint count)
 	{
+		if (materials)
+			return;
+
 		if (count >= ZA_SHADER_MATERIAL_COUNT)
 			count = ZA_SHADER_MATERIAL_COUNT - 1;
-
+		
 		memcpy(&m_MaterialBufferStruct.Materials[0], &materials[0], sizeof(Material) * count);
 
 		loadMaterialBuffer();

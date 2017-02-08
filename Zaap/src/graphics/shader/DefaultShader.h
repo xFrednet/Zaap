@@ -1,11 +1,16 @@
 ﻿#pragma once
 
 #include <Common.h>
+#include "Shader.h"
 
-#include "../Scene.h"
+namespace zaap {
+	class LightSetup;
+}
 
 namespace zaap { namespace graphics {
+	class Mesh;
 	struct Material;
+	class Scene;
 
 	// <Class>
 	//		DefaultShader
@@ -39,7 +44,7 @@ namespace zaap { namespace graphics {
 		//		This function uploads the matrix buffer to the
 		//		shader. It is overridden by the sub classes.
 		//
-		virtual void loadMatrixBuffer() = 0;
+		virtual void loadMatrixBuffer() const = 0;
 
 		/* ##################################### */
 		// # Scene buffer #
@@ -60,7 +65,7 @@ namespace zaap { namespace graphics {
 		//		This function uploads the scene buffer to the
 		//		shader. It is overridden by the sub classes.
 		//
-		virtual void loadSceneBuffer() = 0;
+		virtual void loadSceneBuffer() const  = 0;
 
 		/* ##################################### */
 		// # Light buffers #
@@ -90,7 +95,7 @@ namespace zaap { namespace graphics {
 		//		This function uploads the @Light buffers to the
 		//		shaders. It is overridden by the sub classes.
 		//
-		virtual void loadLightBuffers() = 0;
+		virtual void loadLightBuffers() const  = 0;
 
 		/* ##################################### */
 		// # Material buffer #
@@ -111,7 +116,7 @@ namespace zaap { namespace graphics {
 		//		This function uploads the @Material buffer to the
 		//		pixel shader. It is overridden by the sub classes.
 		//
-		virtual void loadMaterialBuffer() = 0;
+		virtual void loadMaterialBuffer() const  = 0;
 
 	public:
 		virtual ~DefaultShader() {}
@@ -119,6 +124,18 @@ namespace zaap { namespace graphics {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Loaders //
 		/* //////////////////////////////////////////////////////////////////////////////// */
+
+		// <Method>
+		//		loadMesh
+		//
+		// <Descritpion>
+		//		This gets the required information from the mesh.
+		//
+		// <Input>
+		//		mesh::
+		//			The mesh that should be loaded.;;
+		//
+		void loadMesh(const Mesh& mesh);
 
 		/* ##################################### */
 		// # Matrix buffer #

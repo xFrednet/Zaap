@@ -37,7 +37,6 @@ Macro names:
 #include <graphics/camera/ControllableCamera.h>
 #include <graphics/camera/Camera.h>
 
-#include <graphics/mesh/TexturedMesh.h>
 #include <graphics/mesh/MeshManager.h>
 #include <graphics/TextureManager.h>
 #include <graphics/MaterialManager.h>

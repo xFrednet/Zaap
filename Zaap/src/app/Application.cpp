@@ -108,10 +108,10 @@ namespace zaap {
 				if (!m_Paused)
 				ZAAP_INFO(String("UPS: " + std::to_string(int(updates)) + ", FPS: " + std::to_string(int(frames))));
 
-				if ((clock() - timer) >= 20000)
+				if (update_prog > 20)
 				{
-					ZAAP_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string(clock() - timer / 1000 * m_UPS) + " Updates.");
-					timer = clock();
+					ZAAP_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string((uint)update_prog) + " Updates.");
+					update_prog = 0;
 				}
 
 				frames = 0;

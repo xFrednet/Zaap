@@ -248,7 +248,7 @@ namespace zaap
 		return (result _and_ ZA_RESULT_SOURCE_MASK);
 	}
 
-	String GetZAResultMessage(const ZA_MULTI_RESULT& result)
+	String GetZAResultMessages(const ZA_MULTI_RESULT& result)
 	{
 		String resultMessage = GetZAResultMessage(result.Results[0]);
 

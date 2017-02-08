@@ -73,13 +73,13 @@ ZA_VS_OUTPUT VShader(ZA_VS_INPUT input)
 	output.Position = mul(ProjectionMatrix, mul(ViewMatrix, worldPosition));
 
 	// Normal (kys)
-	output.SurfaceNormal = mul(TransformationMatrix, input.Normal.xyz);
+	output.SurfaceNormal = mul(TransformationMatrix, float4(input.Normal.xyz, 0.0));
 
 	// TexCoord
 	output.TexCoord = input.TexCoord;
 
 	// Material
-	output.Material = input.Material;
+	output.MaterialIndex = input.MaterialIndex;
 
 	// ViewDirection
 	output.ViewDirection = worldPosition.xyz - CameraPosition;
@@ -130,9 +130,10 @@ cbuffer ZA_PS_MATERIAL_BUFFER : register(b1)
 // * Function *
 /* ********************************************************* */
 
-float4 PShader(ZA_PS_INPUT input) {
+float4 PShader(ZA_PS_INPUT input)  : SV_TARGET
+{
 
-	float3 normal = normalize(input.SurfaceNormal);
+	float3 normal = normalize(input.SurfaceNormal.xyz);
 	float3 viewDirection = normalize(input.ViewDirection);
 	float4 color = Texture.Sample(TextureSampler, input.TexCoord);
 
@@ -160,5 +161,7 @@ float4 PShader(ZA_PS_INPUT input) {
 	color.xyz *= saturate(diffuse) * Materials[input.MaterialIndex].DiffuseReflectivity;
 	color.xyz += float3(specular, specular, specular);
 
-	return color;
+	//return color;
+	return Texture.Sample(TextureSampler, input.TexCoord);
+	//return float4(1.0, 1.0, 1.0, 1.0);
 })"

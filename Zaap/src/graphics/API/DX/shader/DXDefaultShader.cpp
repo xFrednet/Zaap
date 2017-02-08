@@ -20,23 +20,23 @@ namespace zaap { namespace graphics { namespace DX {
 	// // Buffers //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 
-	void DXDefaultShader::loadMatrixBuffer()
+	void DXDefaultShader::loadMatrixBuffer() const 
 	{
 		LoadResource(m_MatrixBuffer, &m_MatrixBufferStruct, sizeof(ZA_VS_MATRIX_BUFFER));
 	}
 
-	void DXDefaultShader::loadSceneBuffer()
+	void DXDefaultShader::loadSceneBuffer() const
 	{
 		LoadResource(m_SceneBuffer, &m_SceneBufferStruct, sizeof(ZA_VS_SCENE_BUFFER));
 	}
 
-	void DXDefaultShader::loadLightBuffers()
+	void DXDefaultShader::loadLightBuffers() const
 	{
 		LoadResource(m_VSLightBuffer, &m_VSLightBufferStruct, sizeof(ZA_VS_LIGHT_BUFFER));
 		LoadResource(m_PSLightBuffer, &m_PSLightBufferStruct, sizeof(ZA_PS_LIGHT_BUFFER));
 	}
 
-	void DXDefaultShader::loadMaterialBuffer()
+	void DXDefaultShader::loadMaterialBuffer() const
 	{
 		LoadResource(m_MaterialBuffer, &m_MaterialBufferStruct, sizeof(ZA_PS_MATERIAL_BUFFER));
 	}
@@ -112,5 +112,29 @@ namespace zaap { namespace graphics { namespace DX {
 		ZAAP_INFO("init finished successfully! :D");
 
 		return results;
+	}
+
+	void DXDefaultShader::start() const
+	{
+		startDXShader();
+
+		ID3D11DeviceContext* devcon = DXContext::GetDevContext();
+
+		//TODO devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
+		devcon->VSSetConstantBuffers(1, 1, &m_SceneBuffer);
+		devcon->VSSetConstantBuffers(2, 1, &m_VSLightBuffer);
+
+		devcon->PSSetConstantBuffers(0, 1, &m_PSLightBuffer);
+		devcon->PSSetConstantBuffers(1, 1, &m_MaterialBuffer);
+
+		loadMatrixBuffer();
+		loadSceneBuffer();
+		loadLightBuffers();
+		loadMaterialBuffer();
+	}
+
+	void DXDefaultShader::stop() const
+	{
+		stopDXShader();
 	}
 }}}

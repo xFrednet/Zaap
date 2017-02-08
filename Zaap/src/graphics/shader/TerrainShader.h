@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <Common.h>
-#include <Types.h>
 
 #include <graphics/shader/Shader.h>
 #include <entity/light/LightSetup.h>

@@ -21,6 +21,8 @@ namespace zaap { namespace graphics { namespace DX {
 		DXFontShader2D();
 		~DXFontShader2D();
 
+		ZA_MULTI_RESULT init();
+
 		void start() const override;
 		void stop() const override;
 	};

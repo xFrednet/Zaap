@@ -1,5 +1,7 @@
 #pragma once
-#include "Common.h"
+
+#include <Za.h>
+#include <Types.h>
 
 #ifndef ZA_MULTI_RESULT_SIZE
 #	define ZA_MULTI_RESULT_SIZE 8
@@ -10,8 +12,6 @@
 #		define ZA_MULTI_RESULT_SIZE 8
 #	endif
 #endif
-
-
 
 // <Name>
 //      ZA_RESULT
@@ -551,7 +551,7 @@ namespace zaap
 	ZAAP_API inline ZA_RESULT GetResultSource(const ZA_RESULT& result);
 
 	// <Function>
-	//		GetZAResultMessage
+	//		GetZAResultMessages
 	//
 	// <Description>
 	//		This returns the messages of the ZA_RESULT that
@@ -565,7 +565,7 @@ namespace zaap
 	//		The message of the ZA_MULTI_RESULT or a default
 	//		"missing message" message.
 	//
-	ZAAP_API String GetZAResultMessage(const ZA_MULTI_RESULT& result);
+	ZAAP_API String GetZAResultMessages(const ZA_MULTI_RESULT& result);
 
 	// <Function>
 	//		GetZAResultMessage

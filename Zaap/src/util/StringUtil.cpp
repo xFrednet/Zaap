@@ -2,7 +2,7 @@
 
 namespace zaap
 {
-	String StringUtil::getDateString(const time_t const time)
+	String StringUtil::getDateString(const time_t& time)
 	{
 		char buffer[22];
 		strftime(buffer, 22, "[%d-%m-%Y %I:%M:%S]", localtime(&time));
@@ -30,5 +30,24 @@ namespace zaap
 			return false;
 
 		return memcmp(baseString.c_str(), str2.c_str(), str2.size()) == 0;
+	}
+
+	String StringUtil::Replace(String baseString, const String& oldString, const String& newString)
+	{
+		if (baseString.empty() || oldString.empty())
+			return baseString;
+
+		size_t offset = 0;
+		size_t pos;
+
+		//tests if the oldString can be replaced directly
+		while((pos = baseString.find(oldString, offset)) != baseString.npos)
+		{
+			baseString.replace(pos, oldString.size(), newString);
+
+			offset = pos + newString.size(); // move one more maybe
+		}
+
+		return baseString;
 	}
 }

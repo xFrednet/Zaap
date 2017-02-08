@@ -14,48 +14,45 @@ namespace zaap { namespace graphics { namespace DX {
 		;
 
 	DXFontShader2D::DXFontShader2D()
-		: DXShader()
+		: DXShader(),
+		m_MatrixBuffer(nullptr),
+		m_ColorBuffer(nullptr)
 	{
-		if (createShaderFromString(DXFontShader2DSrc, DXFontShaderIED, 2))
-		{
-			ZAAP_INFO("compiled successfully");
-		} else
-		{
-			ZAAP_ALERT("compiling failed");
-			system("pause"); //TODO remove DebugCode
-		}
-
-		//
-		// Matrix Buffer
-		//
-		{
-			if (CreateConstBuffer(m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix))
-			{
-				ZAAP_DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
-			} else
-			{
-				ZAAP_ERROR("Could not create m_MatrixBuffer");
-			}
-		}
-
-		//
-		// Color Buffer
-		//
-		{
-			if (CreateConstBuffer(m_ColorBuffer, sizeof(Color), &m_TextColor))
-			{
-				ZAAP_DXNAME(m_ColorBuffer, "DXFontShader2D::m_ColorBuffer");
-			} else
-			{
-				ZAAP_ERROR("Could not create m_ColorBuffer");
-			}
-		}
 	}
 
 	DXFontShader2D::~DXFontShader2D()
 	{
 		ZAAP_DXRELEASE(m_MatrixBuffer);
 		ZAAP_DXRELEASE(m_ColorBuffer);
+	}
+
+	ZA_MULTI_RESULT DXFontShader2D::init()
+	{
+		ZA_MULTI_RESULT results;
+		results += createShaderFromString(DXFontShader2DSrc, DXFontShaderIED, 2);
+		if (ZA_FAILED(results))
+		{
+			system("pause"); //TODO remove Debug code
+			return results;
+		}
+
+		/* ##################################### */
+		// # Matrix buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix);
+		if (ZA_FAILED(results))
+			return results;
+
+		/* ##################################### */
+		// # Color buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_ColorBuffer, sizeof(Color), &m_TextColor);
+		if (ZA_FAILED(results))
+			return results;
+
+		ZAAP_INFO("init finished successfully! (I can type now)");
+
+		return results;
 	}
 
 	//

@@ -133,6 +133,8 @@ namespace zaap { namespace graphics {
 		if (m_Terrain)
 			m_Terrain->render(m_Renderer);
 		
+		m_Renderer->startShader(ZA_SHADER_DEFAULT_SHADER);
+
 		for (uint i = 0; i < m_Entities.size(); i++)
 		{
 			m_Entities[i]->render(m_Renderer);

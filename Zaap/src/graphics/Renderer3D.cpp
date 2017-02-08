@@ -41,8 +41,7 @@ namespace zaap { namespace graphics {
 		: m_RenderTarget(nullptr),
 		m_DepthStencil(nullptr), 
 		m_ActiveShaderType(ZA_SHADER_UNKNOWN),
-		m_TextureShader(nullptr),
-		m_MaterialShader(nullptr),
+		m_DefaultShader(nullptr),
 		m_TerrainShader(nullptr),
 		m_FontShader2D(nullptr)
 	{
@@ -56,27 +55,18 @@ namespace zaap { namespace graphics {
 
 	void Renderer3D::cleanupBaseRenderer3D()
 	{
-		if (m_TextureShader)
+		if (m_DefaultShader)
 		{
-			m_TextureShader->cleanup();
-			delete m_TextureShader;
-			m_TextureShader = nullptr;
-		}
-		if (m_MaterialShader)
-		{
-			m_MaterialShader->cleanup();
-			delete m_MaterialShader;
-			m_MaterialShader = nullptr;
+			delete m_DefaultShader;
+			m_DefaultShader = nullptr;
 		}
 		if (m_TerrainShader)
 		{
-			m_TerrainShader->cleanup();
 			delete m_TerrainShader;
 			m_TerrainShader = nullptr;
 		}
 		if (m_FontShader2D)
 		{
-			m_FontShader2D->cleanup();
 			delete m_FontShader2D;
 			m_FontShader2D = nullptr;
 		}
@@ -107,12 +97,8 @@ namespace zaap { namespace graphics {
 		switch (m_ActiveShaderType)
 		{
 		case ZA_SHADER_TEXTURE_SHADER:
-			if (m_TextureShader)
-				m_TextureShader->setTransformationMatrix(transformationMatrix);
-			return;
-		case ZA_SHADER_MATERIAL_SHADER:
-			if (m_MaterialShader)
-				m_MaterialShader->setTransformationMatrix(transformationMatrix);
+			if (m_DefaultShader)
+				m_DefaultShader->setTransformationMatrix(transformationMatrix);
 			return;
 		case ZA_SHADER_TERRAIN_SHADER:
 			if (m_TerrainShader)
@@ -127,10 +113,8 @@ namespace zaap { namespace graphics {
 
 	void Renderer3D::loadLightSetup(const LightSetup& LightSetup)
 	{
-		if (m_TextureShader)
-			m_TextureShader->loadLightSetup(&LightSetup);
-		if (m_MaterialShader)
-			m_MaterialShader->loadLightSetup(&LightSetup);
+		if (m_DefaultShader)
+			m_DefaultShader->loadLightSetup(LightSetup);
 		if (m_TerrainShader)
 			m_TerrainShader->loadLightSetup(&LightSetup);
 		//TODO all shaders still use pointers instead of the object (change that)
@@ -150,13 +134,7 @@ namespace zaap { namespace graphics {
 			Mat4 viewMat = camera->getViewMatrix();
 		
 			//view matrix
-			if (m_TextureShader)
-				m_TextureShader->setViewMatrix(viewMat);
-			if (m_MaterialShader)
-			{
-				m_MaterialShader->setViewMatrix(viewMat);
-				m_MaterialShader->setCameraPosition(camera->getPosition());
-			}
+			m_DefaultShader->loadScene(scene);
 			if (m_TerrainShader)
 				m_TerrainShader->setViewMatrix(viewMat);
 
@@ -186,10 +164,8 @@ namespace zaap { namespace graphics {
 	{
 		switch (shader)
 		{
-		case ZA_SHADER_TEXTURE_SHADER:
-			return m_TextureShader;
-		case ZA_SHADER_MATERIAL_SHADER:
-			return m_MaterialShader;
+		case ZA_SHADER_DEFAULT_SHADER:
+			return m_DefaultShader;
 		case ZA_SHADER_TERRAIN_SHADER:
 			return m_TerrainShader;
 		case ZA_SHADER_FONT_SHADER_2D:
@@ -281,10 +257,8 @@ namespace zaap { namespace graphics {
 	{
 		calulateProjectionMatrix();
 
-		if (m_TextureShader)
-			m_TextureShader->setProjectionMatrix(m_ProjectionMatrix);
-		if (m_MaterialShader)
-			m_MaterialShader->setProjectionMatrix(m_ProjectionMatrix);
+		if (m_DefaultShader)
+			m_DefaultShader->setProjectionMatrix(m_ProjectionMatrix);
 		if (m_TerrainShader)
 			m_TerrainShader->setProjectionMatrix(m_ProjectionMatrix);
 

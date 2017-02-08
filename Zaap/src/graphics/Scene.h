@@ -1,7 +1,6 @@
 #pragma once
 
 #include <common.h>
-#include <types.h>
 
 #include <entity/Entity.h>
 #include <entity/light/LightSetup.h>

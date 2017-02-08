@@ -4,7 +4,7 @@
 #include <ft2build.h>
 #include <freetype/freetype.h>
 #include "API/Texture.h"
-#include "shader/types/FontShader2D.h"
+#include "shader/FontShader2D.h"
 #include "Renderer3D.h"
 
 /* //////////////////////////////////////////////////////////////////////////////// */

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
+
 #include <util/UUID.h>
 
 #pragma warning( disable : 4251)

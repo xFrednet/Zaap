@@ -18,14 +18,14 @@ namespace zaap { namespace graphics { namespace DX {
 		/* ##################################### */
 
 		ID3D11Buffer* m_MatrixBuffer;
-		void loadMatrixBuffer() override;
+		void loadMatrixBuffer() const override;
 
 		/* ##################################### */
 		// # Scene buffer #
 		/* ##################################### */
 
 		ID3D11Buffer* m_SceneBuffer;
-		void loadSceneBuffer() override;
+		void loadSceneBuffer() const override;
 
 		/* ##################################### */
 		// # Light buffers #
@@ -33,14 +33,14 @@ namespace zaap { namespace graphics { namespace DX {
 
 		ID3D11Buffer* m_VSLightBuffer;
 		ID3D11Buffer* m_PSLightBuffer;
-		void loadLightBuffers() override;
+		void loadLightBuffers() const override;
 
 		/* ##################################### */
 		// # Material buffer #
 		/* ##################################### */
 
 		ID3D11Buffer* m_MaterialBuffer;
-		void loadMaterialBuffer() override;
+		void loadMaterialBuffer() const override;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization //
@@ -75,5 +75,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		ZA_MULTI_RESULT init();
 
+		void start() const override;
+		void stop() const override;
 	};
 }}}

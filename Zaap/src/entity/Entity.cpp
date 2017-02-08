@@ -3,16 +3,14 @@
 #include <maths/MathUtil.h>
 
 #include <graphics/Renderer3D.h>
-#include <graphics/mesh/TexturedMesh.h>
-#include <graphics/mesh/MaterialMesh.h>
-#include <graphics/shader/types/MaterialShader.h>
+#include <graphics/shader/DefaultShader.h>
 
 namespace zaap {
 	
 	//
 	// Constructors
 	// 
-	Entity::Entity(graphics::Mesh* mesh, const Vec3& position, const Vec3& rotation, const Vec3& scale)
+	Entity::Entity(graphics::Mesh mesh, const Vec3& position, const Vec3& rotation, const Vec3& scale)
 		: m_Mesh(mesh),
 		m_Position(position),
 		m_Rotation(rotation),
@@ -20,7 +18,7 @@ namespace zaap {
 	{
 	}
 	Entity::Entity()
-		: m_Mesh(nullptr),
+		: m_Mesh(),
 		m_Position(0.0f, 0.0f, 0.0f),
 		m_Rotation(0.0f, 0.0f, 0.0f),
 		m_Scale(1.0f, 1.0f, 1.0f)
@@ -98,7 +96,7 @@ namespace zaap {
 	//
 	// Getters
 	//
-	graphics::Mesh* Entity::getMesh()
+	graphics::Mesh Entity::getMesh()
 	{
 		return m_Mesh;
 	}
@@ -116,36 +114,16 @@ namespace zaap {
 	void Entity::render(graphics::Renderer3D* renderer)
 	{
 		using namespace graphics;
-		TexturedMesh* tMesh;
 
 		if (!renderer->getViewFrustum().isVisible(m_Position))
 			return;
 
-		switch (m_Mesh->getType())
-		{
-		case ZA_MESH_TYPE_TEXTURED:
-			renderer->startShader(ZA_SHADER_TEXTURE_SHADER);
-
-			tMesh = (TexturedMesh*)m_Mesh;
-			
-			if (tMesh->getTexture())
-				tMesh->getTexture()->bind(0);
-
-			break;
-		case ZA_MESH_TYPE_MATERIAL:
-			renderer->startShader(ZA_SHADER_MATERIAL_SHADER);
-
-			((MaterialShader*)renderer->getShader(ZA_SHADER_MATERIAL_SHADER))->loadMaterials(((MaterialMesh*)m_Mesh)->getMaterials(), ((MaterialMesh*)m_Mesh)->getMaterialCount());
-			
-			break;
-		default:
-			return;
-		}
-		
 		Mat4 mat;
 		getTransformationMatrix(&mat);
 		renderer->loadTransformationMatrix(mat);
+		
+		((DefaultShader*)renderer->getShader(ZA_SHADER_DEFAULT_SHADER))->loadMesh(m_Mesh);
 
-		m_Mesh->getVertexBuffer()->draw();
+		m_Mesh.getVertexBuffer()->draw();
 	}
 }

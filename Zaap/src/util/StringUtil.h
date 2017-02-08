@@ -4,16 +4,12 @@
 
 #include <Common.h>
 
-#include <string>
-
-typedef std::string String;
-
 namespace zaap {
 
 	class ZAAP_API StringUtil
 	{
 	public:
-		static String getDateString(const time_t const time = time(0));
+		static String getDateString(const time_t& time = time(0));
 
 		// <Function>
 		//      Split
@@ -56,6 +52,25 @@ namespace zaap {
 		//      The test result.
 		//
 		static bool StartsWith(const String& baseString, const String& str2);
+
+		// <Function>
+		//		Replace
+		//
+		// <Description>
+		//		This replaces the first-String in the base-String with the
+		//		second-String. The new String is returned as a result.
+		//
+		// <Input>
+		//		baseString::
+		//			The base String where the oldString should be replaced
+		//			with the newString.;;
+		//		oldString::
+		//			The String that should be replaced in the baseString.;;
+		//		newString::
+		//			The String that replaced the oldString in the baseString;;
+		//
+		static String Replace(String baseString, const String& oldString, const String& newString);
+
 
 	};
 
