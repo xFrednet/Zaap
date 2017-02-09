@@ -54,7 +54,7 @@ cbuffer ZA_VS_LIGHT_SHADER : register(b2)
 {
 	//16 Bytes
 	uint VSLightCount;
-	float3 padding;
+	float3 VSLightBufferPadding;
 
 	//16 bytes * ZA_LIGHT_COUNT
 	float4 LightPositions[ZA_LIGHT_COUNT];
@@ -70,8 +70,11 @@ ZA_VS_OUTPUT VShader(ZA_VS_INPUT input)
 
 	// Position
 	float4 worldPosition = mul(TransformationMatrix, input.Position);
-	output.Position = mul(ProjectionMatrix, mul(ViewMatrix, worldPosition));
 
+	output.Position = mul(ViewMatrix, worldPosition);
+	output.Position = mul(ProjectionMatrix, output.Position);
+	//output.Position = mul(ProjectionMatrix, mul(ViewMatrix, worldPosition));
+	
 	// Normal (kys)
 	output.SurfaceNormal = mul(TransformationMatrix, float4(input.Normal.xyz, 0.0));
 

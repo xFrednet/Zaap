@@ -96,7 +96,7 @@ namespace zaap { namespace graphics {
 	{
 		switch (m_ActiveShaderType)
 		{
-		case ZA_SHADER_TEXTURE_SHADER:
+		case ZA_SHADER_DEFAULT_SHADER:
 			if (m_DefaultShader)
 				m_DefaultShader->setTransformationMatrix(transformationMatrix);
 			return;

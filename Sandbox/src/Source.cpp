@@ -12,6 +12,7 @@ LightSetup *lightSetup = nullptr;
 Light* light = nullptr;
 Light* light2 = nullptr;
 Camera* camera = nullptr;
+Entity* tree_;
 Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
@@ -62,9 +63,8 @@ void loadEntitys()
 		API::Texture::CreateTexture2D("treeTexture", "res/tree/Texture.png");
 		Mesh mesh = Mesh::GetOrLoad("res/tree/Tree.obj");
 		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("treeTexture"));
-		Entity* e = new Entity(mesh, Vec3(0, -1, 0));
-		e->setScale(5.0f);
-		scene_->addEntity(e);
+		tree_ = new Entity(mesh, Vec3(0, -1, 0));
+		scene_->addEntity(tree_);
 	}
 
 	long time = clock() - timer;
@@ -88,7 +88,7 @@ public:
 		Application::update();
 		
 		count += 0.05f;
-
+		tree_->increasePosition(Vec3(0.1f, 0.0f, 0.1f));
 		count2 += 0.0005f;
 		light->setColor(Color(Vec3(1.0f, 1.0f, 1.0f) * (sinf(count2) * 0.25f + 0.75f)));
 		

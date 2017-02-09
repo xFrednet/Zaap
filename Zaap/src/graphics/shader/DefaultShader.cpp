@@ -67,8 +67,11 @@ namespace zaap { namespace graphics {
 		if (!scene->getCamera())
 			return;
 
-		m_SceneBufferStruct.CameraPosition = scene->getCamera()->getPosition();
+		// viewMatrix
+		setViewMatrix(scene->getCamera()->getViewMatrix());
 
+		// scene buffer
+		m_SceneBufferStruct.CameraPosition = scene->getCamera()->getPosition();
 		loadSceneBuffer();
 	}
 

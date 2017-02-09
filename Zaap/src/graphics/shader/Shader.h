@@ -44,9 +44,6 @@ namespace zaap { namespace graphics {
 		ZA_SHADER_DEFAULT_SHADER	= 1,
 		ZA_SHADER_TERRAIN_SHADER	= 2,
 		ZA_SHADER_FONT_SHADER_2D	= 3,
-
-		ZA_SHADER_TEXTURE_SHADER	= 4, //will be removed
-		ZA_SHADER_MATERIAL_SHADER	= 5  //will be removed
 	} ZA_SHADER_TYPE;
 
 	/* ********************************************************* */

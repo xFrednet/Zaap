@@ -120,7 +120,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		ID3D11DeviceContext* devcon = DXContext::GetDevContext();
 
-		//TODO devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
+		devcon->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
 		devcon->VSSetConstantBuffers(1, 1, &m_SceneBuffer);
 		devcon->VSSetConstantBuffers(2, 1, &m_VSLightBuffer);
 

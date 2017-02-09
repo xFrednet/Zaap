@@ -30,7 +30,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		D3D11_MAPPED_SUBRESOURCE ms;
 		DXContext::GetDevContext()->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, &data, size);
+		memcpy(ms.pData, data, size);
 		DXContext::GetDevContext()->Unmap(buffer, NULL);
 	}
 
