@@ -81,10 +81,14 @@ namespace zaap { namespace graphics {
 
 	void DefaultShader::loadLightSetup(const LightSetup& lightSetup)
 	{
+		
 		m_PSLightBufferStruct.AmbientLight = lightSetup.getAmbientColor().getRGB();
 
 		if (lightSetup.getSize() < ZA_SHADER_LIGHT_COUNT)
 		{
+			m_VSLightBufferStruct.VSLightCount = lightSetup.getSize();
+			m_PSLightBufferStruct.PSLightCount = lightSetup.getSize();
+
 			for (uint i = 0; i < lightSetup.getSize(); i++)
 			{
 				Light const* light = lightSetup.getConstLight(i);
@@ -95,6 +99,9 @@ namespace zaap { namespace graphics {
 		} else
 		{
 			//TODO lightSetup.getSize() >= ZA_SHADER_LIGHT_COUNT
+
+			m_VSLightBufferStruct.VSLightCount = ZA_SHADER_LIGHT_COUNT;
+			m_PSLightBufferStruct.PSLightCount = ZA_SHADER_LIGHT_COUNT;
 
 			for (uint i = 0; i < ZA_SHADER_LIGHT_COUNT; i++)
 			{

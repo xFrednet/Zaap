@@ -12,7 +12,6 @@ LightSetup *lightSetup = nullptr;
 Light* light = nullptr;
 Light* light2 = nullptr;
 Camera* camera = nullptr;
-Entity* tree_;
 Terrain* terrain_ = nullptr;
 Font font_;
 API::VertexBuffer *fontVB = nullptr;
@@ -60,11 +59,34 @@ void loadEntitys()
 	// tree
 	//
 	{
-		API::Texture::CreateTexture2D("treeTexture", "res/tree/Texture.png");
-		Mesh mesh = Mesh::GetOrLoad("res/tree/Tree.obj");
+		API::Texture::CreateTexture2D("treeTexture", "res/nature/tree/Texture.png");
+		Mesh mesh = Mesh::GetOrLoad("res/nature/tree/Tree.obj");
 		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("treeTexture"));
-		tree_ = new Entity(mesh, Vec3(0, -1, 0));
-		scene_->addEntity(tree_);
+
+		Vec3 pos;
+		Vec3 rot(0, 0, 0);
+		Entity* tree;
+		for (uint i = 0; i < 100; i++)
+		{
+			pos.X = rand() % ((uint)terrain_->getHorizontalSize());
+			pos.Z = rand() % ((uint)terrain_->getVerticalSize());
+			pos.Y = terrain_->getHeight(Vec2(pos.X, pos.Z));
+
+			rot.Y = ZA_PI * 2.0f * (float)((float)(rand() % 100) / 100.0f);
+
+			tree = new Entity(mesh, pos, rot);
+			scene_->addEntity(tree);
+		}
+	}
+	//
+	// Bush
+	//
+	{
+		API::Texture::CreateTexture2D("bushTexture", "res/nature/bush/Texture.png");
+		Mesh mesh = Mesh::GetOrLoad("res/nature/bush/bush.obj");
+		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("bushTexture"));
+		Entity* bush = new Entity(mesh, Vec3(10, terrain_->getHeight(Vec2(10, 10)), 10));
+		scene_->addEntity(bush);
 	}
 
 	long time = clock() - timer;
@@ -88,7 +110,6 @@ public:
 		Application::update();
 		
 		count += 0.05f;
-		tree_->increasePosition(Vec3(0.1f, 0.0f, 0.1f));
 		count2 += 0.0005f;
 		light->setColor(Color(Vec3(1.0f, 1.0f, 1.0f) * (sinf(count2) * 0.25f + 0.75f)));
 		
@@ -122,15 +143,11 @@ public:
 
 int main(void)
 {
-
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZAAP_INFO(id1.toString());
 	//source
 	{
-		//Bitmap bm("lolo,guhdawzufgdauiwgfdazuiwetfrgdtauiwegfazuwefdr");
-		//cout << bm.contains(0, 0);
-
 		scene_ = new Scene();
 
 		Test t;

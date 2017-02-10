@@ -164,7 +164,7 @@ float4 PShader(ZA_PS_INPUT input)  : SV_TARGET
 	color.xyz *= saturate(diffuse) * Materials[input.MaterialIndex].DiffuseReflectivity;
 	color.xyz += float3(specular, specular, specular);
 
-	//return color;
-	return Texture.Sample(TextureSampler, input.TexCoord);
+	return color;
+	//return Texture.Sample(TextureSampler, input.TexCoord);
 	//return float4(1.0, 1.0, 1.0, 1.0);
 })"

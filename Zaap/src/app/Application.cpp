@@ -108,7 +108,7 @@ namespace zaap {
 				if (!m_Paused)
 				ZAAP_INFO(String("UPS: " + std::to_string(int(updates)) + ", FPS: " + std::to_string(int(frames))));
 
-				if (update_prog > 20)
+				if (update_prog > 60) //TODO add other handling
 				{
 					ZAAP_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string((uint)update_prog) + " Updates.");
 					update_prog = 0;
