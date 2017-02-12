@@ -273,6 +273,7 @@
     <ClCompile Include="src\util\Console.cpp" />
     <ClCompile Include="src\util\ImageLoader.cpp" />
     <ClCompile Include="src\util\Loader.cpp" />
+    <ClCompile Include="src\util\Log.cpp" />
     <ClCompile Include="src\util\StringUtil.cpp" />
     <ClCompile Include="src\util\UUID.cpp" />
     <ClCompile Include="src\ZAError.cpp" />
@@ -331,6 +332,7 @@
     <ClInclude Include="src\util\Console.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
     <ClInclude Include="src\util\Loader.h" />
+    <ClInclude Include="src\util\Log.h" />
     <ClInclude Include="src\util\StringUtil.h" />
     <ClInclude Include="src\util\UUID.h" />
     <ClInclude Include="src\Za.h" />

@@ -6,6 +6,7 @@
 #include "API/Texture.h"
 #include "shader/FontShader2D.h"
 #include "Renderer3D.h"
+#include <util/StringUtil.h>
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_CharMatrix //

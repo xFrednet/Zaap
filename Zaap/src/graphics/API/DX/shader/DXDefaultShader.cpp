@@ -73,7 +73,7 @@ namespace zaap { namespace graphics { namespace DX {
 		results += createShaderFromString(dxDefaultShaderSrc, DXDefaultShaderIED, 4);
 		if (ZA_FAILED(results))
 		{
-			system("pause"); //TODO remove Debug code
+			ZA_ASSERT(false, "");
 			return results;
 		}
 

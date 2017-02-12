@@ -3,6 +3,7 @@
 #include <util/Console.h>
 #include <graphics/Material.h>
 #include <graphics/MaterialManager.h>
+#include "StringUtil.h"
 
 namespace zaap {
 

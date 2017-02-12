@@ -4,7 +4,24 @@
 
 #include <Common.h>
 
+//forward declarations
+namespace zaap
+{
+	struct Vec2;
+	struct Vec3;
+	struct Vec4;
+	struct Mat4;
+	struct Plane3D;
+	
+	namespace graphics
+	{
+		struct Color;
+		struct Material;
+	}
+}
+
 namespace zaap {
+	
 
 	class ZAAP_API StringUtil
 	{
@@ -71,7 +88,37 @@ namespace zaap {
 		//
 		static String Replace(String baseString, const String& oldString, const String& newString);
 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // ToString //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 
+		template<typename T>
+		static inline String ToString(const T& t)
+		{
+			return std::to_string(t);
+		}
+		
+		/* ********************************************************* */
+		// * Maths *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<Vec2>(const Vec2& vec);
+		template<>
+		static inline String ToString<Vec3>(const Vec3& vec);
+		template<>
+		static inline String ToString<Vec4>(const Vec4& vec);
+		template<>
+		static inline String ToString<Mat4>(const Mat4& mat4);
+		template<>
+		static inline String ToString<Plane3D>(const Plane3D& plane);
+
+		/* ********************************************************* */
+		// * graphics *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<graphics::Color>(const graphics::Color& color);
+		template<>
+		static inline String ToString<graphics::Material>(const graphics::Material& material);
 	};
 
 }

@@ -228,6 +228,9 @@
     <ClCompile Include="src\graphics\API\DX\shader\DXDefaultShader.cpp">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </ClCompile>
+    <ClCompile Include="src\util\Log.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="src\Za.h">
       <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Log.h">
+      <Filter>Source Files\src\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

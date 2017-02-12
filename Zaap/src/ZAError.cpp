@@ -120,7 +120,7 @@ namespace zaap
 
 	void SubmitZAResult(const ZA_RESULT& result, const String& file, const uint& line)
 	{
-		console::Println(file, line, ZA_CON_MESSAGE_ERROR, GetZAResultMessage(result));
+		console::Println(file, line, ZA_LOG_MESSAGE_ERROR, GetZAResultMessage(result));
 	}
 
 	ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results)

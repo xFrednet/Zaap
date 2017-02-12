@@ -146,6 +146,9 @@ int main(void)
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZAAP_INFO(id1.toString());
+
+	ZA_LOG_ERROR("Test", " Error");
+
 	//source
 	{
 		scene_ = new Scene();

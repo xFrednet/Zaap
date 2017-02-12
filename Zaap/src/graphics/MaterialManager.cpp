@@ -1,5 +1,6 @@
 ﻿#include "MaterialManager.h"
 #include <util/Console.h>
+#include <util/StringUtil.h>
 
 namespace zaap { namespace graphics {
 	

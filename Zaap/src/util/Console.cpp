@@ -15,7 +15,7 @@ namespace zaap { namespace console {
 		std::cout << "[INFO]  ZAAP: - " << fileName << " - was cleaned up." << std::endl;
 	}
 
-	void Println(String fileName, int line, ZA_CON_MESSAGE_TYPE type, String message)
+	void Println(String fileName, int line, ZA_LOG_MESSAGE_TYPE type, String message)
 	{
 		//File info string
 		uint nameStart = fileName.find_last_of("\\") + 1; //+1 so that the '\' is not included
@@ -26,18 +26,17 @@ namespace zaap { namespace console {
 			infoString.append(" ");
 		}
 
-
 		switch (type)
 		{
-		case ZA_CON_MESSAGE_ERROR:
+		case ZA_LOG_MESSAGE_ERROR:
 			SetColor(0x0C);
 			std::cout << "[ERROR] ";
 			break;
-		case ZA_CON_MESSAGE_ALERT:
+		case ZA_LOG_MESSAGE_ALERT:
 			SetColor(0x0E);
 			std::cout << "[ALERT] ";
 			break;
-		case ZA_CON_MESSAGE_INFO:
+		case ZA_LOG_MESSAGE_INFO:
 		default:
 			SetColor(0x08);
 			std::cout << "[INFO]  ";
