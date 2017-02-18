@@ -88,6 +88,7 @@ namespace zaap {
 		//
 		static String Replace(String baseString, const String& oldString, const String& newString);
 
+	};
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // ToString //
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -98,6 +99,14 @@ namespace zaap {
 			return std::to_string(t);
 		}
 		
+		/* ********************************************************* */
+		// * ZA_RESULT *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<ZA_RESULT>(const ZA_RESULT& result);
+		template<>
+		static inline String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
+
 		/* ********************************************************* */
 		// * Maths *
 		/* ********************************************************* */
@@ -119,6 +128,5 @@ namespace zaap {
 		static inline String ToString<graphics::Color>(const graphics::Color& color);
 		template<>
 		static inline String ToString<graphics::Material>(const graphics::Material& material);
-	};
 
 }

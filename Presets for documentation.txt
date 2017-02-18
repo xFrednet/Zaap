@@ -175,7 +175,7 @@
 	// // Operators // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	{		
-		// <Function>
+		// <Method>
 		//      operator==
 		//
 		// <Description>
@@ -185,15 +185,15 @@
 		//      This calls the Equal method for this class.
 		//      
 		// <Input>
-		//      other:
-		//          The second object for comparison.
-		//	
+		//      other::
+		//          The second object for comparison.;;
+		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
 		//
 		inline bool operator==(const Class& other) const;
 
-		// <Function>
+		// <Method>
 		//      operator!=
 		//
 		// <Description>
@@ -203,8 +203,8 @@
 		//      This calls the Equal method for this class.
 		//  
 		// <Input>
-		//      other:
-		//          The second object for comparison.
+		//      other::
+		//          The second object for comparison.;;
 		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
@@ -221,15 +221,84 @@
 		//      This info is totaly not coppied and pasted for every Equal function.
 		//
 		// <Input>
-		//      a:
-		//          The first object for comparison.
-		//      b:
-		//          The second object for comparison.
+		//      a::
+		//          The first object for comparison.;;
+		//      b::
+		//          The second object for comparison.;;
 		//       
 		// <Return>
 		//      This returns the test result in form of a boolean.
 		//      
 		ZAAP_API bool Equal(const Class& a, const Class& b);
+		
+		/* ********************************************************* */
+		// * Comparison *
+		/* ********************************************************* */
+
+		// <Method>
+		//		operator<
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This is done by comparing the <Value> with the
+		//		submitted <Value>.
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		bool operator<(const Class& other) const;
+		
+		// <Method>
+		//		operator<=
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This just calls the other comparison methods:
+		//		  - operator<
+		//		  - operator==
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		inline bool operator<=(const Class& other) const
+		{
+			return (*this < other) || (*this == other);
+		}
+		// <Method>
+		//		operator>=
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This just calls the other comparison methods:
+		//		  - operator>
+		//		  - operator==
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		inline bool operator>=(const Class& other) const
+		{
+			return (*this > other) || (*this == other);
+		}
+		
 	}
 
 }

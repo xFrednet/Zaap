@@ -22,6 +22,57 @@ typedef ZAAP_API enum ZA_LOG_MESSAGE_TYPE_ {
 	ZA_LOG_MESSAGE_FATAL = 4,
 } ZA_LOG_MESSAGE_TYPE;
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // to_char_p //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap
+{
+	template<typename T>
+	inline const char* to_char_p(const T& t);
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // char //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	template<>
+	inline const char* to_char_p<char>(const char& t)
+	{
+		return &t;
+	}
+	template<>
+	inline const char* to_char_p<unsigned char>(const unsigned char& t)
+	{
+		return (const char*)&t;
+	}
+
+	template<>
+	inline const char* to_char_p<char*>(char* const& t)
+	{
+		return t;
+	}
+	template<>
+	inline const char* to_char_p<unsigned char*>(unsigned char* const& t)
+	{
+		return (const char*)t;
+	}
+
+	template<>
+	inline const char* to_char_p<char const*>(char const* const& t)
+	{
+		return t;
+	}
+	template<>
+	inline const char* to_char_p<unsigned char const*>(unsigned char const* const& t)
+	{
+		return (const char*)t;
+	}
+
+	template<>
+	inline const char* to_char_p<std::string>(std::string const& t)
+	{
+		return t.c_str();
+	}
+}
+
 namespace zaap { namespace log {
 	
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -91,7 +142,7 @@ namespace zaap { namespace log {
 	//			added to the buffer;
 	// 
 	template<typename First>
-	ZAAP_API inline void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first)
+	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First first)
 	{
 		const char* str = to_char_p(first);
 		uint length = strlen(str);
@@ -130,7 +181,7 @@ namespace zaap { namespace log {
 	//			function.;;
 	// 
 	template<typename First, typename... Args>
-	ZAAP_API inline void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first, Args&& ...args)
+	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first, Args&& ...args)
 	{
 		const char* str = to_char_p(first);
 		uint length = strlen(str);
@@ -147,7 +198,7 @@ namespace zaap { namespace log {
 
 		memcpy(&buffer[*position], str, sizeof(char) * length);
 		*position += length;
-		buffer[*position++] = ' ';
+		buffer[(*position)++] = ' ';
 
 		LogToBuffer(buffer, ZA_LOG_BUFFER_SIZE, position, std::forward<Args>(args)...);
 	}
@@ -262,56 +313,6 @@ namespace zaap { namespace log {
 	}
 }}
 
-/* //////////////////////////////////////////////////////////////////////////////// */
-// // to_char_p //
-/* //////////////////////////////////////////////////////////////////////////////// */
-namespace zaap
-{
-	template<typename T>
-	inline const char* to_char_p(const T& t);
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // char //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	template<>
-	inline const char* to_char_p<char>(const char& t)
-	{
-		return &t;
-	}
-	template<>
-	inline const char* to_char_p<unsigned char>(const unsigned char& t)
-	{
-		return (const char*)&t;
-	}
-
-	template<>
-	inline const char* to_char_p<char*>(char* const& t)
-	{
-		return t;
-	}
-	template<>
-	inline const char* to_char_p<unsigned char*>(unsigned char* const& t)
-	{
-		return (const char*)t;
-	}
-
-	template<>
-	inline const char* to_char_p<char const*>(char const* const& t)
-	{
-		return t;
-	}
-	template<>
-	inline const char* to_char_p<unsigned char const*>(unsigned char const* const& t)
-	{
-		return (const char*)t;
-	}
-
-	template<>
-	inline const char* to_char_p<std::string>(std::string const& t)
-	{
-		return t.c_str();
-	}
-}
 
 #if (ZA_LOG_MESSAGE_INFO >= ZA_LOG_LEVEL)
 #	define ZA_LOG_INFO(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_INFO, __VA_ARGS__)

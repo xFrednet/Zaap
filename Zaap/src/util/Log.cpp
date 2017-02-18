@@ -59,7 +59,7 @@ namespace zaap
 	template<typename T>
 	const char* to_char_p(const T& t)
 	{
-		return StringUtil::ToString(t).c_str();
+		return ToString(t).c_str();
 	}
 }
 
