@@ -147,7 +147,7 @@ int main(void)
 	RandomUUID(&id1);
 	ZAAP_INFO(id1.toString());
 
-	ZA_LOG_ERROR("Test", " Error", ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR);
+	ZA_LOG_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
 
 	//source
 	{

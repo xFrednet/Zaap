@@ -2,6 +2,9 @@
 
 #include <Common.h>
 
+#include <util/StringUtil.h>
+
+
 #ifndef ZA_LOG_LEVEL
 #	define ZA_LOG_LEVEL 0
 #endif
@@ -28,7 +31,13 @@ typedef ZAAP_API enum ZA_LOG_MESSAGE_TYPE_ {
 namespace zaap
 {
 	template<typename T>
-	inline const char* to_char_p(const T& t);
+	inline const char* to_char_p(const T& t)
+	{
+		//TODO this doesn't work because the char array is deleted at the end of this function
+		String s = zaap::ToString<T>(t); 
+		const char* c = s.c_str();
+		return c;
+	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // char //
@@ -144,7 +153,7 @@ namespace zaap { namespace log {
 	template<typename First>
 	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First first)
 	{
-		const char* str = to_char_p(first);
+		const char* str = to_char_p<First>(first);
 		uint length = strlen(str);
 		if ((*position + length) >= bufferSize)
 		{
@@ -183,7 +192,7 @@ namespace zaap { namespace log {
 	template<typename First, typename... Args>
 	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first, Args&& ...args)
 	{
-		const char* str = to_char_p(first);
+		const char* str = to_char_p<First>(first);
 		uint length = strlen(str);
 		if ((*position + length) >= bufferSize)
 		{

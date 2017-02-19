@@ -160,7 +160,6 @@ namespace zaap
 		if (!enoughSpace)
 			result[ZA_MULTI_RESULT_SIZE - 1] = ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT;
 
-
 		return result;
 	}
 
