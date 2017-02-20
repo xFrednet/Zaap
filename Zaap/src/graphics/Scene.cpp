@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include <util/Console.h>
 #include <events/Input.h>
 
 namespace zaap { namespace graphics {

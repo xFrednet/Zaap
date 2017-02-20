@@ -1,5 +1,5 @@
 ﻿#include "DXFontShader2D.h"
-#include <util/Console.h>
+#include <util/Log.h>
 #include <graphics/API/DX/DXContext.h>
 
 
@@ -50,7 +50,7 @@ namespace zaap { namespace graphics { namespace DX {
 		if (ZA_FAILED(results))
 			return results;
 
-		ZAAP_INFO("init finished successfully! (I can type now)");
+		ZA_INFO("init finished successfully! (I can type now)");
 
 		return results;
 	}

@@ -275,6 +275,6 @@ namespace zaap { namespace graphics {
 	// <Return>
 	//      This returns the test result in form of a boolean.
 	//      
-	ZAAP_API inline bool Equal(Texture const* a, const Texture const* b);
+	ZAAP_API inline bool Equal(Texture const* a, Texture const* b);
 
 }}}

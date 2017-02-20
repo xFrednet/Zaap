@@ -1,6 +1,6 @@
 #include "Loader.h"
 
-#include <util/Console.h>
+#include <util/Log.h>
 #include <graphics/Material.h>
 #include <graphics/MaterialManager.h>
 #include "StringUtil.h"
@@ -32,7 +32,7 @@ namespace zaap {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("could not open: " + file));
+			ZA_ERROR(String("could not open: " + file));
 			return Mesh("NULL", nullptr);
 		}
 
@@ -93,7 +93,7 @@ namespace zaap {
 				materials[materialCount] = MaterialManager::Get(str[1]);
 				if (&materials[materialCount] == nullptr)
 				{
-					ZAAP_ALERT("requested material is null name: \"" + str[1] + "\" current file: " + file);
+					ZA_ALERT("requested material is null name: \"", str[1], "\" current file: ", file);
 					continue;
 				}
 				currentMaterial = materialCount;
@@ -156,7 +156,7 @@ namespace zaap {
 		Material* newMaterials = new Material[materialCount];
 		memcpy(&newMaterials[0], &materials[0], sizeof(Material) * materialCount);
 
-		ZAAP_INFO(String("loaded ") + file);
+		ZA_INFO("Loaded", file);
 
 		return Mesh(file, vBuffer, newMaterials, materialCount);
 	}
@@ -172,7 +172,7 @@ namespace zaap {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("could not open: " + file));
+			ZA_ERROR("Could not open: ", file);
 			return "";
 		}
 

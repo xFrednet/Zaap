@@ -1,5 +1,5 @@
 ﻿#include "Terrain.h"
-#include <util/Console.h>
+#include <util/Log.h>
 #include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
 #include <graphics/mesh/Mesh.h>
@@ -92,7 +92,7 @@ namespace zaap { namespace scene {
 		m_VCountVertical = heightMap.getHeight();
 		if (m_VCountHorizontal == 0 || m_VCountVertical == 0)
 		{
-			ZAAP_ERROR("The given heightMap does not exists");
+			ZA_ERROR("The given heightMap does not exists");
 			return;
 		}
 

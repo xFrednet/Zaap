@@ -45,7 +45,7 @@ void loadEntitys()
 		//fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
 		fontVB = font_.getVertexBuffer("This is some awesome text");
 		if (!fontVB)
-			ZAAP_INFO("fontVB is NULL");
+			ZA_INFO("fontVB is NULL");
 	}
 	//Terrain
 	{
@@ -68,8 +68,8 @@ void loadEntitys()
 		Entity* tree;
 		for (uint i = 0; i < 100; i++)
 		{
-			pos.X = rand() % ((uint)terrain_->getHorizontalSize());
-			pos.Z = rand() % ((uint)terrain_->getVerticalSize());
+			pos.X = (float)(rand() % ((uint)terrain_->getHorizontalSize()));
+			pos.Z = (float)(rand() % ((uint)terrain_->getVerticalSize()));
 			pos.Y = terrain_->getHeight(Vec2(pos.X, pos.Z));
 
 			rot.Y = ZA_PI * 2.0f * (float)((float)(rand() % 100) / 100.0f);
@@ -145,9 +145,9 @@ int main(void)
 {
 	zaap::UUID id1;
 	RandomUUID(&id1);
-	ZAAP_INFO(id1.toString());
+	ZA_INFO(id1.toString());
 
-	ZA_LOG_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
+	ZA_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
 
 	//source
 	{

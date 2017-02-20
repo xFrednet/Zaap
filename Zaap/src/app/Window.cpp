@@ -1,8 +1,7 @@
 #include "Window.h"
 
-#include <util/Console.h>
+#include <util/Log.h>
 #include <events/Input.h>
-#include <graphics/API/Context.h>
 
 #include <windowsx.h>
 
@@ -54,7 +53,7 @@ namespace zaap {
 
 		ShowWindow(s_HWND, SW_SHOWNORMAL);
 
-		ZAAP_INFO("Window was created successfully");
+		ZA_INFO("Window was created successfully");
 	}
 
 	//

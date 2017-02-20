@@ -28,15 +28,22 @@ typedef ZAAP_API enum ZA_LOG_MESSAGE_TYPE_ {
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // to_char_p //
 /* //////////////////////////////////////////////////////////////////////////////// */
-namespace zaap
-{
+namespace zaap { namespace log {
+	static char to_char_p_buffer_[ZA_LOG_BUFFER_SIZE + 1] = {'\0'}; // + 1 for the '\0'
+
 	template<typename T>
 	inline const char* to_char_p(const T& t)
 	{
-		//TODO this doesn't work because the char array is deleted at the end of this function
-		String s = zaap::ToString<T>(t); 
-		const char* c = s.c_str();
-		return c;
+		String str = zaap::ToString<T>(t); 
+		
+		uint length = str.length();
+		if (length > ZA_LOG_BUFFER_SIZE)
+			length = ZA_LOG_BUFFER_SIZE;
+
+		memcpy(to_char_p_buffer_, str.c_str(), length);
+		to_char_p_buffer_[length] = '\0';
+
+		return to_char_p_buffer_;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -80,7 +87,7 @@ namespace zaap
 	{
 		return t.c_str();
 	}
-}
+}}
 
 namespace zaap { namespace log {
 	
@@ -130,6 +137,11 @@ namespace zaap { namespace log {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Functions //
 	/* //////////////////////////////////////////////////////////////////////////////// */
+
+	ZAAP_API String GetFileName(String str)
+	{
+		return str.substr(str.find_last_of("\\"), str.find_last_of("."));
+	}
 
 	// <Function>
 	//		LogToBuffer
@@ -308,35 +320,76 @@ namespace zaap { namespace log {
 	ZAAP_API inline void LogMessage(char* file, uint line, ZA_LOG_MESSAGE_TYPE messageType, Args... args)
 	{
 		//TODO add the file and the line
+		//Values
 		char buffer[ZA_LOG_BUFFER_SIZE];
 		uint position = 0;
+
+		//writing to buffer
+		if (file)
+			snprintf(buffer, ZA_LOG_BUFFER_SIZE, "ZAAP: %s[%i]: ", GetFileName(file).c_str(), line);
+		
 		LogToBuffer(buffer, ZA_LOG_BUFFER_SIZE, &position, std::forward<Args>(args)...);
 
+		// adding the '\0'
 		if (position + 2 >= ZA_LOG_BUFFER_SIZE)
 			position = ZA_LOG_BUFFER_SIZE - 3;
-
 		buffer[position++] = '\n';
 		buffer[position] = '\0';
 
+		//logging the actual message
 		LogCompleteMessage(buffer, messageType);
+	}
+
+	ZAAP_API inline void LogCleanup(char* file)
+	{
+		LogMessage(nullptr, 0, ZA_LOG_MESSAGE_CLEANUP, "[INFO]  ZAAP: - ", GetFileName(file), "was cleaned up.");
 	}
 }}
 
 
 #if (ZA_LOG_MESSAGE_INFO >= ZA_LOG_LEVEL)
-#	define ZA_LOG_INFO(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_INFO, __VA_ARGS__)
+#	define ZA_INFO(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_INFO, __VA_ARGS__)
 #else
-#	define ZA_LOG_INFO(...)
+#	define ZA_INFO(...)
+#endif
+
+#if (ZA_LOG_MESSAGE_CLEANUP >= ZA_LOG_LEVEL)
+#	define ZA_LOG_CLEANUP() zaap::log::LogCleanup(__FILE__)
+#else
+#	define ZA_LOG_CLEANUP()
 #endif
 
 #if (ZA_LOG_MESSAGE_ALERT >= ZA_LOG_LEVEL)
-#	define ZA_LOG_ALERT(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ALERT, __VA_ARGS__)
+#	define ZA_ALERT(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ALERT, __VA_ARGS__)
 #else
-#	define ZA_LOG_ALERT(...)
+#	define ZA_ALERT(...)
 #endif
 
 #if (ZA_LOG_MESSAGE_ERROR >= ZA_LOG_LEVEL)
-#	define ZA_LOG_ERROR(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ERROR, __VA_ARGS__)
+#	define ZA_ERROR(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ERROR, __VA_ARGS__)
 #else
-#	define ZA_LOG_ERROR(...)
+#	define ZA_ERROR(...)
+#endif
+
+#if (ZA_LOG_MESSAGE_FATAL >= ZA_LOG_LEVEL)
+#	define ZA_FATAL(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_FATAL, __VA_ARGS__)
+#	define ZA_FATAL_(...) zaap::log::LogMessage(nullptr, 0, ZA_LOG_MESSAGE_FATAL, __VA_ARGS__)
+#else
+#	define ZA_FATAL(...)
+#	define ZA_FATAL_(...)
+#endif
+
+#ifndef ZA_ASSERT
+#	define ZA_ASSERT(x, ...)                          \
+		if (!(x)) {                                   \
+			ZA_FATAL_("");                        \
+			ZA_FATAL_("####################");    \
+			ZA_FATAL_("# ZA_ASSERT FAILED #");    \
+			ZA_FATAL_("####################");    \
+			ZA_FATAL_("Assertion: ", (char*)#x);  \
+			ZA_FATAL_("File: ",      __FILE__);   \
+			ZA_FATAL_("Line: ",      __LINE__);   \
+			ZA_FATAL_(__VA_ARGS__);               \
+			__debugbreak();                           \
+		}
 #endif

@@ -1,6 +1,7 @@
 #include "DXContext.h"
 
-#include <util/Console.h>
+#include <app/Window.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
 
@@ -67,32 +68,12 @@ namespace zaap { namespace graphics { namespace DX {
 		ZAAP_DXRELEASE(m_Devcon);
 		ZAAP_DXRELEASE(m_Dev);
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	void DXContext::swapBuffers()
 	{
 		m_SwapChain->Present(0, 0);
-	}
-
-	//
-	// Getters
-	//
-	DXContext* DXContext::GetContext()
-	{
-		return (DXContext*)s_Context;
-	}
-	ID3D11Device* DXContext::GetDevice()
-	{
-		return GetContext()->m_Dev;
-	}
-	ID3D11DeviceContext* DXContext::GetDevContext()
-	{
-		return GetContext()->m_Devcon;
-	}
-	IDXGISwapChain* DXContext::GetSwapChain()
-	{
-		return GetContext()->m_SwapChain;
 	}
 
 	//

@@ -1,10 +1,10 @@
 #pragma once
 
-#include <common.h>
-#include <types.h>
+#include <Common.h>
+
+#ifdef ZAAP_INCLUDE_DIRECTX
 
 #include <graphics/API/DX/DXCommon.h>
-#include <app/Window.h>
 #include <graphics/API/Context.h>
 
 namespace zaap { namespace graphics	{ namespace DX {
@@ -26,13 +26,26 @@ namespace zaap { namespace graphics	{ namespace DX {
 		DXContext();
 
 		//getters
-		static inline DXContext* GetContext(void);
-		static inline ID3D11Device* GetDevice(void);
-		static inline ID3D11DeviceContext* GetDevContext(void);
-		static inline IDXGISwapChain* GetSwapChain(void);
+		static inline DXContext* GetContext(void)
+		{
+			return (DXContext*)s_Context;
+		}
+		static inline ID3D11Device* GetDevice(void)
+		{
+			return GetContext()->m_Dev;
+		}
+		static inline ID3D11DeviceContext* GetDevContext(void)
+		{
+			return GetContext()->m_Devcon;
+		}
+		static inline IDXGISwapChain* GetSwapChain(void)
+		{
+			return GetContext()->m_SwapChain;
+		}
 
 		//debug util
 		static void ReportLiveObjects(void);
 	};
 
 }}}
+#endif // ZAAP_INCLUDE_DIRECTX

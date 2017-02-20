@@ -75,9 +75,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\util\Console.cpp">
-      <Filter>Source Files\src\util</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\StringUtil.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
@@ -238,9 +235,6 @@
     </ClInclude>
     <ClInclude Include="src\Types.h">
       <Filter>Source Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="src\util\Console.h">
-      <Filter>Source Files\src\util</Filter>
     </ClInclude>
     <ClInclude Include="src\util\StringUtil.h">
       <Filter>Source Files\src\util</Filter>

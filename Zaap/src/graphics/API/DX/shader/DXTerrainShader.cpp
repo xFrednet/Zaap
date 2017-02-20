@@ -1,7 +1,7 @@
 ﻿#include "DXTerrainShader.h"
 
 #include <graphics/API/DX/DXContext.h>
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -46,10 +46,10 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		if (createShaderFromString(terrainShaderSrc, DXTerrinShaderIED, 4))
 		{
-			ZAAP_INFO("compiled successfully");
+			ZA_INFO("compiled successfully");
 		} else
 		{
-			ZAAP_ALERT("compiling failed");
+			ZA_ALERT("compiling failed");
 			system("pause"); //TODO remove Debugcode
 		}
 		
@@ -61,7 +61,7 @@ namespace zaap { namespace graphics { namespace DX {
 			ZAAP_DXNAME(m_MatrixBuffer, "DXTerrainShader::m_MatrixBuffer");
 		} else
 		{
-			ZAAP_ERROR("could not create m_MatrixBuffer");
+			ZA_ERROR("could not create m_MatrixBuffer");
 		}
 
 		//
@@ -72,7 +72,7 @@ namespace zaap { namespace graphics { namespace DX {
 			ZAAP_DXNAME(m_VSLightBuffer, "DXTerrainShader::m_VSLightStruct");
 		} else
 		{
-			ZAAP_ERROR("could not create m_VSLightStruct");
+			ZA_ERROR("could not create m_VSLightStruct");
 		}
 
 		//
@@ -83,7 +83,7 @@ namespace zaap { namespace graphics { namespace DX {
 			ZAAP_DXNAME(m_PSLightBuffer, "DXTerrainShader::m_PSLightBuffer");
 		} else
 		{
-			ZAAP_ERROR("could not create m_PSLightBuffer");
+			ZA_ERROR("could not create m_PSLightBuffer");
 		}
 	}
 
@@ -93,7 +93,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ZAAP_DXRELEASE(m_VSLightBuffer);
 		ZAAP_DXRELEASE(m_PSLightBuffer);
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	void DXTerrainShader::start() const

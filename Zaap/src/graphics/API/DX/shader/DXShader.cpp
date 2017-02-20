@@ -1,7 +1,7 @@
 #include "DXShader.h"
 
 #include <graphics/API/DX/DXContext.h>
-#include <util/Console.h>
+#include <util/Log.h>
 #include <util/Loader.h>
 #include <util/StringUtil.h>
 
@@ -48,10 +48,10 @@ namespace zaap { namespace graphics { namespace DX {
 			return shaderBlob;
 		else
 		{
-			ZAAP_ERROR("compileShader: Unable to compile shader from source");
+			ZA_ERROR("compileShader: Unable to compile shader from source");
 			if (errorBlob)
 			{
-				ZAAP_ERROR("compileShader: targeted version: " + version);
+				ZA_ERROR("compileShader: targeted version: " + version);
 
 				if (errorBlob->GetBufferSize())
 				{
@@ -117,7 +117,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZAAP_DXNAME(m_Layout, "DXShader::m_Layout");
 			} else
 			{
-				ZAAP_ERROR("InputLayout creation failed");
+				ZA_ERROR("InputLayout creation failed");
 				return false;
 			}
 

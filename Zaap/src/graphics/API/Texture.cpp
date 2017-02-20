@@ -3,7 +3,7 @@
 #include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
 #include <graphics/API/DX/DXTexture2D.h>
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace API {
 	
@@ -81,7 +81,7 @@ namespace zaap { namespace graphics { namespace API {
 		s_Textures.clear();
 
 		s_IsCleanup = false;
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
 
 #include <maths/Vec2.h>
 #include <maths/Vec3.h>

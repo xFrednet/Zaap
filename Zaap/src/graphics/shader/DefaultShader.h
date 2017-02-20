@@ -232,7 +232,7 @@ namespace zaap { namespace graphics {
 		//		scene::
 		//			The scene were the information is loaded from.;;
 		//
-		void loadScene(const Scene const* scene);
+		void loadScene(Scene const* scene);
 
 		/* ##################################### */
 		// # Light buffers #
@@ -287,7 +287,7 @@ namespace zaap { namespace graphics {
 		//		count::
 		//			The amount of materials that are inside the array.;;
 		//
-		void loadMaterials(const Material const* materials, uint count);
+		void loadMaterials(Material const* materials, uint count);
 
 		// <Function>
 		//		getMaterialBuffer

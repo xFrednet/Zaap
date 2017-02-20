@@ -1,5 +1,5 @@
 ﻿#include "DXDefaultShader.h"
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -73,7 +73,7 @@ namespace zaap { namespace graphics { namespace DX {
 		results += createShaderFromString(dxDefaultShaderSrc, DXDefaultShaderIED, 4);
 		if (ZA_FAILED(results))
 		{
-			ZA_ASSERT(false, "");
+			ZA_ASSERT(false);
 			return results;
 		}
 
@@ -109,7 +109,7 @@ namespace zaap { namespace graphics { namespace DX {
 		if (ZA_FAILED(results))
 			return results;
 
-		ZAAP_INFO("init finished successfully! :D");
+		ZA_INFO("init finished successfully! :D");
 
 		return results;
 	}

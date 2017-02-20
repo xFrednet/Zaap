@@ -3,6 +3,7 @@
 #include "shader/DXDefaultShader.h"
 #include "shader/DXTerrainShader.h"
 #include "shader/DXFontShader2D.h"
+#include <app/Window.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	

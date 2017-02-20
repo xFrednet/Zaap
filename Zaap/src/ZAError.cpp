@@ -1,6 +1,6 @@
 #include "ZAError.h"
 
-#include <util/Console.h>
+#include <util/Log.h>
 #include "maths/Maths.h"
 
 #define _and_ &
@@ -35,6 +35,8 @@ namespace zaap {
 			if (i == 0)
 				return 0;
 		}
+
+		return 0;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -115,12 +117,12 @@ namespace zaap
 {
 	void SubmitZAResult(ZA_RESULT result)
 	{
-		ZAAP_ERROR(std::to_string(result));
+		ZA_ERROR(GetZAResultMessage(result));
 	}
 
-	void SubmitZAResult(const ZA_RESULT& result, const String& file, const uint& line)
+	void SubmitZAResult(const ZA_RESULT& result, char* file, const uint& line)
 	{
-		console::Println(file, line, ZA_LOG_MESSAGE_ERROR, GetZAResultMessage(result));
+		log::LogMessage(file, line, ZA_LOG_MESSAGE_ERROR, GetZAResultMessage(result));
 	}
 
 	ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results)

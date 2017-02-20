@@ -1,6 +1,6 @@
 #include "ImageLoader.h"
 
-#include <util/Console.h>
+#include <util/Log.h>
 
 #include <FreeImage.h>
 #include <FreeImage/Utilities.h>
@@ -18,7 +18,7 @@ namespace zaap
 		
 		FreeImage_DeInitialise();
 		isFreeImageInit = false;
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	void ImageLoader::Init()

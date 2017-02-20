@@ -1,5 +1,5 @@
 ﻿#include "Font.h"
-#include <util/Console.h>
+#include <util/Log.h>
 
 #include <ft2build.h>
 #include <freetype/freetype.h>
@@ -29,6 +29,7 @@ namespace zaap { namespace graphics {
 
 	ZA_CharMarix ZA_CharMarix::operator/(float a) const
 	{
+		//TODO add a division by zero error
 		return *this * (1.0f / a);
 	}
 
@@ -207,7 +208,7 @@ namespace zaap { namespace graphics {
 			else
 			{
 				charSheet = Bitmap(width, height, ZA_FORMAT_R8G8B8A8_UINT);
-				ZAAP_ERROR("FreeType loaded the font with a unknown bitmap format");
+				ZA_ERROR("FreeType loaded the font with a unknown bitmap format");
 			}
 			
 		}
@@ -256,7 +257,7 @@ namespace zaap { namespace graphics {
 					if (bitmapY + charSize >= charSheet.getHeight())
 					{
 						bitmapY = 0;
-						ZAAP_ERROR("the given bitmap is to small for the selected char set");
+						ZA_ERROR("the given bitmap is to small for the selected char set");
 					}
 				}
 			}
@@ -291,7 +292,7 @@ namespace zaap { namespace graphics {
 		FT_Done_FreeType(FTLib);
 
 		long time = clock() - timer;
-		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
+		ZA_INFO("loaded", file, " in ", time, "ms");
 
 		return font;
 	}
@@ -316,7 +317,7 @@ namespace zaap { namespace graphics {
 				|| (width = font.m_CharSheet->getWidth()) == 0
 				|| (height = font.m_CharSheet->getHeight()) == 0)
 			{
-				ZAAP_ERROR("The texture could not be loaded");
+				ZA_ERROR("The texture could not be loaded");
 				return font;
 			}
 		}
@@ -332,7 +333,7 @@ namespace zaap { namespace graphics {
 			fileStream.open(file);
 			if (!fileStream.is_open())
 			{
-				ZAAP_ERROR("The given file could not be opened. File: " + file);
+				ZA_ERROR("The given file could not be opened. File: " + file);
 				return font;
 			}
 
@@ -401,7 +402,7 @@ namespace zaap { namespace graphics {
 		}
 
 		long time = clock() - timer;
-		ZAAP_INFO("loaded" + file + " in " + std::to_string(time) + "ms");
+		ZA_INFO("loaded", file, " in ", time, + "ms");
 
 		return font;
 	}
@@ -513,7 +514,7 @@ namespace zaap { namespace graphics {
 		if (!vb) 
 			return;
 		
-		float c = 0.5 + 0.5 * sin(temp);
+		float c = 0.5f + 0.5f * sin(temp);
 		color.R = c;
 		color.G = c;
 		color.B = c;

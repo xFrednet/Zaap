@@ -18,7 +18,7 @@ Macro names:
 
 #include <app/Application.h>
 
-#include <util/Console.h>
+#include <util/Log.h>
 #include <util/StringUtil.h>
 #include <util/ImageLoader.h>
 #include <util/UUID.h>

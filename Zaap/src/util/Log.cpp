@@ -67,14 +67,19 @@ void zaap::log::PlatformLogConsole(const char* message, ZA_LOG_MESSAGE_TYPE mess
 {
 	switch (messageType)
 	{
-	case ZA_LOG_MESSAGE_FATAL:
-	case ZA_LOG_MESSAGE_ERROR:
-		SetConsoleColor(0x0C);
+	case ZA_LOG_MESSAGE_INFO:
+		SetConsoleColor(0x08);
+		break;
+	case ZA_LOG_MESSAGE_CLEANUP:
+		SetConsoleColor(0x02);
 		break;
 	case ZA_LOG_MESSAGE_ALERT:
 		SetConsoleColor(0x0E);
 		break;
-	case ZA_LOG_MESSAGE_INFO:
+	case ZA_LOG_MESSAGE_FATAL:
+	case ZA_LOG_MESSAGE_ERROR:
+		SetConsoleColor(0x0C);
+		break;
 	default:
 		SetConsoleColor(0x08);
 		break;

@@ -1,7 +1,6 @@
 #include "Bitmap.h"
 
 #include <util/ImageLoader.h>
-#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 

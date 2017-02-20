@@ -1,6 +1,6 @@
 ﻿#include "MeshManager.h"
 
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics {
 	
@@ -10,7 +10,7 @@ namespace zaap { namespace graphics {
 	{
 		if (Contains(mesh))
 		{
-			ZAAP_ALERT("This manager already contains a Mesh with the name: \"" + mesh.getName() + "\"");
+			ZA_ALERT("This manager already contains a Mesh with the name: \"", mesh.getName(), "\"");
 			return;
 		}
 
@@ -21,7 +21,7 @@ namespace zaap { namespace graphics {
 
 		s_MeshMap[mesh.getName()] = newMeshInfo;
 
-		ZAAP_INFO("added: \"" + mesh.getName() + "\"");
+		ZA_INFO("added: \"",mesh.getName(), "\"");
 	}
 
 	void MeshManager::ReleasedMesh(const Mesh& mesh)
@@ -95,6 +95,6 @@ namespace zaap { namespace graphics {
 	{
 		s_MeshMap.clear();
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 }}

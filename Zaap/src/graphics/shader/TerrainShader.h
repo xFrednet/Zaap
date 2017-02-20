@@ -26,7 +26,7 @@ namespace zaap { namespace graphics {
 		void setViewMatrix(Mat4 iewMatrix);
 
 		//Light buffer
-		void loadLightSetup(const LightSetup const* lightSetup);
+		void loadLightSetup(LightSetup const* lightSetup);
 
 		ZA_SHADER_TYPE getShaderType() const override;
 	};

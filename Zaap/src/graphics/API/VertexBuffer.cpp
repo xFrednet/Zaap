@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 
 #include <graphics/API/DX/DXVertexBuffer.h>
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { 
 
@@ -46,7 +46,7 @@ namespace API {
 			delete vBuffer;
 		}
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 }
 
