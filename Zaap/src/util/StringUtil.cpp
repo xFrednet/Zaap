@@ -70,12 +70,12 @@ namespace zaap {
 	// * ZA_RESULT *
 	/* ********************************************************* */
 	template <>
-	String ToString<short>(const ZA_RESULT& result)
+	String StringUtil::ToString<short>(const ZA_RESULT& result)
 	{
 		return GetZAResultMessage(result);
 	}
 	template <>
-	String ToString<ZA_MULTI_RESULT_>(const ZA_MULTI_RESULT& multiResult)
+	String StringUtil::ToString<ZA_MULTI_RESULT_>(const ZA_MULTI_RESULT& multiResult)
 	{
 		return GetZAResultMessages(multiResult);
 	}
@@ -83,12 +83,12 @@ namespace zaap {
 	// * Maths *
 	/* ********************************************************* */
 	template <>
-	String ToString<Vec2>(const Vec2& vec)
+	String StringUtil::ToString<Vec2>(const Vec2& vec)
 	{
 		return "Vec2(X:" + std::to_string(vec.X) + ", Y:" + std::to_string(vec.Y) + ")";
 	}
 	template <>
-	String ToString<Vec3>(const Vec3& vec)
+	String StringUtil::ToString<Vec3>(const Vec3& vec)
 	{
 		return "Vec3(X:" + std::to_string(vec.X) + 
 			", Y:" + std::to_string(vec.Y) + 
@@ -96,7 +96,7 @@ namespace zaap {
 	}
 
 	template <>
-	String ToString<Vec4>(const Vec4& vec)
+	String StringUtil::ToString<Vec4>(const Vec4& vec)
 	{
 		return "Vec4(X:" + std::to_string(vec.X) +
 			", Y:" + std::to_string(vec.Y) +
@@ -105,7 +105,7 @@ namespace zaap {
 	}
 
 	template <>
-	String ToString<Mat4>(const Mat4& mat)
+	String StringUtil::ToString<Mat4>(const Mat4& mat)
 	{
 		using namespace std;
 		return "Mat4(" +
@@ -116,7 +116,7 @@ namespace zaap {
 	}
 
 	template <>
-	String ToString<Plane3D>(const Plane3D& plane)
+	String StringUtil::ToString<Plane3D>(const Plane3D& plane)
 	{
 		return "Plane3D(N: " + plane.N.toString() + ", D: " + std::to_string(plane.D) + ")";
 	}
@@ -125,7 +125,7 @@ namespace zaap {
 	// * graphics *
 	/* ********************************************************* */
 	template <>
-	String ToString<graphics::Color>(const graphics::Color& color)
+	String StringUtil::ToString<graphics::Color>(const graphics::Color& color)
 	{
 		return "Color(R " + std::to_string(color.getIntR()) +
 			", G " + std::to_string(color.getIntG()) +
@@ -134,7 +134,7 @@ namespace zaap {
 	}
 
 	template <>
-	String ToString<graphics::Material>(const graphics::Material& material)
+	String StringUtil::ToString<graphics::Material>(const graphics::Material& material)
 	{
 		return "Material(DiffuseReflectivity: " + material.DiffuseReflectivity.toString() +
 			", SpectralReflectivity: " + std::to_string(material.SpectralReflectivity) + ")";

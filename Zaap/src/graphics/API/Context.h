@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
 
 namespace zaap { namespace graphics { namespace API {
 	
@@ -17,8 +16,8 @@ namespace zaap { namespace graphics { namespace API {
 	public:
 		static void Create();
 
-		static inline void Cleanup();
-		static inline void SwapBuffers();
+		static void Cleanup();
+		static void SwapBuffers();
 	};
 
 }}}

@@ -88,7 +88,6 @@ namespace zaap {
 		//
 		static String Replace(String baseString, const String& oldString, const String& newString);
 
-	};
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // ToString //
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -126,5 +125,6 @@ namespace zaap {
 	static inline String ToString<graphics::Color>(const graphics::Color& color);
 	template<>
 	static inline String ToString<graphics::Material>(const graphics::Material& material);
+	};
 
 }

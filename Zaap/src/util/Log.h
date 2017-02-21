@@ -34,7 +34,7 @@ namespace zaap { namespace log {
 	template<typename T>
 	inline const char* to_char_p(const T& t)
 	{
-		String str = zaap::ToString<T>(t); 
+		String str = StringUtil::ToString<T>(t); 
 		
 		uint length = str.length();
 		if (length > ZA_LOG_BUFFER_SIZE)
@@ -85,7 +85,14 @@ namespace zaap { namespace log {
 	template<>
 	inline const char* to_char_p<std::string>(std::string const& t)
 	{
-		return t.c_str();
+		uint length = t.length();
+		if (length > ZA_LOG_BUFFER_SIZE)
+			length = ZA_LOG_BUFFER_SIZE;
+
+		memcpy(to_char_p_buffer_, t.c_str(), length);
+		to_char_p_buffer_[length] = '\0';
+
+		return to_char_p_buffer_;
 	}
 }}
 
@@ -138,10 +145,22 @@ namespace zaap { namespace log {
 	// // Functions //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 
-	ZAAP_API String GetFileName(String str)
+	ZAAP_API inline const char* GetFileName(const char* c_str)
 	{
-		return str.substr(str.find_last_of("\\"), str.find_last_of("."));
+		String str(c_str);
+		str = str.substr(str.find_last_of("\\"), str.find_last_of("."));
+		return to_char_p(str);
 	}
+
+	// <Function>
+	//		LogToBuffer
+	//
+	// <Description>
+	//		This is a util function it does absolutely nothing. It is used if
+	//		the LogToBuffer function is called without any arguments.
+	//
+	ZAAP_API inline void LogToBuffer(char* buffer, const uint& bufferSize, uint* position)
+	{}
 
 	// <Function>
 	//		LogToBuffer
@@ -163,7 +182,7 @@ namespace zaap { namespace log {
 	//			added to the buffer;
 	// 
 	template<typename First>
-	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First first)
+	ZAAP_API inline void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First first)
 	{
 		const char* str = to_char_p<First>(first);
 		uint length = strlen(str);
@@ -202,7 +221,7 @@ namespace zaap { namespace log {
 	//			function.;;
 	// 
 	template<typename First, typename... Args>
-	ZAAP_API void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first, Args&& ...args)
+	ZAAP_API inline void LogToBuffer(char* buffer, const uint& bufferSize, uint* position, First&& first, Args&& ...args)
 	{
 		const char* str = to_char_p<First>(first);
 		uint length = strlen(str);
@@ -219,7 +238,6 @@ namespace zaap { namespace log {
 
 		memcpy(&buffer[*position], str, sizeof(char) * length);
 		*position += length;
-		buffer[(*position)++] = ' ';
 
 		LogToBuffer(buffer, ZA_LOG_BUFFER_SIZE, position, std::forward<Args>(args)...);
 	}
@@ -317,7 +335,7 @@ namespace zaap { namespace log {
 	//		error is submitted.
 	//
 	template<typename... Args>
-	ZAAP_API inline void LogMessage(char* file, uint line, ZA_LOG_MESSAGE_TYPE messageType, Args... args)
+	ZAAP_API void LogMessage(char* file, uint line, ZA_LOG_MESSAGE_TYPE messageType, Args... args)
 	{
 		//TODO add the file and the line
 		//Values
@@ -326,7 +344,7 @@ namespace zaap { namespace log {
 
 		//writing to buffer
 		if (file)
-			snprintf(buffer, ZA_LOG_BUFFER_SIZE, "ZAAP: %s[%i]: ", GetFileName(file).c_str(), line);
+			snprintf(buffer, ZA_LOG_BUFFER_SIZE, "ZAAP: %s[%i]: ", GetFileName(file), line);
 		
 		LogToBuffer(buffer, ZA_LOG_BUFFER_SIZE, &position, std::forward<Args>(args)...);
 

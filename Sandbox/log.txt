@@ -1,1 +1,21 @@
-Test  Error -29440 some more text???
+Test Error-29440some more text???
+Window was created successfully
+init finished successfully! :D
+compiled successfully
+init finished successfully! (I can type now)
+loadedres/arial.ttf in 124ms
+Loadedres/nature/tree/Tree.obj
+added: "res/nature/tree/Tree.obj"
+Loadedres/nature/bush/bush.obj
+added: "res/nature/bush/bush.obj"
+Scene init took 2438ms
+UPS: 60, FPS: 60
+UPS: 59, FPS: 59
+[INFO]  ZAAP: - \imageloader.cppwas cleaned up.
+[INFO]  ZAAP: - \meshmanager.cppwas cleaned up.
+[INFO]  ZAAP: - \materialmanager.cppwas cleaned up.
+[INFO]  ZAAP: - \dxcontext.cppwas cleaned up.
+[INFO]  ZAAP: - \context.cppwas cleaned up.
+[INFO]  ZAAP: - \texture.cppwas cleaned up.
+[INFO]  ZAAP: - \vertexbuffer.cppwas cleaned up.
+[INFO]  ZAAP: - \application.cppwas cleaned up.

@@ -1,6 +1,5 @@
 #include "Context.h"
 
-#include <graphics/API/DX/DXCommon.h>
 #include <graphics/API/DX/DXContext.h>
 #include <util/Log.h>
 

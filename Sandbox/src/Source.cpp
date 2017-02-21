@@ -90,7 +90,7 @@ void loadEntitys()
 	}
 
 	long time = clock() - timer;
-	ZAAP_INFO("Scene init took " + std::to_string(time) + "ms");
+	ZA_INFO("Scene init took " + std::to_string(time) + "ms");
 }
 
 class Test : public Application

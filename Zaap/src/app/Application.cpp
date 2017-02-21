@@ -105,12 +105,13 @@ namespace zaap {
 				timer += 1000;
 				
 				if (!m_Paused)
-				ZA_INFO("UPS: ", int(updates), ", FPS: ",int(frames));
+				ZA_INFO("UPS: ", int(updates), ", FPS: ", int(frames));
 
 				if (update_prog > 60) //TODO add other handling
 				{
 					ZA_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string((uint)update_prog) + " Updates.");
 					update_prog = 0;
+					timer = clock();
 				}
 
 				frames = 0;

@@ -359,7 +359,7 @@ namespace zaap {
 	//			The line is also added by the ZA_SUBMIT_ERROR macro. <\n>
 	//			It is added to the console.
 	//
-	ZAAP_API void SubmitZAResult(const ZA_RESULT& result, const String& file, const uint& line);
+	ZAAP_API void SubmitZAResult(const ZA_RESULT& result, char* file, const uint& line);
 
 	// <Function>
 	//      CombineZAResults
