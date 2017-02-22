@@ -21,7 +21,7 @@ namespace zaap { namespace graphics {
 
 		s_MeshMap[mesh.getName()] = newMeshInfo;
 
-		ZA_INFO("added: \"",mesh.getName(), "\"");
+		ZA_INFO("added: \"", mesh.getName(), "\"");
 	}
 
 	void MeshManager::ReleasedMesh(const Mesh& mesh)

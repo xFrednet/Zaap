@@ -145,7 +145,7 @@ int main(void)
 {
 	zaap::UUID id1;
 	RandomUUID(&id1);
-	ZA_INFO(id1.toString());
+	ZA_INFO(id1);
 
 	ZA_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
 

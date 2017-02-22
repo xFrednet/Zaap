@@ -156,7 +156,7 @@ namespace zaap {
 		Material* newMaterials = new Material[materialCount];
 		memcpy(&newMaterials[0], &materials[0], sizeof(Material) * materialCount);
 
-		ZA_INFO("Loaded", file);
+		ZA_INFO("Loaded \"", file, "\"");
 
 		return Mesh(file, vBuffer, newMaterials, materialCount);
 	}

@@ -16,8 +16,9 @@ namespace zaap { namespace log {
 	{
 		if (s_File)
 		{
-			fclose(s_File);
-			s_File = nullptr;
+			FILE* oldFile = s_File;
+			s_File = nullptr; //to block the other functions from using the file
+			fclose(oldFile);
 		}
 	}
 

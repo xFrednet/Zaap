@@ -9,6 +9,8 @@
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 
+#include <util/UUID.h>
+
 namespace zaap {
 	String StringUtil::getDateString(const time_t& time)
 	{
@@ -138,5 +140,31 @@ namespace zaap {
 	{
 		return "Material(DiffuseReflectivity: " + material.DiffuseReflectivity.toString() +
 			", SpectralReflectivity: " + std::to_string(material.SpectralReflectivity) + ")";
+	}
+
+	template <>
+	String StringUtil::ToString<UUID>(const UUID& uuid)
+	{
+		using namespace std;
+		//type            = x bytes
+		//uint            = 4
+
+		//first segment
+		uint32 hexValue;
+		stringstream ss;
+		ss << "UUID(";
+		for (uint i = 0; i < 4; i++)
+		{
+			memcpy(&hexValue, &uuid.Data[i * 4], sizeof(byte) * 4);
+			//setfill('0') << setw(8) to include the zeros
+			ss << setfill('0') << setw(8) << hex << hexValue;
+		}
+		String s = ss.str();
+		s.insert(25, "-");
+		s.insert(21, "-");
+		s.insert(17, "-");
+		s.insert(13, "-");
+		s += ")";
+		return s;
 	}
 }

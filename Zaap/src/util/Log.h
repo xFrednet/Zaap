@@ -4,7 +4,6 @@
 
 #include <util/StringUtil.h>
 
-
 #ifndef ZA_LOG_LEVEL
 #	define ZA_LOG_LEVEL 0
 #endif
@@ -17,19 +16,24 @@
 #	define ZA_LOG_BUFFER_SIZE (1024 * 8)
 #endif
 
+#ifndef ZA_LOG_INFO_HEADER_BUFFER_SIZE
+#	define ZA_LOG_INFO_HEADER_BUFFER_SIZE 128
+#endif
+
 typedef ZAAP_API enum ZA_LOG_MESSAGE_TYPE_ {
 	ZA_LOG_MESSAGE_INFO = 0,
 	ZA_LOG_MESSAGE_CLEANUP = 1,
 	ZA_LOG_MESSAGE_ALERT = 2,
 	ZA_LOG_MESSAGE_ERROR = 3,
-	ZA_LOG_MESSAGE_FATAL = 4,
+	ZA_LOG_MESSAGE_FATAL = 4
 } ZA_LOG_MESSAGE_TYPE;
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // to_char_p //
 /* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace log {
-	static char to_char_p_buffer_[ZA_LOG_BUFFER_SIZE + 1] = {'\0'}; // + 1 for the '\0'
+	static char to_char_p_buffer_[ZA_LOG_BUFFER_SIZE + 1] = { '\0' }; // + 1 for the '\0'
+	static char log_info_header_buffer_[ZA_LOG_INFO_HEADER_BUFFER_SIZE + 1] = {'\0'}; // + 1 for the '\0'
 
 	template<typename T>
 	inline const char* to_char_p(const T& t)
@@ -103,9 +107,17 @@ namespace zaap { namespace log {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	static FILE* s_File = nullptr;
 	static bool s_IsLogCloseFileSetAsAtExit = false;
-
-	//TODO add descriptions
 	
+	// <Function>
+	//		LogOpenFile
+	//
+	// <Description>
+	//		This opens the file with the given file name.
+	//
+	// <Input>
+	//		fileName::
+	//			The name of the File that should be opened.;;
+	//
 	ZAAP_API void LogOpenFile(String fileName);
 	// <Function>
 	//		LogCloseFile
@@ -137,21 +149,132 @@ namespace zaap { namespace log {
 	//
 	ZAAP_API void LogSetFile(FILE* file);
 
+	// <Function>
+	//		LogGetFile
+	//
+	// <Return>
+	//		This returns the file that is currently set as the log
+	//		output.
+	//
 	ZAAP_API FILE* LogGetFile();
 
+	// <Fucntion>
+	//		LogHasFile
+	//
+	// <Descritpion>
+	//		This simply tests if s_File is a nullptr.
+	//
+	// <Return>
+	//		The test result.
+	//
 	ZAAP_API bool LogHasFile();
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Functions //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 
-	ZAAP_API inline const char* GetFileName(const char* c_str)
+	// <Function>
+	//		GetFileNameFromPath
+	//
+	// <Description>
+	//		This expects a file path. This function removes the
+	//		directory infos and the file type.
+	//
+	// <Note>
+	//		This is intended for the __FILE__ macro.
+	//
+	// <Example>
+	//		example 1::
+	//			input:  "C:\\Programmer\\xFrednet.brain"
+	//			output: "xFrednet".;;
+	//		example 2::
+	//			input:  "\\Zaap\\Zaap\\src\\util\\Log.h"
+	//			output: "Log".;;
+	//		example 3::
+	//			input:  "Some super text by the developer"
+	//			output: "Some super text by the developer".;;
+	//
+	// <Input>
+	//		filePath::
+	//			The string that contains the file path.;;
+	//
+	// <Return>
+	//		The name of the actual file.
+	//
+	ZAAP_API inline const char* GetFileNameFromPath(const char* filePath)
 	{
-		String str(c_str);
-		str = str.substr(str.find_last_of("\\"), str.find_last_of("."));
+		String str(filePath);
+		uint sIndex = str.find_last_of("\\") + 1;
+		str = str.substr(sIndex, str.find_last_of(".") - sIndex);
 		return to_char_p(str);
 	}
 
+	// <Function>
+	//		GetLogMessageTypeName
+	//
+	// <Descritpion>
+	//		This returns the name of the @ZA_LOG_MESSAGE_TYPE in caps.
+	//
+	// <Input>
+	//		messageType::
+	//			The type of the requested name.;;
+	//
+	// <Return>
+	//		The name of the submitted ZA_LOG_MESSAGE_TYPE in caps.
+	//
+	ZAAP_API inline const char* GetLogMessageTypeName(const ZA_LOG_MESSAGE_TYPE& messageType)
+	{
+		switch (messageType)
+		{
+		case ZA_LOG_MESSAGE_INFO:
+			return "INFO";
+		case ZA_LOG_MESSAGE_CLEANUP:
+			return "CLEANUP";
+		case ZA_LOG_MESSAGE_ALERT:
+			return "ALERT";
+		case ZA_LOG_MESSAGE_FATAL:
+			return "FATAL";
+		case ZA_LOG_MESSAGE_ERROR:
+			return "ERROR";
+		default:
+			return "NULL";
+		}
+	}
+
+	// <Function>
+	//		GetLogInfoHeader
+	//
+	// <Description>
+	//		This returns a "info header" that consists out of the 
+	//		submitted information.
+	//
+	// <Note>
+	//		This is probably not called a info header but I couldn't 
+	//		find the real name... so you have to deal with this.
+	//
+	// <Input>
+	//		messageType::
+	//			The message type that should be displayed in this header.;;
+	//		file::
+	//			The file path of the actual file.
+	//			this can also be the result of the __FILE__ macro.
+	//			a nullptr will set the name to <UNKNOWN>.;;
+	//		line::
+	//			The line where this message was submitted from.;;
+	//
+	// <Return>
+	//		The info header that contains the submitted info.;;
+	//
+	ZAAP_API inline const char* GetLogInfoHeader(ZA_LOG_MESSAGE_TYPE messageType, char* file, uint line)
+	{
+		if (!file)
+			file = "<UNKNOWN>";
+
+		String typeName = "[" + String(GetLogMessageTypeName(messageType)) + "]";
+		snprintf(log_info_header_buffer_, ZA_LOG_INFO_HEADER_BUFFER_SIZE, "%-9s ZAAP: %-15.25s[%-3i]: ", typeName.c_str(), GetFileNameFromPath(file), line);
+		return log_info_header_buffer_;
+	}
+	
 	// <Function>
 	//		LogToBuffer
 	//
@@ -195,7 +318,6 @@ namespace zaap { namespace log {
 
 		memcpy(&buffer[*position], str, sizeof(char) * length);
 		*position += length;
-		buffer[*position++] = ' ';
 	}
 
 	// <Function>
@@ -335,7 +457,7 @@ namespace zaap { namespace log {
 	//		error is submitted.
 	//
 	template<typename... Args>
-	ZAAP_API void LogMessage(char* file, uint line, ZA_LOG_MESSAGE_TYPE messageType, Args... args)
+	ZAAP_API void LogMessage(ZA_LOG_MESSAGE_TYPE messageType, Args... args)
 	{
 		//TODO add the file and the line
 		//Values
@@ -343,9 +465,6 @@ namespace zaap { namespace log {
 		uint position = 0;
 
 		//writing to buffer
-		if (file)
-			snprintf(buffer, ZA_LOG_BUFFER_SIZE, "ZAAP: %s[%i]: ", GetFileName(file), line);
-		
 		LogToBuffer(buffer, ZA_LOG_BUFFER_SIZE, &position, std::forward<Args>(args)...);
 
 		// adding the '\0'
@@ -358,15 +477,27 @@ namespace zaap { namespace log {
 		LogCompleteMessage(buffer, messageType);
 	}
 
+	// <Function>
+	//		LogCleanup
+	//
+	// <Descritpion>
+	//		This creates a default cleanup message for the 
+	//		submitted file.;;
+	//
+	// <Input>
+	//		file::
+	//			The name of the file this can be the
+	//			content of the __FILE__ macro.;;
+	//
 	ZAAP_API inline void LogCleanup(char* file)
 	{
-		LogMessage(nullptr, 0, ZA_LOG_MESSAGE_CLEANUP, "[INFO]  ZAAP: - ", GetFileName(file), "was cleaned up.");
+		LogMessage(ZA_LOG_MESSAGE_CLEANUP, "[CLEANUP]ZAAP: - ", GetFileNameFromPath(file), " was cleaned up.");
 	}
 }}
 
 
 #if (ZA_LOG_MESSAGE_INFO >= ZA_LOG_LEVEL)
-#	define ZA_INFO(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_INFO, __VA_ARGS__)
+#	define ZA_INFO(...) zaap::log::LogMessage(ZA_LOG_MESSAGE_INFO, (char*)zaap::log::GetLogInfoHeader(ZA_LOG_MESSAGE_INFO, __FILE__, __LINE__), __VA_ARGS__)
 #else
 #	define ZA_INFO(...)
 #endif
@@ -378,36 +509,36 @@ namespace zaap { namespace log {
 #endif
 
 #if (ZA_LOG_MESSAGE_ALERT >= ZA_LOG_LEVEL)
-#	define ZA_ALERT(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ALERT, __VA_ARGS__)
+#	define ZA_ALERT(...) zaap::log::LogMessage(ZA_LOG_MESSAGE_ALERT, (char*)zaap::log::GetLogInfoHeader(ZA_LOG_MESSAGE_ALERT, __FILE__, __LINE__), __VA_ARGS__)
 #else
 #	define ZA_ALERT(...)
 #endif
 
 #if (ZA_LOG_MESSAGE_ERROR >= ZA_LOG_LEVEL)
-#	define ZA_ERROR(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_ERROR, __VA_ARGS__)
+#	define ZA_ERROR(...) zaap::log::LogMessage(ZA_LOG_MESSAGE_ERROR, (char*)zaap::log::GetLogInfoHeader(ZA_LOG_MESSAGE_ERROR, __FILE__, __LINE__), __VA_ARGS__)
 #else
 #	define ZA_ERROR(...)
 #endif
 
 #if (ZA_LOG_MESSAGE_FATAL >= ZA_LOG_LEVEL)
-#	define ZA_FATAL(...) zaap::log::LogMessage(__FILE__, __LINE__, ZA_LOG_MESSAGE_FATAL, __VA_ARGS__)
-#	define ZA_FATAL_(...) zaap::log::LogMessage(nullptr, 0, ZA_LOG_MESSAGE_FATAL, __VA_ARGS__)
+#	define ZA_FATAL(...) zaap::log::LogMessage(ZA_LOG_MESSAGE_FATAL, (char*)zaap::log::GetLogInfoHeader(ZA_LOG_MESSAGE_FATAL, __FILE__, __LINE__), __VA_ARGS__)
+#	define ZA_FATAL_(...) zaap::log::LogMessage(ZA_LOG_MESSAGE_FATAL, __VA_ARGS__)
 #else
 #	define ZA_FATAL(...)
 #	define ZA_FATAL_(...)
 #endif
 
 #ifndef ZA_ASSERT
-#	define ZA_ASSERT(x, ...)                          \
-		if (!(x)) {                                   \
+#	define ZA_ASSERT(x, ...)                      \
+		if (!(x)) {                               \
 			ZA_FATAL_("");                        \
 			ZA_FATAL_("####################");    \
 			ZA_FATAL_("# ZA_ASSERT FAILED #");    \
 			ZA_FATAL_("####################");    \
 			ZA_FATAL_("Assertion: ", (char*)#x);  \
-			ZA_FATAL_("File: ",      __FILE__);   \
-			ZA_FATAL_("Line: ",      __LINE__);   \
+			ZA_FATAL_("File: ", __FILE__);        \
+			ZA_FATAL_("Line: ", __LINE__);        \
 			ZA_FATAL_(__VA_ARGS__);               \
-			__debugbreak();                           \
+			__debugbreak();                       \
 		}
 #endif

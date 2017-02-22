@@ -12,12 +12,14 @@ namespace zaap
 	struct Vec4;
 	struct Mat4;
 	struct Plane3D;
-	
+
 	namespace graphics
 	{
 		struct Color;
 		struct Material;
 	}
+
+	struct UUID;
 }
 
 namespace zaap {
@@ -88,43 +90,49 @@ namespace zaap {
 		//
 		static String Replace(String baseString, const String& oldString, const String& newString);
 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // ToString //
-	/* //////////////////////////////////////////////////////////////////////////////// */
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // ToString //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 
-	template<typename T>
-	static inline String ToString(const T& t)
-	{
-		return std::to_string(t);
-	}
+		template<typename T>
+		static inline String ToString(const T& t)
+		{
+			return std::to_string(t);
+		}
 		
-	/* ********************************************************* */
-	// * ZA_RESULT *
-	/* ********************************************************* */
-	template<>
-	static inline String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
+		/* ********************************************************* */
+		// * ZA_RESULT *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
 
-	/* ********************************************************* */
-	// * Maths *
-	/* ********************************************************* */
-	template<>
-	static inline String ToString<Vec2>(const Vec2& vec);
-	template<>
-	static inline String ToString<Vec3>(const Vec3& vec);
-	template<>
-	static inline String ToString<Vec4>(const Vec4& vec);
-	template<>
-	static inline String ToString<Mat4>(const Mat4& mat4);
-	template<>
-	static inline String ToString<Plane3D>(const Plane3D& plane);
+		/* ********************************************************* */
+		// * Maths *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<Vec2>(const Vec2& vec);
+		template<>
+		static inline String ToString<Vec3>(const Vec3& vec);
+		template<>
+		static inline String ToString<Vec4>(const Vec4& vec);
+		template<>
+		static inline String ToString<Mat4>(const Mat4& mat4);
+		template<>
+		static inline String ToString<Plane3D>(const Plane3D& plane);
 
-	/* ********************************************************* */
-	// * graphics *
-	/* ********************************************************* */
-	template<>
-	static inline String ToString<graphics::Color>(const graphics::Color& color);
-	template<>
-	static inline String ToString<graphics::Material>(const graphics::Material& material);
+		/* ********************************************************* */
+		// * graphics *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<graphics::Color>(const graphics::Color& color);
+		template<>
+		static inline String ToString<graphics::Material>(const graphics::Material& material);
+
+		/* ********************************************************* */
+		// * other *
+		/* ********************************************************* */
+		template<>
+		static inline String ToString<UUID>(const UUID& uuid);
 	};
 
 }

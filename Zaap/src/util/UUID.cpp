@@ -36,35 +36,6 @@ namespace zaap
 	//
 	//To String
 	//
-	String UUID::toString() const
-	{
-		return ToString(*this);
-	}
-	String ToString(const UUID& uuid)
-	{
-		using namespace std;
-		//type            = x bytes
-		//uint            = 4
-
-		//first segment
-		uint32 hexValue;
-		stringstream ss;
-		ss << "UUID(";
-		for (uint i = 0; i < 4; i++)
-		{
-			memcpy(&hexValue, &uuid.Data[i * 4], sizeof(byte) * 4);
-			//setfill('0') << setw(8) to include the zeros
-			ss << setfill('0') << setw(8) << hex << hexValue;
-		}
-		String s = ss.str();
-		s.insert(25, "-");
-		s.insert(21, "-");
-		s.insert(17, "-");
-		s.insert(13, "-");
-		s += ")";
-		return s;
-	}
-
 	bool Equal(const UUID& a, const UUID& b)
 	{
 		return (memcmp(&a, &b, sizeof(UUID)) == 0);
@@ -77,7 +48,6 @@ namespace zaap
 
 	bool Greater(const UUID& a, const UUID& b)
 	{
-		//memcmp(&a, &b, sizeof(UUID) > 0) == a is greater
 		return memcmp(&a, &b, sizeof(UUID)) > 0;
 	}
 }

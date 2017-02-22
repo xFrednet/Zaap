@@ -122,7 +122,7 @@ namespace zaap
 
 	void SubmitZAResult(const ZA_RESULT& result, char* file, const uint& line)
 	{
-		log::LogMessage(file, line, ZA_LOG_MESSAGE_ERROR, GetZAResultMessage(result));
+		log::LogMessage(ZA_LOG_MESSAGE_ERROR, log::GetLogInfoHeader(ZA_LOG_MESSAGE_ERROR, file, line), GetZAResultMessage(result));
 	}
 
 	ZA_MULTI_RESULT CombineZAResults(std::initializer_list<ZA_RESULT> results)
