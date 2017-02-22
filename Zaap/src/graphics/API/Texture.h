@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
+
 #include <util/UUID.h>
 
 #pragma warning( disable : 4251)
@@ -275,6 +275,6 @@ namespace zaap { namespace graphics {
 	// <Return>
 	//      This returns the test result in form of a boolean.
 	//      
-	ZAAP_API inline bool Equal(Texture const* a, const Texture const* b);
+	ZAAP_API inline bool Equal(Texture const* a, Texture const* b);
 
 }}}

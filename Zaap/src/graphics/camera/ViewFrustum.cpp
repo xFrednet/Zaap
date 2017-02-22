@@ -1,7 +1,6 @@
 ﻿#include "ViewFrustum.h"
 
 #include <graphics/camera/Camera.h>
-#include <util/Console.h>
 
 namespace zaap { namespace graphics {
 	

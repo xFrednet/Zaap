@@ -2,20 +2,21 @@
 
 namespace zaap { namespace graphics {
 	Material::Material()
-		: Color(1.0f, 1.0f, 1.0f),
-		Reflectivity(0.0f)
+		: DiffuseReflectivity(1.0f, 1.0f, 1.0f),
+		SpectralReflectivity(0.0f)
 	{
 	}
 
-	Material::Material(graphics::Color color, float reflectivity)
-		: Color(color),
-		Reflectivity(reflectivity)
+	Material::Material(Color color, float reflectivity)
+		: DiffuseReflectivity(color.getRGB()),
+		SpectralReflectivity(reflectivity)
 	{
 	}
 
 	String Material::toString() const
 	{
-		return "Material(" + Color.toString() + ", Reflectivity: " + std::to_string(Reflectivity) + ")";
+		return "Material(DiffuseReflectivity: " + DiffuseReflectivity.toString() + 
+			", SpectralReflectivity: " + std::to_string(SpectralReflectivity) + ")";
 	}
 
 	bool Material::operator==(const Material& other) const
@@ -30,7 +31,7 @@ namespace zaap { namespace graphics {
 
 	bool Equal(const Material& a, const Material& b)
 	{
-		return Equal(a.Color, b.Color) &&
-			(a.Reflectivity == b.Reflectivity);
+		return Equal(a.DiffuseReflectivity, b.DiffuseReflectivity) &&
+			(a.SpectralReflectivity == b.SpectralReflectivity);
 	}
 }}

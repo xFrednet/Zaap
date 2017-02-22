@@ -1,5 +1,6 @@
 ﻿#include "MaterialManager.h"
-#include <util/Console.h>
+#include <util/Log.h>
+#include <util/StringUtil.h>
 
 namespace zaap { namespace graphics {
 	
@@ -22,7 +23,7 @@ namespace zaap { namespace graphics {
 		//error check
 		if (!fileStream.is_open())
 		{
-			ZAAP_ERROR(String("could not open: " + file));
+			ZA_ERROR("Could not open: ", file);
 			return ZA_ERROR_FILE_IS_IMAGINARY;
 		}
 
@@ -73,13 +74,13 @@ namespace zaap { namespace graphics {
 	{
 		if (Contains(name))
 		{
-			ZAAP_ALERT("The MaterialManager already contains a Material with the name: " + name + "\"");
+			ZA_ALERT("The MaterialManager already contains a Material with the name: ", name, "\"");
 			return;
 		}
 		
 		s_Materials[name] = material;
 
-		ZAAP_INFO("added: \"" + name + "\"");
+		ZA_INFO("added: \"", name, "\"");
 	}
 	Material MaterialManager::Get(const String& name)
 	{
@@ -97,6 +98,6 @@ namespace zaap { namespace graphics {
 	{
 		s_Materials.clear();
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 }}

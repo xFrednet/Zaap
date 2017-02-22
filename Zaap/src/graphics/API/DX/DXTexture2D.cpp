@@ -1,7 +1,7 @@
 #include "DXTexture2D.h"
 
 #include <util/ImageLoader.h>
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -101,7 +101,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateTexture2D(&m_TextureDesc, &resource, &m_Texture);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("Failed to create a Texture2D with the given data.");
+				ZA_ERROR("Failed to create a Texture2D with the given data.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
@@ -126,7 +126,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateShaderResourceView(m_Texture, &resDesc, &m_TextureView);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("Failed to create a ShaderResourceView.");
+				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
@@ -154,7 +154,7 @@ namespace zaap { namespace graphics { namespace DX {
 			result = dev->CreateSamplerState(&m_SamplerDesc, &m_SamplerState);
 			if (FAILED(result))
 			{
-				ZAAP_ERROR("Failed to create a ShaderResourceView.");
+				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
 			ZAAP_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));

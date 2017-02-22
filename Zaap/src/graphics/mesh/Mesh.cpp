@@ -4,37 +4,6 @@
 #include "util/Loader.h"
 
 namespace zaap { namespace graphics {
-	
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // ZA_TEXTURE_VERTEX //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	ZA_TEXTURE_VERTEX::ZA_TEXTURE_VERTEX()
-	{
-	}
-
-	ZA_TEXTURE_VERTEX::ZA_TEXTURE_VERTEX(Vec3 vertex, Vec3 normal, Vec2 texCoords)
-		: Position(vertex),
-		Normal(normal),
-		TexCoord(texCoords)
-	{
-	}
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // ZA_MATERIAL_VERTEX //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	ZA_MATERIAL_VERTEX::ZA_MATERIAL_VERTEX(Vec3 position, Vec3 normal, uint material)
-		: Position(position),
-		Normal(normal),
-		Material(material)
-	{
-	}
-
-	ZA_MATERIAL_VERTEX::ZA_MATERIAL_VERTEX()
-		: Position(),
-		Normal(),
-		Material(0)
-	{
-	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // ZA_TERRAIN_VERTEX //
@@ -55,29 +24,49 @@ namespace zaap { namespace graphics {
 	{
 	}
 
-	Mesh* Mesh::GetOrLoad(const String& file, bool isTexturedMesh)
+	Mesh Mesh::GetOrLoad(const String& file)
 	{
 		if (MeshManager::Contains(file))
 			return MeshManager::Get(file);
 
-		return Loader::LoadOBJFile(file, isTexturedMesh);
+		return zaap::Loader::LoadOBJFile(file);;
 	}
+
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Mesh //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, ZA_MESH_TYPE type)
+	Mesh::Mesh()
+		: Mesh("NULL", nullptr)
+	{
+	}
+	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer)
+		: Mesh(name, vertexBuffer, nullptr, 0)
+	{
+	}
+	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, Material const* materials, uint materialCount)
 		: m_Name(name),
 		m_VertexBuffer(vertexBuffer),
-		m_TYPE(type)
+		m_Materials(nullptr),
+		m_MaterialCount(0)
 	{
-		MeshManager::Add(this);
+		setMaterials(materials, materialCount);
+
+		if (m_Name != "NULL")
+			MeshManager::Add(*this);
 	}
 
-	//
-	// VertexBuffer
-	//
-	API::VertexBuffer* Mesh::getVertexBuffer(void) const
+	Mesh::~Mesh()
+	{
+		// TODO release the texture and the vertex buffer API::VertexBuffer::Delete();
+		/*if (m_Materials)
+			delete m_Materials;*/
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Vertex Buffer //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	API::VertexBuffer* Mesh::getVertexBuffer() const
 	{
 		return m_VertexBuffer;
 	}
@@ -86,29 +75,50 @@ namespace zaap { namespace graphics {
 		return m_VertexBuffer->getVertexCount();
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Texture //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	void Mesh::setTexture(API::Texture2D* texture)
+	{
+		m_Texture = texture;
+	}
+	API::Texture2D* Mesh::getTexture() const
+	{
+		return m_Texture;
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Material //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	void Mesh::setMaterials(const Material* &materials, const uint& materialCount)
+	{
+		if (m_Materials)
+			delete m_Materials;
+
+		if (materials)
+		{
+			m_MaterialCount = materialCount;
+			m_Materials = new Material[materialCount];
+			memcpy(m_Materials, materials, sizeof(Material) * materialCount);
+		} else
+		{
+			m_MaterialCount = 0;
+			m_Materials = nullptr;
+		}
+
+	}
+	Material* Mesh::getMaterials() const
+	{
+		return m_Materials;
+	}
+	uint Mesh::getMaterialCount() const
+	{
+		return m_MaterialCount;
+	}
+
 	String Mesh::getName() const
 	{
 		return m_Name;
 	}
 
-	ZA_MESH_TYPE Mesh::getType() const
-	{
-		return m_TYPE;
-	}
-
-	ZA_SHADER_TYPE Mesh::getTargetShader() const
-	{
-		switch (m_TYPE)
-		{
-			case ZA_MESH_TYPE_TEXTURED:
-				return ZA_SHADER_TEXTURE_SHADER;
-
-			case ZA_MESH_TYPE_MATERIAL:
-				return ZA_SHADER_MATERIAL_SHADER;
-			
-			case ZA_MESH_TYPE_UNKNOWN:
-			default:
-				return ZA_SHADER_UNKNOWN;
-		}
-	}
 }}

@@ -1,7 +1,5 @@
 #include "TextureManager.h"
 
-#include <util/Console.h>
-
 namespace zaap { namespace graphics {
 	
 	std::vector<API::Texture*> TextureManager::s_Textures;

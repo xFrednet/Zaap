@@ -1,9 +1,9 @@
 ﻿#include "DXRenderer3D.h"
 #include "DXTexture2D.h"
-#include "shader/types/DXTextureShader.h"
-#include "shader/types/DXTerrainShader.h"
-#include "shader/types/DXMaterialShader.h"
-#include "shader/types/DXFontShader2D.h"
+#include "shader/DXDefaultShader.h"
+#include "shader/DXTerrainShader.h"
+#include "shader/DXFontShader2D.h"
+#include <app/Window.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -12,10 +12,11 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Dev = DXContext::GetDevice();
 		m_Devcon = DXContext::GetDevContext();
 
-		m_TextureShader = new DXTextureShader();
-		m_MaterialShader = new DXMaterialShader();
+		m_DefaultShader = new DXDefaultShader();
+		((DXDefaultShader*)m_DefaultShader)->init();
 		m_TerrainShader = new DXTerrainShader();
 		m_FontShader2D = new DXFontShader2D();
+		((DXFontShader2D*)m_FontShader2D)->init();
 
 		resize(Window::GetWidth(), Window::GetHeight());
 

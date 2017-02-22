@@ -5,7 +5,7 @@
 
 #include <graphics/API/DX/DXCommon.h>
 #include <graphics/API/DX/shader/DXShader.h>
-#include <graphics/shader/types/FontShader2D.h>
+#include <graphics/shader/FontShader2D.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -19,8 +19,9 @@ namespace zaap { namespace graphics { namespace DX {
 		void loadTextColor() const override;
 	public:
 		DXFontShader2D();
+		~DXFontShader2D();
 
-		void cleanup() override;
+		ZA_MULTI_RESULT init();
 
 		void start() const override;
 		void stop() const override;

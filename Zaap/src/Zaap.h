@@ -18,7 +18,7 @@ Macro names:
 
 #include <app/Application.h>
 
-#include <util/Console.h>
+#include <util/Log.h>
 #include <util/StringUtil.h>
 #include <util/ImageLoader.h>
 #include <util/UUID.h>
@@ -37,7 +37,6 @@ Macro names:
 #include <graphics/camera/ControllableCamera.h>
 #include <graphics/camera/Camera.h>
 
-#include <graphics/mesh/TexturedMesh.h>
 #include <graphics/mesh/MeshManager.h>
 #include <graphics/TextureManager.h>
 #include <graphics/MaterialManager.h>

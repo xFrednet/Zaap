@@ -1,12 +1,7 @@
 #include "Context.h"
 
-#include <graphics/API/DX/DXCommon.h>
 #include <graphics/API/DX/DXContext.h>
-#include <util/Console.h>
-
-using namespace zaap;
-using namespace graphics;
-using namespace API;
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace API {
 
@@ -21,7 +16,7 @@ namespace zaap { namespace graphics { namespace API {
 	{
 		s_Context->cleanup();
 		delete s_Context;
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	void Context::SwapBuffers()

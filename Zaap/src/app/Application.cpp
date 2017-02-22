@@ -2,8 +2,7 @@
 
 #include <util/ImageLoader.h>
 
-#include <util/Console.h>
-#include <util/StringUtil.h>
+#include <util/Log.h>
 
 #include <graphics/API/Context.h>
 #include <graphics/TextureManager.h>
@@ -35,7 +34,7 @@ namespace zaap {
 		graphics::API::Texture::Cleanup();
 		graphics::API::VertexBuffer::Cleanup();
 
-		ZAAP_CLEANUP_INFO();
+		ZA_LOG_CLEANUP();
 	}
 
 	void Application::start()
@@ -87,7 +86,7 @@ namespace zaap {
 			{
 				if (Input::IsKeyPressed(ZA_VK_P))
 				{
-					ZAAP_ALERT("PAUSE");
+					ZA_ALERT("PAUSE");
 					m_Paused = !m_Paused;
 				}
 
@@ -106,11 +105,12 @@ namespace zaap {
 				timer += 1000;
 				
 				if (!m_Paused)
-				ZAAP_INFO(String("UPS: " + std::to_string(int(updates)) + ", FPS: " + std::to_string(int(frames))));
+				ZA_INFO("UPS: ", int(updates), ", FPS: ", int(frames));
 
-				if ((clock() - timer) >= 20000)
+				if (update_prog > 60) //TODO add other handling
 				{
-					ZAAP_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string(clock() - timer / 1000 * m_UPS) + " Updates.");
+					ZA_ALERT(String("The Gameloop can't keep up: skipped ") + std::to_string((uint)update_prog) + " Updates.");
+					update_prog = 0;
 					timer = clock();
 				}
 

@@ -25,9 +25,6 @@
     <Filter Include="Source Files\src\graphics\API">
       <UniqueIdentifier>{a78203de-f215-40f7-af68-c07f4fe21d04}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\graphics\shader">
-      <UniqueIdentifier>{3786fd76-937f-4f4e-a927-5d4540b23790}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\src\maths">
       <UniqueIdentifier>{1a0810fa-72de-49bb-b4de-4dd444cba215}</UniqueIdentifier>
     </Filter>
@@ -55,9 +52,6 @@
     <Filter Include="Source Files\src\graphics\API\DX\shader">
       <UniqueIdentifier>{80cf2297-cf1b-4e7a-8524-d8d3148d6517}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\graphics\shader\types">
-      <UniqueIdentifier>{b3fc4c8b-1658-4026-9d64-bc57ec3609d7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\src\graphics\API\DX\shader\types">
       <UniqueIdentifier>{f844c93d-04c4-49e3-8f91-ae8fb2bad02c}</UniqueIdentifier>
     </Filter>
@@ -73,11 +67,14 @@
     <Filter Include="Source Files\src\system">
       <UniqueIdentifier>{e5bf843d-25b7-48b4-95dd-ec5a32cc8d8c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\graphics\shader">
+      <UniqueIdentifier>{21d1ced4-e6bf-4841-8364-880c5167dbb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\graphics\shader\types">
+      <UniqueIdentifier>{d3fd73ec-acc9-4fde-9f45-a45429a31401}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\util\Console.cpp">
-      <Filter>Source Files\src\util</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\StringUtil.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
@@ -126,17 +123,11 @@
     <ClCompile Include="src\graphics\mesh\Mesh.cpp">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\mesh\TexturedMesh.cpp">
-      <Filter>Source Files\src\graphics\mesh</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\mesh\MeshManager.cpp">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Material.cpp">
       <Filter>Source Files\src\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\mesh\MaterialMesh.cpp">
-      <Filter>Source Files\src\graphics\mesh</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\terrain\Terrain.cpp">
       <Filter>Source Files\src\scene\terrain</Filter>
@@ -156,30 +147,6 @@
     <ClCompile Include="src\util\UUID.cpp">
       <Filter>Source Files\src\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\shader\types\FontShader2D.cpp">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\shader\types\MaterialShader.cpp">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\shader\types\TerrainShader.cpp">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\shader\types\TextureShader.cpp">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXFontShader2D.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXMaterialShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXTerrainShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\types\DXTextureShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\API\Texture.cpp">
       <Filter>Source Files\src\graphics\API</Filter>
     </ClCompile>
@@ -197,9 +164,6 @@
     </ClCompile>
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp">
-      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
     </ClCompile>
     <ClCompile Include="src\util\Loader.cpp">
       <Filter>Source Files\src\util</Filter>
@@ -240,6 +204,30 @@
     <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\shader\FontShader2D.cpp">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\TerrainShader.cpp">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\shader\DefaultShader.cpp">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXTerrainShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXFontShader2D.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXDefaultShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\Log.cpp">
+      <Filter>Source Files\src\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -248,17 +236,11 @@
     <ClInclude Include="src\Types.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="src\util\Console.h">
-      <Filter>Source Files\src\util</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\StringUtil.h">
       <Filter>Source Files\src\util</Filter>
     </ClInclude>
     <ClInclude Include="src\util\ImageLoader.h">
       <Filter>Source Files\src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\shader\Shader.h">
-      <Filter>Source Files\src\graphics\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\API\Context.h">
       <Filter>Source Files\src\graphics\API</Filter>
@@ -311,13 +293,7 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphics\mesh\TexturedMesh.h">
-      <Filter>Source Files\src\graphics\mesh</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\mesh\MeshManager.h">
-      <Filter>Source Files\src\graphics\mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\mesh\MaterialMesh.h">
       <Filter>Source Files\src\graphics\mesh</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\terrain\Terrain.h">
@@ -337,30 +313,6 @@
     </ClInclude>
     <ClInclude Include="src\util\UUID.h">
       <Filter>Source Files\src\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\shader\types\FontShader2D.h">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\shader\types\MaterialShader.h">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\shader\types\TerrainShader.h">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\shader\types\TextureShader.h">
-      <Filter>Source Files\src\graphics\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXFontShader2D.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXMaterialShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXTerrainShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\types\DXTextureShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\API\Texture.h">
       <Filter>Source Files\src\graphics\API</Filter>
@@ -382,9 +334,6 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXContext.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\shader\DXShader.h">
-      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
     </ClInclude>
     <ClInclude Include="src\util\Loader.h">
       <Filter>Source Files\src\util</Filter>
@@ -425,18 +374,45 @@
     <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\shader\Shader.h">
+      <Filter>Source Files\src\graphics\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\FontShader2D.h">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\TerrainShader.h">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\shader\DefaultShader.h">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXTerrainShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXFontShader2D.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXDefaultShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Za.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\Log.h">
+      <Filter>Source Files\src\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\graphics\API\DX\shader\types\DXFontShader2D.shader">
+    <None Include="src\graphics\API\DX\shader\DXTerrainShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
-    <None Include="src\graphics\API\DX\shader\types\DXMaterialShader.shader">
+    <None Include="src\graphics\API\DX\shader\DXFontShader2D.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
-    <None Include="src\graphics\API\DX\shader\types\DXTerrainShader.shader">
-      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
-    </None>
-    <None Include="src\graphics\API\DX\shader\types\DXTextureShader.shader">
+    <None Include="src\graphics\API\DX\shader\DXDefaultShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
   </ItemGroup>

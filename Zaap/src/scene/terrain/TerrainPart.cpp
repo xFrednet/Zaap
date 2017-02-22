@@ -42,8 +42,8 @@ namespace zaap { namespace scene {
 
 	bool TerrainPart::isVisible(const graphics::ViewFrustum& view) const
 	{
-		return view.isCuboidVisible(Vec3(m_MinX, m_MinHeight, m_MinZ), Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
-
+		//return view.isCuboidVisible(Vec3(m_MinX, m_MinHeight, m_MinZ), Vec3(m_MaxX, m_MaxHeight, m_MaxZ));
+		return true;
 	}
 
 	//

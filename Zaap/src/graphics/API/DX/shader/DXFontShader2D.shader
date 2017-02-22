@@ -51,7 +51,7 @@ float4 PShader(VSOut input) : SV_TARGET
 	if (alpha != 0) 
 		return float4(textColor.xyz, (alpha));
 	else 
-		return float4(1.0, 1.0, 1.0, 1.0);
+		return float4(1.0, 1.0, 1.0, 0.0);
 	//return charSheet.Sample(charSampler, input.TexCoord);
 	//return float4(1.0f, 1.0f, 1.0f, (alpha));
 })"

@@ -1,5 +1,7 @@
 #pragma once
-#include "Common.h"
+
+#include <Za.h>
+#include <Types.h>
 
 #ifndef ZA_MULTI_RESULT_SIZE
 #	define ZA_MULTI_RESULT_SIZE 8
@@ -10,8 +12,6 @@
 #		define ZA_MULTI_RESULT_SIZE 8
 #	endif
 #endif
-
-
 
 // <Name>
 //      ZA_RESULT
@@ -33,274 +33,301 @@
 //
 typedef int16									ZA_RESULT;
 
-// <Name>
-//      ZA_MULTI_RESULT
-//
-// <Description>
-//      This value combines multiple ZA_RESULT. New results are added at the 
-//      start of the array. ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
-//      indicates that there are too many ZA_RESULTS for ZA_MULTI_RESULT.
-//
-// <Components>
-//      Results : A array that can contain several ZA_RESULTs.
-//
-typedef struct ZAAP_API ZA_MULTI_RESULT_ {
-	ZA_RESULT Results[ZA_MULTI_RESULT_SIZE];
+#define ZA_RESULT_RESULT_MASK					ZA_RESULT(0x8000)
+#define ZA_RESULT_SOURCE_MASK					ZA_RESULT(0x7F00)
+#define ZA_RESULT_CODE_MASK						ZA_RESULT(0x00ff)
+
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_MULTI_RESULT //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap {
 	
-	ZA_MULTI_RESULT_();
-
-	// <Function>
-	//      operator[]
+	// <Name>
+	//      ZA_MULTI_RESULT
 	//
 	// <Description>
-	//      This enables the user to access the Results 
-	//      through the square brackets.
-	//      
-	// <Input>
-	//      index: 
-	//         The index of the requested @ZA_RESULT.
+	//      This value combines multiple ZA_RESULT. New results are added at the 
+	//      start of the array. ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+	//      indicates that there are too many ZA_RESULTS for ZA_MULTI_RESULT.
 	//
-	// <Return>
-	//      The @ZA_RESULT for the given index.
+	// <Members>
+	//      Results::
+	//			A array that can contain several ZA_RESULTs.;;
 	//
-	ZA_RESULT& operator[](int index);
+	typedef struct ZAAP_API ZA_MULTI_RESULT_ {
+		ZA_RESULT Results[ZA_MULTI_RESULT_SIZE];
 
-	// <Function>
-	//      operator[]
-	//
-	// <Description>
-	//      This enables the user to access the Results through
-	//      the square brackets. This method can be used by
-	//      a constant @ZA_MULTI_RESULT.
-	//      
-	// <Input>
-	//      index: 
-	//          The index of the requested ZA_RESULT.
-	//
-	// <Return>
-	//      The ZA_RESULT for the given index.
-	//
-	const ZA_RESULT& operator[] (const int index) const;
+		ZA_MULTI_RESULT_();
 
-	// <Function>
-	//      operator+=
-	//
-	// <Descritpion>
-	//      This operator adds the given ZA_RESULT to the start of this 
-	//      ZA_MULTI_RESULT. 
-	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
-	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
-	//      in the last ZA_RESULT. The given arguments are still 
-	//      added in the right order.
-	//
-	// <Note>
-	//      This operator is just a link to AddZAResult()
-	//
-	// <Input>
-	//      other : The ZA_RESULT on the other side of the += operator.
-	//
-	// <Return>
-	//      This returns this instance of the ZA_MULTI_RESULT.
-	//
-	ZA_MULTI_RESULT_& operator+=(const ZA_RESULT& other);
+		// <Constructor>
+		//		ZA_MULTI_RESULT_
+		//
+		// <Description>
+		//		This creates a ZA_MULTI_RESULT from a single ZA_RESULT.
+		//
+		// <Input>
+		//		result::
+		//			The result that is added at the front;;
+		//
+		ZA_MULTI_RESULT_(ZA_RESULT result);
 
-	// <Function>
-	//      operator+=
-	//
-	// <Descritpion>
-	//      This operator adds the given ZA_MULTI_RESULT to the start of this 
-	//      ZA_MULTI_RESULT. 
-	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
-	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
-	//      in the last ZA_RESULT. The given arguments are still 
-	//      added in the right order.
-	//
-	// <Note>
-	//      This operator is just a link to AddZAResult()
-	//
-	// <Input>
-	//      other : The ZA_MULTI_RESULT on the other side of the += operator.
-	//
-	// <Return>
-	//      This returns this instance of the ZA_MULTI_RESULT.
-	//
-	ZA_MULTI_RESULT_& operator+=(const ZA_MULTI_RESULT_& other);
+		uint size() const;
 
-	// <Function>
-	//      operator+
-	//
-	// <Descritpion>
-	//      This operator adds the given ZA_RESULT to the start of this 
-	//      ZA_MULTI_RESULT. 
-	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
-	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
-	//      in the last ZA_RESULT. The given arguments are still 
-	//      added in the right order.
-	//
-	// <Note>
-	//      This operator is just a link to AddZAResult()
-	//
-	// <Input>
-	//      other : The ZA_RESULT on the other side of the + operator.
-	//
-	// <Return>
-	//      This returns the combined results.
-	//
-	inline ZA_MULTI_RESULT_ operator+(const ZA_RESULT& other) const;
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Operators // 
+		/* //////////////////////////////////////////////////////////////////////////////// */
 
-	// <Function>
-	//      operator+
-	//
-	// <Descritpion>
-	//      This operator adds the given ZA_MULTI_RESULT to the start of this 
-	//      ZA_MULTI_RESULT. 
-	//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
-	//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
-	//      in the last ZA_RESULT. The given arguments are still 
-	//      added in the right order.
-	//
-	// <Note>
-	//      This operator is just a link to AddZAResult()
-	//
-	// <Input>
-	//      other : The ZA_MULTI_RESULT on the other side of the + operator.
-	//
-	// <Return>
-	//      This returns the combined results.
-	//
-	inline ZA_MULTI_RESULT_ operator+(const ZA_MULTI_RESULT_& other) const;
+		// <Function>
+		//      operator[]
+		//
+		// <Description>
+		//      This enables the user to access the Results 
+		//      through the square brackets.
+		//      
+		// <Input>
+		//      index: 
+		//         The index of the requested @ZA_RESULT.
+		//
+		// <Return>
+		//      The @ZA_RESULT for the given index.
+		//
+		ZA_RESULT& operator[](int index);
 
-	// <Function>
-	//      operator==
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator==(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator[]
+		//
+		// <Description>
+		//      This enables the user to access the Results through
+		//      the square brackets. This method can be used by
+		//      a constant @ZA_MULTI_RESULT.
+		//      
+		// <Input>
+		//      index: 
+		//          The index of the requested ZA_RESULT.
+		//
+		// <Return>
+		//      The ZA_RESULT for the given index.
+		//
+		const ZA_RESULT& operator[] (const int index) const;
 
-	// <Function>
-	//      operator!=
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator!=(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator+=
+		//
+		// <Descritpion>
+		//      This operator adds the given ZA_RESULT to the start of this 
+		//      ZA_MULTI_RESULT. 
+		//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+		//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+		//      in the last ZA_RESULT. The given arguments are still 
+		//      added in the right order.
+		//
+		// <Note>
+		//      This operator is just a link to AddZAResult()
+		//
+		// <Input>
+		//      other : The ZA_RESULT on the other side of the += operator.
+		//
+		// <Return>
+		//      This returns this instance of the ZA_MULTI_RESULT.
+		//
+		ZA_MULTI_RESULT_& operator+=(const ZA_RESULT& other);
 
-	// <Function>
-	//      operator<
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator<(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator+=
+		//
+		// <Descritpion>
+		//      This operator adds the given ZA_MULTI_RESULT to the start of this 
+		//      ZA_MULTI_RESULT. 
+		//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+		//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+		//      in the last ZA_RESULT. The given arguments are still 
+		//      added in the right order.
+		//
+		// <Note>
+		//      This operator is just a link to AddZAResult()
+		//
+		// <Input>
+		//      other : The ZA_MULTI_RESULT on the other side of the += operator.
+		//
+		// <Return>
+		//      This returns this instance of the ZA_MULTI_RESULT.
+		//
+		ZA_MULTI_RESULT_& operator+=(const ZA_MULTI_RESULT_& other);
 
-	// <Function>
-	//      operator>
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator>(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator+
+		//
+		// <Descritpion>
+		//      This operator adds the given ZA_RESULT to the start of this 
+		//      ZA_MULTI_RESULT. 
+		//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+		//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+		//      in the last ZA_RESULT. The given arguments are still 
+		//      added in the right order.
+		//
+		// <Note>
+		//      This operator is just a link to AddZAResult()
+		//
+		// <Input>
+		//      other : The ZA_RESULT on the other side of the + operator.
+		//
+		// <Return>
+		//      This returns the combined results.
+		//
+		inline ZA_MULTI_RESULT_ operator+(const ZA_RESULT& other) const;
 
-	// <Function>
-	//      operator<=
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator<=(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator+
+		//
+		// <Descritpion>
+		//      This operator adds the given ZA_MULTI_RESULT to the start of this 
+		//      ZA_MULTI_RESULT. 
+		//      A overflow (more ZA_RESULTS than ZA_MULTI_RESULT_SIZE)
+		//      is indicated by ZA_ERROR_TO_MANY_RESULTS_FOR_MULTIRESULT
+		//      in the last ZA_RESULT. The given arguments are still 
+		//      added in the right order.
+		//
+		// <Note>
+		//      This operator is just a link to AddZAResult()
+		//
+		// <Input>
+		//      other : The ZA_MULTI_RESULT on the other side of the + operator.
+		//
+		// <Return>
+		//      This returns the combined results.
+		//
+		inline ZA_MULTI_RESULT_ operator+(const ZA_MULTI_RESULT_& other) const;
 
-	// <Function>
-	//      operator>=
-	//
-	// <Description>
-	//      This operator performs the requested operation with
-	//      the first result in the array. This is a quicker excess
-	//      for the first ZA_RESULT.
-	//      This is also important for the test macros.
-	//      
-	// <Note>
-	//      Yes. Yes! I wrote it in a way that I could just copy and past
-	//      it for the other operators
-	//      
-	// <Input>
-	//      other : The ZA_RESULT on the right of the operator
-	//
-	// <Return>
-	//      Returns the test result.
-	//
-	inline bool operator>=(const ZA_RESULT& other) const;
+		// <Function>
+		//      operator==
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator==(const ZA_RESULT& other) const;
+
+		// <Function>
+		//      operator!=
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator!=(const ZA_RESULT& other) const;
+
+		// <Function>
+		//      operator<
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator<(const ZA_RESULT& other) const;
+
+		// <Function>
+		//      operator>
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator>(const ZA_RESULT& other) const;
+
+		// <Function>
+		//      operator<=
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator<=(const ZA_RESULT& other) const;
+
+		// <Function>
+		//      operator>=
+		//
+		// <Description>
+		//      This operator performs the requested operation with
+		//      the first result in the array. This is a quicker excess
+		//      for the first ZA_RESULT.
+		//      This is also important for the test macros.
+		//      
+		// <Note>
+		//      Yes. Yes! I wrote it in a way that I could just copy and past
+		//      it for the other operators
+		//      
+		// <Input>
+		//      other : The ZA_RESULT on the right of the operator
+		//
+		// <Return>
+		//      Returns the test result.
+		//
+		inline bool operator>=(const ZA_RESULT& other) const;
 
 
-} ZA_MULTI_RESULT;
-
-
-
+	} ZA_MULTI_RESULT;
+}
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // OPERATIONS //
@@ -310,9 +337,29 @@ typedef struct ZAAP_API ZA_MULTI_RESULT_ {
 #define ZA_FAILED(x)   (x < 0)
 #define ZA_SUCCEDED(x) (x >= 0)
 
-//submit result
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT util //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap {
 	ZAAP_API void SubmitZAResult(ZA_RESULT result);
+
+	// <Function>
+	//		SubmitZAResult
+	//
+	// <Description>
+	//		This prints the error message to the console.
+	//
+	// <Input>
+	//		result::
+	//			The result that should be printed.;;
+	//		file::
+	//			The file is filled in by the ZA_SUBMIT_ERROR macro. <\n>
+	//			The file is added to the console for more information.;;
+	//		line:
+	//			The line is also added by the ZA_SUBMIT_ERROR macro. <\n>
+	//			It is added to the console.
+	//
+	ZAAP_API void SubmitZAResult(const ZA_RESULT& result, char* file, const uint& line);
 
 	// <Function>
 	//      CombineZAResults
@@ -330,8 +377,8 @@ namespace zaap {
 	//      multiple ZA_RESULTS.
 	//      
 	// <Input>
-	//      results     : This is a list that can take in multiple
-	//                    ZA_RESULT.
+	//      results::
+	//			This is a list that can take in multiple ZA_RESULT.;;
 	//
 	// <Return>
 	//      The combined sub-results in from of a ZA_MULTI_RESULT.
@@ -418,10 +465,12 @@ namespace zaap {
 	//      to add multiple ZA_RESULTS.
 	//      
 	// <Input>
-	//      srcResult   : The main ZA_MULTI_RESULT. The results are
-	//                    added at the start of the ZA_MULTI_RESULT.
-	//      results     : The results that are added to the srcResult.
-	//                    This is a list that can take in multiple ZA_RESULT.
+	//      srcResult::
+	//			The main ZA_MULTI_RESULT. The results are added at the
+	//			start of the ZA_MULTI_RESULT.;;
+	//      results:: 
+	//			The results that are added to the srcResult. This is a list
+	//			that can take in multiple ZA_RESULT.
 	//
 	// <Return>
 	//      The combined results in from of a ZA_MULTI_RESULT.
@@ -478,10 +527,62 @@ namespace zaap {
 		ZA_MULTI_RESULT mResult2);
 }
 #ifndef ZA_SUBMIT_ERROR
-#	define ZA_SUBMIT_ERROR(x) zaap::SubmitZAResult(x)
+#	define ZA_SUBMIT_ERROR(x) zaap::SubmitZAResult(x, __FILE__, __LINE__)
 #endif
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT messages //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap
+{
+	// <Function>
+	//		GetResultSource
+	//
+	// <Description>
+	//		This returns the source of the submitted result.
+	//
+	// <Input>
+	//		result::
+	//			The base result.;;
+	//
+	// <Return>
+	//		This returns the source result.
+	//
+	ZAAP_API inline ZA_RESULT GetResultSource(const ZA_RESULT& result);
 
+	// <Function>
+	//		GetZAResultMessages
+	//
+	// <Description>
+	//		This returns the messages of the ZA_RESULT that
+	//		are inside the ZA_MULTI_RESULT.
+	//
+	// <Input>
+	//		result::
+	//			The ZA_MULTI_RESULT of the requested messages.;;
+	//
+	// <Return>
+	//		The message of the ZA_MULTI_RESULT or a default
+	//		"missing message" message.
+	//
+	ZAAP_API String GetZAResultMessages(const ZA_MULTI_RESULT& result);
+
+	// <Function>
+	//		GetZAResultMessage
+	//
+	// <Description>
+	//		This returns the message of the submitted ZA_RESULT. </n>
+	//
+	// <Input>
+	//		result::
+	//			The ZA_RESULT of the requested message.;;
+	//
+	// <Return>
+	//		The message of the ZA_RESULT or a default
+	//		"missing message" message.
+	//
+	ZAAP_API String GetZAResultMessage(const ZA_RESULT& result);
+}
 
 
 
@@ -616,7 +717,63 @@ namespace zaap {
 /* ********************************************************* */
 
 /* ##################################### */
-// # API Texture #
+// # Shader (0x8D1x) #
+/* ##################################### */
+
+// <Macro>
+//		ZA_ERROR_API_SHADER_ERROR
+//
+// <Message>
+//		The shader threw a Error.
+//
+#define ZA_ERROR_API_SHADER_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D10)
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~ COMPILATION_ERROR ~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+// <Macro>
+//		ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR
+//
+// <Description>
+//		The vertex shader couldn't be compiled. The error message should be
+//		printed to the console.
+//
+// <Message>
+//		The vertex shader couldn't be compiled.
+//
+#define ZA_ERROR_API_SHADER_VERTEX_SHADER_COMPILATION_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8D11)
+
+// <Macro>
+//		ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR
+//
+// <Description>
+//		The geometry shader couldn't be compiled. The error message should be
+//		printed to the console.
+//
+// <Message>
+//		The geometry shader couldn't be compiled.
+//
+#define ZA_ERROR_API_SHADER_GEOMETRY_SHADER_COMPILATION_ERROR		ZAAP_TYPEDEF_ZARESULT(0x8D12)
+
+// <Macro>
+//		ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR
+//
+// <Description>
+//		The pixel shader couldn't be compiled. The error message should be
+//		printed to the console.
+//
+// <Message>
+//		The pixel shader couldn't be compiled.
+//
+#define ZA_ERROR_API_SHADER_PIXEL_SHADER_COMPILATION_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8D13)
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// ~ CBUFFER_ERROR ~
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+/* ##################################### */
+// # API Texture (0x8D2x) #
 /* ##################################### */
 
 // <Name>
@@ -626,9 +783,9 @@ namespace zaap {
 //      A error general concerning a texture from the selected API.
 //
 // <Message>
-//     A texture from the current API caused a Error
+//     A texture from the current API caused an Error.
 // 
-#define ZA_ERROR_API_TEXTURE_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8D10)
+#define ZA_ERROR_API_TEXTURE_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8D20)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE1D_CREATION_ERROR
@@ -639,7 +796,7 @@ namespace zaap {
 // <Message>
 //      Failed to create a texture1D object for the current API.
 //
-#define ZA_ERROR_API_TEXTURE1D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D11)
+#define ZA_ERROR_API_TEXTURE1D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D21)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE2D_CREATION_ERROR
@@ -650,7 +807,7 @@ namespace zaap {
 // <Message>
 //      Failed to create a texture2D object for the current API.
 //
-#define ZA_ERROR_API_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D12)
+#define ZA_ERROR_API_TEXTURE2D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D22)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE3D_CREATION_ERROR
@@ -661,7 +818,7 @@ namespace zaap {
 // <Message>
 //      Failed to create a texture3D object for the current API.
 //
-#define ZA_ERROR_API_TEXTURE3D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D13)
+#define ZA_ERROR_API_TEXTURE3D_CREATION_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8D23)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE_FILE_ERROR
@@ -675,7 +832,7 @@ namespace zaap {
 // <Message>
 //      The file given texture file caused an error.
 //
-#define ZA_ERROR_API_TEXTURE_FILE_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8D14)
+#define ZA_ERROR_API_TEXTURE_FILE_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8D24)
 
 // <Name>
 //      ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS
@@ -683,7 +840,7 @@ namespace zaap {
 // <Message>
 //      The texture has invalid components.
 //      
-#define ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS				ZAAP_TYPEDEF_ZARESULT(0x8D15)
+#define ZA_ERROR_API_TEXTURE_INVALID_COMPONENTS				ZAAP_TYPEDEF_ZARESULT(0x8D25)
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_RESULT_SOURCE_API_DIRECTX //

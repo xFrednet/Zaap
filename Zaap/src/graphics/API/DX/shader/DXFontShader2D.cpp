@@ -1,5 +1,5 @@
 ﻿#include "DXFontShader2D.h"
-#include <util/Console.h>
+#include <util/Log.h>
 #include <graphics/API/DX/DXContext.h>
 
 
@@ -10,46 +10,49 @@ namespace zaap { namespace graphics { namespace DX {
 	};
 
 	String DXFontShader2DSrc = 
-#include <graphics/API/DX/shader/types/DXFontShader2D.shader>
+#include <graphics/API/DX/shader/DXFontShader2D.shader>
 		;
 
 	DXFontShader2D::DXFontShader2D()
-		: DXShader()
+		: DXShader(),
+		m_MatrixBuffer(nullptr),
+		m_ColorBuffer(nullptr)
 	{
-		if (createShaderFromString(DXFontShader2DSrc, DXFontShaderIED, 2))
+	}
+
+	DXFontShader2D::~DXFontShader2D()
+	{
+		ZAAP_DXRELEASE(m_MatrixBuffer);
+		ZAAP_DXRELEASE(m_ColorBuffer);
+	}
+
+	ZA_MULTI_RESULT DXFontShader2D::init()
+	{
+		ZA_MULTI_RESULT results;
+		results += createShaderFromString(DXFontShader2DSrc, DXFontShaderIED, 2);
+		if (ZA_FAILED(results))
 		{
-			ZAAP_INFO("compiled successfully");
-		} else
-		{
-			ZAAP_ALERT("compiling failed");
-			system("pause"); //TODO remove DebugCode
+			system("pause"); //TODO remove Debug code
+			return results;
 		}
 
-		//
-		// Matrix Buffer
-		//
-		{
-			if (CreateConstBuffer(m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix))
-			{
-				ZAAP_DXNAME(m_MatrixBuffer, "DXFontShader2D::m_MatrixBuffer");
-			} else
-			{
-				ZAAP_ERROR("Could not create m_MatrixBuffer");
-			}
-		}
+		/* ##################################### */
+		// # Matrix buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix);
+		if (ZA_FAILED(results))
+			return results;
 
-		//
-		// Color Buffer
-		//
-		{
-			if (CreateConstBuffer(m_ColorBuffer, sizeof(Color), &m_TextColor))
-			{
-				ZAAP_DXNAME(m_ColorBuffer, "DXFontShader2D::m_ColorBuffer");
-			} else
-			{
-				ZAAP_ERROR("Could not create m_ColorBuffer");
-			}
-		}
+		/* ##################################### */
+		// # Color buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_ColorBuffer, sizeof(Color), &m_TextColor);
+		if (ZA_FAILED(results))
+			return results;
+
+		ZA_INFO("init finished successfully! (I can type now)");
+
+		return results;
 	}
 
 	//
@@ -74,17 +77,6 @@ namespace zaap { namespace graphics { namespace DX {
 		devcon->Map(m_ColorBuffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 		memcpy(ms.pData, &m_TextColor, sizeof(Color));
 		devcon->Unmap(m_ColorBuffer, NULL);
-	}
-
-
-	void DXFontShader2D::cleanup()
-	{
-		ZAAP_DXRELEASE(m_MatrixBuffer);
-		ZAAP_DXRELEASE(m_ColorBuffer);
-		
-		cleanDXShader();
-
-		ZAAP_CLEANUP_INFO();
 	}
 
 	void DXFontShader2D::start() const

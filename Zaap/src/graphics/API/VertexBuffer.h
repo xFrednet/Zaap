@@ -39,7 +39,7 @@ namespace zaap { namespace graphics { namespace API {
 		static inline ViewFrustum GetViewFrustum();
 
 		/////////////////////////////////
-		// And finaly the actual class //
+		// And finally the actual class //
 		/////////////////////////////////
 	protected:
 		uint m_VertexCount;

@@ -5,7 +5,7 @@
 
 #include <entity/light/LightSetup.h>
 #include <graphics/API/DX/DXCommon.h>
-#include <graphics/shader/types/TerrainShader.h>
+#include <graphics/shader/TerrainShader.h>
 #include <graphics/API/DX/shader/DXShader.h>
 
 namespace zaap { namespace graphics { namespace DX {
@@ -42,9 +42,10 @@ namespace zaap { namespace graphics { namespace DX {
 	public:
 		DXTerrainShader();
 
+		~DXTerrainShader();
+
 		void start() const override;
 		void stop() const override;
-		void cleanup() override;
 	};
 		
 	

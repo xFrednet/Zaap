@@ -52,7 +52,7 @@ namespace zaap { namespace graphics {
 		//
 		typedef struct ZAAP_API ZA_MESHMANAGER_MESH_INFO_
 		{
-			Mesh* Mesh;
+			Mesh Mesh;
 			uint UseCount;
 		} ZA_MESHMANAGER_MESH_INFO;
 
@@ -80,7 +80,7 @@ namespace zaap { namespace graphics {
 		//      mesh:
 		//          The @Mesh that should be added to the @Mesh map.
 		//
-		static void Add(Mesh* mesh);
+		static void Add(const Mesh& mesh);
 
 		// <Function>
 		//      ReleasedMesh
@@ -96,11 +96,10 @@ namespace zaap { namespace graphics {
 		//      friends.
 		//
 		// <Input>
-		//      mesh:
-		//          The @Mesh that should that was released.
+		//      mesh::
+		//          The @Mesh that should that was released.;;
 		//
-		static void ReleasedMesh(Mesh* mesh);
-
+		static void ReleasedMesh(const Mesh& mesh);
 		
 		// <Function>
 		//      RemoveMesh
@@ -115,10 +114,10 @@ namespace zaap { namespace graphics {
 		//      of the submitted @Mesh.
 		//
 		// <Input>
-		//      mesh:
-		//          The @Mesh that should be removed from the map.
+		//      mesh::
+		//          The @Mesh that should be removed from the map.;;
 		//
-		static void RemoveMesh(Mesh* mesh);
+		static void RemoveMesh(const Mesh& mesh);
 		// <Function>
 		//      RemoveMesh
 		//
@@ -128,9 +127,9 @@ namespace zaap { namespace graphics {
 		//      use count or any other values.
 		//
 		// <Input>
-		//      name:
+		//      name::
 		//          The name of the @Mesh that should be removed
-		//          from the map.
+		//          from the map.;;
 		//
 		static void RemoveMesh(const String& name);
 	public:
@@ -142,16 +141,15 @@ namespace zaap { namespace graphics {
 		//      entered name.
 		//
 		// <Input>
-		//      name:
-		//          The name of the requested @Mesh.
+		//      name::
+		//          The name of the requested @Mesh.;;
 		//
 		// <Return>
 		//      This returns the @Mesh that was stored under the entered 
 		//      name. It can return Null if there is no @Mesh that is 
 		//      linked to the name.
 		//
-		static Mesh* Get(const String& name);
-
+		static Mesh Get(const String& name);
 
 		// <Function>
 		//      GetUseCount
@@ -166,13 +164,13 @@ namespace zaap { namespace graphics {
 		//      the name of this @Mesh
 		//
 		// <Input>
-		//      mesh:
-		//          The @Mesh to receive the requested use count.
+		//      mesh::
+		//          The @Mesh to receive the requested use count.;;
 		//
 		// <Return>
 		//      This returns the use count value of the @Mesh.
 		//
-		static uint GetUseCount(Mesh const* mesh);
+		static uint GetUseCount(const Mesh& mesh);
 		// <Function>
 		//      GetUseCount
 		//
@@ -182,14 +180,13 @@ namespace zaap { namespace graphics {
 		//      if the name is no a member of the @Mesh map.
 		//
 		// <Input>
-		//      mesh:
-		//          The @Mesh to receive the requested use count.
+		//      mesh::
+		//          The @Mesh to receive the requested use count.;;
 		//
 		// <Return>
 		//      This returns the use count value of the @Mesh.
 		//
 		static uint GetUseCount(const String& name);
-
 
 		// <Function>
 		//      Contains
@@ -205,13 +202,13 @@ namespace zaap { namespace graphics {
 		//      the @Mesh is a member of the @Mesh map.
 		//
 		// <Input>
-		//      mesh:
-		//          The @Mesh that should be checked.
+		//      mesh::
+		//          The @Mesh that should be checked.;;
 		//
 		// <Return>
 		//      This returns the test result.
 		//
-		static bool Contains(Mesh const* mesh);
+		static bool Contains(const Mesh& mesh);
 		// <Function>
 		//      Contains
 		//
@@ -220,14 +217,13 @@ namespace zaap { namespace graphics {
 		//      is stored with submitted name.
 		//
 		// <Input>
-		//      name:
-		//          The name that should be checked.
+		//      name::
+		//          The name that should be checked.;;
 		//
 		// <Return>
 		//      This returns the test result.
 		//
 		static bool Contains(const String& name);
-
 
 		// <Function>
 		//      Cleanup

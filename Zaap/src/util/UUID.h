@@ -35,9 +35,6 @@ namespace zaap
 		bool operator<=(const UUID& other) const;
 		bool operator>=(const UUID& other) const;
 	};
-
-	//String format UUID(xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
-	ZAAP_API String ToString(const UUID &uuid);
 	
 	ZAAP_API bool Equal(const UUID &a, const UUID &b);
 

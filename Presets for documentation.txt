@@ -40,9 +40,9 @@
 		//        - List item 3.3
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	// Values //
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Values //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
 		// <Class>
 		//      Class
@@ -59,7 +59,6 @@
 		public class ZAAP_API Class [...]
 		
 		// <Struct>
-		//      ZA_SUPER_STRUCT_,
 		//      ZA_SUPER_STRUCT
 		//
 		// <Description>
@@ -69,10 +68,10 @@
 		//      This struct is super because I said so.
 		//
 		// <Members>
-		//      IsSuper:
-		//          This boolean is always true becuase this struct is always super.
-		//      IsSuper2:
-		//          This is just a second boolean to show of the formating.
+		//      IsSuper::
+		//          This boolean is always true becuase this struct is always super.;;
+		//      IsSuper2::
+		//          This is just a second boolean to show of the formating.;;
 		//
 		typedef struct ZAAP_API ZA_SUPER_STRUCT_ {
 			bool IsSuper;
@@ -80,9 +79,9 @@
 		} ZA_SUPER_STRUCT;
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	// Values //
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Values //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
 		// <Value>
 		//      ValueName
@@ -113,9 +112,9 @@
 		bool ValueName = DEFAULT;
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	// Util //
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Util //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// ~ Return with a ZA_RESULT ~
@@ -143,10 +142,15 @@
 		//
 		String toString() const;
 	}
-	////////////////////////////////////////////////////////////////////////////////
-	// Constructor / Deconstructor //
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Constructor / Deconstructor //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
+		
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ default constructor ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
 		// <Constructor>
 		//      Class
 		//
@@ -154,12 +158,24 @@
 		//      This creates a new instance of the @Class class.
 		//
 		Class();
+
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		// ~ virtual deconstructor ~
+		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		
+		// <Deconstructor>
+		//      Class
+		//
+		// <Description>
+		//      This is a virtual deconstructor to support the deconstructors
+		//      of the sub classes.
+		//
 	}
-	////////////////////////////////////////////////////////////////////////////////
-	// Operators // 
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Operators // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{		
-		// <Function>
+		// <Method>
 		//      operator==
 		//
 		// <Description>
@@ -169,15 +185,15 @@
 		//      This calls the Equal method for this class.
 		//      
 		// <Input>
-		//      other:
-		//          The second object for comparison.
-		//	
+		//      other::
+		//          The second object for comparison.;;
+		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
 		//
 		inline bool operator==(const Class& other) const;
 
-		// <Function>
+		// <Method>
 		//      operator!=
 		//
 		// <Description>
@@ -187,8 +203,8 @@
 		//      This calls the Equal method for this class.
 		//  
 		// <Input>
-		//      other:
-		//          The second object for comparison.
+		//      other::
+		//          The second object for comparison.;;
 		//
 		// <Return>
 		//      This returns the test result in form of a boolean.
@@ -205,26 +221,95 @@
 		//      This info is totaly not coppied and pasted for every Equal function.
 		//
 		// <Input>
-		//      a:
-		//          The first object for comparison.
-		//      b:
-		//          The second object for comparison.
+		//      a::
+		//          The first object for comparison.;;
+		//      b::
+		//          The second object for comparison.;;
 		//       
 		// <Return>
 		//      This returns the test result in form of a boolean.
 		//      
 		ZAAP_API bool Equal(const Class& a, const Class& b);
+		
+		/* ********************************************************* */
+		// * Comparison *
+		/* ********************************************************* */
+
+		// <Method>
+		//		operator<
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This is done by comparing the <Value> with the
+		//		submitted <Value>.
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		bool operator<(const Class& other) const;
+		
+		// <Method>
+		//		operator<=
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This just calls the other comparison methods:
+		//		  - operator<
+		//		  - operator==
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		inline bool operator<=(const Class& other) const
+		{
+			return (*this < other) || (*this == other);
+		}
+		// <Method>
+		//		operator>=
+		//
+		// <Description>
+		//		This compares this and the given value.
+		//
+		// <Note>
+		//		This just calls the other comparison methods:
+		//		  - operator>
+		//		  - operator==
+		//
+		// <Input>
+		//		other::
+		//			The other value that should be used for comparison.;;
+		//
+		// <Return>
+		//		The test result.
+		//
+		inline bool operator>=(const Class& other) const
+		{
+			return (*this > other) || (*this == other);
+		}
+		
 	}
 
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// ZaapCLI documentation // 
-////////////////////////////////////////////////////////////////////////////////
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZaapCLI documentation // 
+/* //////////////////////////////////////////////////////////////////////////////// */
 {
-	////////////////////////////////////////////////////////////////////////////////
-	// Constructor / Deconstructor //
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Constructor / Deconstructor //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
 		// <Constructor>
 		//      Class
@@ -255,9 +340,9 @@
 		~Class();
 	}
 	
-	////////////////////////////////////////////////////////////////////////////////
-	// Operators // 
-	////////////////////////////////////////////////////////////////////////////////
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Operators // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	{
 		// <Function>
 		//      operator==

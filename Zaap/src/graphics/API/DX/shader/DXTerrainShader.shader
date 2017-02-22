@@ -24,9 +24,9 @@ struct VS_OUT
 /////////////
 cbuffer MatrixBuffer : register(b0)
 {
-	float4x4 ProjectionMatrix;
 	float4x4 TransformationMatrix;
 	float4x4 ViewMatrix;
+	float4x4 ProjectionMatrix;
 };
 cbuffer VSLightBuffer : register(b1)
 {

@@ -14,28 +14,30 @@ namespace zaap { namespace graphics {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 
 		// <Value>
-		//      Color
+		//      DiffuseReflectivity
 		//
 		// <Description>
-		//      This value stores the @Color of this @Material. The @Color
-		//      is used by some @Shaders for rendering.
+		//      This holds the reflectivity information for the 
+		//      red, green and blue color channel.;;
 		//
 		// <Note>
-		//      It is set to white by default.
-		//      
-		Color Color;
+		//    - It is set to white by default.
+		//    - This is a Vec3 to make the size of this struct dividable by
+		//      16 this is a requirement from DirectX.
+		//
+		Vec3 DiffuseReflectivity;
 
 		// <Value>
-		//      Reflectivity
+		//      SpectralReflectivity
 		//
 		// <Description>
-		//      This value stores the reflectivity of this @Material. The 
-		//      reflectivity is used by some @Shaders for rendering.
+		//      This value is used to calculate the reflectivity
+		//      of the spectral lighting.
 		//
 		// <Note>
 		//      It is set to 0 by default.
 		//      
-		float Reflectivity;
+		float SpectralReflectivity;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructor //
@@ -63,7 +65,7 @@ namespace zaap { namespace graphics {
 		//          The reflectivity of this @Material. It is used by some
 		//          shaders.
 		//
-		Material(graphics::Color color, float reflectivity);
+		Material(Color color, float reflectivity);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util //

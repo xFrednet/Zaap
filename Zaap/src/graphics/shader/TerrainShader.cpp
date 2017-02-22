@@ -36,7 +36,7 @@ namespace zaap { namespace graphics {
 	void TerrainShader::loadLightSetup(const LightSetup* lightSetup)
 	{
 		//lightCount
-		uint lightCount = ZAAP_SHADER_LIGHT_COUNT;
+		uint lightCount = ZA_SHADER_LIGHT_COUNT;
 		if (lightSetup->getSize() < lightCount)
 			lightCount = lightSetup->getSize();
 

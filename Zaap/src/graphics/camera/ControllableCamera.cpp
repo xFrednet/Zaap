@@ -1,7 +1,7 @@
 #include "ControllableCamera.h"
 
 #include <events/Input.h>
-#include <util/Console.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics {
 	
@@ -42,7 +42,7 @@ namespace zaap { namespace graphics {
 		//info
 		if (Input::IsKeyPressed(ZA_VK_I))
 		{
-			ZAAP_INFO("Position: " + m_Position.toString());
+			ZA_INFO("Position: ", m_Position);
 		}
 
 		//reset

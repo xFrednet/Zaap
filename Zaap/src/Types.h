@@ -1,6 +1,8 @@
 #pragma once
 
-#include <util/StringUtil.h>
+#include <string>
+
+typedef std::string String;
 
 typedef unsigned int        uint;
 typedef unsigned char       byte;
@@ -14,6 +16,3 @@ typedef unsigned char       uint8;
 typedef unsigned short      uint16;
 typedef unsigned int        uint32;
 typedef unsigned __int64    uint64;
-
-
-#include <ZAError.h>

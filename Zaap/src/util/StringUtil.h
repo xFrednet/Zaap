@@ -4,16 +4,31 @@
 
 #include <Common.h>
 
-#include <string>
+//forward declarations
+namespace zaap
+{
+	struct Vec2;
+	struct Vec3;
+	struct Vec4;
+	struct Mat4;
+	struct Plane3D;
 
-typedef std::string String;
+	namespace graphics
+	{
+		struct Color;
+		struct Material;
+	}
+
+	struct UUID;
+}
 
 namespace zaap {
+	
 
 	class ZAAP_API StringUtil
 	{
 	public:
-		static String getDateString(const time_t const time = time(0));
+		static String getDateString(const time_t& time = time(0));
 
 		// <Function>
 		//      Split
@@ -57,6 +72,67 @@ namespace zaap {
 		//
 		static bool StartsWith(const String& baseString, const String& str2);
 
+		// <Function>
+		//		Replace
+		//
+		// <Description>
+		//		This replaces the first-String in the base-String with the
+		//		second-String. The new String is returned as a result.
+		//
+		// <Input>
+		//		baseString::
+		//			The base String where the oldString should be replaced
+		//			with the newString.;;
+		//		oldString::
+		//			The String that should be replaced in the baseString.;;
+		//		newString::
+		//			The String that replaced the oldString in the baseString;;
+		//
+		static String Replace(String baseString, const String& oldString, const String& newString);
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // ToString //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+
+		template<typename T>
+		static String ToString(const T& t)
+		{
+			return std::to_string(t);
+		}
+		
+		/* ********************************************************* */
+		// * ZA_RESULT *
+		/* ********************************************************* */
+		template<>
+		static String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
+
+		/* ********************************************************* */
+		// * Maths *
+		/* ********************************************************* */
+		template<>
+		static String ToString<Vec2>(const Vec2& vec);
+		template<>
+		static String ToString<Vec3>(const Vec3& vec);
+		template<>
+		static String ToString<Vec4>(const Vec4& vec);
+		template<>
+		static String ToString<Mat4>(const Mat4& mat4);
+		template<>
+		static String ToString<Plane3D>(const Plane3D& plane);
+
+		/* ********************************************************* */
+		// * graphics *
+		/* ********************************************************* */
+		template<>
+		static String ToString<graphics::Color>(const graphics::Color& color);
+		template<>
+		static String ToString<graphics::Material>(const graphics::Material& material);
+
+		/* ********************************************************* */
+		// * other *
+		/* ********************************************************* */
+		template<>
+		static String ToString<UUID>(const UUID& uuid);
 	};
 
 }

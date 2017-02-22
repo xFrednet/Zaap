@@ -1,7 +1,6 @@
 ﻿#pragma once
 
 #include <Common.h>
-#include <Types.h>
 
 #include <graphics/shader/Shader.h>
 #include <entity/light/LightSetup.h>
@@ -27,7 +26,7 @@ namespace zaap { namespace graphics {
 		void setViewMatrix(Mat4 iewMatrix);
 
 		//Light buffer
-		void loadLightSetup(const LightSetup const* lightSetup);
+		void loadLightSetup(LightSetup const* lightSetup);
 
 		ZA_SHADER_TYPE getShaderType() const override;
 	};
