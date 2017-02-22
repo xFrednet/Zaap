@@ -95,7 +95,7 @@ namespace zaap {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 
 		template<typename T>
-		static inline String ToString(const T& t)
+		static String ToString(const T& t)
 		{
 			return std::to_string(t);
 		}
@@ -104,35 +104,35 @@ namespace zaap {
 		// * ZA_RESULT *
 		/* ********************************************************* */
 		template<>
-		static inline String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
+		static String ToString<ZA_MULTI_RESULT>(const ZA_MULTI_RESULT& multiResult);
 
 		/* ********************************************************* */
 		// * Maths *
 		/* ********************************************************* */
 		template<>
-		static inline String ToString<Vec2>(const Vec2& vec);
+		static String ToString<Vec2>(const Vec2& vec);
 		template<>
-		static inline String ToString<Vec3>(const Vec3& vec);
+		static String ToString<Vec3>(const Vec3& vec);
 		template<>
-		static inline String ToString<Vec4>(const Vec4& vec);
+		static String ToString<Vec4>(const Vec4& vec);
 		template<>
-		static inline String ToString<Mat4>(const Mat4& mat4);
+		static String ToString<Mat4>(const Mat4& mat4);
 		template<>
-		static inline String ToString<Plane3D>(const Plane3D& plane);
+		static String ToString<Plane3D>(const Plane3D& plane);
 
 		/* ********************************************************* */
 		// * graphics *
 		/* ********************************************************* */
 		template<>
-		static inline String ToString<graphics::Color>(const graphics::Color& color);
+		static String ToString<graphics::Color>(const graphics::Color& color);
 		template<>
-		static inline String ToString<graphics::Material>(const graphics::Material& material);
+		static String ToString<graphics::Material>(const graphics::Material& material);
 
 		/* ********************************************************* */
 		// * other *
 		/* ********************************************************* */
 		template<>
-		static inline String ToString<UUID>(const UUID& uuid);
+		static String ToString<UUID>(const UUID& uuid);
 	};
 
 }

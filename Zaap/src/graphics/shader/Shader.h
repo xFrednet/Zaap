@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
+
 #include <maths/Mat4.h>
 #include <graphics/Color.h>
 #include <graphics/Material.h>

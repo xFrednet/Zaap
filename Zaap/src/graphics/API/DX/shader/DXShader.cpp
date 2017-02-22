@@ -9,31 +9,6 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Static Util //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	bool DXShader::CreateConstBuffer(ID3D11Buffer** buffer, const uint& size, void const* data)
-	{
-		D3D11_BUFFER_DESC bDesc;
-		bDesc.ByteWidth = size;
-		bDesc.Usage = D3D11_USAGE_DYNAMIC;
-		bDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		bDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-		bDesc.MiscFlags = 0;
-		bDesc.StructureByteStride = 0;
-
-		D3D11_SUBRESOURCE_DATA initData;
-		initData.pSysMem = &data;
-		initData.SysMemPitch = 0;
-		initData.SysMemSlicePitch = 0;
-
-		return !FAILED(DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, buffer));
-	}
-
-	void DXShader::LoadResource(ID3D11Resource* buffer, void const* data, const uint& size) const
-	{
-		D3D11_MAPPED_SUBRESOURCE ms;
-		DXContext::GetDevContext()->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
-		memcpy(ms.pData, data, size);
-		DXContext::GetDevContext()->Unmap(buffer, NULL);
-	}
 
 	ID3D10Blob* DXShader::CompileShader(String shaderSrc, const String& version, const String& methodName)
 	{

@@ -36,7 +36,23 @@ namespace zaap { namespace graphics { namespace DX {
 		// <Return>
 		//		A value that indicates if this creating failed or not.
 		//
-		static bool CreateConstBuffer(ID3D11Buffer** buffer, const uint& size, void const* data);
+		static inline bool CreateConstBuffer(ID3D11Buffer** buffer, const uint& size, void const* data)
+		{
+			D3D11_BUFFER_DESC bDesc;
+			bDesc.ByteWidth = size;
+			bDesc.Usage = D3D11_USAGE_DYNAMIC;
+			bDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+			bDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+			bDesc.MiscFlags = 0;
+			bDesc.StructureByteStride = 0;
+
+			D3D11_SUBRESOURCE_DATA initData;
+			initData.pSysMem = &data;
+			initData.SysMemPitch = 0;
+			initData.SysMemSlicePitch = 0;
+
+			return !FAILED(DXContext::GetDevice()->CreateBuffer(&bDesc, &initData, buffer));
+		}
 
 		// <Function>
 		//		LoadResource
@@ -55,7 +71,13 @@ namespace zaap { namespace graphics { namespace DX {
 		//		size::
 		//			The size of the buffer. (Just use sizeof() on the buffer struct);;
 		//
-		inline void LoadResource(ID3D11Resource* buffer, void const* data, const uint& size) const;
+		static inline void LoadResource(ID3D11Resource* buffer, void const* data, const uint& size)
+		{
+			D3D11_MAPPED_SUBRESOURCE ms;
+			DXContext::GetDevContext()->Map(buffer, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+			memcpy(ms.pData, data, size);
+			DXContext::GetDevContext()->Unmap(buffer, NULL);
+		}
 
 	private:
 		// <Function>
