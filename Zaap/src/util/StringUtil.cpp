@@ -9,6 +9,9 @@
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 
+#include <gui/Point.h>
+#include <gui/Rectangle.h>
+
 #include <util/UUID.h>
 
 namespace zaap {
@@ -138,10 +141,31 @@ namespace zaap {
 	template <>
 	String StringUtil::ToString<graphics::Material>(const graphics::Material& material)
 	{
-		return "Material(DiffuseReflectivity: " + material.DiffuseReflectivity.toString() +
+		return "Material(DiffuseReflectivity: " + ToString<Vec3>(material.DiffuseReflectivity) +
 			", SpectralReflectivity: " + std::to_string(material.SpectralReflectivity) + ")";
 	}
 
+	/* ********************************************************* */
+	// * GUI *
+	/* ********************************************************* */
+	template <>
+	String StringUtil::ToString<gui::Point>(const gui::Point& point)
+	{
+		return "Point(X: " + std::to_string(point.X) +
+			", Y: " + std::to_string(point.Y) + ")";
+	}
+	template<>
+	String StringUtil::ToString<gui::Rectangle>(const gui::Rectangle& rectangle)
+	{
+		return "Point(X: " + std::to_string(rectangle.X) +
+			", Y: " + std::to_string(rectangle.Y) +
+			", Width: " + std::to_string(rectangle.Width) + 
+			", Height: " + std::to_string(rectangle.Height) + ")";
+	}
+
+	/* ********************************************************* */
+	// * other *
+	/* ********************************************************* */
 	template <>
 	String StringUtil::ToString<UUID>(const UUID& uuid)
 	{

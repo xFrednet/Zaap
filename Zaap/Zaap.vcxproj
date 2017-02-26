@@ -262,6 +262,9 @@
     <ClCompile Include="src\graphics\shader\FontShader2D.cpp" />
     <ClCompile Include="src\graphics\shader\TerrainShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
+    <ClCompile Include="src\gui\GUIComponent.cpp" />
+    <ClCompile Include="src\gui\Point.cpp" />
+    <ClCompile Include="src\gui\Rectangle.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathUtil.cpp" />
     <ClCompile Include="src\maths\Plane3D.cpp" />
@@ -318,6 +321,9 @@
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\TerrainShader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
+    <ClInclude Include="src\gui\GUIComponent.h" />
+    <ClInclude Include="src\gui\Point.h" />
+    <ClInclude Include="src\gui\Rectangle.h" />
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\maths\MathUtil.h" />
     <ClInclude Include="src\maths\Maths.h" />

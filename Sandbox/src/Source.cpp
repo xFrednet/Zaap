@@ -147,8 +147,6 @@ int main(void)
 	RandomUUID(&id1);
 	ZA_INFO(id1);
 
-	ZA_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
-
 	//source
 	{
 		scene_ = new Scene();

@@ -540,5 +540,6 @@ namespace zaap { namespace log {
 			ZA_FATAL_("Line: ", __LINE__);        \
 			ZA_FATAL_(__VA_ARGS__);               \
 			__debugbreak();                       \
+			zaap::log::LogCloseFile();            \
 		}
 #endif

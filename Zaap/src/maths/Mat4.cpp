@@ -211,7 +211,7 @@ namespace zaap {
 
 	bool Equal(const Mat4& a, const Mat4& b)
 	{
-		return (memcmp(&a,& b, sizeof(Mat4)) == 0);
+		return (memcmp(&a, &b, sizeof(Mat4)) == 0);
 	}
 
 	//

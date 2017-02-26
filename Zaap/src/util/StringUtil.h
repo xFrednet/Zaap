@@ -19,6 +19,12 @@ namespace zaap
 		struct Material;
 	}
 
+	namespace gui
+	{
+		struct Point;
+		struct Rectangle;
+	}
+
 	struct UUID;
 }
 
@@ -95,10 +101,7 @@ namespace zaap {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 
 		template<typename T>
-		static String ToString(const T& t)
-		{
-			return std::to_string(t);
-		}
+		static String ToString(const T& t);
 		
 		/* ********************************************************* */
 		// * ZA_RESULT *
@@ -129,10 +132,23 @@ namespace zaap {
 		static String ToString<graphics::Material>(const graphics::Material& material);
 
 		/* ********************************************************* */
+		// * GUI *
+		/* ********************************************************* */
+		template<>
+		static String ToString<gui::Point>(const gui::Point& point);
+		template<>
+		static String ToString<gui::Rectangle>(const gui::Rectangle& rectangle);
+
+		/* ********************************************************* */
 		// * other *
 		/* ********************************************************* */
 		template<>
 		static String ToString<UUID>(const UUID& uuid);
 	};
 
+	template <typename T>
+	String StringUtil::ToString(const T& t)
+	{
+		return std::to_string(t);
+	}
 }

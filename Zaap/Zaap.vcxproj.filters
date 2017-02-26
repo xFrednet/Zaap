@@ -73,6 +73,9 @@
     <Filter Include="Source Files\src\graphics\shader\types">
       <UniqueIdentifier>{d3fd73ec-acc9-4fde-9f45-a45429a31401}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\gui">
+      <UniqueIdentifier>{b9108396-6f32-45c6-bfec-ab257ca98b73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\StringUtil.cpp">
@@ -227,6 +230,15 @@
     </ClCompile>
     <ClCompile Include="src\util\Log.cpp">
       <Filter>Source Files\src\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GUIComponent.cpp">
+      <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\Rectangle.cpp">
+      <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\Point.cpp">
+      <Filter>Source Files\src\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -403,6 +415,15 @@
     </ClInclude>
     <ClInclude Include="src\util\Log.h">
       <Filter>Source Files\src\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GUIComponent.h">
+      <Filter>Source Files\src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\Rectangle.h">
+      <Filter>Source Files\src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\Point.h">
+      <Filter>Source Files\src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
