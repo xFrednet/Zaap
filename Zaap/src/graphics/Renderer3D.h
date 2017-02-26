@@ -13,6 +13,8 @@
 #	define ZA_DEFAULT_FOV 90.0f
 #endif
 
+//TODO put the cleanup methods in the deconstructors
+
 namespace zaap { namespace graphics {
 	class Scene;
 
@@ -22,7 +24,7 @@ namespace zaap { namespace graphics {
 	//      Renderer3D
 	//
 	// <Description>
-	//      This class is an abstract class. It could/should be passed for rendering.
+	//      This class is an abstract class. It could/should be passed for rendering. <\n>
 	//      
 	//      The constructor is protected. Use CreateNewInstance to create a 
 	//      instance for the current API
@@ -40,11 +42,11 @@ namespace zaap { namespace graphics {
 		//
 		// <Note>
 		//      The instance is created using the new statement the requester 
-		//      has to delete the new instance. Please call cleanup beforehand.,
-		//      
+		//      has to delete the new instance.
+		//
 		// <Return>
 		//      The renderer for the chosen API or a nullptr in case of failure.
-		//      
+		//
 		static Renderer3D* CreateNewInstance();
 
 	protected:
@@ -157,6 +159,7 @@ namespace zaap { namespace graphics {
 		//      This method deletes all the values that are created
 		//      using the new operator. (This only includes the values that
 		//      are inside this base Renderer3D)
+		//
 		// <Note>
 		//      This is called by the cleanup method. 
 		//      It's called after cleanupAPIRenderer.
@@ -400,15 +403,15 @@ namespace zaap { namespace graphics {
 		//      This method configures the RenderTarget size and
 		//      some API related things.
 		//      
+		// <Note>
+		//      This method will be changed to add extra resize options 
+		//      or to enable the user to set a target frame part
+		//      
 		// <Input>
 		//      width: 
 		//          the new width.
 		//      height: 
 		//          the new height.
-		//      
-		// <Note>
-		//      This method will be changed to add extra resize options 
-		//      or to enable the user to set a target frame part
 		//      
 		virtual void resize(uint width, uint height) = 0;
 

@@ -252,6 +252,7 @@
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
+    <ClCompile Include="src\graphics\GUIRenderer.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\MaterialManager.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
@@ -310,6 +311,7 @@
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Format.h" />
+    <ClInclude Include="src\graphics\GUIRenderer.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\MaterialManager.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
