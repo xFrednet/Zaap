@@ -64,7 +64,7 @@
 		// <Description>
 		//      This struct is super but it's never used, sorry.
 		//
-		// <Note>
+		// <Note>
 		//      This struct is super because I said so.
 		//
 		// <Members>

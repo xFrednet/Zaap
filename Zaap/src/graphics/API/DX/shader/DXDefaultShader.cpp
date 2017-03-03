@@ -59,11 +59,11 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXDefaultShader::~DXDefaultShader()
 	{
-		ZAAP_DXRELEASE(m_MatrixBuffer);
-		ZAAP_DXRELEASE(m_SceneBuffer);
-		ZAAP_DXRELEASE(m_VSLightBuffer);
-		ZAAP_DXRELEASE(m_PSLightBuffer);
-		ZAAP_DXRELEASE(m_MaterialBuffer);
+		ZA_DXRELEASE(m_MatrixBuffer);
+		ZA_DXRELEASE(m_SceneBuffer);
+		ZA_DXRELEASE(m_VSLightBuffer);
+		ZA_DXRELEASE(m_PSLightBuffer);
+		ZA_DXRELEASE(m_MaterialBuffer);
 	}
 
 	ZA_MULTI_RESULT DXDefaultShader::init()

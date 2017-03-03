@@ -22,8 +22,8 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXFontShader2D::~DXFontShader2D()
 	{
-		ZAAP_DXRELEASE(m_MatrixBuffer);
-		ZAAP_DXRELEASE(m_ColorBuffer);
+		ZA_DXRELEASE(m_MatrixBuffer);
+		ZA_DXRELEASE(m_ColorBuffer);
 	}
 
 	ZA_MULTI_RESULT DXFontShader2D::init()

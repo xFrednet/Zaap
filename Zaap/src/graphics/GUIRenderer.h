@@ -5,7 +5,8 @@
 #include <events/EventManager.h>
 
 namespace zaap { namespace graphics {
-	
+	struct Color;
+
 	class ZAAP_API GUIRenderer
 	{
 	public:
@@ -30,9 +31,9 @@ namespace zaap { namespace graphics {
 		//
 		static ZA_RESULT CreateNewInstance(GUIRenderer** instance);
 
-		////////////////////////////////////////////////////////////////////////////////
-		// Class content //
-		////////////////////////////////////////////////////////////////////////////////
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Class content //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	protected:
 		uint m_TargetWidth;
 		uint m_TargetHeight;
@@ -51,9 +52,9 @@ namespace zaap { namespace graphics {
 		//
 		API::Texture2D* m_RenderTarget;
 
-		////////////////////////////////////////////////////////////////////////////////
-		// Initialization / Deconstruction //
-		////////////////////////////////////////////////////////////////////////////////
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Initialization / Deconstruction //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	protected:
 		// <Constructor>
 		//		GUIRenderer
@@ -87,13 +88,13 @@ namespace zaap { namespace graphics {
 		//      using the new operator. (This only includes the values that
 		//      are inside this base GUIRenderer)
 		//
-		virtual ~GUIRenderer();
+		virtual ~GUIRenderer() {}
 
-		////////////////////////////////////////////////////////////////////////////////
-		// Window callback //
-		////////////////////////////////////////////////////////////////////////////////
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Window callback //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
-		// <Function>
+		// <Method>
 		//      windowCallback
 		//
 		// <Description>
@@ -102,7 +103,7 @@ namespace zaap { namespace graphics {
 		//      
 		void windowCallback(const Event& windowEvent);
 	protected:
-		// <Function>
+		// <Method>
 		//      resize
 		//
 		// <Description>
@@ -120,6 +121,38 @@ namespace zaap { namespace graphics {
 		//          the new height.
 		//
 		virtual void resize(uint width, uint height) = 0;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+	public:
+		// <Method>
+		//		startRenderer
+		//
+		// <Descritpion>
+		//		This prepares the RenderTarget, starts the GUIRenderer
+		//		and probably does some other stuff.
+		//
+		void startRenderer();
+	protected:
+		// <Method>
+		//      prepareFrame
+		//
+		// <Description>
+		//      This method is called by startRenderer. <\n>
+		//      It prepares the Frame in some different ways, just call it
+		//      for the greater good of the engine.
+		//      (Note: Some APIs might have some extra functions in here.)
+		//
+		virtual void prepareFrame() const = 0;
+	
+	public:
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Draw Util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+
+		// Nothing yet this will be done when I'm sure how this should work.
+
 	};
 
 }}

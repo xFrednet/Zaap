@@ -17,8 +17,8 @@ namespace zaap { namespace gui {
 
 	bool Rectangle::intersects(const Rectangle& other) const
 	{
-		return ((X + Width) > other.X) && (X < (other.X + other.Width)) &&
-			((Y + Height) > other.Y) && (Y < (other.Y + other.Height));
+		return ((X + (int)Width) > other.X) && (X < (other.X + (int)other.Width)) &&
+			((Y + (int)Height) > other.Y) && (Y < (other.Y + (int)other.Height));
 	}
 	bool Rectangle::contains(const Point& point) const
 	{
@@ -26,8 +26,8 @@ namespace zaap { namespace gui {
 	}
 	bool Rectangle::contains(const int& x, const int& y) const
 	{
-		return (x > X && x < (X + Width)) && 
-			(y > Y && y < (Y + Height));
+		return (x > X && x < (X + (int)Width)) && 
+			(y > Y && y < (Y + (int)Height));
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

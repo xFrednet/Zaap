@@ -55,9 +55,9 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXTexture2D::~DXTexture2D()
 	{
-		ZAAP_DXRELEASE(m_Texture);
-		ZAAP_DXRELEASE(m_TextureView);
-		ZAAP_DXRELEASE(m_SamplerState);
+		ZA_DXRELEASE(m_Texture);
+		ZA_DXRELEASE(m_TextureView);
+		ZA_DXRELEASE(m_SamplerState);
 	}
 
 	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
@@ -104,7 +104,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a Texture2D with the given data.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
+			ZA_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
 		} else
 		{
 			m_Texture->GetDesc(&m_TextureDesc);
@@ -129,7 +129,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZAAP_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
+			ZA_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
 			//TODO add devcon->GenerateMips(m_TextureView);
 		}
 
@@ -157,7 +157,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZAAP_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));
+			ZA_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));
 		}
 
 		return ZA_OK;

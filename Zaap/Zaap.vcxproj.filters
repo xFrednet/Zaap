@@ -243,6 +243,12 @@
     <ClCompile Include="src\graphics\GUIRenderer.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\API\RenderTarget.cpp">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\DXRenderTarget.cpp">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -430,6 +436,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\GUIRenderer.h">
       <Filter>Source Files\src\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\RenderTarget.h">
+      <Filter>Source Files\src\graphics\API</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\DXRenderTarget.h">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

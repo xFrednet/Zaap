@@ -4,6 +4,10 @@
 #include <Types.h>
 #include <maths/Maths.h>
 
+#ifdef ZAAP_INCLUDE_DIRECTX
+#include <graphics/API/DX/DXCommon.h>
+#endif
+
 namespace zaap { namespace graphics {
 	
 	struct ZAAP_API Color
@@ -57,19 +61,12 @@ namespace zaap { namespace graphics {
 		int getIntB(void) const;
 		int getIntA(void) const;
 
-		// <Function>
-		//      toString
-		//
-		// <Description>
-		//      This combines the values of this @Color into a string.
-		//
-		// <Example>
-		//      "Color(R 1.0, G 1.0, B 1.0, A 1.0)"
-		//
-		// <Return>
-		//      The String containing the information from this instance.
-		//
-		String toString() const;
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // API Getters // 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+#ifdef ZAAP_INCLUDE_DIRECTX
+		inline D3DXCOLOR getDXColor() const;
+#endif
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Operators // 

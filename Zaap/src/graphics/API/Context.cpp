@@ -7,21 +7,29 @@ namespace zaap { namespace graphics { namespace API {
 
 	Context* Context::s_Context = nullptr;
 
-	void Context::Create()
+	ZA_RESULT Context::Create()
 	{
 		s_Context = new DX::DXContext();
+		return s_Context->init();
 	}
 
 	void Context::Cleanup()
 	{
-		s_Context->cleanup();
 		delete s_Context;
 		ZA_LOG_CLEANUP();
 	}
 
-	void Context::SwapBuffers()
+	RenderTarget* Context::GetRenderTarget()
 	{
-		s_Context->swapBuffers();
+		return s_Context->getRenderTarget();
+	}
+	void Context::PrepareFrame()
+	{
+		s_Context->prepareFrame();
+	}
+	void Context::PresentFrame()
+	{
+		s_Context->presentFrame();
 	}
 
 }}}

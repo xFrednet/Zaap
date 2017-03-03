@@ -21,23 +21,9 @@ namespace zaap { namespace graphics {
 		return nullptr;
 	}
 
-	void Renderer3D::windowCallback(const Event& windowEvent)
-	{
-		if (windowEvent.getEventType() != WINDOW_RESIZE_EVENT || 
-			m_HasCustomRenderTarget) return;
-		
-		WindowResizeEvent* event = (WindowResizeEvent*)&windowEvent;
-		m_Width = event->getWidth();
-		m_Height = event->getHeight();
-
-		calulateProjectionMatrix();
-
-		resize(m_Width, m_Height);
-	}
-
 	// The shaders should be internalized by API renderer
 	//
-	Renderer3D::Renderer3D()
+	Renderer3D::Renderer3D(ZA_RENDERER_TARGET_TYPE renderTargetType)
 		: m_RenderTarget(nullptr),
 		m_DepthStencil(nullptr), 
 		m_ActiveShaderType(ZA_SHADER_UNKNOWN),
@@ -45,15 +31,22 @@ namespace zaap { namespace graphics {
 		m_TerrainShader(nullptr),
 		m_FontShader2D(nullptr)
 	{
-		m_Width = Window::GetWidth();
-		m_Height = Window::GetWidth();
 
-		updateProjectionMatrix();
+		if (renderTargetType == ZA_RENDERER_TARGET_DEFAULT)
+			m_RenderTargetType = ZA_RENDERER_TARGET_CONTEXT_TARGET;
+		else
+			m_RenderTargetType = renderTargetType;
 
-		Input::AddWindowCallback(ZA_METHOD_1(Renderer3D::windowCallback));
+		if (m_RenderTargetType == ZA_RENDERER_TARGET_CONTEXT_TARGET)
+		{
+			m_RenderTarget = API::Context::GetRenderTarget();
+			m_RenderTarget->addUpdateListener(ZA_METHOD_0(Renderer3D::renderTargetUpdated));
+
+			updateProjectionMatrix();
+		}
 	}
 
-	void Renderer3D::cleanupBaseRenderer3D()
+	Renderer3D::~Renderer3D()
 	{
 		if (m_DefaultShader)
 		{
@@ -70,26 +63,6 @@ namespace zaap { namespace graphics {
 			delete m_FontShader2D;
 			m_FontShader2D = nullptr;
 		}
-		if (!m_HasCustomRenderTarget)
-		{
-			if (m_RenderTarget)
-			{
-				m_RenderTarget->destroy();
-				m_RenderTarget = nullptr;
-			}
-			if (m_DepthStencil)
-			{
-				m_DepthStencil->destroy();
-				m_DepthStencil = nullptr;
-			}
-		}
-
-	}
-
-	void Renderer3D::cleanup()
-	{
-		cleanupAPIRenderer();
-		cleanupBaseRenderer3D();
 	}
 
 	void Renderer3D::loadTransformationMatrix(const Mat4& transformationMatrix) const
@@ -176,6 +149,13 @@ namespace zaap { namespace graphics {
 		}
 	}
 
+	void Renderer3D::setCustomRenderTarget(API::RenderTarget* renderTarget)
+	{
+		m_RenderTarget = renderTarget;
+		renderTargetUpdated();
+		m_RenderTarget->addUpdateListener(ZA_METHOD_0(Renderer3D::renderTargetUpdated));
+	}
+
 	//
 	// Alpha testing
 	//
@@ -246,10 +226,10 @@ namespace zaap { namespace graphics {
 	{
 		float aspect;
 
-		if (m_Height == 0) // TODO add a error message
+		if (m_RenderTarget->getWidth() == 0) // TODO add a error message
 			aspect = 1.0f;
 		else
-			aspect = (float)m_Width / (float)m_Height;
+			aspect = (float)m_RenderTarget->getWidth() / (float)m_RenderTarget->getHeight();
 
 		CreateProjectionMatrix(&m_ProjectionMatrix, m_FOV, aspect, m_NearPlane, m_FarPlane);
 	}
@@ -263,7 +243,7 @@ namespace zaap { namespace graphics {
 			m_TerrainShader->setProjectionMatrix(m_ProjectionMatrix);
 
 		if (m_FontShader2D)
-			m_FontShader2D->setTargetSize(m_Width, m_Height);
+			m_FontShader2D->setTargetSize(m_RenderTarget->getWidth(), m_RenderTarget->getHeight());
 	}
 	Mat4 Renderer3D::getProjectionMatrix() const
 	{

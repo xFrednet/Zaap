@@ -135,9 +135,6 @@ public:
 	void render() override 
 	{
 		Application::render();
-
-		font_.render(fontVB, scene_->getRenderer());
-		scene_->getRenderer()->presentFrame();
 	}
 };
 

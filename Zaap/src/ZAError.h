@@ -859,6 +859,17 @@ namespace zaap
 #define ZA_ERROR_DIRECTX_ERROR									ZAAP_TYPEDEF_ZARESULT(0x8E00)
 
 // <Name>
+//      ZA_ERROR_DIRECTX_INIT_ERROR
+//
+// <Description>
+//      A general error during the initialization of Direct X object.
+//
+// <Message>
+//      A error accord during the initialization of Direct X.
+//
+#define ZA_ERROR_DIRECTX_INIT_ERROR									ZAAP_TYPEDEF_ZARESULT(0x8E00)
+
+// <Name>
 //      ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT
 //      
 // <Description>
@@ -867,7 +878,7 @@ namespace zaap
 // <Message>
 //      A error accord somewhere within a Direct X object.
 //
-#define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT						ZAAP_TYPEDEF_ZARESULT(0x8E01)
+#define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT						ZAAP_TYPEDEF_ZARESULT(0x8E03)
 
 /* ********************************************************* */
 // * Direct X component stuff *
