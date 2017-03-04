@@ -21,7 +21,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//		source.
 		//
 		bool m_AutoDeleteMembers;
-
+		
 		// <Value>
 		//      m_RenderTargetView
 		// 
@@ -38,12 +38,31 @@ namespace zaap { namespace graphics { namespace DX {
 		//		This is the actual texture object of the @RenderTarget
 		//
 		ID3D11Texture2D* m_Texture;
+		
+		// <Value>
+		//		m_SamplerState
+		//
+		// <Description>
+		//		This is the sampler of the texture. It also indicates if
+		//		the Texture can be bound as a shader resource.
+		//
+		ID3D11SamplerState* m_SamplerState;
+		// <Value>
+		//		m_TextureView
+		//
+		// <Description>
+		//		This is the resource view of the texture. It also indicates if
+		//		the Texture can be bound as a shader resource.
+		ID3D11ShaderResourceView* m_TextureView;
 	public:
 		DXRenderTarget();
 		DXRenderTarget(ID3D11RenderTargetView* view, ID3D11Texture2D* texture, const uint& width, const uint& height, bool autoDeleteMembers = false);
 		~DXRenderTarget();
 
 		void setTarget(ID3D11RenderTargetView* view, ID3D11Texture2D* texture, const uint& width, const uint& height, bool autoDeleteMembers = false);
+		void setShaderResources(ID3D11ShaderResourceView* textureView, ID3D11SamplerState* samplerState);
+
+		ZA_RESULT createTarget(const uint& width, const uint& height, const ZA_FORMAT& format) override; //TODO add a sample count option
 
 		void bindTexture(uint index) override;
 		void unbindTexture(uint index) override;

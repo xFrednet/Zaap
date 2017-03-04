@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <Common.h>
+#include <graphics/Format.h>
 
 namespace zaap {namespace graphics {
 	struct Color;
@@ -19,8 +20,6 @@ namespace zaap {namespace graphics {
 
 namespace zaap { namespace graphics { namespace API {
 	
-
-
 	class ZAAP_API RenderTarget
 	{
 	protected:
@@ -38,6 +37,8 @@ namespace zaap { namespace graphics { namespace API {
 		virtual ~RenderTarget();
 
 		void addUpdateListener(const UpdateListener& listener);
+
+		virtual ZA_RESULT createTarget(const uint& width, const uint& height, const ZA_FORMAT& format) = 0;
 
 		virtual void bindTexture(uint index) = 0;
 		virtual void unbindTexture(uint index) = 0;

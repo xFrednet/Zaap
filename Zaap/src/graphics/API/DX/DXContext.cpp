@@ -49,18 +49,18 @@ namespace zaap { namespace graphics { namespace DX {
 			DXGI_SWAP_CHAIN_DESC scd;
 			ZeroMemory(&scd, sizeof(DXGI_SWAP_CHAIN_DESC));
 
-			scd.BufferCount = 1;
-			scd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-			scd.BufferDesc.Width = UINT(wWidth);
-			scd.BufferDesc.Height = UINT(wHeight);
+			scd.BufferCount			= 1;
+			scd.BufferDesc.Format	= DXGI_FORMAT_R8G8B8A8_UNORM;
+			scd.BufferDesc.Width	= UINT(wWidth);
+			scd.BufferDesc.Height	= UINT(wHeight);
 			scd.BufferDesc.RefreshRate.Numerator = 60;
 			scd.BufferDesc.RefreshRate.Denominator = 1;
-			scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-			scd.OutputWindow = Window::GetHWND();
-			scd.SampleDesc.Count = 1;//TODO add option
-			scd.SampleDesc.Quality = 0;
-			scd.Windowed = true;
-			scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+			scd.BufferUsage			= DXGI_USAGE_RENDER_TARGET_OUTPUT;
+			scd.OutputWindow		= Window::GetHWND();
+			scd.SampleDesc.Count	= 1;//TODO add option
+			scd.SampleDesc.Quality	= 0;
+			scd.Windowed			= true;
+			scd.Flags				= DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 			D3D_FEATURE_LEVEL FeatureLevels = D3D_FEATURE_LEVEL_11_0;
 			D3D_FEATURE_LEVEL FeatureLevel;

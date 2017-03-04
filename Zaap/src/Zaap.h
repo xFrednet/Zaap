@@ -18,18 +18,31 @@ Macro names:
 
 #include <app/Application.h>
 
+// Util
 #include <util/Log.h>
 #include <util/StringUtil.h>
 #include <util/ImageLoader.h>
 #include <util/UUID.h>
 
+//Scene
+#include <graphics/Scene.h>
 #include <scene/terrain/Terrain.h>
 
-#include <graphics/Scene.h>
-#include <graphics/Renderer3D.h>
-#include <graphics/Bitmap.h>
+//graphics objects
+#include <graphics/Format.h>
 #include <graphics/Color.h>
+#include <graphics/Bitmap.h>
 #include <graphics/Material.h>
+
+//API components
+#include <graphics/API/RenderTarget.h>
+#include <graphics/API/Texture.h>
+#include <graphics/API/Texture2D.h>
+#include <graphics/API/VertexBuffer.h>
+
+//renders
+#include <graphics/Renderer3D.h>
+#include <graphics/GUIRenderer.h>
 
 #include <entity/light/LightSetup.h>
 #include <entity/light/Light.h>
