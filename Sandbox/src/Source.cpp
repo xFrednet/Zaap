@@ -146,15 +146,12 @@ int main(void)
 	ZA_INFO(id1);
 
 
+
 	//source
 	{
 		scene_ = new Scene();
 
 		Test t;
-
-		API::RenderTarget* target = new DX::DXRenderTarget();
-		ZA_RESULT result = target->createTarget(1920, 1080, ZA_FORMAT_R8G8B8A8_UINT);
-		ZA_INFO(result);
 	
 		loadEntitys();
 

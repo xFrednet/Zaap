@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <Common.h>
-#include "API/Texture2D.h"
+#include <graphics/API/RenderTarget.h>
 #include <events/EventManager.h>
 
 namespace zaap { namespace graphics {
@@ -38,19 +38,10 @@ namespace zaap { namespace graphics {
 		uint m_TargetWidth;
 		uint m_TargetHeight;
 
-		// <Value>
-		//      m_RenderTarget
-		// 
-		// <Description>
-		//      This is the rendering target.
-		//
-		// <Note>
-		//      This usually gets created by the API renderer. 
-		//      The last instance gets deleted in the 
-		//      cleanupBaseRenderer3D method. This is only done if 
-		//      m_HasCustomRenderTarget is false.
-		//
-		API::Texture2D* m_RenderTarget;
+		ZA_RENDERER_TARGET_TYPE m_RenderTargetType;
+
+		API::RenderTarget* m_MainTarget;
+		API::RenderTarget* m_GUIBackBuffer;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization / Deconstruction //
@@ -102,6 +93,8 @@ namespace zaap { namespace graphics {
 		//      Resize events are passed to the resize method.
 		//      
 		void windowCallback(const Event& windowEvent);
+
+		virtual void renderTargetUpdated() = 0;
 	protected:
 		// <Method>
 		//      resize
@@ -134,6 +127,8 @@ namespace zaap { namespace graphics {
 		//		and probably does some other stuff.
 		//
 		void startRenderer();
+
+		void stopRenderer();
 	protected:
 		// <Method>
 		//      prepareFrame

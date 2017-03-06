@@ -249,6 +249,12 @@
     <ClCompile Include="src\graphics\API\DX\DXRenderTarget.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\shader\GUIShader.cpp">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\shader\DXGUIShader.cpp">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -443,6 +449,12 @@
     <ClInclude Include="src\graphics\API\DX\DXRenderTarget.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\shader\GUIShader.h">
+      <Filter>Source Files\src\graphics\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\shader\DXGUIShader.h">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\graphics\API\DX\shader\DXTerrainShader.shader">
@@ -452,6 +464,9 @@
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
     <None Include="src\graphics\API\DX\shader\DXDefaultShader.shader">
+      <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </None>
+    <None Include="src\graphics\API\DX\shader\DXGUIShader.shader">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </None>
   </ItemGroup>
