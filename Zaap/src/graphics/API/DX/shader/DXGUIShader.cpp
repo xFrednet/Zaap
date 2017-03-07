@@ -9,6 +9,10 @@ namespace zaap { namespace graphics { namespace DX {
 		{"TYPEINFO"	, 0, DXGI_FORMAT_R32G32B32A32_FLOAT	, 0, sizeof(float) * 2 + 8	, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 	
+	String DXGUIShaderSrc =
+#include "DXGUIShader.shader"
+		 ;
+
 	void DXGUIShader::loadTransformationMatrix() const
 	{
 		LoadResource(m_MatrixBuffer, &m_TransformationMatrix, sizeof(Mat4));
@@ -28,7 +32,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		ZA_MULTI_RESULT results;
 
-		results += createShaderFromString(dxDefaultShaderSrc, DXGUIShaderIED, 4);
+		results += createShaderFromString(DXGUIShaderSrc, DXGUIShaderIED, 4);
 		if (ZA_FAILED(results))
 		{
 			ZA_ASSERT(false);

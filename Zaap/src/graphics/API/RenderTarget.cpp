@@ -1,9 +1,14 @@
 ﻿#include "RenderTarget.h"
 
 #include <graphics/Color.h>
+#include "DX/DXRenderTarget.h"
 
 namespace zaap { namespace graphics { namespace API {
-	
+	RenderTarget* RenderTarget::Create()
+	{
+		return new DX::DXRenderTarget();
+	}
+
 	void RenderTarget::informUpdateListeners() const
 	{
 		for (UpdateListener listener : m_UpdateListeners)

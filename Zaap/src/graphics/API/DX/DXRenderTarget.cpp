@@ -67,17 +67,11 @@ namespace zaap { namespace graphics { namespace DX {
 		// else no else it will do nothing if just one is null
 	}
 
-	ZA_RESULT DXRenderTarget::createTarget(const uint& width, const uint& height, const ZA_FORMAT& format)
+	ZA_RESULT DXRenderTarget::createTarget(const uint& width, const uint& height)
 	{
-		// they are only set at the end
-		m_Width = 0;
-		m_Height = 0;
-
 		HRESULT hr;
 		ID3D11Device *dev = DXContext::GetDevice();
-		DXGI_FORMAT DXformat = GetDirectXFormat(format);
-		//TODO add a invalid format error
-		DXformat = DXGI_FORMAT_R32G32B32A32_FLOAT;
+		DXGI_FORMAT DXformat = DXGI_FORMAT_R32G32B32A32_FLOAT;
 
 		// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		// ~ Texture creation ~
@@ -185,6 +179,11 @@ namespace zaap { namespace graphics { namespace DX {
 		informUpdateListeners();
 
 		return ZA_OK;
+	}
+
+	ZA_RESULT DXRenderTarget::resizeTarget(const uint& width, const uint& height)
+	{
+		return createTarget(width, height);
 	}
 
 	void DXRenderTarget::bindTexture(uint slot)

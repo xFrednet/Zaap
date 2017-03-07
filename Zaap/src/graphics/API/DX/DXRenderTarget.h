@@ -62,7 +62,8 @@ namespace zaap { namespace graphics { namespace DX {
 		void setTarget(ID3D11RenderTargetView* view, ID3D11Texture2D* texture, const uint& width, const uint& height, bool autoDeleteMembers = false);
 		void setShaderResources(ID3D11ShaderResourceView* textureView, ID3D11SamplerState* samplerState);
 
-		ZA_RESULT createTarget(const uint& width, const uint& height, const ZA_FORMAT& format) override; //TODO add a sample count option
+		ZA_RESULT createTarget(const uint& width, const uint& height) override; //TODO add a sample count option
+		ZA_RESULT resizeTarget(const uint& width, const uint& height) override;
 
 		void bindTexture(uint index) override;
 		void unbindTexture(uint index) override;

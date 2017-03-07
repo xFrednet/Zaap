@@ -1,11 +1,15 @@
 ﻿#pragma once
 
 #include <Common.h>
+
 #include <graphics/API/RenderTarget.h>
 #include <events/EventManager.h>
+#include "shader/GUIShader.h"
 
 namespace zaap { namespace graphics {
 	struct Color;
+
+	ID3D11BlendState* bl;
 
 	class ZAAP_API GUIRenderer
 	{
@@ -43,6 +47,8 @@ namespace zaap { namespace graphics {
 		API::RenderTarget* m_MainTarget;
 		API::RenderTarget* m_GUIBackBuffer;
 
+		GUIShader* m_GUIShader;
+
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization / Deconstruction //
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -79,41 +85,13 @@ namespace zaap { namespace graphics {
 		//      using the new operator. (This only includes the values that
 		//      are inside this base GUIRenderer)
 		//
-		virtual ~GUIRenderer() {}
+		virtual ~GUIRenderer();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Window callback //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
-		// <Method>
-		//      windowCallback
-		//
-		// <Description>
-		//      The constructor adds this method as a windowCallback function.
-		//      Resize events are passed to the resize method.
-		//      
-		void windowCallback(const Event& windowEvent);
-
-		virtual void renderTargetUpdated() = 0;
-	protected:
-		// <Method>
-		//      resize
-		//
-		// <Description>
-		//      This method configures the RenderTarget size and
-		//      some API related things.
-		//
-		// <Note>
-		//      This method will be changed to add extra resize options 
-		//      or to enable the user to set a target frame part
-		//
-		// <Input>
-		//      width: 
-		//          the new width.
-		//      height: 
-		//          the new height.
-		//
-		virtual void resize(uint width, uint height) = 0;
+		virtual void renderTargetUpdated();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util //
@@ -126,27 +104,10 @@ namespace zaap { namespace graphics {
 		//		This prepares the RenderTarget, starts the GUIRenderer
 		//		and probably does some other stuff.
 		//
-		void startRenderer();
+		virtual void startRenderer();
 
-		void stopRenderer();
-	protected:
-		// <Method>
-		//      prepareFrame
-		//
-		// <Description>
-		//      This method is called by startRenderer. <\n>
-		//      It prepares the Frame in some different ways, just call it
-		//      for the greater good of the engine.
-		//      (Note: Some APIs might have some extra functions in here.)
-		//
-		virtual void prepareFrame() const = 0;
-	
+		void finishRendering();
 	public:
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Draw Util //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-
-		// Nothing yet this will be done when I'm sure how this should work.
 
 	};
 

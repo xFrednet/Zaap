@@ -255,6 +255,9 @@
     <ClCompile Include="src\graphics\API\DX\shader\DXGUIShader.cpp">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\DXGUIRenderer.cpp">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\shader\DXGUIShader.h">
       <Filter>Source Files\src\graphics\API\DX\shader\types</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\DXGUIRenderer.h">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

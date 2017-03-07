@@ -6,7 +6,8 @@
 #include <maths/Mat4.h>
 
 namespace zaap { namespace graphics {
-	
+
+
 	class ZAAP_API GUIShader : public Shader
 	{
 	protected:

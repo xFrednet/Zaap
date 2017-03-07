@@ -235,6 +235,7 @@
     <ClCompile Include="src\events\WindowEvent.cpp" />
     <ClCompile Include="src\graphics\API\Context.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXGUIRenderer.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderTarget.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp" />
@@ -298,6 +299,7 @@
     <ClInclude Include="src\graphics\API\Context.h" />
     <ClInclude Include="src\graphics\API\DX\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DX\DXContext.h" />
+    <ClInclude Include="src\graphics\API\DX\DXGUIRenderer.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderTarget.h" />
     <ClInclude Include="src\graphics\API\DX\DXTexture2D.h" />

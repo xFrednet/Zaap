@@ -13,8 +13,9 @@ namespace zaap {namespace graphics {
 	//
 	typedef enum ZAAP_API ZA_RENDERER_TARGET_TYPE_ {
 		ZA_RENDERER_TARGET_DEFAULT = 0,
-		ZA_RENDERER_TARGET_CONTEXT_TARGET = 1,
-		ZA_RENDERER_TARGET_CUSTOME_TARGET = 2
+		ZA_RENDERER_TARGET_UNSET = 1,
+		ZA_RENDERER_TARGET_CONTEXT_TARGET = 2,
+		ZA_RENDERER_TARGET_CUSTOME_TARGET = 3,
 	} ZA_RENDERER_TARGET_TYPE;
 }}
 
@@ -22,6 +23,9 @@ namespace zaap { namespace graphics { namespace API {
 	
 	class ZAAP_API RenderTarget
 	{
+	public:
+		static RenderTarget* Create();
+
 	protected:
 		typedef std::function<void()> UpdateListener;
 		
@@ -38,7 +42,8 @@ namespace zaap { namespace graphics { namespace API {
 
 		void addUpdateListener(const UpdateListener& listener);
 
-		virtual ZA_RESULT createTarget(const uint& width, const uint& height, const ZA_FORMAT& format) = 0;
+		virtual ZA_RESULT createTarget(const uint& width, const uint& height) = 0;
+		virtual ZA_RESULT resizeTarget(const uint& width, const uint& height) = 0;
 
 		virtual void bindTexture(uint index) = 0;
 		virtual void unbindTexture(uint index) = 0;

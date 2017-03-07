@@ -4,6 +4,7 @@
 #include "shader/DXTerrainShader.h"
 #include "shader/DXFontShader2D.h"
 #include <app/Window.h>
+#include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
 	
@@ -128,12 +129,13 @@ namespace zaap { namespace graphics { namespace DX {
 		rDesc.MultisampleEnable = false;
 		rDesc.AntialiasedLineEnable = false;
 
-		m_Dev->CreateRasterizerState(&rDesc, &m_RasterizerState);
+		HRESULT hr = m_Dev->CreateRasterizerState(&rDesc, &m_RasterizerState);
 		ZA_DXNAME(m_RasterizerState, "DXRenderer3D::m_RasterizerState");
 
 		m_Devcon->RSSetState(m_RasterizerState);
 
-		return ZA_OK;
+		ZA_ASSERT(SUCCEEDED(hr));
+		return (FAILED(hr)) ? ZA_ERROR_API_ERROR : ZA_OK;
 	}
 	ZA_RESULT DXRenderer3D::initBlendState()
 	{
