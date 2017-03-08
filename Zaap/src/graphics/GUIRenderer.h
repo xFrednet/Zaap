@@ -9,8 +9,6 @@
 namespace zaap { namespace graphics {
 	struct Color;
 
-	ID3D11BlendState* bl;
-
 	class ZAAP_API GUIRenderer
 	{
 	public:

@@ -38,6 +38,8 @@ namespace zaap { namespace graphics { namespace DX {
 	private:
 		ZA_RESULT initDXObjects();
 	public:
+		DXGUIRenderer();
+
 		~DXGUIRenderer() override;
 
 		void startRenderer() override;

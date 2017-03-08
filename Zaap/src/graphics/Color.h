@@ -1,11 +1,10 @@
 ﻿#pragma once
 
 #include <Common.h>
-#include <Types.h>
 #include <maths/Maths.h>
 
 #ifdef ZAAP_INCLUDE_DIRECTX
-#include <graphics/API/DX/DXCommon.h>
+struct D3DXCOLOR;
 #endif
 
 namespace zaap { namespace graphics {

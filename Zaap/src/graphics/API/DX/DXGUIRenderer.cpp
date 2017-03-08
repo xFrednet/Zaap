@@ -8,19 +8,23 @@
 namespace zaap { namespace graphics { namespace DX {
 	ZA_RESULT DXGUIRenderer::init()
 	{
-		ZA_RESULT zr;
+		ZA_MULTI_RESULT zmr;
 		m_Dev = DXContext::GetDevice();
 		m_Devcon = DXContext::GetDevContext();
 
+
 		m_GUIShader = new DXGUIShader();
+		zmr = m_GUIShader->init();
+		ZA_ASSERT(ZA_SUCCEDED(zmr));
 		m_GUIShader->setTargetSize(m_TargetWidth, m_TargetHeight);
 
-		zr = initDXObjects();
+		zmr += initDXObjects();
+		ZA_ASSERT(ZA_SUCCEDED(zmr));
 
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		ZA_ASSERT(ZA_SUCCEDED(zr));
-		return zr;
+		
+		return (ZA_SUCCEDED(zmr)) ? ZA_OK : ZA_ERROR_DIRECTX_ERROR;
 	}
 
 	ZA_RESULT DXGUIRenderer::initDXObjects()
@@ -82,6 +86,15 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 
 		return ZA_OK;
+	}
+
+	DXGUIRenderer::DXGUIRenderer()
+		: m_RasterizerState(nullptr),
+		m_BlendState(nullptr),
+		m_DepthStencilState(nullptr)
+	{
+
+
 	}
 
 	DXGUIRenderer::~DXGUIRenderer()

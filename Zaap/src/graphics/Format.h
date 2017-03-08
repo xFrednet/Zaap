@@ -4,7 +4,7 @@
 #include <Types.h>
 
 #ifdef ZAAP_INCLUDE_DIRECTX
-#include <graphics/API/DX/DXCommon.h>
+enum DXGI_FORMAT;
 #endif
 
 namespace zaap

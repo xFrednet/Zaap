@@ -1,5 +1,9 @@
 #include "Format.h"
 
+#ifdef ZAAP_INCLUDE_DIRECTX
+#include <graphics/API/DX/DXCommon.h>
+#endif
+
 namespace zaap
 {
 	
@@ -146,7 +150,7 @@ namespace zaap
 			return false;
 		}
 	}
-
+	
 #ifdef ZAAP_INCLUDE_DIRECTX
 	DXGI_FORMAT GetDirectXFormat(ZA_FORMAT format)
 	{
