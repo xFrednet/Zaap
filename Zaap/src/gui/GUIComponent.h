@@ -5,13 +5,10 @@
 #include <gui/Rectangle.h>
 #include <gui/Point.h>
 
-namespace zaap
-{
-	namespace graphics
-	{
-		class GUIRenderer;
-	}
-}
+#include <graphics/GUIRenderer.h>
+
+#define ZA_GUI_SIZE_WRAP_CONTENT 0
+#define ZA_GUI_SIZE_MATCH_PARENT -1
 
 namespace zaap { namespace gui {
 
@@ -22,6 +19,25 @@ namespace zaap { namespace gui {
 		uint m_PaddingBottom;
 		uint m_PaddingLeft;
 		uint m_PaddingRight;
+
+		// <Value>
+		//		m_PreferredWidth
+		//
+		// <Descritpion>
+		//		This holds the info about the preferred width. <\n>
+		//		A value above zero indicates a pixel value, a value below or equal
+		//		zero indicates a special width like: "wrap_content", "match_parent".
+		//
+		int m_PreferredWidth;
+		// <Value>
+		//		m_PreferredHeight
+		//
+		// <Descritpion>
+		//		This holds the info about the preferred height. <\n>
+		//		A positive value indicates a pixel value, a negative value
+		//		indicates a special width like: "wrap_content", "match_parent".
+		//
+		int m_PreferredHeight;
 
 		// <Value>
 		//		m_Size
@@ -60,12 +76,24 @@ namespace zaap { namespace gui {
 		//
 		GUIComponent* m_Parent;
 
+		// <Value>
+		//		m_IsVisible
+		//
+		// <Descritpion>
+		//		This value indicates if the object is visible or
+		//		hidden. A hidden value will/should not be rendered by the parent.
+		//
+		// <Note>
+		//		This state also influences it's children.
+		//
+		bool m_IsVisible;
+
 		GUIComponent(GUIComponent* parent = nullptr, Rectangle size = Rectangle(0, 0, 0, 0));
 		virtual ~GUIComponent();
 	public:
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Util // 
+		// // Util //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 
 		// <Method>
@@ -312,6 +340,93 @@ namespace zaap { namespace gui {
 		inline void setY(const int& y);
 
 		/* ********************************************************* */
+		// * preferred size *
+		/* ********************************************************* */
+
+		// <Method>
+		//		getPreferredWidth
+		//
+		// <Return>
+		//		This returns the value of m_PreferredWidth.
+		//
+		inline int getPreferredWidth() const
+		{
+			return m_PreferredWidth;
+		}
+		// <Method>
+		//		getPreferredHeight
+		//
+		// <Return>
+		//		This returns the value of m_PreferredHeight.
+		//
+		inline int getPreferredHeight() const
+		{
+			return m_PreferredWidth;
+		}
+
+	protected:
+		// <Method>
+		//		getWrappedWidth
+		//
+		// <Return>
+		//		This returns the width that the object would take
+		//		if the preferred width is set to wrap_content.
+		//
+		virtual uint getWrappedWidth() const = 0;
+		// <Method>
+		//		getWrappedHeight
+		//
+		// <Return>
+		//		This returns the height that the object would take
+		//		if the preferred height is set to wrap_content.
+		//
+		virtual uint getWrappedHeight() const = 0;
+		
+		// <Method>
+		//		resized
+		//
+		// <Description>
+		//		This is called by the parent when the child 
+		//		was resized. This is usually done by the parent.
+		//
+		virtual void resized() = 0;
+		// <Method>
+		//		childHasNewPreferrences
+		//
+		// <Description>
+		//		This is called by the child wen a new 
+		//		preferred width or height is set.
+		//
+		virtual void childHasNewPreferrences(GUIComponent* child);
+	public:
+		// <Method>
+		//		setPreferredWidth
+		//
+		// <Input>
+		//		width::
+		//			The new width for m_PreferredWidth.;;
+		//
+		void setPreferredWidth(const int& width);
+		// <Method>
+		//		setPreferredHeight
+		//
+		// <Input>
+		//		height::
+		//			The new preferred height of this object.;;
+		//
+		void setPreferredHeight(const int& height);
+		// <Method>
+		//		setPreferredSize
+		//
+		// <Input>
+		//		width::
+		//			The new preferred width.;;
+		//		height::
+		//			The new preferred height.;;
+		//
+		void setPreferredSize(const int& width, const int& height);
+
+		/* ********************************************************* */
 		// * size *
 		/* ********************************************************* */
 
@@ -380,6 +495,31 @@ namespace zaap { namespace gui {
 				getTotalHeight());
 		}
 
+		/* ********************************************************* */
+		// * hidden value *
+		/* ********************************************************* */
+		
+		// <Method>
+		//		isVisible
+		//
+		// <Return>
+		//		This returns the state of the m_Visible value;
+		//
+		inline bool isVisible() const
+		{
+			return m_IsVisible;
+		}
+		// <Method>
+		//		setVisibility
+		//
+		// <Input>
+		//		visible::
+		//			The new value for m_Visible.;;
+		//
+		inline void setVisibility(bool visible)
+		{
+			m_IsVisible = visible;
+		}
 	};
 
 }}

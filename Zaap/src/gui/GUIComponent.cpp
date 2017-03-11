@@ -4,6 +4,8 @@ namespace zaap { namespace gui {
 	GUIComponent::GUIComponent(GUIComponent* parent, Rectangle size)
 		: m_PaddingTop(0), m_PaddingBottom(0),
 		m_PaddingLeft(0), m_PaddingRight(0),
+		m_PreferredWidth(ZA_GUI_SIZE_WRAP_CONTENT), 
+		m_PreferredHeight(ZA_GUI_SIZE_WRAP_CONTENT),
 		m_Size(size), m_Parent(parent)
 	{
 	}
@@ -69,5 +71,48 @@ namespace zaap { namespace gui {
 	void GUIComponent::setY(const int& y)
 	{
 		setPosition(m_Size.X, y);
+	}
+
+	/* ********************************************************* */
+	// * preferred size *
+	/* ********************************************************* */
+	void GUIComponent::childHasNewPreferrences(GUIComponent* child)
+	{
+	}
+
+	void GUIComponent::setPreferredWidth(const int& width)
+	{
+		setPreferredSize(width, m_PreferredHeight);
+	}
+
+	void GUIComponent::setPreferredHeight(const int& height)
+	{
+		setPreferredSize(m_PreferredWidth, height);
+	}
+
+	void GUIComponent::setPreferredSize(const int& width, const int& height)
+	{
+		m_PreferredWidth = width;
+		m_PreferredHeight = height;
+
+		if (m_Parent)
+		{
+			m_Parent->childHasNewPreferrences(this);
+		} 
+		else {
+			int pWidth = m_PreferredWidth;
+			int pHeight = m_PreferredHeight;
+
+			if (pWidth == ZA_GUI_SIZE_MATCH_PARENT)
+				pWidth = ZA_GUI_SIZE_WRAP_CONTENT;
+
+			if (pHeight == ZA_GUI_SIZE_MATCH_PARENT)
+				pHeight = ZA_GUI_SIZE_WRAP_CONTENT;
+
+			m_Size.Width = (pWidth == ZA_GUI_SIZE_WRAP_CONTENT) ? getWrappedWidth() : (uint)pWidth;
+			m_Size.Height = (pHeight == ZA_GUI_SIZE_WRAP_CONTENT) ? getWrappedHeight() : (uint)pHeight;
+
+			resized();
+		}
 	}
 }}
