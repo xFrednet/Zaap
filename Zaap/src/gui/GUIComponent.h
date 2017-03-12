@@ -12,8 +12,15 @@
 
 namespace zaap { namespace gui {
 
+	class GUIComponentGroup;
+
+	//TODO updateVertexBuffer method -> replaces moved && resized
+	//TODO draw util for the vertex buffer (class or local functions)
+
 	class ZAAP_API GUIComponent
 	{
+	private:
+		friend class GUIComponentGroup;
 	protected:
 		uint m_PaddingTop;
 		uint m_PaddingBottom;
@@ -88,9 +95,22 @@ namespace zaap { namespace gui {
 		//
 		bool m_IsVisible;
 
-		GUIComponent(GUIComponent* parent = nullptr, Rectangle size = Rectangle(0, 0, 0, 0));
-		virtual ~GUIComponent();
+		// <Value>
+		//		m_ID
+		//
+		// <Description>
+		//		This holds the ID of the object. The object ID
+		//		can be used by layouts.
+		//
+		// <Note>
+		//		The object ID will be created using a UUDI if 
+		//		none is set by outside sources.
+		//
+		String m_ID;
+
+		GUIComponent(GUIComponent* parent = nullptr);
 	public:
+		virtual ~GUIComponent();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util //
@@ -119,7 +139,63 @@ namespace zaap { namespace gui {
 		//		renderer::
 		//			The GUIRenderer that is used to render the GUI.
 		//
-		virtual void render(graphics::GUIRenderer* renderer) = 0;
+		virtual void render(graphics::GUIRenderer* renderer);
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // changed info informers // 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+	protected:
+		// <Method>
+		//		newParent
+		//
+		// <Description>
+		//		This method is called if a new parent was set
+		//		by a method.
+		//
+		// <Note>
+		//	  - The m_Parent value is already changed to the new parent.
+		//	  - The moved method will also be called after this call.
+		//	  - This method is also called if the parent is set to null.
+		//
+		virtual void newParent();
+
+		// <Method>
+		//		moved
+		//
+		// <Description>
+		//		This method is called if the object is moved.
+		//		This is also the case if the parent object is moved.
+		//
+		// <Note>
+		//		The X and Y value of m_Size is already set when this
+		//		method is called.
+		//
+		virtual void moved();
+		// <Method>
+		//		resized
+		//
+		// <Description>
+		//		This is called by the parent when the child 
+		//		was resized. This is usually done by the parent.
+		//
+		virtual void resized();
+		// <Method>
+		//		updateVertexBuffer
+		//
+		// <Descritpion>
+		//		This method is called when the object is moved, resized or
+		//		changed in any shape or from that probably effects the VertexBuffer.
+		//
+		virtual void updateVertexBuffer() = 0;
+
+		// <Method>
+		//		childHasNewPreferrences
+		//
+		// <Description>
+		//		This is called by the child wen a new 
+		//		preferred width or height is set.
+		//
+		virtual void childHasNewPreferrences(GUIComponent* child);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Setters and Getters // 
@@ -128,7 +204,7 @@ namespace zaap { namespace gui {
 		/* ********************************************************* */
 		// * Parent *
 		/* ********************************************************* */
-
+	public:
 		// <Method>
 		//		hasParent
 		//
@@ -165,20 +241,6 @@ namespace zaap { namespace gui {
 
 	protected:
 		// <Method>
-		//		newParent
-		//
-		// <Description>
-		//		This method is called if a new parent was set
-		//		by a method.
-		//
-		// <Note>
-		//	  - The m_Parent value is already changed to the new parent.
-		//	  - The moved method will also be called after this call.
-		//	  - This method is also called if the parent is set to null.
-		//
-		virtual void newParent();
-		
-		// <Method>
 		//		setParent
 		//
 		// <Descritpion>
@@ -194,11 +256,11 @@ namespace zaap { namespace gui {
 		//			The new value for m_Parent.;;
 		//
 		void setParent(GUIComponent* parent);
-	public:
+
 		/* ********************************************************* */
 		// * Position/X/Y *
 		/* ********************************************************* */
-
+	public:
 		// <Method>
 		//		getX
 		//
@@ -269,29 +331,7 @@ namespace zaap { namespace gui {
 			else
 				return getPosition();
 		}
-	protected:
-		// <Method>
-		//		moved
-		//
-		// <Description>
-		//		This method is called if the object is moved.
-		//		This is also the case if the parent object is moved.
-		//
-		// <Note>
-		//		The X and Y value of m_Size is already set when this
-		//		method is called.
-		//
-		// <Input>
-		//		oldPos::
-		//			The old position of the Component.;;
-		//		newPos::
-		//			The new position of the Component.;;
-		//		globalPos::
-		//			The new position in global space. This is
-		//			only different if it has a parent;;
-		//
-		virtual void moved(const Point& oldPos, const Point& newPos, const Point& globalPos);
-	public:
+
 		// <Method>
 		//		setPosition
 		//
@@ -342,7 +382,7 @@ namespace zaap { namespace gui {
 		/* ********************************************************* */
 		// * preferred size *
 		/* ********************************************************* */
-
+	public:
 		// <Method>
 		//		getPreferredWidth
 		//
@@ -364,41 +404,6 @@ namespace zaap { namespace gui {
 			return m_PreferredWidth;
 		}
 
-	protected:
-		// <Method>
-		//		getWrappedWidth
-		//
-		// <Return>
-		//		This returns the width that the object would take
-		//		if the preferred width is set to wrap_content.
-		//
-		virtual uint getWrappedWidth() const = 0;
-		// <Method>
-		//		getWrappedHeight
-		//
-		// <Return>
-		//		This returns the height that the object would take
-		//		if the preferred height is set to wrap_content.
-		//
-		virtual uint getWrappedHeight() const = 0;
-		
-		// <Method>
-		//		resized
-		//
-		// <Description>
-		//		This is called by the parent when the child 
-		//		was resized. This is usually done by the parent.
-		//
-		virtual void resized() = 0;
-		// <Method>
-		//		childHasNewPreferrences
-		//
-		// <Description>
-		//		This is called by the child wen a new 
-		//		preferred width or height is set.
-		//
-		virtual void childHasNewPreferrences(GUIComponent* child);
-	public:
 		// <Method>
 		//		setPreferredWidth
 		//
@@ -426,10 +431,28 @@ namespace zaap { namespace gui {
 		//
 		void setPreferredSize(const int& width, const int& height);
 
+	protected:
+		// <Method>
+		//		getWrappedWidth
+		//
+		// <Return>
+		//		This returns the width that the object would take
+		//		if the preferred width is set to wrap_content.
+		//
+		virtual uint getWrappedWidth() const = 0;
+		// <Method>
+		//		getWrappedHeight
+		//
+		// <Return>
+		//		This returns the height that the object would take
+		//		if the preferred height is set to wrap_content.
+		//
+		virtual uint getWrappedHeight() const = 0;
+		
 		/* ********************************************************* */
 		// * size *
 		/* ********************************************************* */
-
+	public:
 		// <Method>
 		//		getWidth
 		//
@@ -495,10 +518,53 @@ namespace zaap { namespace gui {
 				getTotalHeight());
 		}
 
+	protected:
+		// <Method>
+		//		setWidth
+		//
+		// <Note>
+		//	  - The width is set without any extra checks.
+		//	  - This calls the resized method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		width::
+		//			The new width of the object.;;
+		//
+		inline void setWidth(uint width);
+		// <Method>
+		//		setHeight
+		//
+		// <Note>
+		//	  - The height is set without any extra checks.
+		//	  - This calls the @resized method.
+		//	  - This calls the @updateVertexBuffer method.
+		//	  - This uses the @setSize method to 
+		//------------------------------
+		//		width::
+		//			The new height of the object.;;
+		//
+		inline void setHeight(uint height);
+		// <Method>
+		//		setSize
+		//
+		// <Note>
+		//	  - The width and height are set without any extra checks.
+		//	  - This calls the resized method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		width::
+		//			The new width of the object.;;
+		//		height::
+		//			The new height of the object.;;
+		//
+		inline void setSize(uint width, uint height);
+
 		/* ********************************************************* */
 		// * hidden value *
 		/* ********************************************************* */
-		
+	public:
 		// <Method>
 		//		isVisible
 		//
@@ -520,6 +586,47 @@ namespace zaap { namespace gui {
 		{
 			m_IsVisible = visible;
 		}
+
+		/* ********************************************************* */
+		// * ID *
+		/* ********************************************************* */
+		
+		// <Method>
+		//		getID
+		//
+		// <Return>
+		//		This returns the current ID of this object.
+		//
+		inline String getID() const
+		{
+			return m_ID;
+		}
+		// <Method>
+		//		setID
+		//
+		// <Input>
+		//		ID::
+		//			The new ID of the object.;;
+		//
+		inline void setID(String ID);
+		// <Method>
+		//		findComponentByID
+		//
+		// <Description>
+		//		This method searches for the given ID among
+		//		it's children and their children. This returns
+		//		NULL if no component was found.
+		//
+		// <Input>
+		//		ID::
+		//			The ID of the object that is searched for.;;
+		//
+		// <Return>
+		//		This returns the GUIComponent if it was found. This method
+		//		returns a null pointer otherwise.
+		//
+		virtual GUIComponent* findComponentByID(const String& ID);
+
 	};
 
 }}

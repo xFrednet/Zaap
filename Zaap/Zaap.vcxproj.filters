@@ -258,6 +258,12 @@
     <ClCompile Include="src\graphics\API\DX\DXGUIRenderer.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\GUIManager.cpp">
+      <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\GUIComponentGroup.cpp">
+      <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -460,6 +466,12 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXGUIRenderer.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GUIManager.h">
+      <Filter>Source Files\src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\GUIComponentGroup.h">
+      <Filter>Source Files\src\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

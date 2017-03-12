@@ -1,13 +1,26 @@
 #include "GUIComponent.h"
 
+#include <util/UUID.h>
+#include <util/Log.h>
+
 namespace zaap { namespace gui {
-	GUIComponent::GUIComponent(GUIComponent* parent, Rectangle size)
+
+	GUIComponent::GUIComponent(GUIComponent* parent = nullptr)
 		: m_PaddingTop(0), m_PaddingBottom(0),
 		m_PaddingLeft(0), m_PaddingRight(0),
 		m_PreferredWidth(ZA_GUI_SIZE_WRAP_CONTENT), 
 		m_PreferredHeight(ZA_GUI_SIZE_WRAP_CONTENT),
-		m_Size(size), m_Parent(parent)
+		m_Size(), m_Parent(parent),
+		m_IsVisible(true)
 	{
+		UUID uuid;
+		RandomUUID(&uuid);
+		
+		char str[17] = {0};
+		memcpy(str, uuid.Data, 16);
+		m_ID = str;
+
+		ZA_INFO(m_ID);
 	}
 
 	GUIComponent::~GUIComponent()
@@ -20,7 +33,33 @@ namespace zaap { namespace gui {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	void GUIComponent::update()
 	{
-		// The default function does nothing yay
+		// The default method does nothing yay
+	}
+
+	void GUIComponent::render(graphics::GUIRenderer* renderer)
+	{
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // changed info informers // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	void GUIComponent::newParent()
+	{
+		// A new parent... how does this even work?
+	}
+
+	void GUIComponent::moved()
+	{
+		// A child that learned moving how cute the parring is
+		// probably the reason for this.
+		// I think that this can be called funny anymore.
+	}
+	void GUIComponent::resized()
+	{
+	}
+
+	void GUIComponent::childHasNewPreferrences(GUIComponent* child)
+	{
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -30,35 +69,28 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	// * Parent *
 	/* ********************************************************* */
-	void GUIComponent::newParent()
-	{
-		// A new parent... how does this even work?
-	}
 
 	void GUIComponent::setParent(GUIComponent* parent)
 	{
 		m_Parent = parent;
 
 		newParent();
-		moved(getPosition(), getPosition(), getGlobalPosition());
+		moved();
+		updateVertexBuffer();
 	}
 
 	/* ********************************************************* */
 	// * Position/X/Y *
 	/* ********************************************************* */
-	void GUIComponent::moved(const Point& oldPos, const Point& newPos, const Point& globalPos)
-	{
-		// A child that learned moving how cute the parring is
-		// probably the reason for this.
-		// I think that this can be called funny anymore.
-	}
 
 	void GUIComponent::setPosition(const int& x, const int& y)
 	{
-		Point oldPoint = m_Size.Position;
 		m_Size.X = x;
 		m_Size.Y = y;
-		moved(oldPoint, getPosition(), getGlobalPosition());
+
+		// inform component
+		moved();
+		updateVertexBuffer();
 	}
 	void GUIComponent::setPosition(const Point& position)
 	{
@@ -76,20 +108,15 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	// * preferred size *
 	/* ********************************************************* */
-	void GUIComponent::childHasNewPreferrences(GUIComponent* child)
-	{
-	}
 
 	void GUIComponent::setPreferredWidth(const int& width)
 	{
 		setPreferredSize(width, m_PreferredHeight);
 	}
-
 	void GUIComponent::setPreferredHeight(const int& height)
 	{
 		setPreferredSize(m_PreferredWidth, height);
 	}
-
 	void GUIComponent::setPreferredSize(const int& width, const int& height)
 	{
 		m_PreferredWidth = width;
@@ -113,6 +140,40 @@ namespace zaap { namespace gui {
 			m_Size.Height = (pHeight == ZA_GUI_SIZE_WRAP_CONTENT) ? getWrappedHeight() : (uint)pHeight;
 
 			resized();
+			updateVertexBuffer();
 		}
+	}
+
+	/* ********************************************************* */
+	// * size *
+	/* ********************************************************* */
+	void GUIComponent::setWidth(uint width)
+	{
+		setSize(width, m_Size.Height);
+	}
+	void GUIComponent::setHeight(uint height)
+	{
+		setSize(m_Size.Width, height);
+	}
+	void GUIComponent::setSize(uint width, uint height)
+	{
+		m_Size.Width = width;
+		m_Size.Height = height;
+
+		resized();
+		updateVertexBuffer();
+	}
+
+	/* ********************************************************* */
+	// * ID *
+	/* ********************************************************* */
+	void GUIComponent::setID(String ID)
+	{
+		m_ID = ID;
+	}
+
+	GUIComponent* GUIComponent::findComponentByID(const String& ID)
+	{
+		return nullptr;
 	}
 }}
