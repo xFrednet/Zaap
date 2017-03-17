@@ -9,7 +9,7 @@ namespace zaap { namespace gui {
 	{
 	protected:
 		std::vector<GUIComponent*> m_Members;
-	public:
+	public:    vb
 		virtual ~GUIComponentGroup() override;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -18,6 +18,7 @@ namespace zaap { namespace gui {
 	public:
 		virtual void update() override;
 		virtual void render(graphics::GUIRenderer* renderer) override;
+
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // changed info informers //
@@ -42,6 +43,7 @@ namespace zaap { namespace gui {
 		//		the m_Members list.;;
 		//
 		virtual void newChild(GUIComponent* child);
+
 		// <Method>
 		//		updateLayout
 		//
@@ -57,13 +59,49 @@ namespace zaap { namespace gui {
 		virtual uint getWrappedWidth() const override;
 		virtual uint getWrappedHeight() const override;
 
+		/* ********************************************************* */
+		// * Members *
+		/* ********************************************************* */
+	public:
 		virtual GUIComponent* findComponentByID(const String& ID) override;
 
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Child methods //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-	public:
-		void add(GUIComponent* component);
+		// <Method>
+		//		add
+		//
+		// <Note>
+		//	  - This calls the @newChild method.
+		//	  - This calls the @updateLayout method.
+		//
+		// <Input>
+		//		component::
+		//			The new GUIComponent that should be added to 
+		//			this GUIComponentGroup.;;
+		//
+		virtual void add(GUIComponent* component);
+		// <Method>
+		//		remove
+		//
+		// <Note>
+		//	  - This calls the @remove method with the ID
+		//		of the object.
+		//	  - This calls the @updateLayout method.
+		//
+		// <Input>
+		//		component::
+		//			The component that should be removed.;;
+		//
+		virtual void remove(GUIComponent* component);
+		// <Method>
+		//		remove
+		//
+		// <Note>
+		//	  - This calls the @updateLayout method.
+		//
+		// <Input>
+		//		ID::
+		//			The ID of the component that should be removed.;;
+		//
+		virtual void remove(const String& ID);
 	};
 
 }}

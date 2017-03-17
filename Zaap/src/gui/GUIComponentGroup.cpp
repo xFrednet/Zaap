@@ -103,5 +103,34 @@ namespace zaap { namespace gui {
 
 		return nullptr;
 	}
+
+	/* ********************************************************* */
+	// * Members *
+	/* ********************************************************* */
+
+	void GUIComponentGroup::add(GUIComponent* component)
+	{
+		m_Members.push_back(component);
+		newChild(component);
+		updateLayout();
+	}
+	void GUIComponentGroup::remove(GUIComponent* component)
+	{
+		remove(component->getID());
+	}
+	void GUIComponentGroup::remove(const String& ID)
+	{
+		uint i;
+		uint size = m_Members.size();
+		for (i = 0; i < size; i++)
+		{
+			if (m_Members[i]->getID() == ID)
+			{
+				m_Members.erase(m_Members.begin() + i);
+				updateLayout();
+				break;
+			}
+		}
+	}
 }}
 
