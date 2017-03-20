@@ -72,7 +72,9 @@ namespace zaap { namespace graphics {
 	}
 	uint Mesh::getVertexCount() const
 	{
-		return m_VertexBuffer->getVertexCount();
+		//use getIndexCount because this is equal
+		//to the entire vertex count that is drawn.
+		return m_VertexBuffer->getIndexCount();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

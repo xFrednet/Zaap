@@ -3,11 +3,15 @@
 #include <graphics/Color.h>
 #include "API/Context.h"
 #include <util/Log.h>
+#include "API/DX/DXGUIRenderer.h"
 
 namespace zaap { namespace graphics {
 	ZA_RESULT GUIRenderer::CreateNewInstance(GUIRenderer** instance)
 	{
-		//TODO *instance = new DX::DXGUIRenderer();
+		ZA_ASSERT(instance);
+		ZA_ASSERT(!(*instance));
+
+		*instance = new DX::DXGUIRenderer();
 
 		return (*instance)->init();
 	}

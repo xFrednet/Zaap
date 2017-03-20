@@ -14,17 +14,21 @@ namespace zaap { namespace graphics { namespace DX {
 		friend class DXRenderer;
 		friend class VertexBuffer;
 	private:
-		ID3D11Buffer *m_VBuffer;
+		ID3D11Buffer *m_VertexBuffer;
 		ID3D11Buffer *m_IndexBuffer;
 		
 		uint m_Stride;
 	public:
-		DXVertexBuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader);
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Constructor and Deconstructor //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		DXVertexBuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
 		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount, uint stride, ZA_SHADER_TYPE targetShader);
+		virtual ~DXVertexBuffer();
 
-		ID3D11Buffer* const* getVBuffer() const;
-		ID3D11Buffer* getIBuffer() const;
-
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Draw util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		void bind(uint slot) override;
 		void unbind(uint slot) override;
 
@@ -32,7 +36,19 @@ namespace zaap { namespace graphics { namespace DX {
 		void draw(const uint& count) override;
 		void draw(const uint &start, const uint &count) override;
 
-		void cleanup() override;
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Getters //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		inline ID3D11Buffer* getVertexBuffer();
+		inline ID3D11Buffer const* getVertexBuffer() const;
+		inline ID3D11Buffer* getIndexBuffer();
+		inline ID3D11Buffer const* getIndexBuffer() const;
+		
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Dynamic methods //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		void updateVertices(void* vertices, uint vertexCount) override;
+		void updateIndices(uint* indicies, uint indexCount) override;
 	};
 
 }}}

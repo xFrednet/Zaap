@@ -11,15 +11,16 @@ namespace zaap { namespace graphics {
 namespace API {
 
 	std::vector<VertexBuffer*> VertexBuffer::s_VertexBuffers;
-	
-	VertexBuffer* VertexBuffer::CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader)
+
+	VertexBuffer* VertexBuffer::CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
 	{
-		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertices, vertexSize, vCount, indices, indexCount, targetShader);
+		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertexSize, vertexCount, indexCount, vertices, indices);
 
 		s_VertexBuffers.push_back(vBuffer);
 
 		return vBuffer;
 	}
+
 	void VertexBuffer::Delete(VertexBuffer* vertexbuffer)
 	{
 		Delete(vertexbuffer->getUUID());
@@ -31,7 +32,6 @@ namespace API {
 			if (s_VertexBuffers[i]->getUUID() == uuid)
 			{
 				VertexBuffer* vb = s_VertexBuffers[i];
-				vb->cleanup();
 				s_VertexBuffers.erase(s_VertexBuffers.begin() + i);
 				delete vb;
 			}
@@ -42,7 +42,6 @@ namespace API {
 	{
 		for (VertexBuffer* vBuffer : s_VertexBuffers)
 		{
-			vBuffer->cleanup();
 			delete vBuffer;
 		}
 
@@ -79,19 +78,33 @@ namespace API {
 	//
 	// Class methods
 	//
-	VertexBuffer::VertexBuffer(uint vertexCount, ZA_SHADER_TYPE targetShader)
-		: m_VertexCount(vertexCount),
-		m_TargetShader(targetShader)
+	VertexBuffer::VertexBuffer(const uint& vertexCount, const uint& indexCount)
+		: m_IndexCount(indexCount),
+		m_VertexCount(vertexCount),
+		m_IsDynamic(false)
 	{
 		RandomUUID(&m_uuid);
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Getters //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint VertexBuffer::getVertexCount(void) const
 	{
 		return m_VertexCount;
 	}
+	uint VertexBuffer::getIndexCount() const
+	{
+		return m_IndexCount;
+	}
+	bool VertexBuffer::isDynamic() const
+	{
+		return m_IsDynamic;
+	}
+
 	UUID VertexBuffer::getUUID() const
 	{
 		return m_uuid;
 	}
+
 }}}

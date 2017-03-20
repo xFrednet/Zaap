@@ -264,6 +264,9 @@
     <ClCompile Include="src\gui\GUIComponentGroup.cpp">
       <Filter>Source Files\src\gui</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\VertexBufferHelper.cpp">
+      <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -471,6 +474,9 @@
       <Filter>Source Files\src\gui</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\GUIComponentGroup.h">
+      <Filter>Source Files\src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\VertexBufferHelper.h">
       <Filter>Source Files\src\gui</Filter>
     </ClInclude>
   </ItemGroup>

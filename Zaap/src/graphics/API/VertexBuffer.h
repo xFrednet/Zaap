@@ -18,7 +18,7 @@ namespace zaap { namespace graphics { namespace API {
 	private:
 		static std::vector<VertexBuffer*> s_VertexBuffers;
 	public:
-		static VertexBuffer* CreateVertexbuffer(void* vertices, uint vertexSize, uint vCount, uint indices[], uint indexCount, ZA_SHADER_TYPE targetShader);
+		static VertexBuffer* CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
 		static void Delete(VertexBuffer* vertexbuffer);
 		static void Delete(const UUID& uuid);
 		static void Cleanup();
@@ -42,19 +42,18 @@ namespace zaap { namespace graphics { namespace API {
 		// And finally the actual class //
 		/////////////////////////////////
 	protected:
-		uint m_VertexCount;
 		UUID m_uuid;
 
-		ZA_SHADER_TYPE m_TargetShader;
-
-		VertexBuffer(uint vertexCount, ZA_SHADER_TYPE targetShader);
+		uint m_IndexCount;
+		uint m_VertexCount;
+		bool m_IsDynamic;
+		
+		VertexBuffer(const uint& vertexCount, const uint& indexCount);
 
 	public:
 		virtual ~VertexBuffer() {}
 
 		//class methods
-		inline uint getVertexCount(void) const;
-		inline UUID getUUID(void) const;
 
 		virtual void bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;
@@ -62,8 +61,21 @@ namespace zaap { namespace graphics { namespace API {
 		virtual void draw() = 0;
 		virtual void draw(const uint &count) = 0;
 		virtual void draw(const uint &start, const uint &count) = 0;
+		
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Getters //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		inline uint getVertexCount() const;
+		inline uint getIndexCount() const;
+		inline bool isDynamic() const;
 
-		virtual void cleanup() = 0;
+		inline UUID getUUID() const;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Dynamic methods //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		virtual void updateVertices(void* vertices, uint vertexCount) = 0;
+		virtual void updateIndices(uint* indicies, uint indexCount) = 0;
 	};
 
 }}}

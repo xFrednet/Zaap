@@ -603,10 +603,10 @@ namespace zaap
 #define ZA_RESULT_SOURCE_NO_SOURCE				ZAAP_TYPEDEF_ZARESULT(0x0000)
 #define ZA_RESULT_SOURCE_MATH					ZAAP_TYPEDEF_ZARESULT(0x0100)
 #define ZA_RESULT_SOURCE_SYSTEM					ZAAP_TYPEDEF_ZARESULT(0x0200)
+#define ZA_RESULT_SOURCE_GUI					ZAAP_TYPEDEF_ZARESULT(0x0300)
 #define ZA_RESULT_SOURCE_API					ZAAP_TYPEDEF_ZARESULT(0x0D00) //API said NO!!!
 #define ZA_RESULT_SOURCE_DIRECTX				ZAAP_TYPEDEF_ZARESULT(0x0E00)
 #define ZA_RESULT_SOURCE_OPENGL					ZAAP_TYPEDEF_ZARESULT(0x0F00) //I'll do that. Some dark day.
-
 
 
 
@@ -665,7 +665,15 @@ namespace zaap
 // * Memory management *
 /* ********************************************************* */
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT_SOURCE_GUI codes //
+/* //////////////////////////////////////////////////////////////////////////////// */
 
+/* ********************************************************* */
+// * GUIManager *
+/* ********************************************************* */
+
+#define ZA_ERROR_GUIMANAGER_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8300)
 
 
 

@@ -9,7 +9,7 @@ namespace zaap { namespace gui {
 	{
 	protected:
 		std::vector<GUIComponent*> m_Members;
-	public:    vb
+	public:
 		virtual ~GUIComponentGroup() override;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */

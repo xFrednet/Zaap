@@ -120,9 +120,8 @@ namespace zaap { namespace gui {
 	}
 	void GUIComponentGroup::remove(const String& ID)
 	{
-		uint i;
 		uint size = m_Members.size();
-		for (i = 0; i < size; i++)
+		for (uint i = 0; i < size; i++)
 		{
 			if (m_Members[i]->getID() == ID)
 			{
