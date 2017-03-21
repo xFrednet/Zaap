@@ -97,7 +97,7 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		bind(0);
 
-		DXContext::GetDevContext()->DrawIndexed(m_VertexCount, 0, 0);
+		DXContext::GetDevContext()->DrawIndexed(m_IndexCount, 0, 0);
 	}
 	void DXVertexBuffer::draw(const uint& count)
 	{

@@ -1,7 +1,6 @@
 #include <Zaap.h>
 #include <graphics/Font.h>
 #include <util/Loader.h>
-#include <graphics/API/DX/DXRenderTarget.h>
 
 using namespace zaap;
 using namespace graphics;
@@ -145,14 +144,13 @@ int main(void)
 	RandomUUID(&id1);
 	ZA_INFO(id1);
 
-
-
 	//source
 	{
 		scene_ = new Scene();
 
 		Test t;
-	
+		t.getGUIManager()->add(new gui::GUIBackground(gui::Point(-1, -1), 40, 40));
+
 		loadEntitys();
 
 		t.start();

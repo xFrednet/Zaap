@@ -32,12 +32,22 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		ZA_MULTI_RESULT results;
 
-		results += createShaderFromString(DXGUIShaderSrc, DXGUIShaderIED, 4);
+		results += createShaderFromString(DXGUIShaderSrc, DXGUIShaderIED, 3);
 		if (ZA_FAILED(results))
 		{
 			ZA_ASSERT(false);
 			return results;
 		}
+		/* ##################################### */
+		// # Matrix buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix);
+		if (ZA_FAILED(results))
+			return results;
+
+		ZA_INFO("init finished successfully! ^^ it worked! yes!!!");
+
+		return results;
 	}
 
 	void DXGUIShader::start() const

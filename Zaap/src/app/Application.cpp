@@ -22,6 +22,7 @@ namespace zaap {
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
 		scene->init();
+		m_GUIManager.init();
 	}
 
 	Application::~Application()
@@ -122,13 +123,20 @@ namespace zaap {
 
 	void Application::render()
 	{
+		graphics::API::Context::PrepareFrame();
+
 		if (m_Scene) 
 			m_Scene->render();
+
+		m_GUIManager.render();
+
+		graphics::API::Context::PresentFrame();
 	}
 	void Application::update()
 	{
 		if (m_Scene) 
 			m_Scene->update();
+		m_GUIManager.update();
 	}
 
 	MSG msg_;

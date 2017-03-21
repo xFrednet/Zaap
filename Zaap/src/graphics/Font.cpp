@@ -431,7 +431,7 @@ namespace zaap { namespace graphics {
 		if (m_CharInfo.size() == 0)
 			return nullptr;
 
-		vector<ZA_CharVertex> vertices(string.size() * 4);
+		vector<ZA_CHAR_VERTEX> vertices(string.size() * 4);
 		vector<uint> indices(string.size() * 6);
 
 		float zValue = 0.0f;
@@ -503,7 +503,7 @@ namespace zaap { namespace graphics {
 			drawX += cMatrix.TotalWidth;
 		}
 
-		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size(), ZA_SHADER_FONT_SHADER_2D);
+		return API::VertexBuffer::CreateVertexbuffer(sizeof(ZA_CHAR_VERTEX), vertices.size(), indices.size(), &vertices[0], &indices[0]);
 	}
 
 	float temp = 0;

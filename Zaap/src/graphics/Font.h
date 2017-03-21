@@ -61,7 +61,7 @@ namespace zaap { namespace graphics {
 		ZA_CharacterInfo(char c);
 	};
 
-	struct ZAAP_API ZA_CharVertex
+	struct ZAAP_API ZA_CHAR_VERTEX
 	{
 		Vec3 Position;
 		Vec2 TexCoord;

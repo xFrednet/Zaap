@@ -1,6 +1,10 @@
 ﻿#include "GUIComponentGroup.h"
 
 namespace zaap { namespace gui {
+	GUIComponentGroup::GUIComponentGroup(GUIComponent* parent)
+		: GUIComponent(0, 0, parent)
+	{
+	}
 
 	GUIComponentGroup::~GUIComponentGroup()
 	{

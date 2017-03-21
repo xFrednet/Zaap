@@ -9,6 +9,8 @@ namespace zaap { namespace gui {
 	{
 	protected:
 		std::vector<GUIComponent*> m_Members;
+
+		GUIComponentGroup(GUIComponent* parent = nullptr);
 	public:
 		virtual ~GUIComponentGroup() override;
 
@@ -18,7 +20,6 @@ namespace zaap { namespace gui {
 	public:
 		virtual void update() override;
 		virtual void render(graphics::GUIRenderer* renderer) override;
-
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // changed info informers //

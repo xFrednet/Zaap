@@ -10,9 +10,14 @@
 #define ZA_GUI_SIZE_WRAP_CONTENT 0
 #define ZA_GUI_SIZE_MATCH_PARENT -1
 
+namespace zaap {namespace graphics {namespace API {
+	class VertexBuffer;
+}}}
+
 namespace zaap { namespace gui {
 
 	class GUIComponentGroup;
+	class GUIManager;
 
 	//TODO updateVertexBuffer method -> replaces moved && resized
 	//TODO draw util for the vertex buffer (class or local functions)
@@ -21,6 +26,7 @@ namespace zaap { namespace gui {
 	{
 	private:
 		friend class GUIComponentGroup;
+		friend class GUIManager;
 	protected:
 		uint m_PaddingTop;
 		uint m_PaddingBottom;
@@ -108,7 +114,9 @@ namespace zaap { namespace gui {
 		//
 		String m_ID;
 
-		GUIComponent(GUIComponent* parent = nullptr);
+		graphics::API::VertexBuffer* m_VertexBuffer;
+
+		GUIComponent(uint vertexCount, uint indexCount, GUIComponent* parent = nullptr);
 	public:
 		virtual ~GUIComponent();
 

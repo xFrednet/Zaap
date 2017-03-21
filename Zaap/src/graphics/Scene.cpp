@@ -118,14 +118,12 @@ namespace zaap { namespace graphics {
 		//
 		//render preparations
 		//
-		API::Context::PrepareFrame();
 		m_Renderer->startRenderer();
 		m_Renderer->loadScene(this);
 
 		if (m_LightSetup)
 			m_Renderer->loadLightSetup(*m_LightSetup);
 		
-
 		//
 		// rendering
 		//
@@ -138,8 +136,6 @@ namespace zaap { namespace graphics {
 		{
 			m_Entities[i]->render(m_Renderer);
 		}
-
-		API::Context::PresentFrame();
 	}
 	void Scene::update()
 	{

@@ -34,8 +34,15 @@ namespace zaap { namespace gui {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	void GUIManager::render()
 	{
+		if (m_Members.size() == 0)
+			return;
+
+		m_Renderer->startRenderer();
+
 		for (GUIComponent* component : m_Members)
 			component->render(m_Renderer);
+
+		m_Renderer->finishRendering();
 	}
 	void GUIManager::update()
 	{
@@ -65,7 +72,10 @@ namespace zaap { namespace gui {
 	{
 		ZA_ASSERT(component);
 		if (component)
+		{
 			m_Members.push_back(component);
+			component->updateVertexBuffer();
+		}
 	}
 	void GUIManager::remove(GUIComponent* component)
 	{

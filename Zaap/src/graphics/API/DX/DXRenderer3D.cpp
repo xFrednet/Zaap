@@ -251,6 +251,8 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXRenderer3D::startRenderer() const
 	{
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+		setDepthTestingState(true);
+		setAlphaTestingState(false);
 	}
 
 	void DXRenderer3D::setAlphaTestingState(bool enabled) const

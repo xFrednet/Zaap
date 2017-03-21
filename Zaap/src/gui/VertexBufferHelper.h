@@ -3,10 +3,13 @@
 #include <Common.h>
 
 #include <graphics/API/VertexBuffer.h>
+
 #include <maths/Maths.h>
+#include <gui/Point.h>
 
 namespace zaap { namespace gui {
-	
+	struct Point;
+
 	typedef enum ZAAP_API GUI_VERTEX_TYPES_ {
 		ZA_GUI_VERTEX_TYPE_COLOR   = 0,
 		ZA_GUI_VERTEX_TYPE_TEXTURE = 1
@@ -45,7 +48,7 @@ namespace zaap { namespace gui {
 		/* ********************************************************* */
 		// * Rectangle *
 		/* ********************************************************* */
-		void drawRectangle(const Vec2& pos, const uint& width, const uint& height, 
+		void drawRectangle(const Point& pos, const uint& width, const uint& height,
 			const graphics::Color& color);
 		void drawRectangle(const Vec2& posMin, const Vec2& posMax,
 			const graphics::Color& color);

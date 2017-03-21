@@ -196,7 +196,7 @@ namespace zaap { namespace scene {
 			}
 		}
 
-		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(graphics::ZA_TERRAIN_VERTEX), vertices.size(), &indices[0], indices.size(), graphics::ZA_SHADER_TERRAIN_SHADER);
+		m_VBuffer = graphics::API::VertexBuffer::CreateVertexbuffer(sizeof(graphics::ZA_TERRAIN_VERTEX), vertices.size(), indices.size(), &vertices[0], &indices[0]);
 	}
 
 	void TerrainTreeEndPart::render(const graphics::ViewFrustum& view) 

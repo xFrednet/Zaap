@@ -57,30 +57,36 @@ namespace zaap { namespace graphics { namespace DX {
 		ZA_DXRELEASE(m_Layout);
 	}
 
-	bool DXShader::createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
+	ZA_RESULT DXShader::createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
 	{
 		String shaderSrc = zaap::Loader::LoadFile(shaderFile);
 		return createShaderFromString(shaderSrc, ied, eCount, vSMain, pSMain);
 	}
 
-	bool DXShader::createShaderFromString(String shaderSrc, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
+	ZA_RESULT DXShader::createShaderFromString(String shaderSrc, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
 	{
 		ID3D10Blob *VS;
 		ID3D10Blob *PS;
 
 		VS = CompileShader(shaderSrc, "vs_4_0", vSMain);
 		PS = CompileShader(shaderSrc, "ps_4_0", pSMain);
-		if (!VS || !PS) return false;
+		if (!VS || !PS) 
+			return ZA_ERROR_API_SHADER_ERROR;
 
 		ID3D11Device *dev = DXContext::GetDevice();
 		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 
 		//creation
 		dev->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_VShader);
-		ZA_DXNAME(m_VShader, "DXShader::m_VShader");
 		dev->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_PShader);
+		
+		ZA_DXNAME(m_VShader, "DXShader::m_VShader");
 		ZA_DXNAME(m_PShader, "DXShader::m_PShader");
+		
+		if (!m_VShader || !m_PShader)
+			return ZA_ERROR_API_SHADER_ERROR;
 
+		//setting the shaders
 		devcon->VSSetShader(m_VShader, nullptr, 0);
 		devcon->PSSetShader(m_PShader, nullptr, 0);
 
@@ -93,7 +99,7 @@ namespace zaap { namespace graphics { namespace DX {
 			} else
 			{
 				ZA_ERROR("InputLayout creation failed");
-				return false;
+				return ZA_ERROR_API_SHADER_ERROR;
 			}
 
 			devcon->IASetInputLayout(m_Layout);
@@ -103,7 +109,7 @@ namespace zaap { namespace graphics { namespace DX {
 		ZA_DXRELEASE(VS);
 		ZA_DXRELEASE(PS);
 
-		return true;
+		return ZA_OK;
 	}
 
 

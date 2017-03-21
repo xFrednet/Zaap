@@ -44,7 +44,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	DXTerrainShader::DXTerrainShader()
 	{
-		if (createShaderFromString(terrainShaderSrc, DXTerrinShaderIED, 4))
+		if (ZA_SUCCEDED(createShaderFromString(terrainShaderSrc, DXTerrinShaderIED, 4)))
 		{
 			ZA_INFO("compiled successfully");
 		} else

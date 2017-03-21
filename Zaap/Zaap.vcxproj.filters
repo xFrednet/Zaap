@@ -76,6 +76,9 @@
     <Filter Include="Source Files\src\gui">
       <UniqueIdentifier>{b9108396-6f32-45c6-bfec-ab257ca98b73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src\gui\components">
+      <UniqueIdentifier>{9fec514b-4fe6-4008-aa3c-2d1055ee430d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\util\StringUtil.cpp">
@@ -266,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="src\gui\VertexBufferHelper.cpp">
       <Filter>Source Files\src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gui\components\GUIBackground.cpp">
+      <Filter>Source Files\src\gui\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -478,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="src\gui\VertexBufferHelper.h">
       <Filter>Source Files\src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\components\GUIBackground.h">
+      <Filter>Source Files\src\gui\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

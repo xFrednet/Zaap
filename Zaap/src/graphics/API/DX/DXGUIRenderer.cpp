@@ -12,7 +12,6 @@ namespace zaap { namespace graphics { namespace DX {
 		m_Dev = DXContext::GetDevice();
 		m_Devcon = DXContext::GetDevContext();
 
-
 		m_GUIShader = new DXGUIShader();
 		zmr = m_GUIShader->init();
 		ZA_ASSERT(ZA_SUCCEDED(zmr));

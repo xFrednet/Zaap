@@ -41,7 +41,7 @@ ZA_VS_OUTPUT VShader(ZA_VS_INPUT input)
 {
 	ZA_VS_OUTPUT output;
 
-	output.Position = TransformationMatrix * input.Position;
+	output.Position = mul(TransformationMatrix, input.Position);
 	output.Type     = input.Type;
 	output.TypeInfo = input.TypeInfo;
 
@@ -64,10 +64,10 @@ float4 PShader(ZA_PS_INPUT input) : SV_TARGET
 	switch (input.Type)
 	{
 	case TYPE_COLOR:
-		return info.TypeInfo;
+		return input.TypeInfo;
 	case TYPE_TEXTURE:
 		return Texture.Sample(TextureSampler, input.TypeInfo.xy);
 	default:
-		return float(1.0f, 0.0f, 1.0f, 1.0f);
+		return float4(1.0f, 0.0f, 1.0f, 1.0f);
 	}
 })"

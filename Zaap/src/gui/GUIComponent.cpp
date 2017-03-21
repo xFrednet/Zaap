@@ -3,9 +3,12 @@
 #include <util/UUID.h>
 #include <util/Log.h>
 
+#include <graphics/shader/Shader.h>
+#include <graphics/API/VertexBuffer.h>
+
 namespace zaap { namespace gui {
 
-	GUIComponent::GUIComponent(GUIComponent* parent = nullptr)
+	GUIComponent::GUIComponent(uint vertexCount, uint indexCount, GUIComponent* parent)
 		: m_PaddingTop(0), m_PaddingBottom(0),
 		m_PaddingLeft(0), m_PaddingRight(0),
 		m_PreferredWidth(ZA_GUI_SIZE_WRAP_CONTENT), 
@@ -13,14 +16,17 @@ namespace zaap { namespace gui {
 		m_Size(), m_Parent(parent),
 		m_IsVisible(true)
 	{
+		// m_ID
 		UUID uuid;
 		RandomUUID(&uuid);
-		
 		char str[17] = {0};
 		memcpy(str, uuid.Data, 16);
 		m_ID = str;
 
-		ZA_INFO(m_ID);
+		using namespace graphics::API;
+		m_VertexBuffer = VertexBuffer::CreateVertexbuffer(sizeof(graphics::ZA_GUI_VERTEX), vertexCount, indexCount);
+
+		ZA_INFO("New component with the ID: ", m_ID);
 	}
 
 	GUIComponent::~GUIComponent()
@@ -38,6 +44,7 @@ namespace zaap { namespace gui {
 
 	void GUIComponent::render(graphics::GUIRenderer* renderer)
 	{
+		m_VertexBuffer->draw();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

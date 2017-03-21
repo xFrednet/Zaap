@@ -34,8 +34,8 @@ namespace zaap { namespace gui {
 		ZA_ASSERT(m_CurrentVIndex <= m_VertexCount);
 		ZA_ASSERT(m_CurrentIIndex <= m_IndexCount);
 
-		m_VertexBuffer->updateIndices(m_Indices, m_CurrentVIndex);
-		m_VertexBuffer->updateVertices(m_Vertices, m_CurrentIIndex);
+		m_VertexBuffer->updateVertices(m_Vertices, m_CurrentVIndex);
+		m_VertexBuffer->updateIndices(m_Indices, m_CurrentIIndex);
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -50,9 +50,9 @@ namespace zaap { namespace gui {
 		ZA_ASSERT(m_CurrentVIndex + 4 <= m_VertexCount);
 		ZA_ASSERT(m_CurrentIIndex + 6 <= m_IndexCount);
 
-		if (m_CurrentVIndex + 4 <= m_VertexCount)
+		if (m_CurrentVIndex + 4 > m_VertexCount)
 			return;
-		if (m_CurrentIIndex + 6 <= m_IndexCount)
+		if (m_CurrentIIndex + 6 > m_IndexCount)
 			return;
 		
 		////////////////////////////////////////////////////////////////////////////////
@@ -88,9 +88,9 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	// * Rectangle *
 	/* ********************************************************* */
-	void VertexBufferHelper::drawRectangle(const Vec2& pos, const uint& width, const uint& height, const graphics::Color& color)
+	void VertexBufferHelper::drawRectangle(const Point& pos, const uint& width, const uint& height, const graphics::Color& color)
 	{
-		drawRectangle(pos, Vec2(pos.X + (float)width, pos.Y + (float)height), color);
+		drawRectangle(Vec2(pos.X, pos.Y), Vec2(pos.X + (float)width, pos.Y + (float)height), color);
 	}
 	void VertexBufferHelper::drawRectangle(const Vec2& posMin, const Vec2& posMax, const graphics::Color& color)
 	{

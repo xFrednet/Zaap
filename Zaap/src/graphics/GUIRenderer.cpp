@@ -67,6 +67,7 @@ namespace zaap { namespace graphics {
 	{
 		m_MainTarget->startTarget();
 		m_GUIShader->start();
+		//TODO do this target swap thing of a bob
 	}
 
 	void GUIRenderer::finishRendering()

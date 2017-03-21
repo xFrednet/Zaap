@@ -150,7 +150,7 @@ namespace zaap {
 				vertices[i].TexCoord = texCoords_unsorted[texCoords_indices[i]];
 				vertices[i].Material = material[i];
 			}
-			vBuffer = API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_D_VERTEX), size, &indices[0], indices.size(), ZA_SHADER_DEFAULT_SHADER);
+			vBuffer = API::VertexBuffer::CreateVertexbuffer(sizeof(ZA_D_VERTEX), vertices.size(), indices.size(), &vertices[0], &indices[0]);
 		}
 
 		Material* newMaterials = new Material[materialCount];
