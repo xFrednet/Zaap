@@ -7,7 +7,7 @@ namespace zaap { namespace graphics { namespace DX {
 	void LoadDXData(ID3D11Resource* target, void* data, uint size)
 	{
 		D3D11_MAPPED_SUBRESOURCE ms;
-		DXContext::GetDevContext()->Map(target, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
+		HRESULT hr = DXContext::GetDevContext()->Map(target, NULL, D3D11_MAP_WRITE_DISCARD, NULL, &ms);
 		memcpy(ms.pData, data, size);
 		DXContext::GetDevContext()->Unmap(target, NULL);
 	}
@@ -138,7 +138,7 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXVertexBuffer::updateVertices(void* vertices, uint vertexCount)
 	{
 		ZA_ASSERT(vertexCount <= m_VertexCount);
-		if (!m_IsDynamic || vertexCount <= m_VertexCount)
+		if (!m_IsDynamic || vertexCount > m_VertexCount)
 			return;
 
 		LoadDXData(m_VertexBuffer, vertices, m_Stride * vertexCount);
@@ -146,7 +146,7 @@ namespace zaap { namespace graphics { namespace DX {
 	void DXVertexBuffer::updateIndices(uint* indicies, uint indexCount)
 	{
 		ZA_ASSERT(indexCount <= m_IndexCount);
-		if (!m_IsDynamic || indexCount <= m_VertexCount)
+		if (!m_IsDynamic || indexCount > m_IndexCount)
 			return;
 
 		LoadDXData(m_IndexBuffer, indicies, sizeof(uint) * indexCount);

@@ -40,7 +40,7 @@ cbuffer ZA_VS_MATRIX_BUFFER : register(b0)
 ZA_VS_OUTPUT VShader(ZA_VS_INPUT input)
 {
 	ZA_VS_OUTPUT output;
-
+	
 	output.Position = mul(TransformationMatrix, input.Position);
 	output.Type     = input.Type;
 	output.TypeInfo = input.TypeInfo;

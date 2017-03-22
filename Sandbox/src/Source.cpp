@@ -149,7 +149,7 @@ int main(void)
 		scene_ = new Scene();
 
 		Test t;
-		t.getGUIManager()->add(new gui::GUIBackground(gui::Point(-1, -1), 40, 40));
+		t.getGUIManager()->add(new gui::GUIBackground(gui::Point(1, 1), 100, 40, Color(1.0f, 0.0f, 1.0f, 0.5f)));
 
 		loadEntitys();
 

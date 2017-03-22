@@ -269,6 +269,7 @@
     <ClCompile Include="src\graphics\shader\TerrainShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
     <ClCompile Include="src\gui\components\GUIBackground.cpp" />
+    <ClCompile Include="src\gui\components\GUITextureFrame.cpp" />
     <ClCompile Include="src\gui\GUIComponent.cpp" />
     <ClCompile Include="src\gui\GUIComponentGroup.cpp" />
     <ClCompile Include="src\gui\GUIManager.cpp" />
@@ -338,6 +339,7 @@
     <ClInclude Include="src\graphics\shader\TerrainShader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
     <ClInclude Include="src\gui\components\GUIBackground.h" />
+    <ClInclude Include="src\gui\components\GUITextureFrame.h" />
     <ClInclude Include="src\gui\GUIComponent.h" />
     <ClInclude Include="src\gui\GUIComponentGroup.h" />
     <ClInclude Include="src\gui\GUIManager.h" />

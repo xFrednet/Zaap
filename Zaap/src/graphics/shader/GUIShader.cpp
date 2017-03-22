@@ -12,8 +12,8 @@ namespace zaap { namespace graphics {
 
 		m_TransformationMatrix.identify();
 
-		m_TransformationMatrix.scale(2.0f / width, 2.0f / height, 1);
-		//m_TransformationMatrix.translate(-1.0f, -1.0f, 0);
+		m_TransformationMatrix.scale(2.0f / width, -(2.0f / height), 1);
+		m_TransformationMatrix.translate(-(float)(width / 2), -(float)(height / 2), 0);
 
 		loadTransformationMatrix();
 	}

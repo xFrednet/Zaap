@@ -28,6 +28,8 @@ namespace zaap { namespace gui {
 		friend class GUIComponentGroup;
 		friend class GUIManager;
 	protected:
+		static bool m_IsRedrawRequested;
+
 		uint m_PaddingTop;
 		uint m_PaddingBottom;
 		uint m_PaddingLeft;
@@ -204,6 +206,14 @@ namespace zaap { namespace gui {
 		//		preferred width or height is set.
 		//
 		virtual void childHasNewPreferrences(GUIComponent* child);
+
+		// <Function>
+		//		requestRedraw
+		//
+		// <Description>
+		//		This requests a redraw from the GUIManager.
+		//
+		void requestRedraw() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Setters and Getters // 

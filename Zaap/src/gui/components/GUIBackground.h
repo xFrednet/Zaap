@@ -12,8 +12,14 @@ namespace zaap { namespace gui {
 		void updateVertexBuffer() override;
 		uint getWrappedWidth() const override;
 		uint getWrappedHeight() const override;
+
+		graphics::Color m_Color;
+
 	public:
 		GUIBackground(GUIComponent* parent = nullptr);
-		GUIBackground(Point pos, uint width, uint height);
+		GUIBackground(Point pos, uint width, uint height, graphics::Color color = graphics::Color());
+
+		inline void setColor(graphics::Color color);
+		inline graphics::Color getColor() const;
 	};
 }}

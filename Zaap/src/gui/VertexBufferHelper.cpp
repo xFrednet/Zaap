@@ -76,8 +76,8 @@ namespace zaap { namespace gui {
 
 			// v0 | v1 | v2
 			m_Indices[m_CurrentIIndex++] = i0;
-			m_Indices[m_CurrentIIndex++] = i1;
 			m_Indices[m_CurrentIIndex++] = i2;
+			m_Indices[m_CurrentIIndex++] = i1;
 			// v0 | v2 | v3
 			m_Indices[m_CurrentIIndex++] = i0;
 			m_Indices[m_CurrentIIndex++] = i2;

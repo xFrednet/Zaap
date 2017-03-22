@@ -273,6 +273,9 @@
     <ClCompile Include="src\gui\components\GUIBackground.cpp">
       <Filter>Source Files\src\gui\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\gui\components\GUITextureFrame.cpp">
+      <Filter>Source Files\src\gui\components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -486,6 +489,9 @@
       <Filter>Source Files\src\gui</Filter>
     </ClInclude>
     <ClInclude Include="src\gui\components\GUIBackground.h">
+      <Filter>Source Files\src\gui\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gui\components\GUITextureFrame.h">
       <Filter>Source Files\src\gui\components</Filter>
     </ClInclude>
   </ItemGroup>
