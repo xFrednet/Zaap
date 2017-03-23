@@ -133,16 +133,16 @@ namespace zaap { namespace graphics {
 		//      API from the given file path.
 		//
 		// <Input>
-		//      name:   
+		//      name::
 		//          The name for the @TextureManager. The name is 
-		//          also used for debugging.
+		//          also used for debugging.;;
 		//      
-		//      filePath:   
-		//          The path for the image file.
+		//      filePath::
+		//          The path for the image file.;;
 		//      
-		//      addToTextureManager :   
+		//      addToTextureManager::
 		//          This boolean indicated if the created @Texture2D should be 
-		//          added to the @TextureManager.
+		//          added to the @TextureManager.;;
 		//      
 		// <Return>
 		//      The created Texture2D.

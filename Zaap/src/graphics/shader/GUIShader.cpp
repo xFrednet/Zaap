@@ -22,4 +22,9 @@ namespace zaap { namespace graphics {
 	{
 		return ZA_SHADER_GUI_SHADER;
 	}
+
+	uint GUIShader::getTextureSlot() const
+	{
+		return 0;
+	}
 }}

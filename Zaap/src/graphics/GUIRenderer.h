@@ -7,6 +7,10 @@
 #include "shader/GUIShader.h"
 
 namespace zaap { namespace graphics {
+	namespace API {
+		class Texture2D;
+	}
+
 	struct Color;
 
 	class ZAAP_API GUIRenderer
@@ -104,8 +108,13 @@ namespace zaap { namespace graphics {
 		//
 		virtual void startRenderer();
 
-		void finishRendering();
+		virtual void finishRendering();
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // draw Util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
+		inline void setTexure(API::Texture2D* texture) const;
 
 	};
 

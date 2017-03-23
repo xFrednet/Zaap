@@ -22,7 +22,6 @@ namespace zaap { namespace graphics { namespace DX {
 
 		m_Devcon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		
 		return (ZA_SUCCEDED(zmr)) ? ZA_OK : ZA_ERROR_DIRECTX_ERROR;
 	}
 

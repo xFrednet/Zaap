@@ -35,6 +35,8 @@ namespace zaap { namespace graphics {
 		void setTargetSize(const uint& width, const uint& height);
 
 		ZA_SHADER_TYPE getShaderType() const override;
+		
+		inline uint getTextureSlot() const;
 	};
 
 }}

@@ -1,6 +1,4 @@
 #include <Zaap.h>
-#include <graphics/Font.h>
-#include <util/Loader.h>
 
 using namespace zaap;
 using namespace graphics;
@@ -149,9 +147,9 @@ int main(void)
 		scene_ = new Scene();
 
 		Test t;
-		t.getGUIManager()->add(new gui::GUIBackground(gui::Point(1, 1), 100, 40, Color(1.0f, 0.0f, 1.0f, 0.5f)));
-
 		loadEntitys();
+		t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 225, 100, "res/GUIInfo.png"));
+		//t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 450, 200, "res/GUIInfo.png"));
 
 		t.start();
 		

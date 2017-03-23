@@ -27,7 +27,7 @@ namespace zaap { namespace gui {
 	{
 		setPreferredSize(ZA_GUI_SIZE_MATCH_PARENT, ZA_GUI_SIZE_MATCH_PARENT);
 	}
-	GUIBackground::GUIBackground(Point pos, uint width, uint height, graphics::Color color)
+	GUIBackground::GUIBackground(Point pos, int width, int height, graphics::Color color)
 		: GUIComponent(4, 6, nullptr)
 	{
 		setColor(color);

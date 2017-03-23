@@ -58,7 +58,7 @@ namespace zaap { namespace gui {
 		/* ********************************************************* */
 		// * Texture *
 		/* ********************************************************* */
-		void drawTexture(const Vec2& pos, const uint& width, const uint& height,
+		void drawTexture(const Point& pos, const uint& width, const uint& height,
 			Vec2 texMin = Vec2(0, 0), Vec2 texMax = Vec2(1, 1));
 		void drawTexture(const Vec2& posMin, const Vec2& posMax,
 			Vec2 texMin = Vec2(0, 0), Vec2 texMax = Vec2(1, 1));

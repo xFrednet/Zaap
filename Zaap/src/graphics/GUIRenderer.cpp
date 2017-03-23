@@ -1,9 +1,11 @@
 ﻿#include "GUIRenderer.h"
 
-#include <graphics/Color.h>
-#include "API/Context.h"
-#include <util/Log.h>
 #include "API/DX/DXGUIRenderer.h"
+
+#include "API/Context.h"
+#include "API/Texture2D.h"
+
+#include <util/Log.h>
 
 namespace zaap { namespace graphics {
 	ZA_RESULT GUIRenderer::CreateNewInstance(GUIRenderer** instance)
@@ -73,5 +75,11 @@ namespace zaap { namespace graphics {
 	void GUIRenderer::finishRendering()
 	{
 		m_GUIShader->stop();
+	}
+
+	void GUIRenderer::setTexure(API::Texture2D* texture) const
+	{
+		ZA_ASSERT(texture);
+		texture->bind(m_GUIShader->getTextureSlot());
 	}
 }}

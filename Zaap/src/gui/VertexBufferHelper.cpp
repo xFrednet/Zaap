@@ -127,9 +127,9 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	// * Texture *
 	/* ********************************************************* */
-	void VertexBufferHelper::drawTexture(const Vec2& pos, const uint& width, const uint& height, Vec2 texMin, Vec2 texMax)
+	void VertexBufferHelper::drawTexture(const Point& pos, const uint& width, const uint& height, Vec2 texMin, Vec2 texMax)
 	{
-		drawTexture(pos, Vec2(pos.X + (float)width, pos.Y + (float)height), texMin, texMax);
+		drawTexture(Vec2(pos.X, pos.Y), Vec2(pos.X + float(width), pos.Y + float(height)), texMin, texMax);
 	}
 	void VertexBufferHelper::drawTexture(const Vec2& posMin, const Vec2& posMax, Vec2 texMin, Vec2 texMax)
 	{

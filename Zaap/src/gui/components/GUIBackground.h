@@ -17,7 +17,7 @@ namespace zaap { namespace gui {
 
 	public:
 		GUIBackground(GUIComponent* parent = nullptr);
-		GUIBackground(Point pos, uint width, uint height, graphics::Color color = graphics::Color());
+		GUIBackground(Point pos, int width, int height, graphics::Color color = graphics::Color());
 
 		inline void setColor(graphics::Color color);
 		inline graphics::Color getColor() const;

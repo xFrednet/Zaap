@@ -39,6 +39,7 @@ Macro names:
 #include <graphics/Color.h>
 #include <graphics/Bitmap.h>
 #include <graphics/Material.h>
+#include <graphics/Font.h>
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // GUI //
@@ -49,6 +50,7 @@ Macro names:
 #include <gui/GUIComponent.h>
 
 #include <gui/components/GUIBackground.h>
+#include <gui/components/GUITextureFrame.h>
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // API component //
