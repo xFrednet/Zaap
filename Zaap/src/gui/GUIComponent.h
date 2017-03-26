@@ -20,21 +20,23 @@ namespace zaap { namespace gui {
 	class GUIComponentGroup;
 	class GUIManager;
 
-	//TODO updateVertexBuffer method -> replaces moved && resized
-	//TODO draw util for the vertex buffer (class or local functions)
-
 	class ZAAP_API GUIComponent
 	{
 	private:
 		friend class GUIComponentGroup;
 		friend class GUIManager;
 	protected:
-		static bool m_IsRedrawRequested;
+		static bool s_IsRedrawRequested;
 
 		uint m_PaddingTop;
 		uint m_PaddingBottom;
 		uint m_PaddingLeft;
 		uint m_PaddingRight;
+
+		uint m_MarginTop;
+		uint m_MarginBottom;
+		uint m_MarginLeft;
+		uint m_MarginRight;
 
 		// <Value>
 		//		m_PreferredWidth
@@ -579,6 +581,59 @@ namespace zaap { namespace gui {
 		//			The new height of the object.;;
 		//
 		inline void setSize(uint width, uint height);
+
+		/* ********************************************************* */
+		// * margin *
+		/* ********************************************************* */
+	public:
+		// <Method>
+		//		getTopMargin
+		//
+		// <Return>
+		//		The returns the margin for the top.
+		//
+		inline uint getTopMargin() const
+		{
+			return m_MarginTop;
+		}
+		// <Method>
+		//		getBottomMargin
+		//
+		// <Return>
+		//		The returns the margin for the bottom.
+		//
+		inline uint getBottomMargin() const
+		{
+			return m_MarginBottom;
+		}
+		// <Method>
+		//		getLeftMargin
+		//
+		// <Return>
+		//		The returns the margin for the left side.
+		//
+		inline uint getLeftMargin() const
+		{
+			return m_MarginLeft;
+		}
+		// <Method>
+		//		getRightMargin
+		//
+		// <Return>
+		//		The returns the margin for the right side.
+		//
+		inline uint getRightMargin() const
+		{
+			return m_MarginRight;
+		}
+
+		// <Method>
+		//		setMargin
+		//
+		// <Note>
+		//		
+		void setMargin(const uint& topMargin, const uint& bottomMargin, 
+			const uint& leftMargin, const uint& rightMargin);
 
 		/* ********************************************************* */
 		// * hidden value *

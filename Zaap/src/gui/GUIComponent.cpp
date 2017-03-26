@@ -9,7 +9,7 @@
 namespace zaap { namespace gui {
 
 	//static value
-	bool GUIComponent::m_IsRedrawRequested = true;
+	bool GUIComponent::s_IsRedrawRequested = true;
 
 	GUIComponent::GUIComponent(uint vertexCount, uint indexCount, GUIComponent* parent)
 		: m_PaddingTop(0), m_PaddingBottom(0),
@@ -78,7 +78,7 @@ namespace zaap { namespace gui {
 
 	void GUIComponent::requestRedraw() const
 	{
-		m_IsRedrawRequested = true;
+		s_IsRedrawRequested = true;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
