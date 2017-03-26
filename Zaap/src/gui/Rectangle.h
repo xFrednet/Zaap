@@ -38,6 +38,7 @@ namespace zaap { namespace gui {
 		//			The height of the @Rectangle.;;
 		//
 		Rectangle(int x = 0, int y = 0, uint width = 0, uint height = 0);
+		Rectangle(Point position, uint width = 0, uint height = 0);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util // 

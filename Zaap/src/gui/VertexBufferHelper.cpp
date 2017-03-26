@@ -85,7 +85,7 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	void VertexBufferHelper::drawRectangle(const Point& pos, const uint& width, const uint& height, const graphics::Color& color)
 	{
-		drawRectangle(Vec2(pos.X, pos.Y), Vec2(pos.X + (float)width, pos.Y + (float)height), color);
+		drawRectangle(pos.getVector(), Vec2(pos.X + (float)width, pos.Y + (float)height), color);
 	}
 	void VertexBufferHelper::drawRectangle(const Vec2& posMin, const Vec2& posMax, const graphics::Color& color)
 	{
@@ -124,7 +124,7 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	void VertexBufferHelper::drawTexture(const Point& pos, const uint& width, const uint& height, Vec2 texMin, Vec2 texMax)
 	{
-		drawTexture(Vec2(pos.X, pos.Y), Vec2(pos.X + float(width), pos.Y + float(height)), texMin, texMax);
+		drawTexture(pos.getVector(), Vec2(pos.X + float(width), pos.Y + float(height)), texMin, texMax);
 	}
 	void VertexBufferHelper::drawTexture(const Vec2& posMin, const Vec2& posMax, Vec2 texMin, Vec2 texMax)
 	{

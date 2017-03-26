@@ -27,7 +27,7 @@ namespace zaap { namespace gui{
 
 		helper.drawRectangle(getGlobalPosition(), getWidth(), getHeight(), m_BackgroundColor);
 		//helper.writeText(Test, Font, Size, getGlobalContentArea()) 
-		//getGlobalContentArea() -> global area with the margin subtracted.
+		
 		ZA_ASSERT(false, "This isn't implemented jet you idiot");
 
 		helper.save();
@@ -37,7 +37,6 @@ namespace zaap { namespace gui{
 	{
 		return 0;
 	}
-
 	uint GUILabel::getWrappedHeight() const
 	{
 		return 0;

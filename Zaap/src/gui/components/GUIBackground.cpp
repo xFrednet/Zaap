@@ -8,7 +8,7 @@ namespace zaap { namespace gui {
 		VertexBufferHelper helper(&m_VertexBuffer);
 
 		helper.drawRectangle(getGlobalPosition(), getWidth(), getHeight(), m_Color);
-
+		
 		helper.save();
 	}
 

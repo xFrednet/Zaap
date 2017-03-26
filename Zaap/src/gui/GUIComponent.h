@@ -28,6 +28,12 @@ namespace zaap { namespace gui {
 	protected:
 		static bool s_IsRedrawRequested;
 
+		// P <-padding-> X <-margin-> C
+		//
+		// P = parent
+		// X = position (in parent)
+		// C = content
+
 		uint m_PaddingTop;
 		uint m_PaddingBottom;
 		uint m_PaddingLeft;
@@ -192,6 +198,16 @@ namespace zaap { namespace gui {
 		//		was resized. This is usually done by the parent.
 		//
 		virtual void resized();
+		// <Method>
+		//		changedMargin
+		//
+		// <Descritpion>
+		//		This is called if the margin was changed.
+		//
+		// <Note>
+		//		The updateVertexBuffer method is will also be called afterwards.
+		//
+		virtual void changedMargin();
 		// <Method>
 		//		updateVertexBuffer
 		//
@@ -628,12 +644,150 @@ namespace zaap { namespace gui {
 		}
 
 		// <Method>
+		//		setTopMargin
+		//
+		// <Note>
+		//	  - This calls the changedMargin method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		topMargin::
+		//			The margin that should be applied to the top.;;
+		//
+		void setTopMargin(const uint& topMargin);
+		// <Method>
+		//		setBottomMargin
+		//
+		// <Note>
+		//	  - This calls the changedMargin method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		topMargin::
+		//			The margin that should be applied to the bottom.;;
+		//
+		void setBottomMargin(const uint& bottomMargin);
+		// <Method>
+		//		setLeftMargin
+		//
+		// <Note>
+		//	  - This calls the changedMargin method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		topMargin::
+		//			The margin that should be applied to the left side.;;
+		//
+		void setLeftMargin(const uint& leftMargin);
+		// <Method>
+		//		setRightMargin
+		//
+		// <Note>
+		//	  - This calls the changedMargin method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		topMargin::
+		//			The margin that should be applied to the right side.;;
+		//
+		void setRightMargin(const uint& rightMargin);
+		// <Method>
 		//		setMargin
 		//
 		// <Note>
-		//		
+		//	  - This calls the changedMargin method.
+		//	  - This calls the updateVertexBuffer method.
+		//
+		// <Input>
+		//		topMargin::
+		//			The margin that should be applied to the top.;;
+		//		bottomMargin::
+		//			The margin that should be applied to the bottom.;;
+		//		leftMargin::
+		//			The margin that should be applied to the left side.;;
+		//		rightMargin::
+		//			The margin that should be applied to the right side.;;
+		//
 		void setMargin(const uint& topMargin, const uint& bottomMargin, 
 			const uint& leftMargin, const uint& rightMargin);
+
+		/* ##################################### */
+		// # content area #
+		/* ##################################### */
+		
+		// <Method>
+		//      getContentPosition
+		//
+		// <Description>
+		//      This returns the position of the area that is dedicated
+		//      for the content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns content position in parent space.
+		//
+		Point getContentPosition() const;
+		// <Method>
+		//      getGlobalContentPosition
+		//
+		// <Description>
+		//      This returns the global position of the area that is dedicated
+		//      for the content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns content position in global space.
+		//
+		Point getGlobalContentPosition() const;
+		// <Method>
+		//      getContentWidth
+		//
+		// <Description>
+		//      This returns the width of the area that is dedicated
+		//      for the content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns the width of the content area.
+		//
+		uint getContentWidth() const;
+		// <Method>
+		//      getContentHeight
+		//
+		// <Description>
+		//      This returns the height of the area that is dedicated
+		//      for the content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns the height of the content area.
+		//
+		uint getContentHeight() const;
+
+		// <Method>
+		//      getContentArea
+		//
+		// <Description>
+		//      This returns the area that is dedicated for the 
+		//      content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns content area in parent space.
+		//
+		Rectangle getContentArea() const;
+		// <Method>
+		//      getGlobalContentArea
+		//
+		// <Description>
+		//      This returns the area that is dedicated for the
+		//      content. The content area is the size minus the
+		//      defined margin.
+		//
+		// <Return> 
+		//      This method returns content area in global space.
+		//
+		Rectangle getGlobalContentArea() const;
 
 		/* ********************************************************* */
 		// * hidden value *

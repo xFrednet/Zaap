@@ -6,6 +6,10 @@ namespace zaap { namespace gui {
 		Width(width), Height(height)
 	{
 	}
+	Rectangle::Rectangle(Point position, uint width, uint height)
+		: Rectangle(position.X, position.Y, width, height)
+	{
+	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Util // 

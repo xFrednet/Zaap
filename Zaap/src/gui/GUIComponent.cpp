@@ -71,7 +71,9 @@ namespace zaap { namespace gui {
 	void GUIComponent::resized()
 	{
 	}
-
+	void GUIComponent::changedMargin()
+	{
+	}
 	void GUIComponent::childHasNewPreferrences(GUIComponent* child)
 	{
 	}
@@ -96,6 +98,7 @@ namespace zaap { namespace gui {
 		newParent();
 		moved();
 		updateVertexBuffer();
+		requestRedraw();
 	}
 
 	/* ********************************************************* */
@@ -160,6 +163,7 @@ namespace zaap { namespace gui {
 
 			resized();
 			updateVertexBuffer();
+			requestRedraw();
 		}
 	}
 
@@ -181,6 +185,74 @@ namespace zaap { namespace gui {
 
 		resized();
 		updateVertexBuffer();
+		requestRedraw();
+	}
+
+	/* ********************************************************* */
+	// * margin *
+	/* ********************************************************* */
+	void GUIComponent::setTopMargin(const uint& topMargin)
+	{
+		setMargin(m_MarginTop, m_MarginBottom, m_MarginLeft, m_MarginRight);
+	}
+	void GUIComponent::setBottomMargin(const uint& bottomMargin)
+	{
+		setMargin(m_MarginTop, m_MarginBottom, m_MarginLeft, m_MarginRight);
+	}
+	void GUIComponent::setLeftMargin(const uint& leftMargin)
+	{
+		setMargin(m_MarginTop, m_MarginBottom, m_MarginLeft, m_MarginRight);
+	}
+	void GUIComponent::setRightMargin(const uint& rightMargin)
+	{
+		setMargin(m_MarginTop, m_MarginBottom, m_MarginLeft, m_MarginRight);
+	}
+	
+	void GUIComponent::setMargin(const uint& topMargin, const uint& bottomMargin, const uint& leftMargin, const uint& rightMargin)
+	{
+		m_MarginTop = topMargin;
+		m_MarginBottom = bottomMargin;
+		m_MarginLeft = leftMargin;
+		m_MarginRight = rightMargin;
+
+		changedMargin();
+		updateVertexBuffer();
+		requestRedraw();
+	}
+
+	/* ##################################### */
+	// # content area #
+	/* ##################################### */
+	Point GUIComponent::getContentPosition() const
+	{
+		return (getPosition() + Point(m_MarginLeft, m_MarginTop));
+	}
+	Point GUIComponent::getGlobalContentPosition() const
+	{
+		return (getGlobalPosition() + Point(m_MarginLeft, m_MarginTop));
+	}
+	uint GUIComponent::getContentWidth() const
+	{
+		if ((m_MarginLeft + m_MarginRight) >= getWidth())
+			return 0;
+		
+		return getWidth() - (m_MarginLeft + m_MarginRight);
+	}
+	uint GUIComponent::getContentHeight() const
+	{
+		if ((m_MarginTop + m_MarginBottom) >= getHeight())
+			return 0;
+
+		return getHeight() - (m_MarginTop + m_MarginBottom);
+	}
+
+	Rectangle GUIComponent::getContentArea() const
+	{
+		return Rectangle(getPosition(), getContentWidth(), getContentHeight());
+	}
+	Rectangle GUIComponent::getGlobalContentArea() const
+	{
+		return Rectangle(getGlobalPosition(), getContentWidth(), getContentHeight());
 	}
 
 	/* ********************************************************* */

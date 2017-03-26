@@ -2,6 +2,11 @@
 
 #include <Common.h>
 
+namespace zaap
+{
+	struct Vec2;
+}
+
 namespace zaap { namespace gui {
 
 	struct ZAAP_API Point
@@ -68,6 +73,8 @@ namespace zaap { namespace gui {
 			setX(x);
 			setY(y);
 		}
+
+		Vec2 getVector() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Operators // 

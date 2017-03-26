@@ -1,6 +1,13 @@
 #include "Point.h"
 
+#include <maths/Vec2.h>
+
 namespace zaap { namespace gui {
+	Vec2 Point::getVector() const
+	{
+		return Vec2((float)X, (float)Y);
+	}
+
 	bool Point::operator==(const Point& other) const
 	{
 		return Equal(*this, other);
