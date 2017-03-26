@@ -6,6 +6,7 @@
 #include <maths/Maths.h>
 #include <graphics/API/VertexBuffer.h>
 #include <graphics/API/Texture2D.h>
+#include <graphics/Material.h>
 
 namespace zaap { namespace graphics {
 

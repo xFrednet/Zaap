@@ -12,6 +12,9 @@ namespace zaap { namespace gui {
 
 		m_Indices = new uint[m_VertexCount];
 		m_Vertices = new graphics::ZA_GUI_VERTEX[m_VertexCount];
+
+		memset(m_Vertices, 0, sizeof(graphics::ZA_GUI_VERTEX) * m_VertexCount);
+		memset(m_Indices, 0, sizeof(uint) * m_IndexCount);
 	}
 	VertexBufferHelper::~VertexBufferHelper()
 	{
@@ -21,15 +24,7 @@ namespace zaap { namespace gui {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Util //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void VertexBufferHelper::start()
-	{
-		m_CurrentVIndex = 0;
-		m_CurrentIIndex = 0;
-
-		memset(m_Vertices, 0, sizeof(graphics::ZA_GUI_VERTEX) * m_VertexCount);
-		memset(m_Indices , 0, sizeof(uint) * m_IndexCount);
-	}
-	void VertexBufferHelper::stop()
+	void VertexBufferHelper::save()
 	{
 		ZA_ASSERT(m_CurrentVIndex <= m_VertexCount);
 		ZA_ASSERT(m_CurrentIIndex <= m_IndexCount);

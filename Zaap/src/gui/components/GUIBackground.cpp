@@ -6,11 +6,10 @@ namespace zaap { namespace gui {
 	void GUIBackground::updateVertexBuffer()
 	{
 		VertexBufferHelper helper(&m_VertexBuffer);
-		helper.start();
 
 		helper.drawRectangle(getGlobalPosition(), getWidth(), getHeight(), m_Color);
 
-		helper.stop();
+		helper.save();
 	}
 
 	uint GUIBackground::getWrappedWidth() const
@@ -38,6 +37,7 @@ namespace zaap { namespace gui {
 	void GUIBackground::setColor(graphics::Color color)
 	{
 		m_Color = color;
+		updateVertexBuffer();
 		requestRedraw();
 	}
 	graphics::Color GUIBackground::getColor() const

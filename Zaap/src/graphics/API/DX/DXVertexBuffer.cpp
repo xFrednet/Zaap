@@ -65,14 +65,15 @@ namespace zaap { namespace graphics { namespace DX {
 		if (indices)
 			LoadDXData(m_IndexBuffer, indices, sizeof(uint) * indexCount);
 	}
-	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint vertexCount, uint stride, ZA_SHADER_TYPE targetShader)
-		: VertexBuffer(vertexCount, targetShader),
+
+	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint stride, uint vertexCount, uint indexCount)
+		: VertexBuffer(vertexCount, indexCount),
 		m_VertexBuffer(vertexBuffer),
 		m_IndexBuffer(indexBuffer),
 		m_Stride(stride)
 	{
-
 	}
+
 	DXVertexBuffer::~DXVertexBuffer()
 	{
 		ZA_DXRELEASE(m_VertexBuffer);

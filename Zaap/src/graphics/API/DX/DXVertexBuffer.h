@@ -23,7 +23,7 @@ namespace zaap { namespace graphics { namespace DX {
 		// // Constructor and Deconstructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		DXVertexBuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
-		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint vertexCount, uint stride, ZA_SHADER_TYPE targetShader);
+		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint stride, uint vertexCount, uint indexCount);
 		virtual ~DXVertexBuffer();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */

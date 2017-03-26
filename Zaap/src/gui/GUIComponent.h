@@ -6,6 +6,7 @@
 #include <gui/Point.h>
 
 #include <graphics/GUIRenderer.h>
+#include <graphics/API/VertexBuffer.h>
 
 #define ZA_GUI_SIZE_WRAP_CONTENT 0
 #define ZA_GUI_SIZE_MATCH_PARENT -1

@@ -24,11 +24,10 @@ namespace zaap { namespace gui {
 	void GUITextureFrame::updateVertexBuffer()
 	{
 		VertexBufferHelper helper(&m_VertexBuffer);
-		helper.start();
 
 		helper.drawTexture(getGlobalPosition(), getWidth(), getHeight());
 
-		helper.stop();
+		helper.save();
 	}
 	uint GUITextureFrame::getWrappedWidth() const
 	{

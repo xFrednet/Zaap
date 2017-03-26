@@ -4,6 +4,7 @@
 #include <graphics/Material.h>
 #include <graphics/MaterialManager.h>
 #include "StringUtil.h"
+#include <graphics/shader/Shader.h>
 
 namespace zaap {
 

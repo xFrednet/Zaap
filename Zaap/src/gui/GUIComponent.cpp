@@ -26,8 +26,12 @@ namespace zaap { namespace gui {
 		memcpy(str, uuid.Data, 16);
 		m_ID = str;
 
-		using namespace graphics::API;
-		m_VertexBuffer = VertexBuffer::CreateVertexbuffer(sizeof(graphics::ZA_GUI_VERTEX), vertexCount, indexCount);
+		ZA_ASSERT((vertexCount != 0 || indexCount == 0))
+		if (vertexCount != 0 || indexCount != 0)
+		{
+			using namespace graphics::API;
+			m_VertexBuffer = VertexBuffer::CreateVertexbuffer(sizeof(graphics::ZA_GUI_VERTEX), vertexCount, indexCount);
+		}
 
 		ZA_INFO("New component with the ID: ", m_ID);
 	}

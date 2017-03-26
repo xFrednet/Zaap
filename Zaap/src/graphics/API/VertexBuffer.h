@@ -3,7 +3,6 @@
 #include <Common.h>
 #include <Types.h>
 #include <util/UUID.h>
-#include <graphics/shader/Shader.h>
 #include <graphics/camera/ViewFrustum.h>
 
 namespace zaap { namespace graphics { namespace API {
@@ -19,8 +18,9 @@ namespace zaap { namespace graphics { namespace API {
 		static std::vector<VertexBuffer*> s_VertexBuffers;
 	public:
 		static VertexBuffer* CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
-		static void Delete(VertexBuffer* vertexbuffer);
-		static void Delete(const UUID& uuid);
+	private:
+		static void Eraise(const UUID& uuid);
+	public:
 		static void Cleanup();
 
 		///////////////////////
@@ -51,7 +51,7 @@ namespace zaap { namespace graphics { namespace API {
 		VertexBuffer(const uint& vertexCount, const uint& indexCount);
 
 	public:
-		virtual ~VertexBuffer() {}
+		virtual ~VertexBuffer();
 
 		//class methods
 

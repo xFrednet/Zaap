@@ -12,6 +12,7 @@ namespace API {
 
 	std::vector<VertexBuffer*> VertexBuffer::s_VertexBuffers;
 
+
 	VertexBuffer* VertexBuffer::CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
 	{
 		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertexSize, vertexCount, indexCount, vertices, indices);
@@ -21,28 +22,22 @@ namespace API {
 		return vBuffer;
 	}
 
-	void VertexBuffer::Delete(VertexBuffer* vertexbuffer)
-	{
-		Delete(vertexbuffer->getUUID());
-	}
-	void VertexBuffer::Delete(const UUID&  uuid)
+	void VertexBuffer::Eraise(const UUID& uuid)
 	{
 		for (uint i = 0; i < s_VertexBuffers.size(); i++)
 		{
 			if (s_VertexBuffers[i]->getUUID() == uuid)
 			{
-				VertexBuffer* vb = s_VertexBuffers[i];
 				s_VertexBuffers.erase(s_VertexBuffers.begin() + i);
-				delete vb;
 			}
 		}
 	}
 
 	void VertexBuffer::Cleanup()
 	{
-		for (VertexBuffer* vBuffer : s_VertexBuffers)
+		while (!s_VertexBuffers.empty())
 		{
-			delete vBuffer;
+			delete s_VertexBuffers[0];
 		}
 
 		ZA_LOG_CLEANUP();
@@ -84,6 +79,11 @@ namespace API {
 		m_IsDynamic(false)
 	{
 		RandomUUID(&m_uuid);
+	}
+
+	VertexBuffer::~VertexBuffer()
+	{
+		Eraise(m_uuid);
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

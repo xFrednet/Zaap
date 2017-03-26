@@ -148,8 +148,8 @@ int main(void)
 
 		Test t;
 		loadEntitys();
-		t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 225, 100, "res/GUIInfo.png"));
-		//t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		//t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 225, 100, "res/GUIInfo.png"));
+		t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 450, 200, "res/GUIInfo.png"));
 
 		t.start();
 		
