@@ -11,8 +11,6 @@ Light* light = nullptr;
 Light* light2 = nullptr;
 Camera* camera = nullptr;
 Terrain* terrain_ = nullptr;
-Font font_;
-API::VertexBuffer *fontVB = nullptr;
 
 // TODO https://trello.com/b/vQItmmsf/zaap
 
@@ -34,17 +32,6 @@ void loadEntitys()
 		scene_->setLightSetup(lightSetup);
 	}
 	
-	//
-	//Font
-	//
-	{
-		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
-		//font_ = Font::LoadFontFromTXT("res/leitice/leitice.txt", "res/leitice/leitice.png", 723);
-		//fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
-		fontVB = font_.getVertexBuffer("This is some awesome text");
-		if (!fontVB)
-			ZA_INFO("fontVB is NULL");
-	}
 	//Terrain
 	{
 		TERRAIN_DESC tDesc;
@@ -128,12 +115,7 @@ public:
 		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
 
 	}
-	uint timer = 0;
-	bool bTemp = true;
-	void render() override 
-	{
-		Application::render();
-	}
+
 };
 
 int main(void)
@@ -141,6 +123,8 @@ int main(void)
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZA_INFO(id1);
+
+	printf_s("Bool size: %i\n", sizeof(bool));
 
 	//source
 	{

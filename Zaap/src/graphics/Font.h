@@ -10,70 +10,82 @@
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_FONT_CHAR_MATRIX //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
-	class Renderer3D;
+
+	// ZA_FONT_CHAR_MATRIX
+	//      +-----------------------------+<\n>
+	//      |                             |<\n>
+	//      |  #<XO><---Width---->        |<\n>
+	//      |  ^                      ^   |<\n>
+	//      |  YO                     |   |<\n>
+	//      |  v                      |   |<\n>
+	//      |  ^    ##############    |   |<\n>
+	//      |  |    ##############    |   |<\n>
+	//      |  |          ##          TH  |<\n>
+	//      |  H          ##          |   |<\n>
+	//      |  |          ##          |   |<\n>
+	//      |  |          ##          |   |<\n>
+	//      |  v          ##          v   |<\n>
+	//      |                             |<\n>
+	//      |   <---------TW--------->    |<\n>
+	//      |                             |<\n>
+	//      +-----------------------------+<\n>
+	// XO = XOffset
+	// YO = YOffset
+	// H  = Height
+	// TW = TotalWidth
+	// TH = TotalHeight
 
 	// <Struct>
-	//      ZA_CharMarix
+	//      ZA_FONT_CHAR_MATRIX
 	//
-	// <Descripton>
-	// x = origin                 | x = origin                |   x = origin     (zoomed in) |
-	//                   ^        |                           |   ^                          |
-	//    ##########     |        |    ##########    ^        |   |                          |
-	//        ##         |        |        ##        |        |  OrigenYOffset               |
-	//        ##     TotalHeight  |        ##      Height     |   |                          |
-	//        ##         |        |        ##        |        |   v                          |
-	//        ##         v        |        ##        v        |    <-OrigenXOffset->#########|
-	//  <-TotalWidth->            |    <--Width->             |                     #########|
+	// <Description>
+	//      This stores info about a character.
 	//
-	// This explanation is so bad :P
-	// The values should be the values for a fontSize of 1.
-	// To translate the struct members to the current size they are multiplied by the size. (This is done in the FontShader)
-	struct ZAAP_API ZA_CharMarix
+	// <Members>
+	//      XOffset::
+	//          The horizontal offset from the origin.;;
+	//      YOffset::
+	//          The vertical offset from the origin.;;
+	//          
+	//      TotalWidth::
+	//          The total width of the char. This includes 
+	//          the padding and the offset.;;
+	//          
+	struct ZAAP_API ZA_FONT_CHAR_MATRIX
 	{
-		float OrigenXOffset;
-		float OrigenYOffset;
-
-		float TotalWidth;
-		float TotalHeight;
+		float XOffset;
+		float YOffset;
 
 		float Width;
 		float Height;
 
-		ZA_CharMarix();
-		ZA_CharMarix(const ZA_CharMarix &charMarix);
-
-		ZA_CharMarix operator/(float a) const;
-		ZA_CharMarix operator*(float a) const;
-		
+		float TotalWidth;
+		float TotalHeight;
 	};
+
+	ZAAP_API inline ZA_FONT_CHAR_MATRIX Multiply(const ZA_FONT_CHAR_MATRIX& a, const float& b);
+	ZAAP_API inline ZA_FONT_CHAR_MATRIX Divide(const ZA_FONT_CHAR_MATRIX& a, const float& b);
+
+}}
+
+namespace zaap { namespace graphics {
 	
-	struct ZAAP_API ZA_CharacterInfo
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_FONT_CHAR_INFO //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	struct ZAAP_API ZA_FONT_CHAR_INFO
 	{
 		char Character;
-			
+		
 		Vec2 TexMinCoords;
 		Vec2 TexMaxCoords;
-
-		ZA_CharMarix CharMatirx;
-
-		ZA_CharacterInfo();
-		ZA_CharacterInfo(char c);
+		
+		ZA_FONT_CHAR_MATRIX CharMatrix;
 	};
-
-	struct ZAAP_API ZA_CHAR_VERTEX
-	{
-		Vec3 Position;
-		Vec2 TexCoord;
-	};
-
-	typedef ZAAP_API enum ZA_FONT_CHAR_FORMAT_
-	{
-		// !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-		ZAAP_FONT_128_CHARACTERS     = 0,
-		//This format requires the user to set the chars to load
-		ZAAP_FONT_UNKNOWN_CHARACTERS = 1
-	} ZA_FONT_CHAR_FORMAT;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Font class //
@@ -83,37 +95,16 @@ namespace zaap { namespace graphics {
 		//static methods
 	public:
 
-		static Mat4 CreateFontTransformationMatrix(const Vec3 &position, const float &fontSize);
-
-		//This methods returns all the characters that are supported by a certain ZA_FONT_CHAR_FORMAT
-		static String GetFormatCharacters(ZA_FONT_CHAR_FORMAT format);
-
 		//This methods loads a FTT file and creates a Font object from it
-		static Font LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format);
-		static Font LoadFTTFile(String file, String chars);
-
-		// <Function>
-		//      LoadFontFromTXT
-		//
-		// <Description>
-		//      This file loads the needed information from a text file.
-		//
-		// <Note>
-		//      This method will be rewritten. It's just a temporary loader for leit2.
-		//
-		static Font LoadFontFromTXT(String file, String textureFile, uint size);
+		static void LoadFTTFile(String file, Font* font);
 
 		//Members
 	private:
-		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
 
-		float m_Size;
 		String m_Chars;
-
-		// loaded chars
+		std::vector<ZA_FONT_CHAR_INFO> m_CharInfo;
 		API::Texture2D* m_CharSheet;
-		std::vector<ZA_CharacterInfo> m_CharInfo;
-		ZA_CharMarix m_MaxCharSize;
+		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
 
 		//Methods
 	public:
@@ -122,7 +113,6 @@ namespace zaap { namespace graphics {
 
 		//render
 		API::VertexBuffer* getVertexBuffer(String string);
-		void render(API::VertexBuffer *vb, Renderer3D* renderer);
 
 		//util
 		uint getCharIndex(char c) const;

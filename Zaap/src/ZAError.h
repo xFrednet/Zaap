@@ -669,11 +669,58 @@ namespace zaap
 // // ZA_RESULT_SOURCE_GUI codes //
 /* //////////////////////////////////////////////////////////////////////////////// */
 
+// <Name>
+//      ZA_ERROR_GUI_ERROR
+//
+// <Note>
+//      You killed a part of the GUI system... Thanks!!!!
+//
+// <Message>
+//      A error accord somewhere within the GUI system.
+//
+#define ZA_ERROR_GUI_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8300)
+
 /* ********************************************************* */
 // * GUIManager *
 /* ********************************************************* */
 
-#define ZA_ERROR_GUIMANAGER_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8300)
+// <Name>
+//      ZA_ERROR_GUI_ERROR
+//
+// <Note>
+//      Now this is the heart of the GUI system...
+//      and you killed it too... F**k you!!!
+//
+// <Message>
+//      A error accord somewhere within the GUI manager.
+//
+#define ZA_ERROR_GUIMANAGER_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8301)
+
+/* ********************************************************* */
+// * Font (0x8310) *
+/* ********************************************************* */
+
+// <Name>
+//      ZA_ERROR_FONT_ERROR
+//
+// <Message>
+//      A error accord somewhere within the font system.
+//
+#define ZA_ERROR_FONT_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8310)
+// <Name>
+//      ZA_ERROR_FONT_FREETYPE_INIT_ERROR
+//
+// <Message>
+//      The FreeType library failed to initialize.
+//
+#define ZA_ERROR_FONT_FREETYPE_INIT_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8311)
+// <Name>
+//      ZA_ERROR_FONT_UNSUPPROTED_FORMAT
+//
+// <Message>
+//      The submitted file is not supported by the Font system.
+//
+#define ZA_ERROR_FONT_UNSUPPROTED_FORMAT			ZAAP_TYPEDEF_ZARESULT(0x8312)
 
 
 
