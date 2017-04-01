@@ -165,9 +165,6 @@
     <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\API\DX\DXVertexBuffer.cpp">
-      <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
@@ -273,6 +270,9 @@
     <ClCompile Include="src\gui\components\GUILabel.cpp">
       <Filter>Source Files\src\gui\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphics\API\DX\DXVertexBufferCore.cpp">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -369,9 +369,6 @@
       <Filter>Source Files\src\graphics\API</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXTexture2D.h">
-      <Filter>Source Files\src\graphics\API\DX</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphics\API\DX\DXVertexBuffer.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXCommon.h">
@@ -487,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="src\gui\components\GUILabel.h">
       <Filter>Source Files\src\gui\components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\API\DX\DXVertexBufferCore.h">
+      <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

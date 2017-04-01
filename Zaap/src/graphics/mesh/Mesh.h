@@ -77,7 +77,7 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//		This is the @VertexBuffer of the @Mesh.
 		//
-		API::VertexBuffer* m_VertexBuffer;
+		API::VertexBuffer m_VertexBuffer;
 
 		// <Value>
 		//		m_Texture
@@ -107,13 +107,13 @@ namespace zaap { namespace graphics {
 
 	public:
 		Mesh();
-		Mesh(String name, API::VertexBuffer* vertexBuffer);
-		Mesh(String name, API::VertexBuffer* vertexBuffer, Material const* materials, uint materialCount);
+		Mesh(String name, API::VertexBuffer vertexBuffer);
+		Mesh(String name, API::VertexBuffer vertexBuffer, Material const* materials, uint materialCount);
 		
 		~Mesh();
 
 		// vertex buffer
-		inline API::VertexBuffer* getVertexBuffer() const;
+		inline API::VertexBuffer getVertexBuffer() const;
 		inline uint getVertexCount() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */

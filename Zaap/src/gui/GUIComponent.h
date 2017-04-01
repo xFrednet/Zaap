@@ -12,7 +12,7 @@
 #define ZA_GUI_SIZE_MATCH_PARENT -1
 
 namespace zaap {namespace graphics {namespace API {
-	class VertexBuffer;
+	class VertexBufferCore;
 }}}
 
 namespace zaap { namespace gui {
@@ -125,7 +125,7 @@ namespace zaap { namespace gui {
 		//
 		String m_ID;
 
-		graphics::API::VertexBuffer* m_VertexBuffer;
+		graphics::API::VertexBufferCore* m_VertexBuffer;
 
 		GUIComponent(uint vertexCount, uint indexCount, GUIComponent* parent = nullptr);
 	public:

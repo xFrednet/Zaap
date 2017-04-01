@@ -30,7 +30,7 @@ namespace zaap { namespace gui {
 		if (vertexCount != 0 || indexCount != 0)
 		{
 			using namespace graphics::API;
-			m_VertexBuffer = VertexBuffer::CreateVertexbuffer(sizeof(graphics::ZA_GUI_VERTEX), vertexCount, indexCount);
+			m_VertexBuffer = VertexBufferCore::CreateVertexBufferCore(sizeof(graphics::ZA_GUI_VERTEX), vertexCount, indexCount);
 		}
 
 		ZA_INFO("New component with the ID: ", m_ID);

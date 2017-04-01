@@ -1,110 +1,52 @@
 #include "VertexBuffer.h"
 
-#include <graphics/API/DX/DXVertexBuffer.h>
+#include <graphics/API/DX/DXVertexBufferCore.h>
 #include <util/Log.h>
 
-namespace zaap { namespace graphics { 
+namespace zaap { namespace graphics { namespace API {
 
-////////////////
-// Management //
-////////////////
-namespace API {
+	uint VertexBufferCore::s_TotalDrawCount = 0;
+	ViewFrustum VertexBufferCore::s_ViewFrustum = ViewFrustum();
 
-	std::vector<VertexBuffer*> VertexBuffer::s_VertexBuffers;
-
-
-	VertexBuffer* VertexBuffer::CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Creation //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	VertexBufferCore* VertexBufferCore::CreateVertexBufferCore(uint vertexSize, const uint& vertexCount, const uint& indexCount, void* vertices, uint* indices)
 	{
-		VertexBuffer* vBuffer = new DX::DXVertexBuffer(vertexSize, vertexCount, indexCount, vertices, indices);
-
-		s_VertexBuffers.push_back(vBuffer);
-
-		return vBuffer;
+		return new DX::DXVertexBufferCore(vertexSize, vertexCount, indexCount, vertices, indices);
+	}
+	VertexBuffer VertexBufferCore::CreateVertexBuffer(uint vertexSize, const uint& vertexCount, const uint& indexCount, void* vertices, uint* indices)
+	{
+		return VertexBuffer(CreateVertexBufferCore(vertexSize, vertexCount, indexCount, vertices, indices));
 	}
 
-	void VertexBuffer::Eraise(const UUID& uuid)
-	{
-		for (uint i = 0; i < s_VertexBuffers.size(); i++)
-		{
-			if (s_VertexBuffers[i]->getUUID() == uuid)
-			{
-				s_VertexBuffers.erase(s_VertexBuffers.begin() + i);
-			}
-		}
-	}
-
-	void VertexBuffer::Cleanup()
-	{
-		while (!s_VertexBuffers.empty())
-		{
-			delete s_VertexBuffers[0];
-		}
-
-		ZA_LOG_CLEANUP();
-	}
-}
-
-///////////////////////
-// Rendering options //
-///////////////////////
-namespace API {
-	uint VertexBuffer::s_TotalDrawCount = 0;
-	ViewFrustum VertexBuffer::s_ViewFrustum = ViewFrustum();
-
-	uint VertexBuffer::GetTotalDrawCount()
+	uint VertexBufferCore::GetTotalDrawCount()
 	{
 		return s_TotalDrawCount;
 	}
-	void VertexBuffer::ClearTotalDrawCount()
+	void VertexBufferCore::ClearTotalDrawCount()
 	{
 		s_TotalDrawCount = 0;
 	}
 
-	void VertexBuffer::SetViewFrustum(const ViewFrustum& view)
+	void VertexBufferCore::SetViewFrustum(const ViewFrustum& view)
 	{
 		s_ViewFrustum = view;
 	}
-	ViewFrustum VertexBuffer::GetViewFrustum()
+	ViewFrustum VertexBufferCore::GetViewFrustum()
 	{
 		return s_ViewFrustum;
 	}
-}
-namespace API {
-	//
-	// Class methods
-	//
-	VertexBuffer::VertexBuffer(const uint& vertexCount, const uint& indexCount)
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Class //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	VertexBufferCore::VertexBufferCore(const uint& vertexCount, const uint& indexCount)
 		: m_IndexCount(indexCount),
 		m_VertexCount(vertexCount),
 		m_IsDynamic(false)
 	{
-		RandomUUID(&m_uuid);
-	}
-
-	VertexBuffer::~VertexBuffer()
-	{
-		Eraise(m_uuid);
-	}
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Getters //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	uint VertexBuffer::getVertexCount(void) const
-	{
-		return m_VertexCount;
-	}
-	uint VertexBuffer::getIndexCount() const
-	{
-		return m_IndexCount;
-	}
-	bool VertexBuffer::isDynamic() const
-	{
-		return m_IsDynamic;
-	}
-
-	UUID VertexBuffer::getUUID() const
-	{
-		return m_uuid;
+		RandomUUID(&m_UUID);
 	}
 
 }}}

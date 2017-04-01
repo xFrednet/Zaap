@@ -8,7 +8,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 
-	class ZAAP_API DXVertexBuffer : public API::VertexBuffer
+	class ZAAP_API DXVertexBufferCore : public API::VertexBufferCore
 	{
 	private:
 		friend class DXRenderer;
@@ -22,9 +22,9 @@ namespace zaap { namespace graphics { namespace DX {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructor and Deconstructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		DXVertexBuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
-		DXVertexBuffer(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint stride, uint vertexCount, uint indexCount);
-		virtual ~DXVertexBuffer();
+		DXVertexBufferCore(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
+		DXVertexBufferCore(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint stride, uint vertexCount, uint indexCount);
+		virtual ~DXVertexBufferCore();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Draw util //

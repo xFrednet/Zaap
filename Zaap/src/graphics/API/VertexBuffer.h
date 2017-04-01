@@ -8,72 +8,82 @@
 namespace zaap { namespace graphics { namespace API {
 	
 	//TODO add vertex buffer without a IndexBuffer
+	class VertexBufferCore;
 
-	class ZAAP_API VertexBuffer
+	typedef za_ptr<VertexBufferCore> VertexBuffer;
+
+	class ZAAP_API VertexBufferCore
 	{
-		////////////////
-		// Management //
-		////////////////
-	private:
-		static std::vector<VertexBuffer*> s_VertexBuffers;
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Creation //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
-		static VertexBuffer* CreateVertexbuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
-	private:
-		static void Eraise(const UUID& uuid);
-	public:
-		static void Cleanup();
+		static VertexBufferCore* CreateVertexBufferCore(uint vertexSize, const uint& vertexCount, const uint& indexCount, void* vertices = nullptr, uint* indices = nullptr);
+		static VertexBuffer CreateVertexBuffer(uint vertexSize, const uint& vertexCount, const uint& indexCount, void* vertices = nullptr, uint* indices = nullptr);
 
-		///////////////////////
-		// Rendering options //
-		///////////////////////
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Rendering Info //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
 		static uint s_TotalDrawCount;
 		static ViewFrustum s_ViewFrustum;
 
 	public:
-		//draw count
-		static inline uint GetTotalDrawCount();
-		static inline void ClearTotalDrawCount();
+		static uint GetTotalDrawCount();
+		static void ClearTotalDrawCount();
 
-		static inline void SetViewFrustum(const ViewFrustum& view);
-		static inline ViewFrustum GetViewFrustum();
+		static void SetViewFrustum(const ViewFrustum& view);
+		static ViewFrustum GetViewFrustum();
 
-		/////////////////////////////////
-		// And finally the actual class //
-		/////////////////////////////////
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Class //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	protected:
-		UUID m_uuid;
+		UUID m_UUID;
 
 		uint m_IndexCount;
 		uint m_VertexCount;
 		bool m_IsDynamic;
 		
-		VertexBuffer(const uint& vertexCount, const uint& indexCount);
+		VertexBufferCore(const uint& vertexCount, const uint& indexCount);
 
 	public:
-		virtual ~VertexBuffer();
+		virtual ~VertexBufferCore() {};
 
-		//class methods
-
+		/* ********************************************************* */
+		// * Draw methods *
+		/* ********************************************************* */
 		virtual void bind(uint slot) = 0;
 		virtual void unbind(uint slot) = 0;
 
 		virtual void draw() = 0;
 		virtual void draw(const uint &count) = 0;
 		virtual void draw(const uint &start, const uint &count) = 0;
-		
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Getters //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		inline uint getVertexCount() const;
-		inline uint getIndexCount() const;
-		inline bool isDynamic() const;
 
-		inline UUID getUUID() const;
+		/* ********************************************************* */
+		// * Getters *
+		/* ********************************************************* */
+		inline uint getVertexCount() const
+		{
+			return m_VertexCount;
+		}
+		inline uint getIndexCount() const
+		{
+			return m_IndexCount;
+		}
+		inline bool isDynamic() const
+		{
+			return m_IsDynamic;
+		}
 
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Dynamic methods //
-		/* //////////////////////////////////////////////////////////////////////////////// */
+		inline UUID getUUID() const
+		{
+			return m_UUID;
+		}
+
+		/* ********************************************************* */
+		// * Dynamic methods *
+		/* ********************************************************* */
 		virtual void updateVertices(void* vertices, uint vertexCount) = 0;
 		virtual void updateIndices(uint* indicies, uint indexCount) = 0;
 	};

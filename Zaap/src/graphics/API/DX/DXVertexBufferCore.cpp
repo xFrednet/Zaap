@@ -1,4 +1,4 @@
-#include "DXVertexBuffer.h"
+#include "DXVertexBufferCore.h"
 
 #include <graphics/API/DX/DXContext.h>
 #include <util/Log.h>
@@ -15,8 +15,8 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Constructor and Deconstructor //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	DXVertexBuffer::DXVertexBuffer(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
-		: VertexBuffer(vertexCount, indexCount),
+	DXVertexBufferCore::DXVertexBufferCore(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
+		: VertexBufferCore(vertexCount, indexCount),
 		m_VertexBuffer(nullptr),
 		m_IndexBuffer(nullptr),
 		m_Stride(vertexSize)
@@ -29,11 +29,11 @@ namespace zaap { namespace graphics { namespace DX {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
 			D3D11_BUFFER_DESC bd;
-			bd.Usage = D3D11_USAGE_DYNAMIC;
-			bd.ByteWidth = vertexSize * vertexCount;
-			bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			bd.Usage          = D3D11_USAGE_DYNAMIC;
+			bd.ByteWidth      = vertexSize * vertexCount;
+			bd.BindFlags      = D3D11_BIND_VERTEX_BUFFER;
 			bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			bd.MiscFlags = 0;
+			bd.MiscFlags      = 0;
 
 			//create Buffer
 			dev->CreateBuffer(&bd, NULL, &m_VertexBuffer);
@@ -44,11 +44,11 @@ namespace zaap { namespace graphics { namespace DX {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
 			D3D11_BUFFER_DESC iBufferDesc;
-			iBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-			iBufferDesc.ByteWidth = sizeof(uint) * indexCount;
-			iBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+			iBufferDesc.Usage          = D3D11_USAGE_DYNAMIC;
+			iBufferDesc.ByteWidth      = sizeof(uint) * indexCount;
+			iBufferDesc.BindFlags      = D3D11_BIND_INDEX_BUFFER;
 			iBufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-			iBufferDesc.MiscFlags = 0;
+			iBufferDesc.MiscFlags      = 0;
 
 			//create Buffer
 			dev->CreateBuffer(&iBufferDesc, NULL, &m_IndexBuffer);
@@ -66,15 +66,15 @@ namespace zaap { namespace graphics { namespace DX {
 			LoadDXData(m_IndexBuffer, indices, sizeof(uint) * indexCount);
 	}
 
-	DXVertexBuffer::DXVertexBuffer(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint stride, uint vertexCount, uint indexCount)
-		: VertexBuffer(vertexCount, indexCount),
+	DXVertexBufferCore::DXVertexBufferCore(ID3D11Buffer* vertexBuffer, ID3D11Buffer* indexBuffer, uint stride, uint vertexCount, uint indexCount)
+		: VertexBufferCore(vertexCount, indexCount),
 		m_VertexBuffer(vertexBuffer),
 		m_IndexBuffer(indexBuffer),
 		m_Stride(stride)
 	{
 	}
 
-	DXVertexBuffer::~DXVertexBuffer()
+	DXVertexBufferCore::~DXVertexBufferCore()
 	{
 		ZA_DXRELEASE(m_VertexBuffer);
 		ZA_DXRELEASE(m_IndexBuffer);
@@ -83,30 +83,30 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Draw util //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void DXVertexBuffer::bind(uint slot)
+	void DXVertexBufferCore::bind(uint slot)
 	{
 		DXContext::GetDevContext()->IASetIndexBuffer(m_IndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 		
 		UINT offset = 0;
 		DXContext::GetDevContext()->IASetVertexBuffers(slot, 1, &m_VertexBuffer, &m_Stride, &offset);
 	}
-	void DXVertexBuffer::unbind(uint slot)
+	void DXVertexBufferCore::unbind(uint slot)
 	{
 	}
 
-	void DXVertexBuffer::draw()
+	void DXVertexBufferCore::draw()
 	{
 		bind(0);
 
 		DXContext::GetDevContext()->DrawIndexed(m_IndexCount, 0, 0);
 	}
-	void DXVertexBuffer::draw(const uint& count)
+	void DXVertexBufferCore::draw(const uint& count)
 	{
 		bind(0);
 
 		DXContext::GetDevContext()->DrawIndexed(count, 0, 0);
 	}
-	void DXVertexBuffer::draw(const uint &start, const uint &count)
+	void DXVertexBufferCore::draw(const uint &start, const uint &count)
 	{
 		bind(0);
 
@@ -116,19 +116,19 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Getters //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	ID3D11Buffer* DXVertexBuffer::getVertexBuffer()
+	ID3D11Buffer* DXVertexBufferCore::getVertexBuffer()
 	{
 		return m_VertexBuffer;
 	}
-	ID3D11Buffer const* DXVertexBuffer::getVertexBuffer() const
+	ID3D11Buffer const* DXVertexBufferCore::getVertexBuffer() const
 	{
 		return m_VertexBuffer;
 	}
-	ID3D11Buffer* DXVertexBuffer::getIndexBuffer()
+	ID3D11Buffer* DXVertexBufferCore::getIndexBuffer()
 	{
 		return m_IndexBuffer;
 	}
-	ID3D11Buffer const* DXVertexBuffer::getIndexBuffer() const
+	ID3D11Buffer const* DXVertexBufferCore::getIndexBuffer() const
 	{
 		return m_IndexBuffer;
 	}
@@ -136,7 +136,7 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Dynamic methods //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void DXVertexBuffer::updateVertices(void* vertices, uint vertexCount)
+	void DXVertexBufferCore::updateVertices(void* vertices, uint vertexCount)
 	{
 		ZA_ASSERT(vertexCount <= m_VertexCount);
 		if (!m_IsDynamic || vertexCount > m_VertexCount)
@@ -144,7 +144,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 		LoadDXData(m_VertexBuffer, vertices, m_Stride * vertexCount);
 	}
-	void DXVertexBuffer::updateIndices(uint* indicies, uint indexCount)
+	void DXVertexBufferCore::updateIndices(uint* indicies, uint indexCount)
 	{
 		ZA_ASSERT(indexCount <= m_IndexCount);
 		if (!m_IsDynamic || indexCount > m_IndexCount)
@@ -153,5 +153,3 @@ namespace zaap { namespace graphics { namespace DX {
 		LoadDXData(m_IndexBuffer, indicies, sizeof(uint) * indexCount);
 	}
 }}}
-
-

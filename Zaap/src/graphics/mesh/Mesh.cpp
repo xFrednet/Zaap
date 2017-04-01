@@ -40,11 +40,11 @@ namespace zaap { namespace graphics {
 		: Mesh("NULL", nullptr)
 	{
 	}
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer)
+	Mesh::Mesh(String name, API::VertexBuffer vertexBuffer)
 		: Mesh(name, vertexBuffer, nullptr, 0)
 	{
 	}
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, Material const* materials, uint materialCount)
+	Mesh::Mesh(String name, API::VertexBuffer vertexBuffer, Material const* materials, uint materialCount)
 		: m_Name(name),
 		m_VertexBuffer(vertexBuffer),
 		m_Materials(nullptr),
@@ -66,7 +66,7 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Vertex Buffer //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	API::VertexBuffer* Mesh::getVertexBuffer() const
+	API::VertexBuffer Mesh::getVertexBuffer() const
 	{
 		return m_VertexBuffer;
 	}

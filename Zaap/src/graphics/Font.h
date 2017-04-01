@@ -111,9 +111,6 @@ namespace zaap { namespace graphics {
 		Font();
 		Font(String chars);
 
-		//render
-		API::VertexBuffer* getVertexBuffer(String string);
-
 		//util
 		uint getCharIndex(char c) const;
 		uint getCharCount() const;

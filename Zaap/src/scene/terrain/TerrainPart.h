@@ -58,7 +58,7 @@ namespace zaap { namespace scene {
 	class ZAAP_API TerrainTreeEndPart : public TerrainPart
 	{
 	protected:
-		graphics::API::VertexBuffer* m_VBuffer;
+		graphics::API::VertexBufferCore* m_VBuffer;
 	public:
 		TerrainTreeEndPart(uint vertexX, uint vertexY, uint vCountHorizontal, uint vCountVertical, Terrain* terrain);
 

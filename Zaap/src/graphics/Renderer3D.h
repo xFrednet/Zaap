@@ -4,7 +4,6 @@
 #include <maths/Maths.h>
 
 #include "API/Context.h"
-#include "shader/FontShader2D.h"
 #include "shader/DefaultShader.h"
 #include "shader/TerrainShader.h"
 #include "API/Texture2D.h"
@@ -106,7 +105,6 @@ namespace zaap { namespace graphics {
 		ZA_SHADER_TYPE  m_ActiveShaderType;
 		DefaultShader*  m_DefaultShader;
 		TerrainShader*  m_TerrainShader;
-		FontShader2D*   m_FontShader2D;
 
 	protected:
 		//Constructor to init values

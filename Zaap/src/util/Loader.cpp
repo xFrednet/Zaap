@@ -140,7 +140,7 @@ namespace zaap {
 		}
 
 		//sort
-		API::VertexBuffer* vBuffer;
+		API::VertexBuffer vBuffer;
 		{
 			uint size = position_indices.size();
 			vector<ZA_D_VERTEX> vertices(size);
@@ -151,7 +151,7 @@ namespace zaap {
 				vertices[i].TexCoord = texCoords_unsorted[texCoords_indices[i]];
 				vertices[i].Material = material[i];
 			}
-			vBuffer = API::VertexBuffer::CreateVertexbuffer(sizeof(ZA_D_VERTEX), vertices.size(), indices.size(), &vertices[0], &indices[0]);
+			vBuffer = API::VertexBufferCore::CreateVertexBuffer(sizeof(ZA_D_VERTEX), vertices.size(), indices.size(), &vertices[0], &indices[0]);
 		}
 
 		Material* newMaterials = new Material[materialCount];

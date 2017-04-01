@@ -2,7 +2,6 @@
 #include "DXTexture2D.h"
 #include "shader/DXDefaultShader.h"
 #include "shader/DXTerrainShader.h"
-#include "shader/DXFontShader2D.h"
 #include <app/Window.h>
 #include <util/Log.h>
 
@@ -17,8 +16,6 @@ namespace zaap { namespace graphics { namespace DX {
 		m_DefaultShader = new DXDefaultShader();
 		((DXDefaultShader*)m_DefaultShader)->init();
 		m_TerrainShader = new DXTerrainShader();
-		m_FontShader2D = new DXFontShader2D();
-		((DXFontShader2D*)m_FontShader2D)->init();
 
 		initRasterizerState();
 		initBlendState();

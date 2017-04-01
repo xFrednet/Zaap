@@ -2,18 +2,20 @@
 #include <util/Log.h>
 
 namespace zaap { namespace gui {
-	VertexBufferHelper::VertexBufferHelper(graphics::API::VertexBuffer** vb)
+	VertexBufferHelper::VertexBufferHelper(graphics::API::VertexBufferCore** vb)
 		: m_CurrentVIndex(0),
 		m_CurrentIIndex(0),
 		m_VertexBuffer(*vb)
 	{
+		using namespace graphics;
+
 		m_VertexCount = m_VertexBuffer->getVertexCount();
 		m_IndexCount = m_VertexBuffer->getIndexCount();
 
 		m_Indices = new uint[m_VertexCount];
-		m_Vertices = new graphics::ZA_GUI_VERTEX[m_VertexCount];
+		m_Vertices = new ZA_GUI_VERTEX[m_VertexCount];
 
-		memset(m_Vertices, 0, sizeof(graphics::ZA_GUI_VERTEX) * m_VertexCount);
+		memset(m_Vertices, 0, sizeof(ZA_GUI_VERTEX) * m_VertexCount);
 		memset(m_Indices, 0, sizeof(uint) * m_IndexCount);
 	}
 	VertexBufferHelper::~VertexBufferHelper()

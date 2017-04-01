@@ -28,8 +28,7 @@ namespace zaap { namespace graphics {
 		m_DepthStencil(nullptr), 
 		m_ActiveShaderType(ZA_SHADER_UNKNOWN),
 		m_DefaultShader(nullptr),
-		m_TerrainShader(nullptr),
-		m_FontShader2D(nullptr)
+		m_TerrainShader(nullptr)
 	{
 
 		if (renderTargetType == ZA_RENDERER_TARGET_DEFAULT)
@@ -57,11 +56,6 @@ namespace zaap { namespace graphics {
 		{
 			delete m_TerrainShader;
 			m_TerrainShader = nullptr;
-		}
-		if (m_FontShader2D)
-		{
-			delete m_FontShader2D;
-			m_FontShader2D = nullptr;
 		}
 	}
 
@@ -141,8 +135,6 @@ namespace zaap { namespace graphics {
 			return m_DefaultShader;
 		case ZA_SHADER_TERRAIN_SHADER:
 			return m_TerrainShader;
-		case ZA_SHADER_FONT_SHADER_2D:
-			return m_FontShader2D;
 		case ZA_SHADER_UNKNOWN:
 		default:
 			return nullptr;
@@ -241,9 +233,6 @@ namespace zaap { namespace graphics {
 			m_DefaultShader->setProjectionMatrix(m_ProjectionMatrix);
 		if (m_TerrainShader)
 			m_TerrainShader->setProjectionMatrix(m_ProjectionMatrix);
-
-		if (m_FontShader2D)
-			m_FontShader2D->setTargetSize(m_RenderTarget->getWidth(), m_RenderTarget->getHeight());
 	}
 	Mat4 Renderer3D::getProjectionMatrix() const
 	{

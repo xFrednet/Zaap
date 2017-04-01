@@ -27,9 +27,9 @@ namespace zaap { namespace gui {
 		uint* m_Indices;
 		graphics::ZA_GUI_VERTEX* m_Vertices;
 		
-		graphics::API::VertexBuffer* m_VertexBuffer;
+		graphics::API::VertexBufferCore* m_VertexBuffer;
 	public:
-		VertexBufferHelper(graphics::API::VertexBuffer** vb);
+		VertexBufferHelper(graphics::API::VertexBufferCore** vb);
 		~VertexBufferHelper();
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util //

@@ -4,6 +4,7 @@
 #pragma warning(disable: 4251)
 
 #include <string>
+#include <memory>
 
 #include <functional>
 #include <iostream>

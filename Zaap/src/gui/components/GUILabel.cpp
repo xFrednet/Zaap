@@ -18,7 +18,7 @@ namespace zaap { namespace gui{
 				delete m_VertexBuffer;
 
 		if (!m_VertexBuffer)
-			m_VertexBuffer = VertexBuffer::CreateVertexbuffer(sizeof(ZA_GUI_VERTEX), vCount, iCount);
+			m_VertexBuffer = VertexBufferCore::CreateVertexBufferCore(sizeof(ZA_GUI_VERTEX), vCount, iCount);
 
 		/* ********************************************************* */
 		// * drawing *
