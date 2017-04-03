@@ -228,12 +228,6 @@
     <ClCompile Include="src\gui\GUIComponent.cpp">
       <Filter>Source Files\src\gui</Filter>
     </ClCompile>
-    <ClCompile Include="src\gui\Rectangle.cpp">
-      <Filter>Source Files\src\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gui\Point.cpp">
-      <Filter>Source Files\src\gui</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\GUIRenderer.cpp">
       <Filter>Source Files\src\graphics</Filter>
     </ClCompile>
@@ -272,6 +266,15 @@
     </ClCompile>
     <ClCompile Include="src\graphics\API\DX\DXVertexBufferCore.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Point.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Rectangle.cpp">
+      <Filter>Source Files\src\maths</Filter>
+    </ClCompile>
+    <ClCompile Include="src\maths\Dimensions.cpp">
+      <Filter>Source Files\src\maths</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -443,12 +446,6 @@
     <ClInclude Include="src\gui\GUIComponent.h">
       <Filter>Source Files\src\gui</Filter>
     </ClInclude>
-    <ClInclude Include="src\gui\Rectangle.h">
-      <Filter>Source Files\src\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gui\Point.h">
-      <Filter>Source Files\src\gui</Filter>
-    </ClInclude>
     <ClInclude Include="src\graphics\GUIRenderer.h">
       <Filter>Source Files\src\graphics</Filter>
     </ClInclude>
@@ -487,6 +484,15 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXVertexBufferCore.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Point.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Rectangle.h">
+      <Filter>Source Files\src\maths</Filter>
+    </ClInclude>
+    <ClInclude Include="src\maths\Dimensions.h">
+      <Filter>Source Files\src\maths</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

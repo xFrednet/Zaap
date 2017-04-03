@@ -124,16 +124,14 @@ int main(void)
 	RandomUUID(&id1);
 	ZA_INFO(id1);
 
-	printf_s("Bool size: %i\n", sizeof(bool));
-
 	//source
 	{
 		scene_ = new Scene();
 
 		Test t;
 		loadEntitys();
-		//t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 225, 100, "res/GUIInfo.png"));
-		t.getGUIManager()->add(new gui::GUITextureFrame(gui::Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		//t.getGUIManager()->add(new gui::GUITextureFrame(Point(0, 0), 225, 100, "res/GUIInfo.png"));
+		t.getGUIManager()->add(new gui::GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
 
 		t.start();
 		

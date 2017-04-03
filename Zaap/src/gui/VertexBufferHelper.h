@@ -5,11 +5,9 @@
 #include <graphics/API/VertexBuffer.h>
 
 #include <maths/Maths.h>
-#include <gui/Point.h>
 #include <graphics/shader/Shader.h>
 
 namespace zaap { namespace gui {
-	struct Point;
 
 	typedef enum ZAAP_API GUI_VERTEX_TYPES_ {
 		ZA_GUI_VERTEX_TYPE_COLOR   = 0,

@@ -88,32 +88,101 @@ namespace zaap { namespace graphics {
 	};
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Font class //
+	// // Font //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	class ZAAP_API Font
+
+	class FontCore;
+
+	typedef za_ptr<FontCore> Font;
+
+	/* ********************************************************* */
+	// * FontCore *
+	/* ********************************************************* */
+	class ZAAP_API FontCore
 	{
-		//static methods
+	public:
+		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Loaders //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
 
-		//This methods loads a FTT file and creates a Font object from it
-		static void LoadFTTFile(String file, Font* font);
+		// <Method>
+		//      LoadFont
+		//
+		// <Description>
+		//      This loads a font from the source file.
+		//
+		// <Input>
+		//      srcFile::
+		//          The source file where the @FontCore should be loaded from.;;
+		//      font::
+		//           The resulting object.;;
+		//
+		// <Return>
+		//      This returns a @ZA_RESULT that indicated if the loading was successful.
+		//
+		static ZA_RESULT LoadFont(const String& srcFile, Font* font);
 
-		//Members
+		// <Method>
+		//      LoadFontCore
+		//
+		// <Description>
+		//      This loads a @FontCore from the source file.
+		//
+		// <Input>
+		//      srcFile::
+		//          The source file where the @FontCore should be loaded from.;;
+		//      font::
+		//           The resulting object.;;
+		//
+		// <Return>
+		//      This returns a @ZA_RESULT that indicated if the loading was successful.
+		//
+		static ZA_RESULT LoadFontCore(const String& srcFile, FontCore** fontCore);
+
+		//This methods loads a FTT file and creates a Font object from it
+		static ZA_RESULT LoadFTTFile(const String& srcFile, FontCore** fontCore);
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Class //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
 
 		String m_Chars;
 		std::vector<ZA_FONT_CHAR_INFO> m_CharInfo;
 		API::Texture2D* m_CharSheet;
-		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
 
-		//Methods
+		FontCore();
 	public:
-		Font();
-		Font(String chars);
+		~FontCore();
 
-		//util
-		uint getCharIndex(char c) const;
+		/* ********************************************************* */
+		// * Util *
+		/* ********************************************************* */
+
+		/* ##################################### */
+		// # Chars #
+		/* ##################################### */
+		uint getCharIndex(const char& c) const;
 		uint getCharCount() const;
+
+		bool isCharValid(const char& c) const;
+
+		/* ##################################### */
+		// # String #
+		/* ##################################### */
+
+
+		/* ##################################### */
+		// # CharSheet Util #
+		/* ##################################### */
+		void bindCharShreet(const uint& index) const;
+		void unbindCharShreet(const uint& index) const;
+
+		void setCharSheet(API::Texture2D* charSheet);
+		API::Texture2D* getCharSheet() const;
 	};
 		
 }}

@@ -12,6 +12,8 @@ namespace zaap
 	struct Vec4;
 	struct Mat4;
 	struct Plane3D;
+	struct Point;
+	struct Rectangle;
 
 	namespace graphics
 	{
@@ -19,11 +21,7 @@ namespace zaap
 		struct Material;
 	}
 
-	namespace gui
-	{
-		struct Point;
-		struct Rectangle;
-	}
+	
 
 	struct UUID;
 }
@@ -61,8 +59,7 @@ namespace zaap {
 		//      StartsWith
 		//
 		// <Description>
-		//      This Method tests if the baseString starts with the same
-		//      like str2.
+		//      This Method tests if the baseString starts with str2.
 		//
 		// <Note>
 		//      This also returns false if str2 is longer than the baseString.
@@ -71,12 +68,33 @@ namespace zaap {
 		//      baseString:
 		//          The string where the start is test.
 		//      str2:
-		//          The sting that is compared to the start of the baseString.
+		//          The string that is compared to the start of the baseString.
 		//
 		// <Return>
 		//      The test result.
 		//
 		static bool StartsWith(const String& baseString, const String& str2);
+
+		// <Function>
+		//      StartsWith
+		//
+		// <Description>
+		//      This Method tests if the baseString ends with str2.
+		//
+		// <Note>
+		//      This also returns false if str2 is longer than the baseString.
+		//
+		// <Input>
+		//      baseString:
+		//          The string where the end is test.
+		//      str2:
+		//          The string that is compared to the end of the baseString.
+		//
+		// <Return>
+		//      The test result.
+		//
+		static bool EndsWith(const String& baseString, const String& str2);
+
 
 		// <Function>
 		//		Replace
@@ -135,9 +153,9 @@ namespace zaap {
 		// * GUI *
 		/* ********************************************************* */
 		template<>
-		static String ToString<gui::Point>(const gui::Point& point);
+		static String ToString<Point>(const Point& point);
 		template<>
-		static String ToString<gui::Rectangle>(const gui::Rectangle& rectangle);
+		static String ToString<Rectangle>(const Rectangle& rectangle);
 
 		/* ********************************************************* */
 		// * other *

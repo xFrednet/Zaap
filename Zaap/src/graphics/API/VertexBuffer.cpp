@@ -20,6 +20,9 @@ namespace zaap { namespace graphics { namespace API {
 		return VertexBuffer(CreateVertexBufferCore(vertexSize, vertexCount, indexCount, vertices, indices));
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Rendering Info //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	uint VertexBufferCore::GetTotalDrawCount()
 	{
 		return s_TotalDrawCount;

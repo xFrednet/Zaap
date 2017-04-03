@@ -40,12 +40,33 @@ namespace zaap { namespace graphics {
 namespace zaap { namespace graphics {
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // FTT loader // 
+	// // Loaders //
 	/* //////////////////////////////////////////////////////////////////////////////// */
+
+	ZA_RESULT FontCore::LoadFont(const String& srcFile, Font* font)
+	{
+		FontCore* fontCore;
+		ZA_RESULT result = LoadFontCore(srcFile, &fontCore);
+		*font = Font(fontCore);
+		return result;
+	}
+
+	ZA_RESULT FontCore::LoadFontCore(const String& srcFile, FontCore** fontCore)
+	{
+		if (StringUtil::EndsWith(srcFile, ".ftt"))
+			return LoadFTTFile(srcFile, fontCore);
+
+		return ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+	}
+
+	/* ********************************************************* */
+	// * FTT file *
+	/* ********************************************************* */
 	void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
 	{
 		uint xx, yy, xa, ya;
 		int color;
+		//TODO add memcpy
 		for (yy = 0; yy < source.rows; yy++)
 		{
 			ya = y + yy;
@@ -62,14 +83,18 @@ namespace zaap { namespace graphics {
 		}
 	}
 	
-	void Font::LoadFTTFile(String file, Font* font)
+	ZA_RESULT FontCore::LoadFTTFile(const String& srcFile, FontCore** fontCore)
 	{
-		clock_t timer = clock();
+		ZA_ASSERT(fontCore, "The pointer is null.");
+		ZA_ASSERT(!*fontCore, "The font core points to a FontCore");
 
-		char chars[] = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+		clock_t timer = clock();
+		FontCore* font = new FontCore();
+
+		char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 		uint charCount = strlen(chars);
 		uint bitmapSize = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
-		float fontSize;
+		uint fontSize;
 		Bitmap charSheet(bitmapSize, bitmapSize, ZA_FORMAT_A8_UINT);
 
 		FT_Library FTLib;
@@ -79,34 +104,29 @@ namespace zaap { namespace graphics {
 		// // Init //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
-			uint charsPerLine = (uint)sqrtf(charCount) + 1; //+1 because 1.999 will be a 1 uint
+			uint charsPerLine = (uint)sqrtf((float)charCount) + 1; //+1 because 1.999 will be a 1 uint
 			fontSize = (bitmapSize / charsPerLine) - ((bitmapSize / charsPerLine) % 64);
 			font->m_CharInfo.resize(charCount);
-
+			
 			/* ********************************************************* */
 			// * Init FreeType *
 			/* ********************************************************* */
 			FT_Error error = FT_Init_FreeType(&FTLib);
 			if (error)
-			{
-				ZA_SUBMIT_ERROR(ZA_ERROR_FONT_FREETYPE_INIT_ERROR);
-				return;
-			}
+				return ZA_ERROR_FONT_FREETYPE_INIT_ERROR;
 
 			/* ********************************************************* */
 			// * Init face *
 			/* ********************************************************* */
-			error = FT_New_Face(FTLib, file.c_str(), 0, &face);
+			error = FT_New_Face(FTLib, srcFile.c_str(), 0, &face);
 			if (error != FT_Err_Ok){
 				if (error == FT_Err_Unknown_File_Format)
-					ZA_SUBMIT_ERROR(ZA_ERROR_FONT_UNSUPPROTED_FORMAT);
-				else
-					ZA_SUBMIT_ERROR(ZA_ERROR_FONT_ERROR);
-			
-				return;
+					return ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+
+				return ZA_ERROR_FONT_ERROR;
 			}
 
-			FT_Set_Char_Size(face, uint(fontSize) * 64, 0, 100, 0);
+			FT_Set_Char_Size(face, fontSize * 64, 0, 100, 0);
 			FT_Set_Transform(face, nullptr, nullptr);
 		}
 
@@ -154,8 +174,8 @@ namespace zaap { namespace graphics {
 				{
 					bitmapX = 0;
 
-					if (bitmapY + fontSize * 1.5f < charSheet.getHeight())
-						bitmapY += fontSize * 1.5f;
+					if (bitmapY + fontSize < charSheet.getHeight())
+						bitmapY += fontSize;
 					else
 						bitmapY = 0;
 				}
@@ -171,20 +191,89 @@ namespace zaap { namespace graphics {
 			/* ********************************************************* */
 			// * Loop end *
 			/* ********************************************************* */
-			*charMatrix = Divide(*charMatrix, fontSize);
+			*charMatrix = Divide(*charMatrix, (float)fontSize);
 		}
 
+		/* ********************************************************* */
+		// * Finishing *
+		/* ********************************************************* */
 		font->m_CharSheet = API::Texture::CreateTexture2D("charSheet", charSheet, false);
+		*fontCore = font;
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(FTLib);
 
 		timer -= clock();
-		ZA_INFO("I loaded ", file, " in ", timer, "ms");
+		ZA_INFO("I loaded ", srcFile, " in ", timer, "ms");
+
+		return ZA_OK;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Font class //
+	// // Class //
 	/* //////////////////////////////////////////////////////////////////////////////// */
+
+	FontCore::FontCore()
+		: m_Chars(),
+		m_CharInfo(0),
+		m_CharSheet(nullptr)
+	{
+	}
+
+	FontCore::~FontCore()
+	{
+		m_CharInfo.clear();
+		//TODO Delete m_CharInfo;
+	}
+
+	/* ********************************************************* */
+	// * Util *
+	/* ********************************************************* */
+
+	/* ##################################### */
+	// # Chars #
+	/* ##################################### */
+	uint FontCore::getCharIndex(const char& c) const
+	{
+		String::size_type n = m_Chars.find(c);
+		if (n != m_Chars.npos)
+			return (uint)n;
+
+		return 0;
+	}
+	uint FontCore::getCharCount() const
+	{
+		return m_Chars.length();
+	}
+	bool FontCore::isCharValid(const char& c) const
+	{
+		return m_Chars.find(c) != m_Chars.npos;
+	}
+
+	/* ##################################### */
+	// # String #
+	/* ##################################### */
+
+
+	/* ##################################### */
+	// # CharSheet Util #
+	/* ##################################### */
+	void FontCore::bindCharShreet(const uint& index) const
+	{
+		m_CharSheet->bind(0);
+	}
+	void FontCore::unbindCharShreet(const uint& index) const
+	{
+		m_CharSheet->unbind(0);
+	}
+
+	void FontCore::setCharSheet(API::Texture2D* charSheet)
+	{
+		m_CharSheet = charSheet;
+	}
+	API::Texture2D* FontCore::getCharSheet() const
+	{
+		return m_CharSheet;
+	}
 
 }}

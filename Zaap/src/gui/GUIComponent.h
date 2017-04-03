@@ -2,8 +2,8 @@
 
 #include <Common.h>
 
-#include <gui/Rectangle.h>
-#include <gui/Point.h>
+#include <maths/Rectangle.h>
+#include <maths/Point.h>
 
 #include <graphics/GUIRenderer.h>
 #include <graphics/API/VertexBuffer.h>

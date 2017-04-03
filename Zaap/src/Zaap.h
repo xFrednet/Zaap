@@ -16,6 +16,8 @@ Macro names:
 #include <Common.h>
 #include <ZAError.h>
 
+#include <maths/Maths.h>
+
 #include <app/Application.h>
 
 /* //////////////////////////////////////////////////////////////////////////////// */
@@ -44,8 +46,6 @@ Macro names:
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // GUI //
 /* //////////////////////////////////////////////////////////////////////////////// */
-#include <gui/Point.h>
-#include <gui/Rectangle.h>
 #include <gui/GUIManager.h>
 #include <gui/GUIComponent.h>
 
@@ -77,6 +77,5 @@ Macro names:
 
 #include <events/Input.h>
 
-#include <maths/Maths.h>
 
 #pragma warning(pop)

@@ -3,8 +3,9 @@
 #include <Common.h>
 
 #include "Point.h"
+#include "Dimensions.h"
 
-namespace zaap { namespace gui {
+namespace zaap {
 	
 	struct ZAAP_API Rectangle
 	{
@@ -18,8 +19,15 @@ namespace zaap { namespace gui {
 			Point Position;
 		};
 
-		uint Width;
-		uint Height;
+		union
+		{
+			struct
+			{
+				uint Width;
+				uint Height;
+			};
+			Dimensions Dimension;
+		};
 
 		// <Constructor>
 		//		Rectangle
@@ -346,4 +354,4 @@ namespace zaap { namespace gui {
 	//      This returns the test result in form of a boolean.
 	//      
 	ZAAP_API bool Equal(const Rectangle& a, const Rectangle& b);
-}}
+}

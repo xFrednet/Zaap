@@ -2,7 +2,7 @@
 
 #include <maths/Vec2.h>
 
-namespace zaap { namespace gui {
+namespace zaap {
 	Vec2 Point::getVector() const
 	{
 		return Vec2((float)X, (float)Y);
@@ -52,4 +52,4 @@ namespace zaap { namespace gui {
 	{
 		return Point(a.X - b.X, a.Y - b.Y);
 	}
-}}
+}

@@ -1,6 +1,6 @@
 #include "Rectangle.h"
 
-namespace zaap { namespace gui {
+namespace zaap {
 	Rectangle::Rectangle(int x, int y, uint width, uint height)
 		: X(x), Y(y),
 		Width(width), Height(height)
@@ -16,7 +16,7 @@ namespace zaap { namespace gui {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	int Rectangle::getSize() const
 	{
-		return Width * Height;
+		return Dimension.getArea();
 	}
 
 	bool Rectangle::intersects(const Rectangle& other) const
@@ -43,22 +43,16 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	void Rectangle::setWidth(const float& width)
 	{
-		if (width < 0)
-			Width = 0;
-		else
-			Width = (uint)floor(width + 0.5f);
+		Width = (uint)floor(width + 0.5f);
 	}
 	void Rectangle::setHeight(const float& height)
 	{
-		if (height < 0)
-			Height = 0;
-		else
-			Height = (uint)floor(height + 0.5f);
+		Dimension.setHeight(height);
 	}
 	void Rectangle::setDimension(const float& width, const float& height)
 	{
-		setWidth(width);
-		setHeight(height);
+		Dimension.setWidth(width);
+		Dimension.setHeight(height);
 	}
 
 	/* ********************************************************* */
@@ -112,4 +106,4 @@ namespace zaap { namespace gui {
 	{
 		return memcmp(&a, &b, sizeof(Rectangle)) ==  0;
 	}
-}}
+}

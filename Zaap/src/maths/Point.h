@@ -2,12 +2,8 @@
 
 #include <Common.h>
 
-namespace zaap
-{
+namespace zaap {
 	struct Vec2;
-}
-
-namespace zaap { namespace gui {
 
 	struct ZAAP_API Point
 	{
@@ -43,7 +39,6 @@ namespace zaap { namespace gui {
 		{
 			X = (int)floor(x + 0.5f);
 		}
-
 		// <Method>
 		//		setY
 		//
@@ -87,7 +82,7 @@ namespace zaap { namespace gui {
 		//      This method compares this and the given @Point.
 		//
 		// <Note>
-		//      This calls the Equal method for this class.
+		//      This calls the Equal method for this struct.
 		//      
 		// <Input>
 		//      other::
@@ -124,7 +119,7 @@ namespace zaap { namespace gui {
 		//
 		// <Input>
 		//		other::
-		//			The other point that should be added.;;
+		//			The other @Point that should be added.;;
 		//
 		// <Return>
 		//		The point that resulted from this operation.
@@ -179,7 +174,7 @@ namespace zaap { namespace gui {
 
 	// <Function>
 	//      Equal
-	//      
+	//
 	// <Description>
 	//      This tests if the given @Structs are the same.
 	//
@@ -191,10 +186,10 @@ namespace zaap { namespace gui {
 	//          The first object for comparison.;;
 	//      b::
 	//          The second object for comparison.;;
-	//       
+	//
 	// <Return>
 	//      This returns the test result in form of a boolean.
-	//      
+	//
 	ZAAP_API bool Equal(const Point& a, const Point& b);
 
 	// <Function>
@@ -234,4 +229,4 @@ namespace zaap { namespace gui {
 	//
 	ZAAP_API Point Subtract(const Point& a, const Point& b);
 
-}}
+}

@@ -6,11 +6,12 @@
 #include <maths/Mat4.h>
 #include <maths/Plane3D.h>
 
+#include <maths/Point.h>
+#include <maths/Rectangle.h>
+
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 
-#include <gui/Point.h>
-#include <gui/Rectangle.h>
 
 #include <util/UUID.h>
 
@@ -38,11 +39,19 @@ namespace zaap {
 
 	bool StringUtil::StartsWith(const String& baseString, const String& str2)
 	{
-		if (str2.length() > baseString.length() ||
-			str2.size() > baseString.size())
+		if (str2.size() > baseString.size())
 			return false;
 
 		return memcmp(baseString.c_str(), str2.c_str(), str2.size()) == 0;
+	}
+
+	bool StringUtil::EndsWith(const String& baseString, const String& str2)
+	{
+		if (str2.size() > baseString.size())
+			return false;
+
+		return memcmp(&baseString.c_str()[baseString.length() - str2.length()],
+			str2.c_str(), str2.size()) == 0;
 	}
 
 	String StringUtil::Replace(String baseString, const String& oldString, const String& newString)
@@ -149,13 +158,13 @@ namespace zaap {
 	// * GUI *
 	/* ********************************************************* */
 	template <>
-	String StringUtil::ToString<gui::Point>(const gui::Point& point)
+	String StringUtil::ToString<Point>(const Point& point)
 	{
 		return "Point(X: " + std::to_string(point.X) +
 			", Y: " + std::to_string(point.Y) + ")";
 	}
 	template<>
-	String StringUtil::ToString<gui::Rectangle>(const gui::Rectangle& rectangle)
+	String StringUtil::ToString<Rectangle>(const Rectangle& rectangle)
 	{
 		return "Point(X: " + std::to_string(rectangle.X) +
 			", Y: " + std::to_string(rectangle.Y) +
