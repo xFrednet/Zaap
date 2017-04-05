@@ -12,7 +12,7 @@ namespace zaap { namespace gui {
 		m_VertexCount = m_VertexBuffer->getVertexCount();
 		m_IndexCount = m_VertexBuffer->getIndexCount();
 
-		m_Indices = new uint[m_VertexCount];
+		m_Indices = new uint[m_IndexCount];
 		m_Vertices = new ZA_GUI_VERTEX[m_VertexCount];
 
 		memset(m_Vertices, 0, sizeof(ZA_GUI_VERTEX) * m_VertexCount);
@@ -21,6 +21,7 @@ namespace zaap { namespace gui {
 	VertexBufferHelper::~VertexBufferHelper()
 	{
 		delete[] m_Vertices;
+		delete[] m_Indices;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -42,7 +43,7 @@ namespace zaap { namespace gui {
 	/* ********************************************************* */
 	// * Util *
 	/* ********************************************************* */
-	void VertexBufferHelper::addRectangle(graphics::ZA_GUI_VERTEX vertices[4])
+	inline void VertexBufferHelper::addRectangle(graphics::ZA_GUI_VERTEX vertices[4])
 	{
 		ZA_ASSERT(m_CurrentVIndex + 4 <= m_VertexCount);
 		ZA_ASSERT(m_CurrentIIndex + 6 <= m_IndexCount);
@@ -162,7 +163,90 @@ namespace zaap { namespace gui {
 		//adding the Rectangle
 		addRectangle(vertices);
 	}
-	
+
+	/* ********************************************************* */
+	// * String *
+	/* ********************************************************* */
+	void VertexBufferHelper::drawString(const String& string, const graphics::Font& font, const float& fontSize, const Point& position)
+	{
+		uint strSize = string.size();
+		if (strSize == 0 || !font.get())
+			return;
+
+		if (m_CurrentVIndex + strSize * 4 > m_VertexCount)
+			strSize = (m_VertexCount - m_CurrentVIndex) / 4;
+		if (m_CurrentIIndex + strSize * 6 > m_IndexCount)
+			strSize = (m_VertexCount - m_CurrentVIndex) / 6;
+
+		// v0  v3
+		// v1  v2
+		graphics::ZA_GUI_VERTEX vertices[4];
+		for (uint i = 0; i < 4; i++)
+			vertices[i].Type = ZA_GUI_VERTEX_TYPE_FONT;
+		
+		Vec2 pos = position.getVector();
+		Vec2 offset;
+		Vec2 *texMin, *texMax;
+		float x = 0;
+		float y = 0;
+		float width;
+		float height;
+		char c;
+		graphics::ZA_FONT_CHAR_INFO* charInfo;
+
+		for (uint i = 0; i < strSize; i++)
+		{
+			c = string.at(i);
+
+			/* ##################################### */
+			// # \n check #
+			/* ##################################### */
+			if (c == '\n')
+			{
+				x = 0;
+				y += fontSize;
+				continue;
+			}
+
+			/* ##################################### */
+			// # char Info #
+			/* ##################################### */
+			charInfo = &font->m_CharInfo[font->getCharIndex(c)];
+
+			if (x == 0)
+				x -= charInfo->CharMatrix.XOffset;
+
+			width = charInfo->CharMatrix.Width * fontSize;
+			height = charInfo->CharMatrix.Height * fontSize;
+
+			/* ##################################### */
+			// # vertices #
+			/* ##################################### */
+			offset.X = x + charInfo->CharMatrix.XOffset;
+			offset.Y = y + charInfo->CharMatrix.YOffset;
+			vertices[0].Position = pos + offset;//Vec2(0    , 0     );
+			vertices[1].Position = pos + offset + Vec2(x    , height);
+			vertices[2].Position = pos + offset + Vec2(width, height);
+			vertices[3].Position = pos + offset + Vec2(width, y     );
+
+			//TypeInfo
+			texMin = &charInfo->TexMinCoords;
+			texMax = &charInfo->TexMaxCoords;
+			vertices[0].TypeInfo = *texMin;
+			vertices[1].TypeInfo = Vec2(texMin->X, texMax->Y);
+			vertices[2].TypeInfo = *texMax;
+			vertices[3].TypeInfo = Vec2(texMax->X, texMin->Y);
+
+			addRectangle(vertices);
+
+			/* ##################################### */
+			// # finishing #
+			/* ##################################### */
+			x += charInfo->CharMatrix.TotalWidth * fontSize;
+		}
+		ZA_INFO("keine ahnung");
+	}
+
 	/* ********************************************************* */
 	// * Other *
 	/* ********************************************************* */

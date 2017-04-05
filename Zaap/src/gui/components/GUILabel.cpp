@@ -9,13 +9,17 @@ namespace zaap { namespace gui{
 		using namespace graphics;
 		using namespace API;
 
-		uint sqares = m_Text.length() + 1; // +1 for the background
+		uint sqares = (m_Font.get()) ? m_Text.length() : 0; 
+		sqares++; // +1 for the background
 		uint vCount = sqares * 4; //vertexCount
 		uint iCount = sqares * 6; //indexCount
 		//this test if m_Vertexbuffer is valid/okay to use
 		if (m_VertexBuffer)
 			if ((m_VertexBuffer->getVertexCount() != vCount) || (m_VertexBuffer->getIndexCount() != iCount))
+			{
 				delete m_VertexBuffer;
+				m_VertexBuffer = nullptr;
+			}
 
 		if (!m_VertexBuffer)
 			m_VertexBuffer = VertexBufferCore::CreateVertexBufferCore(sizeof(ZA_GUI_VERTEX), vCount, iCount);
@@ -26,9 +30,8 @@ namespace zaap { namespace gui{
 		VertexBufferHelper helper(&m_VertexBuffer);
 
 		helper.drawRectangle(getGlobalPosition(), getWidth(), getHeight(), m_BackgroundColor);
-		//helper.writeText(Test, Font, Size, getGlobalContentArea()) 
-		
-		ZA_ASSERT(false, "This isn't implemented jet you idiot");
+		if (m_Font.get())
+			helper.drawString(m_Text, m_Font, m_TextSize, getGlobalPosition());
 
 		helper.save();
 	}
@@ -36,10 +39,13 @@ namespace zaap { namespace gui{
 	uint GUILabel::getWrappedWidth() const
 	{
 		return 0;
+		// TODO font->getStringWidth(text, fontSize);
 	}
 	uint GUILabel::getWrappedHeight() const
 	{
 		return 0;
+		// TODO font->getStringWidth(text, fontSize);
+
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -62,6 +68,9 @@ namespace zaap { namespace gui{
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Getters/Setters //
 	/* //////////////////////////////////////////////////////////////////////////////// */
+	/* ********************************************************* */
+	// * Text *
+	/* ********************************************************* */
 	void GUILabel::setText(const String& text)
 	{
 		m_Text = text;
@@ -94,6 +103,21 @@ namespace zaap { namespace gui{
 		return m_TextColor;
 	}
 
+	/* ********************************************************* */
+	// * Font *
+	/* ********************************************************* */
+	void GUILabel::setFont(const graphics::Font& font)
+	{
+		m_Font = font;
+	}
+	graphics::Font GUILabel::getFont() const
+	{
+		return m_Font;
+	}
+
+	/* ********************************************************* */
+	// * Background *
+	/* ********************************************************* */
 	void GUILabel::setBackgroundColor(const graphics::Color& color)
 	{
 		m_BackgroundColor = color;

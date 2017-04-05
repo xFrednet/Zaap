@@ -4,6 +4,7 @@ using namespace zaap;
 using namespace graphics;
 using namespace scene;
 using namespace std;
+using namespace gui;
 
 Scene* scene_ = nullptr;
 LightSetup *lightSetup = nullptr;
@@ -11,6 +12,7 @@ Light* light = nullptr;
 Light* light2 = nullptr;
 Camera* camera = nullptr;
 Terrain* terrain_ = nullptr;
+Font font_;
 
 // TODO https://trello.com/b/vQItmmsf/zaap
 
@@ -131,7 +133,15 @@ int main(void)
 		Test t;
 		loadEntitys();
 		//t.getGUIManager()->add(new gui::GUITextureFrame(Point(0, 0), 225, 100, "res/GUIInfo.png"));
-		t.getGUIManager()->add(new gui::GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		
+		ZA_RESULT zar = 2;
+		font_ = FontCore::LoadFont("res/arial.ttf", &zar);
+		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		
+		GUILabel* label = new GUILabel("Hallo ich bin zaap!!");
+		label->setPreferredSize(200, 200);
+		label->setFont(font_);
+		t.getGUIManager()->add(label);
 
 		t.start();
 		

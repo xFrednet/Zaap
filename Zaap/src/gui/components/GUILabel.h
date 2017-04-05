@@ -2,7 +2,8 @@
 
 #include <Common.h>
 
-#include "..\GUIComponent.h"
+#include "../GUIComponent.h"
+#include "graphics/Font.h"
 
 namespace zaap { namespace gui {
 	
@@ -11,6 +12,7 @@ namespace zaap { namespace gui {
 	protected:
 		String m_Text;
 		float m_TextSize;
+		graphics::Font m_Font;
 		graphics::Color m_TextColor;
 
 		graphics::Color m_BackgroundColor;
@@ -29,6 +31,10 @@ namespace zaap { namespace gui {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Getters/Setters //
 		/* //////////////////////////////////////////////////////////////////////////////// */
+
+		/* ********************************************************* */
+		// * Text *
+		/* ********************************************************* */
 		void setText(const String& text);
 		String getText() const;
 
@@ -38,6 +44,15 @@ namespace zaap { namespace gui {
 		void setTextColor(const graphics::Color& color);
 		graphics::Color getTextColor() const;
 
+		/* ********************************************************* */
+		// * Font *
+		/* ********************************************************* */
+		void setFont(const graphics::Font& font);
+		graphics::Font getFont() const;
+
+		/* ********************************************************* */
+		// * Background *
+		/* ********************************************************* */
 		void setBackgroundColor(const graphics::Color& color);
 		graphics::Color getBackgroundColor() const;
 	};

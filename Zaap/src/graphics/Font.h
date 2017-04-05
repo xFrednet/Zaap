@@ -3,12 +3,15 @@
 #include <Types.h>
 #include <Common.h>
 
-#include <graphics/Bitmap.h>
 #include "API/Texture2D.h"
 #include "API/VertexBuffer.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4251)
+
+namespace zaap { namespace gui {
+	class VertexBufferHelper;
+}}
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_FONT_CHAR_MATRIX //
@@ -117,13 +120,13 @@ namespace zaap { namespace graphics {
 		// <Input>
 		//      srcFile::
 		//          The source file where the @FontCore should be loaded from.;;
-		//      font::
-		//           The resulting object.;;
+		//      result::
+		//           A @ZA_RESULT that indicates if everything worked.;;
 		//
 		// <Return>
-		//      This returns a @ZA_RESULT that indicated if the loading was successful.
+		//      This returns the loaded Font.
 		//
-		static ZA_RESULT LoadFont(const String& srcFile, Font* font);
+		static Font LoadFont(const String& srcFile, ZA_RESULT* result);
 
 		// <Method>
 		//      LoadFontCore
@@ -134,21 +137,22 @@ namespace zaap { namespace graphics {
 		// <Input>
 		//      srcFile::
 		//          The source file where the @FontCore should be loaded from.;;
-		//      font::
-		//           The resulting object.;;
+		//      result::
+		//           A @ZA_RESULT that indicates if everything worked.;;
 		//
 		// <Return>
-		//      This returns a @ZA_RESULT that indicated if the loading was successful.
+		//      This returns the loaded @FontCore.
 		//
-		static ZA_RESULT LoadFontCore(const String& srcFile, FontCore** fontCore);
+		static FontCore* LoadFontCore(const String& srcFile, ZA_RESULT* result);
 
 		//This methods loads a FTT file and creates a Font object from it
-		static ZA_RESULT LoadFTTFile(const String& srcFile, FontCore** fontCore);
+		static FontCore* LoadTTFFile(const String& srcFile, ZA_RESULT* result);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Class //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
+		friend class gui::VertexBufferHelper;
 
 		String m_Chars;
 		std::vector<ZA_FONT_CHAR_INFO> m_CharInfo;
@@ -173,8 +177,11 @@ namespace zaap { namespace graphics {
 		/* ##################################### */
 		// # String #
 		/* ##################################### */
+		uint getStringWidth(const String& string, const float& fontSize);
+		uint getStringHeight(const String& string, const float& fontSize);
 
-
+		Dimensions getStringSize(const String& string, const float& fontSize);
+		
 		/* ##################################### */
 		// # CharSheet Util #
 		/* ##################################### */

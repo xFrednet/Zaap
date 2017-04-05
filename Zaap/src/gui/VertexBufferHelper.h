@@ -6,12 +6,14 @@
 
 #include <maths/Maths.h>
 #include <graphics/shader/Shader.h>
+#include "graphics/Font.h"
 
 namespace zaap { namespace gui {
 
 	typedef enum ZAAP_API GUI_VERTEX_TYPES_ {
 		ZA_GUI_VERTEX_TYPE_COLOR   = 0,
-		ZA_GUI_VERTEX_TYPE_TEXTURE = 1
+		ZA_GUI_VERTEX_TYPE_TEXTURE = 1,
+		ZA_GUI_VERTEX_TYPE_FONT    = 2
 	} GUI_VERTEX_TYPES;
 
 	class ZAAP_API VertexBufferHelper
@@ -62,7 +64,13 @@ namespace zaap { namespace gui {
 			Vec2 texMin = Vec2(0, 0), Vec2 texMax = Vec2(1, 1));
 		void drawTexture(const Vec2& v0, const Vec2& v1, const Vec2& v2, const Vec2& v3,
 			Vec2 texMin, Vec2 texMax);
-		
+
+		/* ********************************************************* */
+		// * String *
+		/* ********************************************************* */
+		void drawString(const String& string, const graphics::Font& font, 
+			const float& fontSize, const Point& position);
+
 		/* ********************************************************* */
 		// * Other *
 		/* ********************************************************* */

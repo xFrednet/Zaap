@@ -3,9 +3,10 @@
 
 #include <ft2build.h>
 #include <freetype/freetype.h>
+
+#include "Bitmap.h"
 #include "API/Texture.h"
 #include <util/StringUtil.h>
-
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_FONT_CHAR_MATRIX //
 /* //////////////////////////////////////////////////////////////////////////////// */
@@ -28,7 +29,7 @@ namespace zaap { namespace graphics {
 	
 	ZA_FONT_CHAR_MATRIX Divide(const ZA_FONT_CHAR_MATRIX& a, const float& b)
 	{
-		if (!b)
+		if (b)
 			return Multiply(a, 1.0f / b);
 		
 		ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
@@ -43,20 +44,18 @@ namespace zaap { namespace graphics {
 	// // Loaders //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 
-	ZA_RESULT FontCore::LoadFont(const String& srcFile, Font* font)
+	Font FontCore::LoadFont(const String& srcFile, ZA_RESULT* result)
 	{
-		FontCore* fontCore;
-		ZA_RESULT result = LoadFontCore(srcFile, &fontCore);
-		*font = Font(fontCore);
-		return result;
+		return Font(LoadFontCore(srcFile, result));
 	}
 
-	ZA_RESULT FontCore::LoadFontCore(const String& srcFile, FontCore** fontCore)
+	FontCore* FontCore::LoadFontCore(const String& srcFile, ZA_RESULT* result)
 	{
-		if (StringUtil::EndsWith(srcFile, ".ftt"))
-			return LoadFTTFile(srcFile, fontCore);
+		if (StringUtil::EndsWith(srcFile, ".ttf"))
+			return LoadTTFFile(srcFile, result);
 
-		return ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+		*result = ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+		return nullptr;
 	}
 
 	/* ********************************************************* */
@@ -83,15 +82,12 @@ namespace zaap { namespace graphics {
 		}
 	}
 	
-	ZA_RESULT FontCore::LoadFTTFile(const String& srcFile, FontCore** fontCore)
+	FontCore* FontCore::LoadTTFFile(const String& srcFile, ZA_RESULT* result)
 	{
-		ZA_ASSERT(fontCore, "The pointer is null.");
-		ZA_ASSERT(!*fontCore, "The font core points to a FontCore");
-
 		clock_t timer = clock();
 		FontCore* font = new FontCore();
 
-		char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+		const char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 		uint charCount = strlen(chars);
 		uint bitmapSize = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
 		uint fontSize;
@@ -113,7 +109,10 @@ namespace zaap { namespace graphics {
 			/* ********************************************************* */
 			FT_Error error = FT_Init_FreeType(&FTLib);
 			if (error)
-				return ZA_ERROR_FONT_FREETYPE_INIT_ERROR;
+			{
+				*result = ZA_ERROR_FONT_FREETYPE_INIT_ERROR;
+				return nullptr;
+			}
 
 			/* ********************************************************* */
 			// * Init face *
@@ -121,9 +120,10 @@ namespace zaap { namespace graphics {
 			error = FT_New_Face(FTLib, srcFile.c_str(), 0, &face);
 			if (error != FT_Err_Ok){
 				if (error == FT_Err_Unknown_File_Format)
-					return ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
-
-				return ZA_ERROR_FONT_ERROR;
+					*result = ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+				else 
+					*result = ZA_ERROR_FONT_ERROR;
+				return nullptr;
 			}
 
 			FT_Set_Char_Size(face, fontSize * 64, 0, 100, 0);
@@ -198,7 +198,7 @@ namespace zaap { namespace graphics {
 		// * Finishing *
 		/* ********************************************************* */
 		font->m_CharSheet = API::Texture::CreateTexture2D("charSheet", charSheet, false);
-		*fontCore = font;
+		font->m_Chars = String(chars);
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(FTLib);
@@ -206,7 +206,8 @@ namespace zaap { namespace graphics {
 		timer -= clock();
 		ZA_INFO("I loaded ", srcFile, " in ", timer, "ms");
 
-		return ZA_OK;
+		*result = ZA_OK;
+		return font;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -253,7 +254,50 @@ namespace zaap { namespace graphics {
 	/* ##################################### */
 	// # String #
 	/* ##################################### */
+	uint FontCore::getStringWidth(const String& string, const float& fontSize)
+	{
+		return getStringSize(string, fontSize).Width;
+	}
+	uint FontCore::getStringHeight(const String& string, const float& fontSize)
+	{
+		return getStringSize(string, fontSize).Height;
+	}
 
+	Dimensions FontCore::getStringSize(const String& string, const float& fontSize)
+	{
+		uint strSize = string.length();
+		if (strSize == 0)
+			return Dimensions();
+
+		float width = 0;
+		float maxWidth = 0;
+		uint line = 1;
+		char c;
+
+		for (uint i = 0; i < strSize; i++)
+		{
+			c = string.at(0);
+			if (c == '\n')
+			{
+				line++;
+
+				if (width > maxWidth)
+					maxWidth = width;
+				width = 0;
+				continue;
+			}
+
+			if (width == 0)
+				width -= m_CharInfo[getCharIndex(c)].CharMatrix.XOffset;
+
+			width += m_CharInfo[getCharIndex(c)].CharMatrix.TotalWidth;
+		}
+
+		if (width > maxWidth)
+			maxWidth = width;
+
+		return Dimensions((uint)(maxWidth * fontSize), (uint)(line * fontSize));
+	}
 
 	/* ##################################### */
 	// # CharSheet Util #

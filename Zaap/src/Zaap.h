@@ -51,6 +51,7 @@ Macro names:
 
 #include <gui/components/GUIBackground.h>
 #include <gui/components/GUITextureFrame.h>
+#include <gui/components/GUILabel.h>
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // API component //
