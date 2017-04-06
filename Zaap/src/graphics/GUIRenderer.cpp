@@ -54,6 +54,9 @@ namespace zaap { namespace graphics {
 		}
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Window callback //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void GUIRenderer::renderTargetUpdated()
 	{
 		m_TargetWidth = m_MainTarget->getWidth();
@@ -65,6 +68,9 @@ namespace zaap { namespace graphics {
 		ZA_ASSERT(ZA_SUCCEDED(zr));
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Util //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void GUIRenderer::startRenderer()
 	{
 		m_MainTarget->startTarget();
@@ -77,9 +83,19 @@ namespace zaap { namespace graphics {
 		m_GUIShader->stop();
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // draw Util //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void GUIRenderer::setTexure(API::Texture2D* texture) const
 	{
 		ZA_ASSERT(texture);
 		texture->bind(m_GUIShader->getTextureSlot());
+	}
+
+	void GUIRenderer::setFont(const Font& font, const Color& color)
+	{
+		ZA_ASSERT(font.get());
+		font->bindCharShreet(m_GUIShader->getCharSheetSlot());
+		m_GUIShader->setTextColor(color);
 	}
 }}

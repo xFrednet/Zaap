@@ -91,6 +91,7 @@ namespace zaap { namespace graphics {
 		uint charCount = strlen(chars);
 		uint bitmapSize = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
 		uint fontSize;
+		float fontSizeF;
 		Bitmap charSheet(bitmapSize, bitmapSize, ZA_FORMAT_A8_UINT);
 
 		FT_Library FTLib;
@@ -102,6 +103,7 @@ namespace zaap { namespace graphics {
 		{
 			uint charsPerLine = (uint)sqrtf((float)charCount) + 1; //+1 because 1.999 will be a 1 uint
 			fontSize = (bitmapSize / charsPerLine) - ((bitmapSize / charsPerLine) % 64);
+			fontSizeF = float(fontSize);
 			font->m_CharInfo.resize(charCount);
 			
 			/* ********************************************************* */
@@ -137,8 +139,8 @@ namespace zaap { namespace graphics {
 		ZA_FONT_CHAR_MATRIX* charMatrix;
 		
 		FT_Bitmap ftBitmap;
-		uint bitmapX = 0;
-		uint bitmapY = 0;
+		uint bitmapX = 10;
+		uint bitmapY = 10;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Finally the loading part //
@@ -159,7 +161,7 @@ namespace zaap { namespace graphics {
 				charInfo->Character = chars[i];
 
 				charMatrix->XOffset		= (float(ftCharMatrix.horiBearingX) / 64.0f);
-				charMatrix->YOffset		= (float(ftCharMatrix.horiBearingY) / 64.0f); // charSize - ftCharMatrix.horiBearingY / 64.0f
+				charMatrix->YOffset		= (fontSizeF - float(ftCharMatrix.horiBearingY) / 64.0f); // charSize - ftCharMatrix.horiBearingY / 64.0f
 				charMatrix->Width		= (float(ftCharMatrix.width) / 64.0f);
 				charMatrix->Height		= (float(ftCharMatrix.height) / 64.0f);
 				charMatrix->TotalWidth	= (float(ftCharMatrix.horiAdvance) / 64.0f);
@@ -170,28 +172,28 @@ namespace zaap { namespace graphics {
 			// * copy charSheet *
 			/* ********************************************************* */
 			{
-				if ((bitmapX + ftBitmap.width + 1) >= charSheet.getWidth())
+				if ((bitmapX + ftBitmap.width + 10) >= charSheet.getWidth())
 				{
-					bitmapX = 0;
+					bitmapX = 10;
 
-					if (bitmapY + fontSize < charSheet.getHeight())
-						bitmapY += fontSize;
+					if (bitmapY + fontSize * 1.5f < charSheet.getHeight())
+						bitmapY += fontSizeF * 1.5f;
 					else
-						bitmapY = 0;
+						bitmapY = 10;
 				}
 
 				copyToBitmap(bitmapX, bitmapY, ftBitmap, charSheet);
 
-				bitmapX += ftBitmap.width + 1;
-
 				charInfo->TexMinCoords = charSheet.getPixelCoord(bitmapX, bitmapY);
-				charInfo->TexMaxCoords = charSheet.getPixelCoord(bitmapX + uint(charMatrix->Width), bitmapY + uint(charMatrix->Height));
+				charInfo->TexMaxCoords = charSheet.getPixelCoord(bitmapX + ftBitmap.width, bitmapY + ftBitmap.rows);
+				
+				bitmapX += ftBitmap.width + 10;
 			}
 
 			/* ********************************************************* */
 			// * Loop end *
 			/* ********************************************************* */
-			*charMatrix = Divide(*charMatrix, (float)fontSize);
+			*charMatrix = Divide(*charMatrix, fontSizeF);
 		}
 
 		/* ********************************************************* */
@@ -304,11 +306,11 @@ namespace zaap { namespace graphics {
 	/* ##################################### */
 	void FontCore::bindCharShreet(const uint& index) const
 	{
-		m_CharSheet->bind(0);
+		m_CharSheet->bind(index);
 	}
 	void FontCore::unbindCharShreet(const uint& index) const
 	{
-		m_CharSheet->unbind(0);
+		m_CharSheet->unbind(index);
 	}
 
 	void FontCore::setCharSheet(API::Texture2D* charSheet)

@@ -11,8 +11,18 @@ namespace zaap { namespace graphics {
 	class ZAAP_API GUIShader : public Shader
 	{
 	protected:
+
+		/* ##################################### */
+		// # Matrix buffer #
+		/* ##################################### */
 		Mat4 m_TransformationMatrix;
 		virtual void loadTransformationMatrix() const = 0;
+
+		/* ##################################### */
+		// # Color buffer #
+		/* ##################################### */
+		ZA_PS_GUI_COLOR_BUFFER m_ColorBufferStruct;
+		virtual void loadColorBuffer() const = 0;
 
 		GUIShader();
 
@@ -31,12 +41,18 @@ namespace zaap { namespace graphics {
 		//		combined results of the shader creation.
 		//
 		virtual ZA_MULTI_RESULT init() = 0;
+		ZA_SHADER_TYPE getShaderType() const override;
 
 		void setTargetSize(const uint& width, const uint& height);
 
-		ZA_SHADER_TYPE getShaderType() const override;
-		
+		void setTextColor(const Color& textColor);
+
+		/* ********************************************************* */
+		// * Texture slots *
+		/* ********************************************************* */
 		inline uint getTextureSlot() const;
+		inline uint getCharSheetSlot() const;
+		
 	};
 
 }}

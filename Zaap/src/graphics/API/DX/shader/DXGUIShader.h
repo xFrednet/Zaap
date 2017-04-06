@@ -11,6 +11,9 @@ namespace zaap { namespace graphics { namespace DX {
 	protected:
 		ID3D11Buffer* m_MatrixBuffer;
 		void loadTransformationMatrix() const override;
+
+		ID3D11Buffer* m_ColorBuffer;
+		void loadColorBuffer() const override;
 	public:
 		// <Constructor>
 		//		DXGUIShader

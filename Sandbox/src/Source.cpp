@@ -136,11 +136,12 @@ int main(void)
 		
 		ZA_RESULT zar = 2;
 		font_ = FontCore::LoadFont("res/arial.ttf", &zar);
-		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
 		
-		GUILabel* label = new GUILabel("Hallo ich bin zaap!!");
-		label->setPreferredSize(200, 200);
-		label->setFont(font_);
+		//t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, font_->getCharSheet()));
+		GUILabel* label = new GUILabel(Point(50, 300), "Hallo ich bin zaap!!", font_, 100.0f);
+		label->setMargin(10, 10, 10, 10);
+		label->setVisibility(false);
 		t.getGUIManager()->add(label);
 
 		t.start();

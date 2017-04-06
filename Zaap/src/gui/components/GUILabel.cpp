@@ -31,38 +31,53 @@ namespace zaap { namespace gui{
 
 		helper.drawRectangle(getGlobalPosition(), getWidth(), getHeight(), m_BackgroundColor);
 		if (m_Font.get())
-			helper.drawString(m_Text, m_Font, m_TextSize, getGlobalPosition());
+			helper.drawString(m_Text, m_Font, m_TextSize, getGlobalContentPosition());
 
 		helper.save();
 	}
 
 	uint GUILabel::getWrappedWidth() const
 	{
-		return 0;
-		// TODO font->getStringWidth(text, fontSize);
+		if (m_Font.get())
+			return m_MarginLeft + m_Font->getStringWidth(m_Text, m_TextSize) + m_MarginRight;
+
+		return m_MarginLeft + m_MarginRight;
 	}
 	uint GUILabel::getWrappedHeight() const
 	{
-		return 0;
-		// TODO font->getStringWidth(text, fontSize);
-
+		if (m_Font.get())
+			return m_MarginTop + m_Font->getStringHeight(m_Text, m_TextSize) + m_MarginBottom;
+		
+		return m_MarginTop + m_MarginBottom;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Constructors //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	GUILabel::GUILabel(String content, GUIComponent* parent)
-		: GUILabel(content, 12.0f, parent)
+	GUILabel::GUILabel(const Point& pos, const String& text, const graphics::Font& font, 
+		const float& textSize, const graphics::Color& textColor, const graphics::Color& background)
+		: GUILabel(Rectangle(pos, ZA_GUI_SIZE_WRAP_CONTENT, ZA_GUI_SIZE_WRAP_CONTENT), text, font, textSize, textColor, background)
 	{
 	}
-
-	GUILabel::GUILabel(String content, float textSize, GUIComponent* parent)
-		: GUIComponent(0, 0, parent),
-		m_Text(content),
+	GUILabel::GUILabel(const Rectangle& size, const String& text, const graphics::Font& font,
+		const float& textSize, const graphics::Color& textColor, const graphics::Color& background)
+		: GUIComponent(0, 0),
+		m_Text(text),
 		m_TextSize(textSize),
-		m_TextColor(),
-		m_BackgroundColor(0.0f, 0.0f, 0.0f, 0.0f)
+		m_Font(font),
+		m_TextColor(textColor),
+		m_BackgroundColor(background)
 	{
+		m_Size = size;
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Util //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	void GUILabel::render(graphics::GUIRenderer* renderer)
+	{
+		renderer->setFont(m_Font, m_TextColor);
+		m_VertexBuffer->draw();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

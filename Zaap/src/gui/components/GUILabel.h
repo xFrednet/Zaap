@@ -25,9 +25,21 @@ namespace zaap { namespace gui {
 		// // Constructors //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		
-		GUILabel(String text = "", GUIComponent* parent = nullptr);
-		GUILabel(String text, float textSize, GUIComponent* parent = nullptr);
-		
+		GUILabel(const Point& pos, const String& text, const graphics::Font& font, 
+			const float& textSize = 12.0f,
+			const graphics::Color& textColor = graphics::Color(0.0f, 0.0f, 0.0f, 1.0f), 
+			const graphics::Color& background = graphics::Color(1.0f, 1.0f, 1.0f, 0.0f));
+		GUILabel(const Rectangle& size, const String& text, const graphics::Font& font,
+			const float& textSize = 12.0f,
+			const graphics::Color& textColor = graphics::Color(0.0f, 0.0f, 0.0f, 1.0f),
+			const graphics::Color& background = graphics::Color(1.0f, 1.0f, 1.0f, 0.0f));
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+
+		void render(graphics::GUIRenderer* renderer) override;
+
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Getters/Setters //
 		/* //////////////////////////////////////////////////////////////////////////////// */

@@ -214,7 +214,7 @@ namespace zaap { namespace gui {
 			charInfo = &font->m_CharInfo[font->getCharIndex(c)];
 
 			if (x == 0)
-				x -= charInfo->CharMatrix.XOffset;
+				x -= charInfo->CharMatrix.XOffset * fontSize;
 
 			width = charInfo->CharMatrix.Width * fontSize;
 			height = charInfo->CharMatrix.Height * fontSize;
@@ -222,12 +222,12 @@ namespace zaap { namespace gui {
 			/* ##################################### */
 			// # vertices #
 			/* ##################################### */
-			offset.X = x + charInfo->CharMatrix.XOffset;
-			offset.Y = y + charInfo->CharMatrix.YOffset;
+			offset.X = x + charInfo->CharMatrix.XOffset * fontSize;
+			offset.Y = y + charInfo->CharMatrix.YOffset * fontSize;
 			vertices[0].Position = pos + offset;//Vec2(0    , 0     );
-			vertices[1].Position = pos + offset + Vec2(x    , height);
+			vertices[1].Position = pos + offset + Vec2(0    , height);
 			vertices[2].Position = pos + offset + Vec2(width, height);
-			vertices[3].Position = pos + offset + Vec2(width, y     );
+			vertices[3].Position = pos + offset + Vec2(width, 0     );
 
 			//TypeInfo
 			texMin = &charInfo->TexMinCoords;

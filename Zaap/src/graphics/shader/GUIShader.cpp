@@ -4,6 +4,10 @@ namespace zaap { namespace graphics {
 	GUIShader::GUIShader()
 	{
 	}
+	ZA_SHADER_TYPE GUIShader::getShaderType() const
+	{
+		return ZA_SHADER_GUI_SHADER;
+	}
 
 	void GUIShader::setTargetSize(const uint& width, const uint& height)
 	{
@@ -17,14 +21,21 @@ namespace zaap { namespace graphics {
 
 		loadTransformationMatrix();
 	}
-
-	ZA_SHADER_TYPE GUIShader::getShaderType() const
+	void GUIShader::setTextColor(const Color& textColor)
 	{
-		return ZA_SHADER_GUI_SHADER;
+		m_ColorBufferStruct.TextColor = textColor;
+		loadColorBuffer();
 	}
 
+	/* ********************************************************* */
+	// * Texture slots *
+	/* ********************************************************* */
 	uint GUIShader::getTextureSlot() const
 	{
 		return 0;
+	}
+	uint GUIShader::getCharSheetSlot() const
+	{
+		return 1;
 	}
 }}

@@ -5,6 +5,7 @@
 #include <graphics/API/RenderTarget.h>
 #include <events/EventManager.h>
 #include "shader/GUIShader.h"
+#include "Font.h"
 
 namespace zaap { namespace graphics {
 	namespace API {
@@ -116,6 +117,7 @@ namespace zaap { namespace graphics {
 	public:
 		inline void setTexure(API::Texture2D* texture) const;
 
+		inline void setFont(const Font& font, const Color& color);
 	};
 
 }}

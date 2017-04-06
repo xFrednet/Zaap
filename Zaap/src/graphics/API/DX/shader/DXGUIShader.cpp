@@ -17,15 +17,21 @@ namespace zaap { namespace graphics { namespace DX {
 	{
 		LoadResource(m_MatrixBuffer, &m_TransformationMatrix, sizeof(Mat4));
 	}
+	void DXGUIShader::loadColorBuffer() const
+	{
+		LoadResource(m_ColorBuffer, &m_ColorBufferStruct, sizeof(ZA_PS_GUI_COLOR_BUFFER));
+	}
 
 	DXGUIShader::DXGUIShader()
-		: m_MatrixBuffer(nullptr)
+		: m_MatrixBuffer(nullptr),
+		m_ColorBuffer(nullptr)
 	{
 	}
 
 	DXGUIShader::~DXGUIShader()
 	{
 		ZA_DXRELEASE(m_MatrixBuffer);
+		ZA_DXRELEASE(m_ColorBuffer);
 	}
 
 	ZA_MULTI_RESULT DXGUIShader::init()
@@ -35,13 +41,20 @@ namespace zaap { namespace graphics { namespace DX {
 		results += createShaderFromString(DXGUIShaderSrc, DXGUIShaderIED, 3);
 		if (ZA_FAILED(results))
 		{
-			ZA_ASSERT(false);
+			ZA_ASSERT(false, "createShaderFromString failed");
 			return results;
 		}
 		/* ##################################### */
 		// # Matrix buffer #
 		/* ##################################### */
 		results += CreateConstBuffer(&m_MatrixBuffer, sizeof(Mat4), &m_TransformationMatrix);
+		if (ZA_FAILED(results))
+			return results;
+
+		/* ##################################### */
+		// # Color buffer #
+		/* ##################################### */
+		results += CreateConstBuffer(&m_ColorBuffer, sizeof(ZA_PS_GUI_COLOR_BUFFER), &m_ColorBufferStruct);
 		if (ZA_FAILED(results))
 			return results;
 

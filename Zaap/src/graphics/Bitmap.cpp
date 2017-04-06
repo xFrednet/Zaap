@@ -1,6 +1,7 @@
 #include "Bitmap.h"
 
 #include <util/ImageLoader.h>
+#include "util/Log.h"
 
 namespace zaap { namespace graphics {
 
@@ -16,7 +17,7 @@ namespace zaap { namespace graphics {
 			case ZA_FORMAT_A8_UINT:
 				return (x + y * m_Width);
 			default: 
-				return 1;
+				return 0;
 		}
 	}
 	uint Bitmap::getGIndex(const uint &x, const uint &y) const
@@ -28,11 +29,11 @@ namespace zaap { namespace graphics {
 		case ZA_FORMAT_R8G8B8_UINT:
 			return (x + y * m_Width) * 3 + 1;
 		case ZA_FORMAT_R8_UINT:
-			return 1;
+			return 0;
 		case ZA_FORMAT_A8_UINT:
 			return (x + y * m_Width);
 		default:
-			return 1;
+			return 0;
 		}
 	}
 	uint Bitmap::getBIndex(const uint &x, const uint &y) const
@@ -44,11 +45,11 @@ namespace zaap { namespace graphics {
 		case ZA_FORMAT_R8G8B8_UINT:
 			return (x + y * m_Width) * 3 + 2;
 		case ZA_FORMAT_R8_UINT:
-			return 1;
+			return 0;
 		case ZA_FORMAT_A8_UINT:
 			return (x + y * m_Width);
 		default:
-			return 1;
+			return 0;
 		}
 	}
 	uint Bitmap::getAIndex(const uint &x, const uint &y) const
@@ -56,14 +57,14 @@ namespace zaap { namespace graphics {
 		switch (m_Format)
 		{
 		case ZA_FORMAT_R8G8B8A8_UINT:
-			return (x + y * m_Width) * 4;
+			return (x + y * m_Width) * 4 + 3;
 		case ZA_FORMAT_R8G8B8_UINT:
 		case ZA_FORMAT_R8_UINT:
-			return 1;
+			return 0;
 		case ZA_FORMAT_A8_UINT:
 			return (x + y * m_Width);
 		default:
-			return 1;
+			return 0;
 		}
 	}
 
@@ -172,12 +173,12 @@ namespace zaap { namespace graphics {
 	void Bitmap::setB(const uint &x, const uint &y, const uint &b)
 	{
 		if (Format_is_B_Setable(m_Format) && contains(x, y))
-			m_Bytes[getBIndex(x, y) + 2] = b;
+			m_Bytes[getBIndex(x, y)] = b;
 	}
 	void Bitmap::setA(const uint &x, const uint &y, const uint &a)
 	{
 		if (Format_is_A_Setable(m_Format) && contains(x, y))
-			m_Bytes[getBIndex(x, y) + 2] = a;
+			m_Bytes[getAIndex(x, y)] = a;
 	}
 	
 	//
@@ -215,7 +216,7 @@ namespace zaap { namespace graphics {
 	//
 	bool Bitmap::contains(const uint &x, const uint &y) const
 	{
-		return (x < m_Width || y < m_Height);
+		return (x < m_Width && y < m_Height);
 	}
 
 	uint Bitmap::getWidth() const
@@ -241,7 +242,7 @@ namespace zaap { namespace graphics {
 
 	Vec2 Bitmap::getPixelCoord(const uint &x, const uint &y) const
 	{
-		return Vec2((float)x / (float)m_Width, (float)y / (float)m_Height);
+		return Vec2(((float)x / (float)m_Width), (float)y / (float)m_Height);
 	}
 
 	Bitmap Bitmap::getSubMap(const uint &x, const uint &y, const uint &width, const uint &height) const

@@ -37,6 +37,7 @@ namespace zaap { namespace graphics { namespace DX {
 			ZeroMemory(&rDesc, sizeof(D3D11_RASTERIZER_DESC));
 
 			//draw options
+			rDesc.FillMode = D3D11_FILL_WIREFRAME;
 			rDesc.FillMode = D3D11_FILL_SOLID;
 			rDesc.CullMode = D3D11_CULL_NONE;
 			rDesc.FrontCounterClockwise = true;

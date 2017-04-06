@@ -230,7 +230,7 @@ namespace zaap { namespace graphics {
 	//			This is an array of Materials.
 	//			The @Materials are used to calculate the effects
 	//			that light sources have on the rendered meshes.<\n>
-	//			(This matrix is changed for every object that is rendered.<\n>
+	//			(This buffer is changed for every object that is rendered.<\n>
 	//			Note that some old materials might remain in this array
 	//			because the loaders usually only change the @Materials that are 
 	//			specific to the current object.);;
@@ -238,6 +238,26 @@ namespace zaap { namespace graphics {
 	typedef struct ZAAP_API ZA_PS_MATERIAL_BUFFER_ {
 		Material Materials[ZA_SHADER_MATERIAL_COUNT];
 	} ZA_PS_MATERIAL_BUFFER;
+
+	/* ********************************************************* */
+	// * Other *
+	/* ********************************************************* */
+	
+	// <Struct>
+	//		ZA_PS_GUI_COLOR_BUFFER
+	//
+	// <Description>
+	//		This struct hold some @Colors that are needed in
+	//		the @GUIShader.
+	//
+	// <Members>
+	//		TextColor::
+	//			This is the color that will be used 
+	//			for the rendered Font.;;
+	//
+	typedef struct ZAAP_API ZA_PS_GUI_COLOR_BUFFER_ {
+		Color TextColor;
+	} ZA_PS_GUI_COLOR_BUFFER;
 
 }}
 
