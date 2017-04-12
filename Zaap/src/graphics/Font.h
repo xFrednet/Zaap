@@ -104,7 +104,7 @@ namespace zaap { namespace graphics {
 	class ZAAP_API FontCore
 	{
 	public:
-		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
+		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 2048;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Loaders //
@@ -154,9 +154,10 @@ namespace zaap { namespace graphics {
 	private:
 		friend class gui::VertexBufferHelper;
 
+		float m_LineHeight;
 		String m_Chars;
 		std::vector<ZA_FONT_CHAR_INFO> m_CharInfo;
-		API::Texture2D* m_CharSheet;
+		API::Texture2D m_CharSheet;
 
 		FontCore();
 	public:
@@ -188,8 +189,8 @@ namespace zaap { namespace graphics {
 		void bindCharShreet(const uint& index) const;
 		void unbindCharShreet(const uint& index) const;
 
-		void setCharSheet(API::Texture2D* charSheet);
-		API::Texture2D* getCharSheet() const;
+		void setCharSheet(API::Texture2D charSheet);
+		API::Texture2D getCharSheet() const;
 	};
 		
 }}

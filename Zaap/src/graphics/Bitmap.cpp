@@ -235,6 +235,10 @@ namespace zaap { namespace graphics {
 	{
 		return &m_Bytes[0];
 	}
+	byte* Bitmap::getPixelArray()
+	{
+		return &m_Bytes[0];
+	}
 	ZA_FORMAT Bitmap::getFormat() const
 	{
 		return m_Format;

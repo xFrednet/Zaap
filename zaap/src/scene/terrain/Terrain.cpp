@@ -67,10 +67,11 @@ namespace zaap { namespace scene {
 
 	void Terrain::initTexture(String folder)
 	{
-		m_Textures[0] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_0.jpg");
-		m_Textures[1] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_1.jpg");
-		m_Textures[2] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_3.jpg");
-		m_Textures[3] = graphics::API::Texture::CreateTexture2D("terrainTexture", folder + "texture_2.jpg");
+		using namespace graphics::API;
+		m_Textures[0] = TextureCore::CreateTexture2D(folder + "texture_0.jpg");
+		m_Textures[1] = TextureCore::CreateTexture2D(folder + "texture_1.jpg");
+		m_Textures[2] = TextureCore::CreateTexture2D(folder + "texture_3.jpg");
+		m_Textures[3] = TextureCore::CreateTexture2D(folder + "texture_2.jpg");
 	}
 	void Terrain::cleanup()
 	{
@@ -187,7 +188,7 @@ namespace zaap { namespace scene {
 	{
 		return m_TerrainDesc;
 	}
-	graphics::API::Texture2D* Terrain::getTexture(uint texture) const
+	graphics::API::Texture2D Terrain::getTexture(uint texture) const
 	{
 		if (texture >= 4) 
 			return m_Textures[0];

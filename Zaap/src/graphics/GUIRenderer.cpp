@@ -86,7 +86,7 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // draw Util //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void GUIRenderer::setTexure(API::Texture2D* texture) const
+	void GUIRenderer::setTexure(API::Texture2DCore* texture) const
 	{
 		ZA_ASSERT(texture);
 		texture->bind(m_GUIShader->getTextureSlot());

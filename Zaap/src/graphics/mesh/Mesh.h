@@ -85,7 +85,7 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//		This is the Texture of this mesh.
 		//
-		API::Texture2D* m_Texture;
+		API::Texture2D m_Texture;
 
 		// <Value>
 		//		m_Materials
@@ -119,8 +119,8 @@ namespace zaap { namespace graphics {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Texture //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		inline void setTexture(API::Texture2D* texture);
-		inline API::Texture2D* getTexture() const;
+		inline void setTexture(API::Texture2D texture);
+		inline API::Texture2D getTexture() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Material //

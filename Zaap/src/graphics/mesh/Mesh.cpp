@@ -80,11 +80,11 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Texture //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void Mesh::setTexture(API::Texture2D* texture)
+	void Mesh::setTexture(API::Texture2D texture)
 	{
 		m_Texture = texture;
 	}
-	API::Texture2D* Mesh::getTexture() const
+	API::Texture2D Mesh::getTexture() const
 	{
 		return m_Texture;
 	}

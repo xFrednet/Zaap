@@ -2,16 +2,18 @@
 
 using namespace zaap;
 using namespace graphics;
+using namespace API;
 using namespace scene;
 using namespace std;
 using namespace gui;
 
-Scene* scene_ = nullptr;
-LightSetup *lightSetup = nullptr;
-Light* light = nullptr;
-Light* light2 = nullptr;
-Camera* camera = nullptr;
-Terrain* terrain_ = nullptr;
+Scene* scene_			= nullptr;
+LightSetup *lightSetup	= nullptr;
+Light* light			= nullptr;
+Light* light2			= nullptr;
+Camera* camera			= nullptr;
+Terrain* terrain_		= nullptr;
+GUILabel* label_		= nullptr;
 Font font_;
 
 // TODO https://trello.com/b/vQItmmsf/zaap
@@ -46,9 +48,9 @@ void loadEntitys()
 	// tree
 	//
 	{
-		API::Texture::CreateTexture2D("treeTexture", "res/nature/tree/Texture.png");
+		Texture2D treeTex = TextureCore::CreateTexture2D("res/nature/tree/Texture.png");
 		Mesh mesh = Mesh::GetOrLoad("res/nature/tree/Tree.obj");
-		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("treeTexture"));
+		mesh.setTexture(treeTex);
 
 		Vec3 pos;
 		Vec3 rot(0, 0, 0);
@@ -69,9 +71,9 @@ void loadEntitys()
 	// Bush
 	//
 	{
-		API::Texture::CreateTexture2D("bushTexture", "res/nature/bush/Texture.png");
+		Texture2D texture = TextureCore::CreateTexture2D("res/nature/bush/Texture.png");
 		Mesh mesh = Mesh::GetOrLoad("res/nature/bush/bush.obj");
-		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("bushTexture"));
+		mesh.setTexture(texture);
 		Entity* bush = new Entity(mesh, Vec3(10, terrain_->getHeight(Vec2(10, 10)), 10));
 		scene_->addEntity(bush);
 	}
@@ -89,6 +91,7 @@ public:
 	float rot = 1.5f;
 	uint log = 0;
 	bool val = true;
+	uint labelCounter = 0;
 
 	Test() : Application("ZAAP testing window", 852, 480, scene_)
 	{}
@@ -112,9 +115,15 @@ public:
 		}
 		light2->setPosition(camera->getPosition());
 
+		labelCounter++;
 
-		//light->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
-		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
+		String text = "I-Text:-<";
+		uint loops = (labelCounter / 60) % 10;
+		for (uint i = 0; i < loops; i++)
+			text += "+";
+		text += ">-8=D\nI Some more text.\nI QQQQQQQQQQQQ\nI OE -> \'Ö\'";// "\nI QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
+		//tt += ">-8=D\nI Some more text.\nI zuifd3wzuiqdrgfgfof§OWhkhukughkuhWQ\nI OE -> \'Ö\'\nI QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
+		label_->setText(text);
 
 	}
 
@@ -139,10 +148,11 @@ int main(void)
 		
 		//t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
 		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, font_->getCharSheet()));
-		GUILabel* label = new GUILabel(Point(50, 300), "Hallo ich bin zaap!!", font_, 100.0f);
-		label->setMargin(10, 10, 10, 10);
-		label->setVisibility(false);
-		t.getGUIManager()->add(label);
+		label_ = new GUILabel(Point(50, 300), "Hello, I'm ZAAP!!", font_, 50.0f);
+		label_->setBackgroundColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
+		label_->setMargin(1, 1, 1, 1);
+		label_->setTextColor(Color(1.0f, 1.0f, 1.0f, 0.5f));
+		t.getGUIManager()->add(label_);
 
 		t.start();
 		

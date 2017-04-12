@@ -238,7 +238,7 @@
     <ClCompile Include="src\graphics\API\DX\DXGUIRenderer.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderTarget.cpp" />
-    <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXTexture2DCore.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXVertexBufferCore.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXDefaultShader.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXGUIShader.cpp" />
@@ -307,7 +307,7 @@
     <ClInclude Include="src\graphics\API\DX\DXGUIRenderer.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderTarget.h" />
-    <ClInclude Include="src\graphics\API\DX\DXTexture2D.h" />
+    <ClInclude Include="src\graphics\API\DX\DXTexture2DCore.h" />
     <ClInclude Include="src\graphics\API\DX\DXVertexBufferCore.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXDefaultShader.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXGUIShader.h" />

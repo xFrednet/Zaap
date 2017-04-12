@@ -6,9 +6,6 @@
 #include "Mesh.h"
 
 namespace zaap { namespace graphics {
-	namespace API {
-		class Texture2D;
-	}
 
 	// <Class>
 	//      MeshManager

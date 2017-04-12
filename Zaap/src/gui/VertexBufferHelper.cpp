@@ -203,8 +203,15 @@ namespace zaap { namespace gui {
 			/* ##################################### */
 			if (c == '\n')
 			{
+				for (uint j = 0; j < 4; j++)
+				{
+					vertices[j].Position = Vec3();
+					vertices[j].TypeInfo = Vec4();
+				}
+				addRectangle(vertices);
+
 				x = 0;
-				y += fontSize;
+				y += font->m_LineHeight * fontSize;
 				continue;
 			}
 
@@ -244,7 +251,6 @@ namespace zaap { namespace gui {
 			/* ##################################### */
 			x += charInfo->CharMatrix.TotalWidth * fontSize;
 		}
-		ZA_INFO("keine ahnung");
 	}
 
 	/* ********************************************************* */

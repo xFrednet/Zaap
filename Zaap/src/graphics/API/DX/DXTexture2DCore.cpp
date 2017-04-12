@@ -1,4 +1,4 @@
-#include "DXTexture2D.h"
+#include "DXTexture2DCore.h"
 
 #include <util/ImageLoader.h>
 #include <util/Log.h>
@@ -8,8 +8,8 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Constructors / Deconstructor // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	DXTexture2D::DXTexture2D(String name, String filePath)
-		: Texture2D(name),
+	DXTexture2DCore::DXTexture2DCore(String filePath, const ZA_TEXTURE_FILTER& filterType)
+		: Texture2DCore(filePath),
 		m_Texture(nullptr)
 	{
 		byte* b = nullptr;
@@ -23,25 +23,25 @@ namespace zaap { namespace graphics { namespace DX {
 		}
 
 		if (bytesperPixel == 32)
-			init(b, ZA_FORMAT_R8G8B8A8_UINT);
+			init(b, ZA_FORMAT_R8G8B8A8_UINT, filterType);
 		else 
-			init(b, ZA_FORMAT_R8G8B8_UINT);
+			init(b, ZA_FORMAT_R8G8B8_UINT, filterType);
 
 		delete b;
 	}
-	DXTexture2D::DXTexture2D(String name, Bitmap image)
-		: Texture2D(name),
+	DXTexture2DCore::DXTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType)
+		: Texture2DCore(name),
 		m_Texture(nullptr)
 	{
-		m_Width = image.getWidth();
-		m_Height = image.getHeight();
-		m_Format = image.getFormat();
+		m_Width = bitmap.getWidth();
+		m_Height = bitmap.getHeight();
+		m_Format = bitmap.getFormat();
 
-		init(image.getPixelArray(), image.getFormat());
+		init(bitmap.getPixelArray(), bitmap.getFormat(), filterType);
 	}
 
-	DXTexture2D::DXTexture2D(ID3D11Texture2D* texture, bool createShaderStuff)
-		: Texture2D("given Texture"),
+	DXTexture2DCore::DXTexture2DCore(ID3D11Texture2D* texture)
+		: Texture2DCore("given Texture"),
 		m_Texture(texture),
 		m_TextureView(nullptr),
 		m_SamplerState(nullptr)
@@ -53,14 +53,14 @@ namespace zaap { namespace graphics { namespace DX {
 		//init(nullptr, ZA_FORMAT_UNKNOWN);
 	}
 
-	DXTexture2D::~DXTexture2D()
+	DXTexture2DCore::~DXTexture2DCore()
 	{
 		ZA_DXRELEASE(m_Texture);
 		ZA_DXRELEASE(m_TextureView);
 		ZA_DXRELEASE(m_SamplerState);
 	}
 
-	ZA_RESULT DXTexture2D::init(byte const *bytes, ZA_FORMAT format)
+	ZA_RESULT DXTexture2DCore::init(byte const *bytes, ZA_FORMAT format, ZA_TEXTURE_FILTER filterType)
 	{
 		//general declarations
 		HRESULT result;
@@ -72,7 +72,8 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		// Texture
 		//
-		if (!bytes && !m_Texture)
+		ZA_ASSERT(!m_Texture, "m_Texture is already initialized");
+		if (m_Texture)
 			return ZA_ERROR_API_TEXTURE2D_CREATION_ERROR;
 
 		if (!m_Texture)
@@ -104,7 +105,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a Texture2D with the given data.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZA_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_TextureName + ")"));
+			ZA_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_Name + ")"));
 		} else
 		{
 			m_Texture->GetDesc(&m_TextureDesc);
@@ -129,7 +130,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZA_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_TextureName + ")"));
+			ZA_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_Name + ")"));
 			//TODO add devcon->GenerateMips(m_TextureView);
 		}
 
@@ -137,7 +138,10 @@ namespace zaap { namespace graphics { namespace DX {
 		// Sampler
 		//
 		{
-			m_SamplerDesc.Filter			= D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+			if (filterType == ZA_TEXTURE_FILTER_LINAR)
+				m_SamplerDesc.Filter		= D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+			else 
+				m_SamplerDesc.Filter		= D3D11_FILTER_MIN_MAG_MIP_POINT;
 			m_SamplerDesc.AddressU			= D3D11_TEXTURE_ADDRESS_WRAP;
 			m_SamplerDesc.AddressV			= D3D11_TEXTURE_ADDRESS_WRAP;
 			m_SamplerDesc.AddressW			= D3D11_TEXTURE_ADDRESS_WRAP;
@@ -157,7 +161,7 @@ namespace zaap { namespace graphics { namespace DX {
 				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
 			}
-			ZA_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_TextureName + ")"));
+			ZA_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_Name + ")"));
 		}
 
 		return ZA_OK;
@@ -166,7 +170,7 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Abstract members // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void DXTexture2D::bind(uint slot)
+	void DXTexture2DCore::bind(uint slot)
 	{
 		
 		if (!m_TextureView && !m_SamplerState)
@@ -174,10 +178,8 @@ namespace zaap { namespace graphics { namespace DX {
 
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, &m_TextureView);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, &m_SamplerState);
-		
-		return;
 	}
-	void DXTexture2D::unbind(uint slot)
+	void DXTexture2DCore::unbind(uint slot)
 	{
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, nullptr);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, nullptr);

@@ -68,8 +68,10 @@ namespace zaap { namespace graphics { namespace DX {
 		startDXShader();
 
 		DXContext::GetDevContext()->VSSetConstantBuffers(0, 1, &m_MatrixBuffer);
+		DXContext::GetDevContext()->PSSetConstantBuffers(0, 1, &m_ColorBuffer);
 
 		loadTransformationMatrix();
+		loadColorBuffer();
 	}
 
 	void DXGUIShader::stop() const

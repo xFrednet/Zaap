@@ -5,7 +5,7 @@
 
 namespace zaap { namespace gui {
 
-	GUITextureFrame::GUITextureFrame(Point pos, int width, int height, graphics::API::Texture2D* texture, GUIComponent* parent)
+	GUITextureFrame::GUITextureFrame(Point pos, int width, int height, graphics::API::Texture2D texture, GUIComponent* parent)
 		: GUIComponent(4, 6, parent)
 	{
 		setTexture(texture);
@@ -16,7 +16,7 @@ namespace zaap { namespace gui {
 	GUITextureFrame::GUITextureFrame(Point pos, int width, int height, String textureFile, GUIComponent* parent)
 		: GUIComponent(4, 6, parent)
 	{
-		setTexture(graphics::API::Texture::CreateTexture2D(textureFile, textureFile, false));
+		setTexture(graphics::API::TextureCore::CreateTexture2D(textureFile));
 		setPosition(pos);
 		setPreferredSize(width, height);
 	}
@@ -40,11 +40,11 @@ namespace zaap { namespace gui {
 
 	void GUITextureFrame::render(graphics::GUIRenderer* renderer)
 	{
-		renderer->setTexure(m_Texture);
+		renderer->setTexure(m_Texture.get());
 		m_VertexBuffer->draw();
 	}
 
-	void GUITextureFrame::setTexture(graphics::API::Texture2D* texture)
+	void GUITextureFrame::setTexture(graphics::API::Texture2D texture)
 	{
 		if (!texture)
 			return;
@@ -52,7 +52,7 @@ namespace zaap { namespace gui {
 		m_Texture = texture;
 		requestRedraw();
 	}
-	graphics::API::Texture2D* GUITextureFrame::getTexture() const
+	graphics::API::Texture2D GUITextureFrame::getTexture() const
 	{
 		return m_Texture;
 	}

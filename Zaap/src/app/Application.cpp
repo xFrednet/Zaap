@@ -32,7 +32,6 @@ namespace zaap {
 		graphics::MaterialManager::Cleanup();
 		//TODO add auto (problem with CLI) delete m_Scene;
 		graphics::API::Context::Cleanup();
-		graphics::API::Texture::Cleanup();
 
 		ZA_LOG_CLEANUP();
 	}

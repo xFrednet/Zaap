@@ -10,7 +10,7 @@
 
 namespace zaap { namespace graphics { namespace DX {
 	
-	class ZAAP_API DXTexture2D : public API::Texture2D
+	class ZAAP_API DXTexture2DCore : public API::Texture2DCore
 	{
 	protected:
 		D3D11_TEXTURE2D_DESC m_TextureDesc;
@@ -25,8 +25,8 @@ namespace zaap { namespace graphics { namespace DX {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructors / Deconstructor // 
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		DXTexture2D(String name, String filePath);
-		DXTexture2D(String name, Bitmap image);
+		DXTexture2DCore(String filePath, const ZA_TEXTURE_FILTER& filterType);
+		DXTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType);
 
 		// <Constructor>
 		//      DXTexture2D
@@ -38,11 +38,8 @@ namespace zaap { namespace graphics { namespace DX {
 		//      should be created or not.
 		//      
 		// <Input>
-		//      texture           : The texture object from DirectX.
-		//      
-		//      createShaderStuff : Indicates if the other stuff 
-		//                          should be created.
-		DXTexture2D(ID3D11Texture2D *texture, bool createShaderStuff = true);
+		//      texture           : The texture object for DirectX.
+		DXTexture2DCore(ID3D11Texture2D *texture);
 
 		// <Deconstructor>
 		//      DXTexture2D
@@ -50,10 +47,10 @@ namespace zaap { namespace graphics { namespace DX {
 		// <Description>
 		//      The deconstructor releases the created DirectX objects.
 		//
-		~DXTexture2D();
+		~DXTexture2DCore();
 
 	protected:
-		ZA_RESULT init(byte const *byte, ZA_FORMAT format);
+		ZA_RESULT init(byte const *byte, ZA_FORMAT format, ZA_TEXTURE_FILTER filterType);
 
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */

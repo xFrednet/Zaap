@@ -8,9 +8,6 @@
 #include "Font.h"
 
 namespace zaap { namespace graphics {
-	namespace API {
-		class Texture2D;
-	}
 
 	struct Color;
 
@@ -115,7 +112,7 @@ namespace zaap { namespace graphics {
 		// // draw Util //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
-		inline void setTexure(API::Texture2D* texture) const;
+		inline void setTexure(API::Texture2DCore* texture) const;
 
 		inline void setFont(const Font& font, const Color& color);
 	};

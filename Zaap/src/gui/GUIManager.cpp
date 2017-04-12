@@ -40,7 +40,8 @@ namespace zaap { namespace gui {
 		m_Renderer->startRenderer();
 
 		for (GUIComponent* component : m_Members)
-			component->render(m_Renderer);
+			if (component->isVisible())
+				component->render(m_Renderer);
 
 		m_Renderer->finishRendering();
 	}

@@ -99,7 +99,7 @@ namespace zaap { namespace graphics {
 		//      cleanupBaseRenderer3D method. This is only done if 
 		//      m_HasCustomRenderTarget is false.
 		//
-		API::Texture2D* m_DepthStencil; //TODO add getter
+		API::Texture2DCore* m_DepthStencil; //TODO add getter
 
 		//Shader
 		ZA_SHADER_TYPE  m_ActiveShaderType;

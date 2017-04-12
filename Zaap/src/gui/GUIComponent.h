@@ -226,6 +226,15 @@ namespace zaap { namespace gui {
 		//
 		virtual void childHasNewPreferrences(GUIComponent* child);
 
+		// <Method>
+		//      changedContent
+		//
+		// <Description>
+		//      This should be called when the content is changed it'll
+		//      recalculate the size if the size is set to wrap the content.
+		//
+		void changedContent();
+
 		// <Function>
 		//		requestRedraw
 		//

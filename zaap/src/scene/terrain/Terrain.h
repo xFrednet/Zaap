@@ -42,7 +42,7 @@ namespace zaap { namespace scene {
 		uint m_VCountHorizontal;
 		uint m_VCountVertical;
 		std::vector<graphics::ZA_TERRAIN_VERTEX> m_Vertices;
-		graphics::API::Texture2D *m_Textures[4];
+		graphics::API::Texture2D m_Textures[4];
 
 		//HeightMap
 		void initVertices(String heightMapFile, String texMapFile);
@@ -61,7 +61,7 @@ namespace zaap { namespace scene {
 
 		//getters
 		TERRAIN_DESC getTerrainDesc() const;
-		graphics::API::Texture2D* getTexture(uint texture) const;
+		graphics::API::Texture2D getTexture(uint texture) const;
 
 		float getMinHeight() const;
 		float getMaxHeight() const;

@@ -2,17 +2,17 @@
 
 namespace zaap { namespace graphics {
 	
-	std::vector<API::Texture*> TextureManager::s_Textures;
+	std::vector<API::Texture> TextureManager::s_Textures;
 
-	API::Texture* TextureManager::AddTexture(API::Texture* texture)
+	API::Texture TextureManager::AddTexture(API::Texture texture)
 	{
 		s_Textures.push_back(texture);
 		return texture;
 	}
 
-	API::Texture* TextureManager::GetTexture(String textureName)
+	API::Texture TextureManager::GetTexture(String textureName)
 	{
-		for (API::Texture* texture : s_Textures)
+		for (API::Texture texture : s_Textures)
 		{
 			if (texture->getTextureName() == textureName)
 				return texture;
@@ -20,11 +20,11 @@ namespace zaap { namespace graphics {
 		return nullptr;
 	}
 
-	void TextureManager::RemoveTexture(API::Texture* texture)
+	void TextureManager::RemoveTexture(API::Texture texture)
 	{
 		for (uint i = 0; i < s_Textures.size(); i++)
 		{
-			if (texture == s_Textures[i])
+			if (texture.get() == s_Textures[i].get())
 				s_Textures.erase(s_Textures.begin() + i);
 		}
 	}

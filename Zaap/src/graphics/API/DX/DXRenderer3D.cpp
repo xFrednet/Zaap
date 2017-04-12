@@ -1,5 +1,5 @@
 ﻿#include "DXRenderer3D.h"
-#include "DXTexture2D.h"
+#include "DXTexture2DCore.h"
 #include "shader/DXDefaultShader.h"
 #include "shader/DXTerrainShader.h"
 #include <app/Window.h>
@@ -53,7 +53,6 @@ namespace zaap { namespace graphics { namespace DX {
 			if (m_DepthStencilView)
 			{
 				ZA_DXRELEASE(m_DepthStencilView);
-				m_DepthStencil->destroy();
 			}
 		}
 
@@ -83,7 +82,7 @@ namespace zaap { namespace graphics { namespace DX {
 			//TODO add a error message for hr
 			ZA_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView");
 
-			m_DepthStencil = new DXTexture2D(depthStencil);
+			m_DepthStencil = new DXTexture2DCore(depthStencil);
 		}
 		
 		updateProjectionMatrix();
@@ -250,6 +249,8 @@ namespace zaap { namespace graphics { namespace DX {
 		m_RenderTarget->startTarget(m_DepthStencilView);
 		m_Devcon->ClearDepthStencilView(m_DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 		
+
+		m_Devcon->RSSetState(m_RasterizerState);
 		setDepthTestingState(true);
 		setAlphaTestingState(false);
 	}

@@ -73,6 +73,7 @@ cbuffer ZA_PS_COLOR_BUFFER : register(b0)
 
 float4 PShader(ZA_PS_INPUT input) : SV_TARGET
 {
+
 	switch (input.Type)
 	{
 	case TYPE_COLOR:
@@ -80,11 +81,7 @@ float4 PShader(ZA_PS_INPUT input) : SV_TARGET
 	case TYPE_TEXTURE:
 		return Texture.Sample(TextureSampler, input.TypeInfo.xy);
 	case TYPE_FONT:
-		float4 color = CharSheet.Sample(CharSampler, input.TypeInfo.xy);
-		if (color.w != 0)
-			return color;//.x * TextColor;
-		return float4(1.0f, 1.0f, 1.0f, 1.0f);
-		
+		return CharSheet.Sample(CharSampler, input.TypeInfo.xy).w * TextColor;
 	default:
 		return float4(1.0f, 0.0f, 1.0f, 1.0f);
 	}

@@ -9,7 +9,7 @@ namespace zaap { namespace graphics {
 	{
 		loadMaterials(mesh.getMaterials(), mesh.getMaterialCount());
 
-		API::Texture2D* texture = mesh.getTexture();
+		API::Texture2DCore* texture = mesh.getTexture().get();
 		if (texture)
 			texture->bind(0);
 	}

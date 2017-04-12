@@ -78,6 +78,12 @@ namespace zaap { namespace gui {
 	{
 	}
 
+	void GUIComponent::changedContent()
+	{
+		if (m_PreferredWidth == ZA_GUI_SIZE_WRAP_CONTENT || m_PreferredHeight == ZA_GUI_SIZE_WRAP_CONTENT)
+			setPreferredSize(m_PreferredWidth, m_PreferredHeight);
+	}
+
 	void GUIComponent::requestRedraw() const
 	{
 		s_IsRedrawRequested = true;
@@ -210,10 +216,10 @@ namespace zaap { namespace gui {
 	
 	void GUIComponent::setMargin(const uint& topMargin, const uint& bottomMargin, const uint& leftMargin, const uint& rightMargin)
 	{
-		m_MarginTop = topMargin;
+		m_MarginTop    = topMargin;
 		m_MarginBottom = bottomMargin;
-		m_MarginLeft = leftMargin;
-		m_MarginRight = rightMargin;
+		m_MarginLeft   = leftMargin;
+		m_MarginRight  = rightMargin;
 
 		changedMargin();
 		updateVertexBuffer();

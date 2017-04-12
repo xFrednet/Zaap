@@ -61,33 +61,34 @@ namespace zaap { namespace graphics {
 	/* ********************************************************* */
 	// * FTT file *
 	/* ********************************************************* */
-	void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
+	inline void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
 	{
-		uint xx, yy, xa, ya;
-		int color;
-		//TODO add memcpy
-		for (yy = 0; yy < source.rows; yy++)
+		uint stride = source.width;
+		byte* bytes = target.getPixelArray();
+
+		if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
+			stride *= 4;
+
+		for (uint yy = 0; yy < source.rows; yy++)
 		{
-			ya = y + yy;
-			for (xx = 0; xx < source.width; xx++)
-			{
-				xa = x + xx;
-				color = source.buffer[xx + yy * source.width];
-				
-				if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
-					target.setColor(xa, ya, Color(color, color, color));
-				else 
-					target.setA(xa, ya, color);
-			}
+			memcpy(&bytes[x + (yy + y) * target.getWidth()], &source.buffer[yy * source.width], stride);
 		}
 	}
-	
+	inline int getUTF8Code(const char& c)
+	{
+		if (c >= ' ' && c <= '~')
+			return int(c);
+
+		//¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ
+		return int(0x00A1 + (c - '¡'));
+	}
+
 	FontCore* FontCore::LoadTTFFile(const String& srcFile, ZA_RESULT* result)
 	{
 		clock_t timer = clock();
 		FontCore* font = new FontCore();
 
-		const char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+		const char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ";
 		uint charCount = strlen(chars);
 		uint bitmapSize = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
 		uint fontSize;
@@ -130,6 +131,8 @@ namespace zaap { namespace graphics {
 
 			FT_Set_Char_Size(face, fontSize * 64, 0, 100, 0);
 			FT_Set_Transform(face, nullptr, nullptr);
+
+			font->m_LineHeight = (float(face->max_advance_height + face->height) / 26.6f) / fontSizeF;
 		}
 
 		FT_GlyphSlot ftCharInfo = face->glyph;
@@ -147,7 +150,7 @@ namespace zaap { namespace graphics {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		for (uint i = 0; i < charCount; i++)
 		{
-			FT_Load_Char(face, chars[i], FT_LOAD_RENDER);
+			FT_Load_Char(face, getUTF8Code(chars[i]), FT_LOAD_RENDER);
 			ftBitmap = ftCharInfo->bitmap;
 			ftCharMatrix = ftCharInfo->metrics;
 
@@ -184,8 +187,8 @@ namespace zaap { namespace graphics {
 
 				copyToBitmap(bitmapX, bitmapY, ftBitmap, charSheet);
 
-				charInfo->TexMinCoords = charSheet.getPixelCoord(bitmapX, bitmapY);
-				charInfo->TexMaxCoords = charSheet.getPixelCoord(bitmapX + ftBitmap.width, bitmapY + ftBitmap.rows);
+				charInfo->TexMinCoords = charSheet.getPixelCoord(bitmapX - 1, bitmapY - 1);
+				charInfo->TexMaxCoords = charSheet.getPixelCoord(bitmapX + ftBitmap.width + 1, bitmapY + ftBitmap.rows + 1);
 				
 				bitmapX += ftBitmap.width + 10;
 			}
@@ -199,13 +202,13 @@ namespace zaap { namespace graphics {
 		/* ********************************************************* */
 		// * Finishing *
 		/* ********************************************************* */
-		font->m_CharSheet = API::Texture::CreateTexture2D("charSheet", charSheet, false);
+		font->m_CharSheet = API::TextureCore::CreateTexture2D(charSheet, "charSheet", ZA_TEXTURE_FILTER_LINAR, false);
 		font->m_Chars = String(chars);
 
 		FT_Done_Face(face);
 		FT_Done_FreeType(FTLib);
 
-		timer -= clock();
+		timer = clock() - timer;
 		ZA_INFO("I loaded ", srcFile, " in ", timer, "ms");
 
 		*result = ZA_OK;
@@ -226,7 +229,6 @@ namespace zaap { namespace graphics {
 	FontCore::~FontCore()
 	{
 		m_CharInfo.clear();
-		//TODO Delete m_CharInfo;
 	}
 
 	/* ********************************************************* */
@@ -271,34 +273,55 @@ namespace zaap { namespace graphics {
 		if (strSize == 0)
 			return Dimensions();
 
-		float width = 0;
+		ZA_FONT_CHAR_MATRIX* matrix = &m_CharInfo[getCharIndex(string.at(0))].CharMatrix;
+		float width = -(matrix->TotalWidth - (matrix->XOffset + matrix->Width));
 		float maxWidth = 0;
-		uint line = 1;
+		float maxHeight = 0;
+		uint line = 0;
 		char c;
 
 		for (uint i = 0; i < strSize; i++)
 		{
-			c = string.at(0);
+			c = string.at(i);
+			matrix = &m_CharInfo[getCharIndex(c)].CharMatrix;
+
+			/* ##################################### */
+			// # new line #
+			/* ##################################### */
 			if (c == '\n')
 			{
 				line++;
-
+				
+				if (i > 0)
+				{
+					matrix = &m_CharInfo[getCharIndex(string.at(i - 1))].CharMatrix;
+					width -= matrix->TotalWidth - (matrix->XOffset + matrix->Width);
+				}
 				if (width > maxWidth)
 					maxWidth = width;
-				width = 0;
+
+				if (i + 1 < strSize)
+					width = -m_CharInfo[getCharIndex(string.at(i + 1))].CharMatrix.XOffset;
+				maxHeight = 0;
+
 				continue;
 			}
 
-			if (width == 0)
-				width -= m_CharInfo[getCharIndex(c)].CharMatrix.XOffset;
-
-			width += m_CharInfo[getCharIndex(c)].CharMatrix.TotalWidth;
+			/* //////////////////////////////////////////////////////////////////////////////// */
+			// // current line //
+			/* //////////////////////////////////////////////////////////////////////////////// */
+			//width
+			width += matrix->TotalWidth;
+			//height
+			if (matrix->Height + matrix->YOffset > maxHeight)
+				maxHeight = matrix->Height + matrix->YOffset;
 		}
 
+		width -= matrix->TotalWidth - (matrix->XOffset + matrix->Width);
 		if (width > maxWidth)
 			maxWidth = width;
 
-		return Dimensions((uint)(maxWidth * fontSize), (uint)(line * fontSize));
+		return Dimensions((uint)(maxWidth * fontSize), (uint)((maxHeight + line * m_LineHeight) * fontSize));
 	}
 
 	/* ##################################### */
@@ -313,11 +336,11 @@ namespace zaap { namespace graphics {
 		m_CharSheet->unbind(index);
 	}
 
-	void FontCore::setCharSheet(API::Texture2D* charSheet)
+	void FontCore::setCharSheet(API::Texture2D charSheet)
 	{
 		m_CharSheet = charSheet;
 	}
-	API::Texture2D* FontCore::getCharSheet() const
+	API::Texture2D FontCore::getCharSheet() const
 	{
 		return m_CharSheet;
 	}

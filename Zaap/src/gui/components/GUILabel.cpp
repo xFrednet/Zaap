@@ -1,6 +1,5 @@
 ﻿#include "GUILabel.h"
 #include <gui/VertexBufferHelper.h>
-#include <util/Log.h>
 
 namespace zaap { namespace gui{
 
@@ -89,8 +88,7 @@ namespace zaap { namespace gui{
 	void GUILabel::setText(const String& text)
 	{
 		m_Text = text;
-		updateVertexBuffer();
-		requestRedraw();
+		changedContent();
 	}
 	String GUILabel::getText() const
 	{
@@ -100,8 +98,7 @@ namespace zaap { namespace gui{
 	void GUILabel::setTextSize(const float& size)
 	{
 		m_TextSize = size;
-		updateVertexBuffer();
-		requestRedraw();
+		changedContent();
 	}
 	float GUILabel::getTextSize() const
 	{
