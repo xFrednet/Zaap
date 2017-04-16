@@ -73,6 +73,8 @@ namespace zaap { namespace gui {
 	}
 	void GUIComponent::changedMargin()
 	{
+		if (m_PreferredWidth == ZA_GUI_SIZE_WRAP_CONTENT || m_PreferredHeight == ZA_GUI_SIZE_WRAP_CONTENT)
+			setPreferredSize(m_PreferredWidth, m_PreferredHeight);
 	}
 	void GUIComponent::childHasNewPreferrences(GUIComponent* child)
 	{

@@ -4,11 +4,11 @@
 #include <util/Log.h>
 
 namespace zaap { namespace graphics { namespace DX {
-	
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Constructors / Deconstructor // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	DXTexture2DCore::DXTexture2DCore(String filePath, const ZA_TEXTURE_FILTER& filterType)
+	DXTexture2DCore::DXTexture2DCore(String filePath, ZA_TEX2D_DESC desc)
 		: Texture2DCore(filePath),
 		m_Texture(nullptr)
 	{
@@ -16,41 +16,36 @@ namespace zaap { namespace graphics { namespace DX {
 		uint bytesperPixel;
 
 		ZA_RESULT res = ImageLoader::Load(filePath, &m_Width, &m_Height, &bytesperPixel, &b);
-		if (ZA_FAILED(res))
-		{
-			ZA_SUBMIT_ERROR(res);
-			return;
-		}
+		ZA_ASSERT(ZA_SUCCEDED(res), "ImageLoader::Load failed.");
 
-		if (bytesperPixel == 32)
-			init(b, ZA_FORMAT_R8G8B8A8_UINT, filterType);
-		else 
-			init(b, ZA_FORMAT_R8G8B8_UINT, filterType);
+		desc.Format = (bytesperPixel == 32) ? ZA_FORMAT_R8G8B8A8_UINT : ZA_FORMAT_R8G8B8_UINT;
+		res = init(b, desc);
+		ZA_ASSERT(ZA_SUCCEDED(res), "init failed.");
+		//TODO add error messages
 
 		delete b;
 	}
-	DXTexture2DCore::DXTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType)
+	DXTexture2DCore::DXTexture2DCore(const Bitmap& bitmap, const String& name, ZA_TEX2D_DESC desc)
 		: Texture2DCore(name),
 		m_Texture(nullptr)
 	{
 		m_Width = bitmap.getWidth();
 		m_Height = bitmap.getHeight();
-		m_Format = bitmap.getFormat();
+		desc.Format = bitmap.getFormat();
 
-		init(bitmap.getPixelArray(), bitmap.getFormat(), filterType);
+		ZA_RESULT zr = init(bitmap.getPixelArray(), desc);
+		ZA_ASSERT(ZA_SUCCEDED(zr));
 	}
 
-	DXTexture2DCore::DXTexture2DCore(ID3D11Texture2D* texture)
+	DXTexture2DCore::DXTexture2DCore(ID3D11Texture2D* texture, ID3D11ShaderResourceView* textureView, ID3D11SamplerState* sampler)
 		: Texture2DCore("given Texture"),
 		m_Texture(texture),
-		m_TextureView(nullptr),
-		m_SamplerState(nullptr)
+		m_TextureView(textureView),
+		m_SamplerState(sampler)
 	{
 		m_Texture->GetDesc(&m_TextureDesc);
 		m_Width = m_TextureDesc.Width;
 		m_Height = m_TextureDesc.Height;
-
-		//init(nullptr, ZA_FORMAT_UNKNOWN);
 	}
 
 	DXTexture2DCore::~DXTexture2DCore()
@@ -60,88 +55,119 @@ namespace zaap { namespace graphics { namespace DX {
 		ZA_DXRELEASE(m_SamplerState);
 	}
 
-	ZA_RESULT DXTexture2DCore::init(byte const *bytes, ZA_FORMAT format, ZA_TEXTURE_FILTER filterType)
+	ZA_RESULT DXTexture2DCore::init(byte const *bytes, ZA_TEX2D_DESC desc)
 	{
 		//general declarations
 		HRESULT result;
 		ID3D11Device *dev = DXContext::GetDevice();
+		ID3D11DeviceContext *devcon = DXContext::GetDevContext();
 		
 		//Format
-		DXGI_FORMAT DXformat = GetDirectXFormat(format);
+		m_Format = desc.Format;
+		DXGI_FORMAT DXformat = GetDirectXFormat(desc.Format);
 
-		//
-		// Texture
-		//
-		ZA_ASSERT(!m_Texture, "m_Texture is already initialized");
-		if (m_Texture)
-			return ZA_ERROR_API_TEXTURE2D_CREATION_ERROR;
-
-		if (!m_Texture)
+		/* ********************************************************* */
+		// * Desc validation *
+		/* ********************************************************* */
+		uint mipMapCount = 1;
 		{
-			//sub resource
-			D3D11_SUBRESOURCE_DATA resource;
-			uint stride = GetFormatSize(format);
-			resource.pSysMem			= bytes;
-			resource.SysMemPitch		= stride * m_Width;
-			resource.SysMemSlicePitch	= stride * m_Width * m_Height;
-
-			//texture
-			ZeroMemory(&m_TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
-
-			m_TextureDesc.Width				= m_Width;
-			m_TextureDesc.Height			= m_Height;
-			m_TextureDesc.MipLevels			= 1;
-			m_TextureDesc.ArraySize			= 1;
-			m_TextureDesc.Format			= DXformat;
-			m_TextureDesc.SampleDesc.Count	= 1;
-			m_TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
-			m_TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
-			m_TextureDesc.CPUAccessFlags	= D3D11_CPU_ACCESS_WRITE;
-			m_TextureDesc.MiscFlags			= 0;
-			
-			result = dev->CreateTexture2D(&m_TextureDesc, &resource, &m_Texture);
-			if (FAILED(result))
+			if (desc.IsDynamic && desc.MipMapCount != 1)
 			{
-				ZA_ERROR("Failed to create a Texture2D with the given data.");
-				return ZA_ERROR_API_TEXTURE_ERROR;
+				ZA_ALERT("A dynamic texture has to have a MipMapCount of 1");
+				desc.MipMapCount = 1;
 			}
-			ZA_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_Name + ")"));
-		} else
-		{
-			m_Texture->GetDesc(&m_TextureDesc);
-			DXformat = m_TextureDesc.Format;
+			/* ##################################### */
+			// # MipMap #
+			/* ##################################### */
+			uint maxCount = (m_Width == m_Height) ? (uint)log2f((float)m_Width) : 1;
+			if (desc.MipMapCount > 1)
+			{
+				if (maxCount < desc.MipMapCount)
+				{
+					ZA_ALERT("The targeted MipMap count(", desc.MipMapCount, ") is higher than the possible maximum MipMap count of: ", maxCount);
+					desc.MipMapCount = maxCount;
+				}
+			}
+			if (desc.MipMapCount == 0)
+				mipMapCount = maxCount;
+			else
+				mipMapCount = desc.MipMapCount;
 		}
 
-		//
-		// Resource View
-		//
+		/* ********************************************************* */
+		// * Texture *
+		/* ********************************************************* */
+		{
+			ZA_ASSERT(!m_Texture, "m_Texture is already initialized");
+			if (m_Texture)
+				return ZA_ERROR_API_TEXTURE2D_CREATION_ERROR;
+
+			{
+				//texture
+				ZeroMemory(&m_TextureDesc, sizeof(D3D11_TEXTURE2D_DESC));
+
+				m_TextureDesc.Width				= m_Width;
+				m_TextureDesc.Height			= m_Height;
+				m_TextureDesc.ArraySize			= 1;
+				m_TextureDesc.Format			= DXformat;
+				m_TextureDesc.SampleDesc.Count	= 1;
+				m_TextureDesc.BindFlags			= D3D11_BIND_SHADER_RESOURCE;
+				//MipMaps
+				m_TextureDesc.BindFlags			|= (desc.MipMapCount != 1) ? D3D11_BIND_RENDER_TARGET : 0;
+				m_TextureDesc.MipLevels			= desc.MipMapCount;
+				m_TextureDesc.MiscFlags			= (desc.MipMapCount != 1) ? D3D11_RESOURCE_MISC_GENERATE_MIPS : 0;
+				//dynamic
+				if (desc.IsDynamic)
+				{
+					m_TextureDesc.Usage				= D3D11_USAGE_DYNAMIC;
+					m_TextureDesc.CPUAccessFlags	= D3D11_CPU_ACCESS_WRITE;
+				} else
+				{
+					m_TextureDesc.Usage				= D3D11_USAGE_DEFAULT;
+					m_TextureDesc.CPUAccessFlags	= 0;
+				}
+
+				/* ##################################### */
+				// # Creation #
+				/* ##################################### */
+				result = dev->CreateTexture2D(&m_TextureDesc, nullptr, &m_Texture);
+				ZA_DXNAME(m_Texture, String("DXTexture2D::m_Texture(" + m_Name + ")"));
+				if (FAILED(result))
+					return ZA_ERROR_API_TEXTURE_ERROR;
+
+				devcon->UpdateSubresource(m_Texture, 0, 0, bytes, GetFormatSize(desc.Format) * m_Width, 0);
+			}
+		}
+
+		/* ********************************************************* */
+		// * ShaderResourceView *
+		/* ********************************************************* */
 		{
 			D3D11_SHADER_RESOURCE_VIEW_DESC resDesc;
 			ZeroMemory(&resDesc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
 
-			resDesc.Format = DXformat;
-			resDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-			resDesc.Texture2D.MostDetailedMip = 0;
-			resDesc.Texture2D.MipLevels = -1;
+			resDesc.Format						= DXformat;
+			resDesc.ViewDimension				= D3D11_SRV_DIMENSION_TEXTURE2D;
+			resDesc.Texture2D.MostDetailedMip	= 0;
+			resDesc.Texture2D.MipLevels			= -1;
 
+			/* ##################################### */
+			// # Creation #
+			/* ##################################### */
 			result = dev->CreateShaderResourceView(m_Texture, &resDesc, &m_TextureView);
+			ZA_DXNAME(m_TextureView, String("DXTexture2D::m_TextureView(" + m_Name + ")"));
 			if (FAILED(result))
-			{
-				ZA_ERROR("Failed to create a ShaderResourceView.");
 				return ZA_ERROR_API_TEXTURE_ERROR;
-			}
-			ZA_DXNAME(m_Texture, String("DXTexture2D::m_TextureView(" + m_Name + ")"));
-			//TODO add devcon->GenerateMips(m_TextureView);
+			
+			if (desc.MipMapCount != 1)
+				devcon->GenerateMips(m_TextureView);
 		}
 
-		//
-		// Sampler
-		//
+		/* ********************************************************* */
+		// * Sampler *
+		/* ********************************************************* */
 		{
-			if (filterType == ZA_TEXTURE_FILTER_LINAR)
-				m_SamplerDesc.Filter		= D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-			else 
-				m_SamplerDesc.Filter		= D3D11_FILTER_MIN_MAG_MIP_POINT;
+			m_SamplerDesc.Filter = (desc.FilterType == ZA_TEXTURE_FILTER_LINAR) ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
 			m_SamplerDesc.AddressU			= D3D11_TEXTURE_ADDRESS_WRAP;
 			m_SamplerDesc.AddressV			= D3D11_TEXTURE_ADDRESS_WRAP;
 			m_SamplerDesc.AddressW			= D3D11_TEXTURE_ADDRESS_WRAP;
@@ -155,13 +181,13 @@ namespace zaap { namespace graphics { namespace DX {
 			m_SamplerDesc.MinLOD			= 0;
 			m_SamplerDesc.MaxLOD			= D3D11_FLOAT32_MAX;
 
+			/* ##################################### */
+			// # Creation #
+			/* ##################################### */
 			result = dev->CreateSamplerState(&m_SamplerDesc, &m_SamplerState);
-			if (FAILED(result))
-			{
-				ZA_ERROR("Failed to create a ShaderResourceView.");
-				return ZA_ERROR_API_TEXTURE_ERROR;
-			}
 			ZA_DXNAME(m_SamplerState, String("DXTexture2D::m_SamerState(" + m_Name + ")"));
+			if (FAILED(result))
+				return ZA_ERROR_API_TEXTURE_ERROR;
 		}
 
 		return ZA_OK;

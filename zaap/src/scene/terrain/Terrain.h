@@ -2,7 +2,7 @@
 
 #include <Common.h>
 #include <Types.h>
-#include <graphics/API/Texture2D.h>
+#include <graphics/API/Texture.h>
 #include <graphics/mesh/Mesh.h>
 #include <scene/terrain/TerrainPart.h>
 

@@ -9,7 +9,7 @@
 #include <graphics/Format.h>
 
 namespace zaap { namespace graphics { namespace DX {
-	
+
 	class ZAAP_API DXTexture2DCore : public API::Texture2DCore
 	{
 	protected:
@@ -23,23 +23,31 @@ namespace zaap { namespace graphics { namespace DX {
 
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Constructors / Deconstructor // 
+		// // Constructors / Deconstructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		DXTexture2DCore(String filePath, const ZA_TEXTURE_FILTER& filterType);
-		DXTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType);
+		DXTexture2DCore(String filePath, ZA_TEX2D_DESC desc);
+		DXTexture2DCore(const Bitmap& bitmap, const String& name, ZA_TEX2D_DESC desc);
 
 		// <Constructor>
 		//      DXTexture2D
 		//
 		// <Description>
 		//      This method creates a DXTexture2D from a given 
-		//      direct X texture2D. 
+		//      direct X texture2D.<\n>
 		//      The second parameter indicates if the other stuff 
 		//      should be created or not.
-		//      
+		//
 		// <Input>
-		//      texture           : The texture object for DirectX.
-		DXTexture2DCore(ID3D11Texture2D *texture);
+		//      texture::
+		//          The texture object for DirectX.;;
+		//      textureView::
+		//          The resource view for the ID3D11Texture.;;
+		//      sampler::
+		//          The sampler for the texture.;;
+		//
+		DXTexture2DCore(ID3D11Texture2D *texture, 
+			ID3D11ShaderResourceView* textureView = nullptr, 
+			ID3D11SamplerState* sampler = nullptr);
 
 		// <Deconstructor>
 		//      DXTexture2D
@@ -50,7 +58,7 @@ namespace zaap { namespace graphics { namespace DX {
 		~DXTexture2DCore();
 
 	protected:
-		ZA_RESULT init(byte const *byte, ZA_FORMAT format, ZA_TEXTURE_FILTER filterType);
+		ZA_RESULT init(byte const *byte, ZA_TEX2D_DESC desc);
 
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -68,8 +76,8 @@ namespace zaap { namespace graphics { namespace DX {
 		//      also do some other stuff. 
 		//
 		// <Input>
-		//      slot:
-		//          The slot that the @Texture should be bound to.
+		//      slot::
+		//          The slot that the @Texture should be bound to.;;
 		//
 		void bind(uint slot = 0) override;
 		
@@ -84,8 +92,8 @@ namespace zaap { namespace graphics { namespace DX {
 		//      also do some other stuff. 
 		//
 		// <Input>
-		//      slot:
-		//          The slot that the @Texture should be unbound from.
+		//      slot::
+		//          The slot that the @Texture should be unbound from.;;
 		//
 		void unbind(uint slot = 0) override;
 	};

@@ -22,6 +22,9 @@ namespace zaap { namespace graphics { namespace API {
 		uint m_Width;
 		uint m_Height;
 		ZA_FORMAT m_Format;
+
+		//TODO save ZA_TEX2D_DESC
+		//TODO enable dynamic updating
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructor //
@@ -80,7 +83,7 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Width.
 		//
-		uint getWidth(void) const;
+		uint getWidth() const;
 		// <Function>
 		//      getHeight
 		// 
@@ -94,7 +97,7 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Height.
 		//
-		uint getHeight(void) const;
+		uint getHeight() const;
 
 		// <Method>
 		//      getTextureType

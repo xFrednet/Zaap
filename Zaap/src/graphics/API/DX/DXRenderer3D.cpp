@@ -63,24 +63,25 @@ namespace zaap { namespace graphics { namespace DX {
 		{
 			ID3D11Texture2D* depthStencil;
 			
-			dsDesc.Width = width;
-			dsDesc.Height = height;
-			dsDesc.MipLevels = 1;
-			dsDesc.ArraySize = 1;
-			dsDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-			dsDesc.SampleDesc.Count = 1;
-			dsDesc.SampleDesc.Quality = 0;
-			dsDesc.Usage = D3D11_USAGE_DEFAULT;
-			dsDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-			dsDesc.CPUAccessFlags = 0;
-			dsDesc.MiscFlags = 0;
+			dsDesc.Width				= width;
+			dsDesc.Height				= height;
+			dsDesc.MipLevels			= 1;
+			dsDesc.ArraySize			= 1;
+			dsDesc.Format				= DXGI_FORMAT_D24_UNORM_S8_UINT;
+			dsDesc.SampleDesc.Count		= 1;
+			dsDesc.SampleDesc.Quality	= 0;
+			dsDesc.Usage				= D3D11_USAGE_DEFAULT;
+			dsDesc.BindFlags			= D3D11_BIND_DEPTH_STENCIL;
+			dsDesc.CPUAccessFlags		= 0;
+			dsDesc.MiscFlags			= 0;
 
-			hr = m_Dev->CreateTexture2D(&dsDesc, NULL, &depthStencil); //NULL = no init data
-			//TODO add a error message for hr
-			ZA_DXNAME(depthStencil, "DXRenderer::DepthStencil");
-			hr = m_Dev->CreateDepthStencilView(depthStencil, NULL, &m_DepthStencilView);
-			//TODO add a error message for hr
-			ZA_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView");
+			hr = m_Dev->CreateTexture2D(&dsDesc, nullptr, &depthStencil); //NULL = no init data
+			ZA_ASSERT(SUCCEEDED(hr), "The DepthStencil creation failed");
+			//ZA_DXNAME(depthStencil, "DXRenderer::DepthStencil");
+
+			hr = m_Dev->CreateDepthStencilView(depthStencil, nullptr, &m_DepthStencilView);
+			ZA_ASSERT(SUCCEEDED(hr), "The DepthStencilView creation failed");
+			//ZA_DXNAME(m_DepthStencilView, "DXRenderer::DepthStencilView");
 
 			m_DepthStencil = new DXTexture2DCore(depthStencil);
 		}
@@ -211,7 +212,7 @@ namespace zaap { namespace graphics { namespace DX {
 			//Depth test
 			dssDesc1.DepthEnable		= true;
 			dssDesc1.DepthWriteMask		= D3D11_DEPTH_WRITE_MASK_ALL;
-			dssDesc1.DepthEnable		= D3D11_COMPARISON_LESS_EQUAL;
+			dssDesc1.DepthFunc			= D3D11_COMPARISON_LESS_EQUAL;
 
 			//Stencil test
 			dssDesc1.StencilEnable		= true;

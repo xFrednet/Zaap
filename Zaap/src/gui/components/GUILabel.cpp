@@ -2,10 +2,10 @@
 #include <gui/VertexBufferHelper.h>
 
 namespace zaap { namespace gui{
+	using namespace graphics;
 
 	void GUILabel::updateVertexBuffer()
 	{
-		using namespace graphics;
 		using namespace API;
 
 		uint sqares = (m_Font.get()) ? m_Text.length() : 0; 
@@ -53,13 +53,14 @@ namespace zaap { namespace gui{
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Constructors //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	GUILabel::GUILabel(const Point& pos, const String& text, const graphics::Font& font, 
-		const float& textSize, const graphics::Color& textColor, const graphics::Color& background)
-		: GUILabel(Rectangle(pos, ZA_GUI_SIZE_WRAP_CONTENT, ZA_GUI_SIZE_WRAP_CONTENT), text, font, textSize, textColor, background)
+	GUILabel::GUILabel(const Point& pos, const String& text, const Font& font, 
+		const float& textSize, const Color& textColor, const Color& background)
+		: GUILabel(pos, ZA_GUI_SIZE_WRAP_CONTENT, ZA_GUI_SIZE_WRAP_CONTENT, text, font, textSize, textColor, background)
 	{
 	}
-	GUILabel::GUILabel(const Rectangle& size, const String& text, const graphics::Font& font,
-		const float& textSize, const graphics::Color& textColor, const graphics::Color& background)
+	GUILabel::GUILabel(const Point& pos, const int& prefWidth, const int& prefHeight, const String& text, 
+		const Font& font, const float& textSize, const Color& textColor, 
+		const Color& background)
 		: GUIComponent(0, 0),
 		m_Text(text),
 		m_TextSize(textSize),
@@ -67,13 +68,14 @@ namespace zaap { namespace gui{
 		m_TextColor(textColor),
 		m_BackgroundColor(background)
 	{
-		m_Size = size;
+		m_Size.Position = pos;
+		setPreferredSize(prefWidth, prefHeight);
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Util //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void GUILabel::render(graphics::GUIRenderer* renderer)
+	void GUILabel::render(GUIRenderer* renderer)
 	{
 		renderer->setFont(m_Font, m_TextColor);
 		m_VertexBuffer->draw();
@@ -105,12 +107,12 @@ namespace zaap { namespace gui{
 		return m_TextSize;
 	}
 
-	void GUILabel::setTextColor(const graphics::Color& color)
+	void GUILabel::setTextColor(const Color& color)
 	{
 		m_TextColor = color;
 		requestRedraw();
 	}
-	graphics::Color GUILabel::getTextColor() const
+	Color GUILabel::getTextColor() const
 	{
 		return m_TextColor;
 	}
@@ -118,11 +120,11 @@ namespace zaap { namespace gui{
 	/* ********************************************************* */
 	// * Font *
 	/* ********************************************************* */
-	void GUILabel::setFont(const graphics::Font& font)
+	void GUILabel::setFont(const Font& font)
 	{
 		m_Font = font;
 	}
-	graphics::Font GUILabel::getFont() const
+	Font GUILabel::getFont() const
 	{
 		return m_Font;
 	}
@@ -130,13 +132,13 @@ namespace zaap { namespace gui{
 	/* ********************************************************* */
 	// * Background *
 	/* ********************************************************* */
-	void GUILabel::setBackgroundColor(const graphics::Color& color)
+	void GUILabel::setBackgroundColor(const Color& color)
 	{
 		m_BackgroundColor = color;
 		updateVertexBuffer();
 		requestRedraw();
 	}
-	graphics::Color GUILabel::getBackgroundColor() const
+	Color GUILabel::getBackgroundColor() const
 	{
 		return m_BackgroundColor;
 	}

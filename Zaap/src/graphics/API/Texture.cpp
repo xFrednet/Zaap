@@ -5,7 +5,7 @@
 #include <graphics/API/DX/DXTexture2DCore.h>
 
 namespace zaap { namespace graphics { namespace API {
-	
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Texture creation // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -13,24 +13,31 @@ namespace zaap { namespace graphics { namespace API {
 	/* ********************************************************* */
 	// * Texture2D *
 	/* ********************************************************* */
-	Texture2D TextureCore::CreateTexture2D(const String& filePath, const ZA_TEXTURE_FILTER& filterType, const bool& addToTextureManager)
+	Texture2D TextureCore::CreateTexture2D(const String& filePath, 
+		const ZA_TEX2D_DESC& desc,
+		const bool& addToTextureManager)
 	{
 		//TODO add TextureManager
-		return Texture2D(CreateTexture2DCore(filePath, filterType));
+		return Texture2D(CreateTexture2DCore(filePath, desc));
 	}
-	Texture2D TextureCore::CreateTexture2D(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType, const bool& addToTextureManager)
+	Texture2D TextureCore::CreateTexture2D(const Bitmap& bitmap, 
+		const String& name, 
+		const ZA_TEX2D_DESC& desc,
+		const bool& addToTextureManager)
 	{
 		//TODO add TextureManager
-		return Texture2D(CreateTexture2DCore(bitmap, name, filterType));
+		return Texture2D(CreateTexture2DCore(bitmap, name, desc));
 	}
 
-	Texture2DCore* TextureCore::CreateTexture2DCore(const String& filePath, const ZA_TEXTURE_FILTER& filterType)
+	Texture2DCore* TextureCore::CreateTexture2DCore(const String& filePath, const ZA_TEX2D_DESC& desc)
 	{
-		return new DX::DXTexture2DCore(filePath, filterType);
+		return new DX::DXTexture2DCore(filePath, desc);
 	}
-	Texture2DCore* TextureCore::CreateTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEXTURE_FILTER& filterType)
+	Texture2DCore* TextureCore::CreateTexture2DCore(const Bitmap& bitmap, 
+		const String& name,
+		const ZA_TEX2D_DESC& desc)
 	{
-		return new DX::DXTexture2DCore(bitmap, name, filterType);
+		return new DX::DXTexture2DCore(bitmap, name, desc);
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */

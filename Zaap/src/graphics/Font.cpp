@@ -180,7 +180,7 @@ namespace zaap { namespace graphics {
 					bitmapX = 10;
 
 					if (bitmapY + fontSize * 1.5f < charSheet.getHeight())
-						bitmapY += fontSizeF * 1.5f;
+						bitmapY += (uint)(fontSizeF * 1.5f);
 					else
 						bitmapY = 10;
 				}
@@ -202,7 +202,8 @@ namespace zaap { namespace graphics {
 		/* ********************************************************* */
 		// * Finishing *
 		/* ********************************************************* */
-		font->m_CharSheet = API::TextureCore::CreateTexture2D(charSheet, "charSheet", ZA_TEXTURE_FILTER_LINAR, false);
+		ZA_TEX2D_DESC desc(charSheet.getFormat(), ZA_TEXTURE_FILTER_POINT, false, 1);
+		font->m_CharSheet = API::TextureCore::CreateTexture2D(charSheet, "charSheet", desc, false);
 		font->m_Chars = String(chars);
 
 		FT_Done_Face(face);
@@ -222,7 +223,8 @@ namespace zaap { namespace graphics {
 	FontCore::FontCore()
 		: m_Chars(),
 		m_CharInfo(0),
-		m_CharSheet(nullptr)
+		m_CharSheet(nullptr),
+		m_LineHeight(0)
 	{
 	}
 

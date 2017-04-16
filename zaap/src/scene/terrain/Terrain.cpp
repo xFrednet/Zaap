@@ -67,11 +67,15 @@ namespace zaap { namespace scene {
 
 	void Terrain::initTexture(String folder)
 	{
-		using namespace graphics::API;
-		m_Textures[0] = TextureCore::CreateTexture2D(folder + "texture_0.jpg");
-		m_Textures[1] = TextureCore::CreateTexture2D(folder + "texture_1.jpg");
-		m_Textures[2] = TextureCore::CreateTexture2D(folder + "texture_3.jpg");
-		m_Textures[3] = TextureCore::CreateTexture2D(folder + "texture_2.jpg");
+		using namespace graphics;
+		using namespace API;
+
+		ZA_TEX2D_DESC texDesc = ZA_TEX2D_DESC_LINEAR_STATIC;
+
+		m_Textures[0] = TextureCore::CreateTexture2D(folder + "texture_0.jpg", texDesc);
+		m_Textures[1] = TextureCore::CreateTexture2D(folder + "texture_1.jpg", texDesc);
+		m_Textures[2] = TextureCore::CreateTexture2D(folder + "texture_3.jpg", texDesc);
+		m_Textures[3] = TextureCore::CreateTexture2D(folder + "texture_2.jpg", texDesc);
 	}
 	void Terrain::cleanup()
 	{

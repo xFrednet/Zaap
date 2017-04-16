@@ -9,7 +9,7 @@ enum DXGI_FORMAT;
 
 namespace zaap
 {
-	typedef ZAAP_API enum {
+	typedef ZAAP_API enum ZA_FORMAT_ {
 		ZA_FORMAT_UNKNOWN       = 0,
 		ZA_FORMAT_R8G8B8A8_UINT = 1,
 		ZA_FORMAT_R8G8B8_UINT   = 2,

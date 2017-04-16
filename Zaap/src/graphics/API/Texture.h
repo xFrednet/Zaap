@@ -2,6 +2,8 @@
 
 #include <Common.h>
 
+#include <graphics/Format.h>
+
 #include <util/UUID.h>
 
 #pragma warning( disable : 4251)
@@ -24,10 +26,57 @@ namespace zaap { namespace graphics {
 	/* ********************************************************* */
 	// * ZA_TEXTURE_FILER *
 	/* ********************************************************* */
-	typedef enum ZAAP_API ZA_TEXTURE_FILER_ {
+	typedef enum ZAAP_API ZA_TEXTURE_FILTER_ {
 		ZA_TEXTURE_FILTER_LINAR = 0,
 		ZA_TEXTURE_FILTER_POINT = 1
 	} ZA_TEXTURE_FILTER;
+
+	/* ********************************************************* */
+	// * Texture 2D *
+	/* ********************************************************* */
+	
+	// <Struct>
+	//      ZA_TEX2D_DESC
+	//
+	// <Descritpion>
+	//      This holds the generation information for the Texture2DCore.
+	//
+	// <Note>
+	//    - The buffer will be static if IsDymaic is set to false.
+	//    - MipMapCount has to be set to "1" if the buffer is dynamic.
+	//    - A MipMapCount of 0 will regenerate all possible MipMaps for this
+	//      texture.
+	//
+	typedef struct ZAAP_API ZA_TEX2D_DESC_ {
+		ZA_FORMAT Format;
+		ZA_TEXTURE_FILTER FilterType;
+		bool IsDynamic;
+		uint MipMapCount;
+
+		ZA_TEX2D_DESC_(ZA_FORMAT format = ZA_FORMAT_UNKNOWN, 
+			ZA_TEXTURE_FILTER filterType = ZA_TEXTURE_FILTER_LINAR, 
+			bool isDynamic = false, 
+			uint mipMapCount = 0)
+			: Format(format),
+			FilterType(filterType),
+			IsDynamic(isDynamic),
+			MipMapCount(mipMapCount)
+		{
+			
+		}
+	} ZA_TEX2D_DESC;
+
+#define ZA_TEX2D_DESC_LINEAR_STATIC  zaap::graphics::ZA_TEX2D_DESC_(zaap::ZA_FORMAT_R8G8B8A8_UINT, zaap::graphics::ZA_TEXTURE_FILTER_LINAR, false, 0)
+#define ZA_TEX2D_DESC_POINT_STATIC  zaap::graphics::ZA_TEX2D_DESC_(zaap::ZA_FORMAT_R8G8B8A8_UINT, zaap::graphics::ZA_TEXTURE_FILTER_POINT, false, 0)
+#define ZA_TEX2D_DESC_LINEAR_DYNAMIC zaap::graphics::ZA_TEX2D_DESC_(zaap::ZA_FORMAT_R8G8B8A8_UINT, zaap::graphics::ZA_TEXTURE_FILTER_LINAR, true, 1)
+#define ZA_TEX2D_DESC_POINT_DYNAMIC zaap::graphics::ZA_TEX2D_DESC_(zaap::ZA_FORMAT_R8G8B8A8_UINT, zaap::graphics::ZA_TEXTURE_FILTER_POINT, true, 1)
+
+#define ZA_TEX2D_DESC_STATIC ZA_TEX2D_DESC_LINEAR_STATIC
+#define ZA_TEX2D_DESC_DYNAMIC ZA_TEX2D_DESC_LINEAR_DYNAMIC
+
+#ifndef ZA_TEX2D_DESC_DEFAULT
+	#define ZA_TEX2D_DESC_DEFAULT ZA_TEX2D_DESC_LINEAR_STATIC
+#endif
 
 }}
 
@@ -56,7 +105,12 @@ namespace zaap { namespace graphics {
 	//
 	class ZAAP_API TextureCore
 	{
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Static Util //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
+		
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Texture creation // 
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -79,8 +133,8 @@ namespace zaap { namespace graphics {
 		// <Input>
 		//      filePath::
 		//          The path for the image file.;;
-		//      filterType::
-		//          This value indicates how the Texture should be sampled.;;
+		//      desc::
+		//          This struct holds the information how the Texture2D should be created.;;
 		//      addToTextureManager::
 		//          This boolean indicated if the created @Texture2D should be 
 		//          added to the @TextureManager.;;
@@ -90,7 +144,7 @@ namespace zaap { namespace graphics {
 		//
 		static Texture2D CreateTexture2D(
 			const String& filePath,
-			const ZA_TEXTURE_FILTER& filterType = ZA_TEXTURE_FILTER_LINAR,
+			const ZA_TEX2D_DESC& desc = ZA_TEX2D_DESC_DEFAULT,
 			const bool& addToTextureManager = true);
 		// <Function>
 		//      CreateTexture2D
@@ -111,8 +165,8 @@ namespace zaap { namespace graphics {
 		//      name::
 		//          The name for the @TextureManager. The name is 
 		//          also used for debugging.;;
-		//      filterType::
-		//          This value indicates how the Texture should be sampled.;;
+		//      desc::
+		//          This struct holds the information how the Texture2D should be created.;;
 		//      addToTextureManager::
 		//          This boolean indicated if the created @Texture2D should be 
 		//          added to the @TextureManager.;;
@@ -120,10 +174,9 @@ namespace zaap { namespace graphics {
 		// <Return>
 		//      The created Texture2D.
 		//
-		static Texture2D CreateTexture2D(
-			const Bitmap& bitmap,
-			const String& name,
-			const ZA_TEXTURE_FILTER& filterType = ZA_TEXTURE_FILTER_LINAR,
+		static Texture2D CreateTexture2D(const Bitmap& bitmap, 
+			const String& name, 
+			const ZA_TEX2D_DESC& desc = ZA_TEX2D_DESC_DEFAULT,
 			const bool& addToTextureManager = true);
 
 		/* ##################################### */
@@ -140,15 +193,13 @@ namespace zaap { namespace graphics {
 		// <Input>
 		//      filePath::
 		//          The path for the image file.;;
-		//      filterType::
-		//          This value indicates how the Texture should be sampled.;;
+		//      desc::
+		//          This struct holds the information how the Texture2D should be created.;;
 		//
 		// <Return>
 		//      The created Texture2D.
 		//
-		static Texture2DCore* CreateTexture2DCore(
-			const String& filePath,
-			const ZA_TEXTURE_FILTER& filterType = ZA_TEXTURE_FILTER_LINAR);
+		static Texture2DCore* CreateTexture2DCore(const String& filePath, const ZA_TEX2D_DESC& desc = ZA_TEX2D_DESC_DEFAULT);
 
 		// <Function>
 		//      CreateTexture2D
@@ -169,16 +220,13 @@ namespace zaap { namespace graphics {
 		//      name::
 		//          The name for the @TextureManager. The name is 
 		//          also used for debugging.;;
-		//      filterType::
-		//          This value indicates how the Texture should be sampled.;;
+		//      desc::
+		//          This struct holds the information how the Texture2D should be created.;;
 		//
 		// <Return>
 		//      The created Texture2D.
 		//
-		static Texture2DCore* CreateTexture2DCore(
-			const Bitmap& bitmap,
-			const String& name,
-			const ZA_TEXTURE_FILTER& filterType = ZA_TEXTURE_FILTER_LINAR);
+		static Texture2DCore* CreateTexture2DCore(const Bitmap& bitmap, const String& name, const ZA_TEX2D_DESC& desc = ZA_TEX2D_DESC_DEFAULT);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Texture Class // 

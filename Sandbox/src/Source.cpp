@@ -4,8 +4,8 @@ using namespace zaap;
 using namespace graphics;
 using namespace API;
 using namespace scene;
-using namespace std;
 using namespace gui;
+using namespace std;
 
 Scene* scene_			= nullptr;
 LightSetup *lightSetup	= nullptr;
@@ -115,15 +115,21 @@ public:
 		}
 		light2->setPosition(camera->getPosition());
 
-		labelCounter++;
+		if ((labelCounter++ % 60) == 0)
+		{
 
-		String text = "I-Text:-<";
-		uint loops = (labelCounter / 60) % 10;
-		for (uint i = 0; i < loops; i++)
-			text += "+";
-		text += ">-8=D\nI Some more text.\nI QQQQQQQQQQQQ\nI OE -> \'Ö\'";// "\nI QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
-		//tt += ">-8=D\nI Some more text.\nI zuifd3wzuiqdrgfgfof§OWhkhukughkuhWQ\nI OE -> \'Ö\'\nI QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ";
-		label_->setText(text);
+			String text = "Hello, I'm ZAAP!!\n";
+			text += "This is a GUILabel and\n";
+			text += "it supports updating text.\n";
+			text += "Like this: <";
+			
+			String updatingText = "******";
+			uint loops = (labelCounter / 60) % updatingText.length();
+			for (uint i = 0; i < loops; i++)
+				text += updatingText.at(i);
+			text += ">";
+			label_->setText(text);
+		}
 
 	}
 
@@ -146,12 +152,12 @@ int main(void)
 		ZA_RESULT zar = 2;
 		font_ = FontCore::LoadFont("res/arial.ttf", &zar);
 		
-		//t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
-		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, font_->getCharSheet()));
-		label_ = new GUILabel(Point(50, 300), "Hello, I'm ZAAP!!", font_, 50.0f);
-		label_->setBackgroundColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
-		label_->setMargin(1, 1, 1, 1);
-		label_->setTextColor(Color(1.0f, 1.0f, 1.0f, 0.5f));
+		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		//t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, font_->getCharSheet()));
+		label_ = new GUILabel(Point(450, 0), "Changing", font_, 36.0f);
+		label_->setBackgroundColor(Color(0.9f, 0.9f, 0.9f, 1.0f));
+		label_->setMargin(10, 10, 10, 10);
+		label_->setTextColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
 		t.getGUIManager()->add(label_);
 
 		t.start();

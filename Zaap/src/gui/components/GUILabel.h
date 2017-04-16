@@ -29,7 +29,8 @@ namespace zaap { namespace gui {
 			const float& textSize = 12.0f,
 			const graphics::Color& textColor = graphics::Color(0.0f, 0.0f, 0.0f, 1.0f), 
 			const graphics::Color& background = graphics::Color(1.0f, 1.0f, 1.0f, 0.0f));
-		GUILabel(const Rectangle& size, const String& text, const graphics::Font& font,
+		GUILabel(const Point& pos, const int& prefWidth, const int& prefHeight, 
+			const String& text, const graphics::Font& font,
 			const float& textSize = 12.0f,
 			const graphics::Color& textColor = graphics::Color(0.0f, 0.0f, 0.0f, 1.0f),
 			const graphics::Color& background = graphics::Color(1.0f, 1.0f, 1.0f, 0.0f));
