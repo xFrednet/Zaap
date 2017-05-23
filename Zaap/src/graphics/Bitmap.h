@@ -50,6 +50,7 @@ namespace zaap { namespace graphics {
 		uint getHeight() const;
 		uint getBitsPerPixel() const;
 		byte const* getPixelArray() const;
+		byte* getPixelArray();
 		ZA_FORMAT getFormat() const;
 
 		//converts the X and Y values to the Coordinate system from 0.0f - 1.0f

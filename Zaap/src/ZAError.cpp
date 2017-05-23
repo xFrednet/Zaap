@@ -275,6 +275,24 @@ namespace zaap
 		case ZA_RESULT_SOURCE_MATH:
 		case ZA_RESULT_SOURCE_SYSTEM:
 			return "Sorry no error message jet. Error " + std::to_string(result);
+		case ZA_RESULT_SOURCE_GUI:
+		{
+			switch (result)
+			{
+			case ZA_ERROR_GUI_ERROR:
+				return "A error accord somewhere within the GUI system.";
+			case ZA_ERROR_GUIMANAGER_ERROR:
+				return "A error accord somewhere within the GUI manager.";
+			case ZA_ERROR_FONT_ERROR:
+				return "A error accord somewhere within the font system.";
+			case ZA_ERROR_FONT_FREETYPE_INIT_ERROR:
+				return "The FreeType library failed to initialize.";
+			case ZA_ERROR_FONT_UNSUPPROTED_FORMAT:
+				return "The submitted file is not supported by the Font system.";
+			default:
+				return "A Error accord somewhere within the GUI system.";
+			}
+		}
 		case ZA_RESULT_SOURCE_API:
 		{
 			switch (result)

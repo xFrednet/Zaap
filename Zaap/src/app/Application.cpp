@@ -22,6 +22,7 @@ namespace zaap {
 		Window::Create(title, width, height);
 		graphics::API::Context::Create();
 		scene->init();
+		m_GUIManager.init();
 	}
 
 	Application::~Application()
@@ -31,8 +32,6 @@ namespace zaap {
 		graphics::MaterialManager::Cleanup();
 		//TODO add auto (problem with CLI) delete m_Scene;
 		graphics::API::Context::Cleanup();
-		graphics::API::Texture::Cleanup();
-		graphics::API::VertexBuffer::Cleanup();
 
 		ZA_LOG_CLEANUP();
 	}
@@ -122,13 +121,20 @@ namespace zaap {
 
 	void Application::render()
 	{
+		graphics::API::Context::PrepareFrame();
+
 		if (m_Scene) 
 			m_Scene->render();
+
+		m_GUIManager.render();
+
+		graphics::API::Context::PresentFrame();
 	}
 	void Application::update()
 	{
 		if (m_Scene) 
 			m_Scene->update();
+		m_GUIManager.update();
 	}
 
 	MSG msg_;

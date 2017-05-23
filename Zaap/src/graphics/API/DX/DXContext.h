@@ -1,14 +1,16 @@
 #pragma once
 
 #include <Common.h>
-
 #ifdef ZAAP_INCLUDE_DIRECTX
 
 #include <graphics/API/DX/DXCommon.h>
 #include <graphics/API/Context.h>
+#include <events/WindowEvent.h>
 
-namespace zaap { namespace graphics	{ namespace DX {
-			
+namespace zaap { namespace graphics { namespace DX {
+	
+	class DXRenderTarget;
+
 	class ZAAP_API DXContext : public API::Context
 	{
 	protected:
@@ -16,14 +18,23 @@ namespace zaap { namespace graphics	{ namespace DX {
 		ID3D11DeviceContext *m_Devcon;
 		
 		IDXGISwapChain *m_SwapChain;
-	protected:
-		void cleanup(void) override;
 
-		//Buffer stuff
-		void swapBuffers(void) override;
+		DXRenderTarget *m_RenderTarget;
+		
+	protected:
+		API::RenderTarget* getRenderTarget() override;
+		void prepareFrame() override;
+		void presentFrame() override;
+
+	private:
+		void windowCallback(const Event& event);
+		void resize(const uint& width, const uint& height);
 
 	public:
 		DXContext();
+		~DXContext();
+
+		ZA_RESULT init() override;
 
 		//getters
 		static inline DXContext* GetContext(void)

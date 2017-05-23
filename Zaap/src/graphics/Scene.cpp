@@ -27,7 +27,6 @@ namespace zaap { namespace graphics {
 		
 		if (m_Renderer)
 		{
-			m_Renderer->cleanup();
 			delete m_Renderer;
 			m_Renderer = nullptr;
 		}
@@ -119,13 +118,12 @@ namespace zaap { namespace graphics {
 		//
 		//render preparations
 		//
+		m_Renderer->startRenderer();
 		m_Renderer->loadScene(this);
 
 		if (m_LightSetup)
 			m_Renderer->loadLightSetup(*m_LightSetup);
 		
-		m_Renderer->prepareFrame();
-
 		//
 		// rendering
 		//

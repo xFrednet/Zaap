@@ -1,5 +1,9 @@
 ﻿#include "Color.h"
 
+#ifdef ZAAP_INCLUDE_DIRECTX
+#include <graphics/API/DX/DXCommon.h>
+#endif
+
 namespace zaap { namespace graphics {
 	
 	//
@@ -130,13 +134,12 @@ namespace zaap { namespace graphics {
 		return GetAccordingInt(A);
 	}
 
-	String Color::toString() const
+#ifdef ZAAP_INCLUDE_DIRECTX
+	D3DXCOLOR Color::getDXColor() const
 	{
-		return "Color(R " + std::to_string(getIntR()) +
-			", G " + std::to_string(getIntG()) +
-			", B " + std::to_string(getIntB()) +
-			", A " + std::to_string(getIntA()) + ")";
+		return D3DXCOLOR(R, G, B, A);
 	}
+#endif
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Operators // 

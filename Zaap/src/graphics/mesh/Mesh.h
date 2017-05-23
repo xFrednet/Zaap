@@ -6,6 +6,7 @@
 #include <maths/Maths.h>
 #include <graphics/API/VertexBuffer.h>
 #include <graphics/API/Texture2D.h>
+#include <graphics/Material.h>
 
 namespace zaap { namespace graphics {
 
@@ -76,7 +77,7 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//		This is the @VertexBuffer of the @Mesh.
 		//
-		API::VertexBuffer* m_VertexBuffer;
+		API::VertexBuffer m_VertexBuffer;
 
 		// <Value>
 		//		m_Texture
@@ -84,7 +85,7 @@ namespace zaap { namespace graphics {
 		// <Description>
 		//		This is the Texture of this mesh.
 		//
-		API::Texture2D* m_Texture;
+		API::Texture2D m_Texture;
 
 		// <Value>
 		//		m_Materials
@@ -106,20 +107,20 @@ namespace zaap { namespace graphics {
 
 	public:
 		Mesh();
-		Mesh(String name, API::VertexBuffer* vertexBuffer);
-		Mesh(String name, API::VertexBuffer* vertexBuffer, Material const* materials, uint materialCount);
+		Mesh(String name, API::VertexBuffer vertexBuffer);
+		Mesh(String name, API::VertexBuffer vertexBuffer, Material const* materials, uint materialCount);
 		
 		~Mesh();
 
 		// vertex buffer
-		inline API::VertexBuffer* getVertexBuffer() const;
+		inline API::VertexBuffer getVertexBuffer() const;
 		inline uint getVertexCount() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Texture //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		inline void setTexture(API::Texture2D* texture);
-		inline API::Texture2D* getTexture() const;
+		inline void setTexture(API::Texture2D texture);
+		inline API::Texture2D getTexture() const;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Material //

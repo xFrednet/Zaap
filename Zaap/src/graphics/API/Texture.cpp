@@ -2,39 +2,9 @@
 
 #include <graphics/Bitmap.h>
 #include <graphics/TextureManager.h>
-#include <graphics/API/DX/DXTexture2D.h>
-#include <util/Log.h>
+#include <graphics/API/DX/DXTexture2DCore.h>
 
 namespace zaap { namespace graphics { namespace API {
-	
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Static texture management // 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	std::map<UUID, Texture*> Texture::s_Textures;
-	bool Texture::s_IsCleanup = false;
-
-	void Texture::AddTexture(Texture* texture)
-	{
-		s_Textures[texture->getUUID()] = texture;
-	}
-	
-	void Texture::RemoveTexture(Texture* texture)
-	{
-		//calls the RemoveTexture method with the UUID
-		RemoveTexture(texture->getUUID());
-	}
-	void Texture::RemoveTexture(UUID textureUUID)
-	{
-		if (s_IsCleanup) 
-			return;
-		
-		std::map<UUID, Texture*>::iterator it = s_Textures.find(textureUUID);
-		
-		if (it != s_Textures.end()) // != means it's a member
-			s_Textures.erase(it);
-
-		// else has nothing to do (sorry)
-	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Texture creation // 
@@ -43,100 +13,64 @@ namespace zaap { namespace graphics { namespace API {
 	/* ********************************************************* */
 	// * Texture2D *
 	/* ********************************************************* */
-	Texture2D* Texture::CreateTexture2D(char const* name, char const* filePath, bool addToTextureManager)
+	Texture2D TextureCore::CreateTexture2D(const String& filePath, 
+		const ZA_TEX2D_DESC& desc,
+		const bool& addToTextureManager)
 	{
-		return CreateTexture2D(String(name), String(filePath), addToTextureManager);
+		//TODO add TextureManager
+		return Texture2D(CreateTexture2DCore(filePath, desc));
 	}
-	Texture2D* Texture::CreateTexture2D(String name, String filePath, bool addToTextureManager)
+	Texture2D TextureCore::CreateTexture2D(const Bitmap& bitmap, 
+		const String& name, 
+		const ZA_TEX2D_DESC& desc,
+		const bool& addToTextureManager)
 	{
-		Texture2D* texture = new DX::DXTexture2D(name, filePath);
-		
-		if (addToTextureManager)
-			TextureManager::AddTexture(texture);
-
-		return texture;
-	}
-	Texture2D* Texture::CreateTexture2D(String name, Bitmap image, bool addToTextureManager)
-	{
-		Texture2D* texture = new DX::DXTexture2D(name, image);
-
-		if (addToTextureManager)
-			TextureManager::AddTexture(texture);
-
-		return texture;
+		//TODO add TextureManager
+		return Texture2D(CreateTexture2DCore(bitmap, name, desc));
 	}
 
-	void Texture::Cleanup()
+	Texture2DCore* TextureCore::CreateTexture2DCore(const String& filePath, const ZA_TEX2D_DESC& desc)
 	{
-		s_IsCleanup = true;
-
-		TextureManager::ClearTextures();
-
-		std::map<UUID, Texture*>::iterator it;
-		for (it = s_Textures.begin(); it != s_Textures.end(); it++)
-		{
-			delete it->second;
-		}
-
-		s_Textures.clear();
-
-		s_IsCleanup = false;
-		ZA_LOG_CLEANUP();
+		return new DX::DXTexture2DCore(filePath, desc);
+	}
+	Texture2DCore* TextureCore::CreateTexture2DCore(const Bitmap& bitmap, 
+		const String& name,
+		const ZA_TEX2D_DESC& desc)
+	{
+		return new DX::DXTexture2DCore(bitmap, name, desc);
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Texture Class // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	Texture::Texture(const String &textureName, ZA_TEXTURE_TYPE textureType)
-		: m_TextureName(textureName),
-		m_TextureType(textureType)
+	
+	/* ********************************************************* */
+	// * Constructor / Deconstructor *
+	/* ********************************************************* */
+	TextureCore::TextureCore(const String& textureName)
+		: m_Name(textureName)
 	{
 		RandomUUID(&m_UUID);
-
-		AddTexture(this);
 	}
-	Texture::~Texture()
+	TextureCore::~TextureCore()
 	{
-		RemoveTexture(m_UUID);
 	}
 
-	void Texture::destroy()
-	{
-		delete this;
-	}
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Operators // 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	bool Texture::operator==(Texture const* other) const
+	/* ********************************************************* */
+	// * Operators *
+	/* ********************************************************* */
+	bool TextureCore::operator==(TextureCore const* other) const
 	{
 		return Equal(this, other);
 	}
-	bool Texture::operator!=(Texture const* other) const
+	bool TextureCore::operator!=(TextureCore const* other) const
 	{
 		return !Equal(this, other);
 	}
 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Getters // 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	String Texture::getTextureName() const
+	bool Equal(TextureCore const* a, TextureCore const* b)
 	{
-		return m_TextureName;
-	}
-	ZA_TEXTURE_TYPE Texture::getTextureType() const
-	{
-		return m_TextureType;
-	}
-	UUID Texture::getUUID() const
-	{
-		return m_UUID;
+		return a->getUUID() == b->getUUID();
 	}
 
-
-
-	bool Equal(Texture const* a, const Texture* b)
-	{
-		return Equal(a->getUUID(), b->getUUID());
-	}
 }}}

@@ -4,7 +4,7 @@
 #include <types.h>
 
 #include <graphics/Scene.h>
-
+#include <gui/GUIManager.h>
 
 namespace zaap
 {
@@ -21,6 +21,7 @@ namespace zaap
 		void startGameloop();
 	protected:
 		graphics::Scene *m_Scene;
+		gui::GUIManager m_GUIManager;
 
 		virtual void render();
 		virtual void update();
@@ -33,6 +34,11 @@ namespace zaap
 
 		void pause();
 		void resume();
+
+		inline gui::GUIManager* getGUIManager()
+		{
+			return &m_GUIManager;
+		}
 
 		/*
 		This method pulls events from the window, like button presses and mouse interactions.

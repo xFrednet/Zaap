@@ -2,7 +2,7 @@
 
 #include <Common.h>
 
-#include <maths/Mat4.h>
+#include <maths/Maths.h>
 #include <graphics/Color.h>
 #include <graphics/Material.h>
 
@@ -26,9 +26,22 @@
 #	define ZA_SHADER_MATERIAL_COUNT 8 //define if it is undefined
 #endif
 
-////////////////////////////////////////////////////////////////////////////////
-// Shader structs and values //
-////////////////////////////////////////////////////////////////////////////////
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Shader structs and values //
+/* //////////////////////////////////////////////////////////////////////////////// */
+namespace zaap { namespace graphics {
+	
+	typedef ZAAP_API struct ZA_GUI_VERTEX_ {
+		Vec3 Position;
+		uint Type;
+		Vec4 TypeInfo;
+	} ZA_GUI_VERTEX;
+
+}}
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Shader buffers //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
 	
 	// <Enum>
@@ -43,7 +56,8 @@ namespace zaap { namespace graphics {
 		ZA_SHADER_UNKNOWN			= 0,
 		ZA_SHADER_DEFAULT_SHADER	= 1,
 		ZA_SHADER_TERRAIN_SHADER	= 2,
-		ZA_SHADER_FONT_SHADER_2D	= 3
+		ZA_SHADER_FONT_SHADER_2D	= 3,
+		ZA_SHADER_GUI_SHADER		= 4
 	} ZA_SHADER_TYPE;
 
 	/* ********************************************************* */
@@ -216,7 +230,7 @@ namespace zaap { namespace graphics {
 	//			This is an array of Materials.
 	//			The @Materials are used to calculate the effects
 	//			that light sources have on the rendered meshes.<\n>
-	//			(This matrix is changed for every object that is rendered.<\n>
+	//			(This buffer is changed for every object that is rendered.<\n>
 	//			Note that some old materials might remain in this array
 	//			because the loaders usually only change the @Materials that are 
 	//			specific to the current object.);;
@@ -224,6 +238,26 @@ namespace zaap { namespace graphics {
 	typedef struct ZAAP_API ZA_PS_MATERIAL_BUFFER_ {
 		Material Materials[ZA_SHADER_MATERIAL_COUNT];
 	} ZA_PS_MATERIAL_BUFFER;
+
+	/* ********************************************************* */
+	// * Other *
+	/* ********************************************************* */
+	
+	// <Struct>
+	//		ZA_PS_GUI_COLOR_BUFFER
+	//
+	// <Description>
+	//		This struct hold some @Colors that are needed in
+	//		the @GUIShader.
+	//
+	// <Members>
+	//		TextColor::
+	//			This is the color that will be used 
+	//			for the rendered Font.;;
+	//
+	typedef struct ZAAP_API ZA_PS_GUI_COLOR_BUFFER_ {
+		Color TextColor;
+	} ZA_PS_GUI_COLOR_BUFFER;
 
 }}
 

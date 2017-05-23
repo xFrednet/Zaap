@@ -40,11 +40,11 @@ namespace zaap { namespace graphics {
 		: Mesh("NULL", nullptr)
 	{
 	}
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer)
+	Mesh::Mesh(String name, API::VertexBuffer vertexBuffer)
 		: Mesh(name, vertexBuffer, nullptr, 0)
 	{
 	}
-	Mesh::Mesh(String name, API::VertexBuffer* vertexBuffer, Material const* materials, uint materialCount)
+	Mesh::Mesh(String name, API::VertexBuffer vertexBuffer, Material const* materials, uint materialCount)
 		: m_Name(name),
 		m_VertexBuffer(vertexBuffer),
 		m_Materials(nullptr),
@@ -66,23 +66,25 @@ namespace zaap { namespace graphics {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Vertex Buffer //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	API::VertexBuffer* Mesh::getVertexBuffer() const
+	API::VertexBuffer Mesh::getVertexBuffer() const
 	{
 		return m_VertexBuffer;
 	}
 	uint Mesh::getVertexCount() const
 	{
-		return m_VertexBuffer->getVertexCount();
+		//use getIndexCount because this is equal
+		//to the entire vertex count that is drawn.
+		return m_VertexBuffer->getIndexCount();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Texture //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void Mesh::setTexture(API::Texture2D* texture)
+	void Mesh::setTexture(API::Texture2D texture)
 	{
 		m_Texture = texture;
 	}
-	API::Texture2D* Mesh::getTexture() const
+	API::Texture2D Mesh::getTexture() const
 	{
 		return m_Texture;
 	}

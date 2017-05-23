@@ -1,21 +1,28 @@
 #include "Texture2D.h"
 
 namespace zaap { namespace graphics { namespace API {
-	
-	Texture2D::Texture2D(const String& textureName)
-		: Texture(textureName, ZA_TEXTURE_TYPE_TEXTURE_2D)
+	Texture2DCore::Texture2DCore(const String& textureName)
+		: TextureCore(textureName), 
+		m_Width(0),
+		m_Height(0),
+		m_Format(ZA_FORMAT_UNKNOWN)
 	{
-		m_Width = 0;
-		m_Height = 0;
-		m_Format = ZA_FORMAT_UNKNOWN;
 	}
 
-	uint Texture2D::getWidth() const
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Getters // 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	uint Texture2DCore::getWidth() const
 	{
 		return m_Width;
 	}
-	uint Texture2D::getHeight() const
+	uint Texture2DCore::getHeight() const
 	{
 		return m_Height;
+	}
+
+	ZA_TEXTURE_TYPE Texture2DCore::getTextureType() const
+	{
+		return ZA_TEXTURE_TYPE_TEXTURE_2D;
 	}
 }}}

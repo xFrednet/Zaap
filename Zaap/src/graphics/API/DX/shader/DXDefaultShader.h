@@ -71,7 +71,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		// <Return>
 		//		The return value is a @ZA_MULTI_RESULT that contains the
-		//		combined results of the shader creating.
+		//		combined results of the shader creation.
 		//
 		ZA_MULTI_RESULT init();
 

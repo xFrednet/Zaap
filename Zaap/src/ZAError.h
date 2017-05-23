@@ -603,10 +603,10 @@ namespace zaap
 #define ZA_RESULT_SOURCE_NO_SOURCE				ZAAP_TYPEDEF_ZARESULT(0x0000)
 #define ZA_RESULT_SOURCE_MATH					ZAAP_TYPEDEF_ZARESULT(0x0100)
 #define ZA_RESULT_SOURCE_SYSTEM					ZAAP_TYPEDEF_ZARESULT(0x0200)
+#define ZA_RESULT_SOURCE_GUI					ZAAP_TYPEDEF_ZARESULT(0x0300)
 #define ZA_RESULT_SOURCE_API					ZAAP_TYPEDEF_ZARESULT(0x0D00) //API said NO!!!
 #define ZA_RESULT_SOURCE_DIRECTX				ZAAP_TYPEDEF_ZARESULT(0x0E00)
 #define ZA_RESULT_SOURCE_OPENGL					ZAAP_TYPEDEF_ZARESULT(0x0F00) //I'll do that. Some dark day.
-
 
 
 
@@ -665,7 +665,62 @@ namespace zaap
 // * Memory management *
 /* ********************************************************* */
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_RESULT_SOURCE_GUI codes //
+/* //////////////////////////////////////////////////////////////////////////////// */
 
+// <Name>
+//      ZA_ERROR_GUI_ERROR
+//
+// <Note>
+//      You killed a part of the GUI system... Thanks!!!!
+//
+// <Message>
+//      A error accord somewhere within the GUI system.
+//
+#define ZA_ERROR_GUI_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8300)
+
+/* ********************************************************* */
+// * GUIManager *
+/* ********************************************************* */
+
+// <Name>
+//      ZA_ERROR_GUI_ERROR
+//
+// <Note>
+//      Now this is the heart of the GUI system...
+//      and you killed it too... F**k you!!!
+//
+// <Message>
+//      A error accord somewhere within the GUI manager.
+//
+#define ZA_ERROR_GUIMANAGER_ERROR				ZAAP_TYPEDEF_ZARESULT(0x8301)
+
+/* ********************************************************* */
+// * Font (0x8310) *
+/* ********************************************************* */
+
+// <Name>
+//      ZA_ERROR_FONT_ERROR
+//
+// <Message>
+//      A error accord somewhere within the font system.
+//
+#define ZA_ERROR_FONT_ERROR							ZAAP_TYPEDEF_ZARESULT(0x8310)
+// <Name>
+//      ZA_ERROR_FONT_FREETYPE_INIT_ERROR
+//
+// <Message>
+//      The FreeType library failed to initialize.
+//
+#define ZA_ERROR_FONT_FREETYPE_INIT_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8311)
+// <Name>
+//      ZA_ERROR_FONT_UNSUPPROTED_FORMAT
+//
+// <Message>
+//      The submitted file is not supported by the Font system.
+//
+#define ZA_ERROR_FONT_UNSUPPROTED_FORMAT			ZAAP_TYPEDEF_ZARESULT(0x8312)
 
 
 
@@ -859,6 +914,17 @@ namespace zaap
 #define ZA_ERROR_DIRECTX_ERROR									ZAAP_TYPEDEF_ZARESULT(0x8E00)
 
 // <Name>
+//      ZA_ERROR_DIRECTX_INIT_ERROR
+//
+// <Description>
+//      A general error during the initialization of Direct X object.
+//
+// <Message>
+//      A error accord during the initialization of Direct X.
+//
+#define ZA_ERROR_DIRECTX_INIT_ERROR									ZAAP_TYPEDEF_ZARESULT(0x8E00)
+
+// <Name>
 //      ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT
 //      
 // <Description>
@@ -867,7 +933,7 @@ namespace zaap
 // <Message>
 //      A error accord somewhere within a Direct X object.
 //
-#define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT						ZAAP_TYPEDEF_ZARESULT(0x8E01)
+#define ZA_ERROR_DIRECTX_UNSUPPORTED_FORMAT						ZAAP_TYPEDEF_ZARESULT(0x8E03)
 
 /* ********************************************************* */
 // * Direct X component stuff *

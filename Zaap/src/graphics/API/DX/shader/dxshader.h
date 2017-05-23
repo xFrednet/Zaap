@@ -146,8 +146,8 @@ namespace zaap { namespace graphics { namespace DX {
 
 		
 		//TODO update createShaderFromFile and createShaderFromString to return a ZA_RESULT (maybe rename them to initFromFile and initFromString)
-		bool createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC *ied, uint eCount, String vSMain = "VShader", String pSMain = "PShader");
-		bool createShaderFromString(String shaderSrc, D3D11_INPUT_ELEMENT_DESC *ied, uint eCount, String vSMain = "VShader", String pSMain = "PShader");
+		ZA_RESULT createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC *ied, uint eCount, String vSMain = "VShader", String pSMain = "PShader");
+		ZA_RESULT createShaderFromString(String shaderSrc, D3D11_INPUT_ELEMENT_DESC *ied, uint eCount, String vSMain = "VShader", String pSMain = "PShader");
 		
 		// <Function>
 		//		startDXShader

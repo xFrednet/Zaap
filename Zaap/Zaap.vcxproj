@@ -35,20 +35,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (MT)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -136,6 +136,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;d3dx11.lib;d3dx10.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -181,6 +182,7 @@
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -235,13 +237,16 @@
     <ClCompile Include="src\events\WindowEvent.cpp" />
     <ClCompile Include="src\graphics\API\Context.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXContext.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXGUIRenderer.cpp" />
     <ClCompile Include="src\graphics\API\DX\DXRenderer3D.cpp" />
-    <ClCompile Include="src\graphics\API\DX\DXTexture2D.cpp" />
-    <ClCompile Include="src\graphics\API\DX\DXVertexBuffer.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXRenderTarget.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXTexture2DCore.cpp" />
+    <ClCompile Include="src\graphics\API\DX\DXVertexBufferCore.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXDefaultShader.cpp" />
-    <ClCompile Include="src\graphics\API\DX\shader\DXFontShader2D.cpp" />
+    <ClCompile Include="src\graphics\API\DX\shader\DXGUIShader.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXShader.cpp" />
     <ClCompile Include="src\graphics\API\DX\shader\DXTerrainShader.cpp" />
+    <ClCompile Include="src\graphics\API\RenderTarget.cpp" />
     <ClCompile Include="src\graphics\API\Texture.cpp" />
     <ClCompile Include="src\graphics\API\Texture2D.cpp" />
     <ClCompile Include="src\graphics\API\VertexBuffer.cpp" />
@@ -252,6 +257,7 @@
     <ClCompile Include="src\graphics\camera\Camera.cpp" />
     <ClCompile Include="src\graphics\camera\ControllableCamera.cpp" />
     <ClCompile Include="src\graphics\Format.cpp" />
+    <ClCompile Include="src\graphics\GUIRenderer.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\MaterialManager.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
@@ -259,12 +265,22 @@
     <ClCompile Include="src\graphics\Renderer3D.cpp" />
     <ClCompile Include="src\graphics\Scene.cpp" />
     <ClCompile Include="src\graphics\shader\DefaultShader.cpp" />
-    <ClCompile Include="src\graphics\shader\FontShader2D.cpp" />
+    <ClCompile Include="src\graphics\shader\GUIShader.cpp" />
     <ClCompile Include="src\graphics\shader\TerrainShader.cpp" />
     <ClCompile Include="src\graphics\TextureManager.cpp" />
+    <ClCompile Include="src\gui\components\GUIBackground.cpp" />
+    <ClCompile Include="src\gui\components\GUILabel.cpp" />
+    <ClCompile Include="src\gui\components\GUITextureFrame.cpp" />
+    <ClCompile Include="src\gui\GUIComponent.cpp" />
+    <ClCompile Include="src\gui\GUIComponentGroup.cpp" />
+    <ClCompile Include="src\gui\GUIManager.cpp" />
+    <ClCompile Include="src\gui\VertexBufferHelper.cpp" />
+    <ClCompile Include="src\maths\Dimensions.cpp" />
     <ClCompile Include="src\maths\Mat4.cpp" />
     <ClCompile Include="src\maths\MathUtil.cpp" />
     <ClCompile Include="src\maths\Plane3D.cpp" />
+    <ClCompile Include="src\maths\Point.cpp" />
+    <ClCompile Include="src\maths\Rectangle.cpp" />
     <ClCompile Include="src\maths\Vec2.cpp" />
     <ClCompile Include="src\maths\Vec3.cpp" />
     <ClCompile Include="src\maths\Vec4.cpp" />
@@ -290,13 +306,16 @@
     <ClInclude Include="src\graphics\API\Context.h" />
     <ClInclude Include="src\graphics\API\DX\DXCommon.h" />
     <ClInclude Include="src\graphics\API\DX\DXContext.h" />
+    <ClInclude Include="src\graphics\API\DX\DXGUIRenderer.h" />
     <ClInclude Include="src\graphics\API\DX\DXRenderer3D.h" />
-    <ClInclude Include="src\graphics\API\DX\DXTexture2D.h" />
-    <ClInclude Include="src\graphics\API\DX\DXVertexBuffer.h" />
+    <ClInclude Include="src\graphics\API\DX\DXRenderTarget.h" />
+    <ClInclude Include="src\graphics\API\DX\DXTexture2DCore.h" />
+    <ClInclude Include="src\graphics\API\DX\DXVertexBufferCore.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXDefaultShader.h" />
-    <ClInclude Include="src\graphics\API\DX\shader\DXFontShader2D.h" />
+    <ClInclude Include="src\graphics\API\DX\shader\DXGUIShader.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXShader.h" />
     <ClInclude Include="src\graphics\API\DX\shader\DXTerrainShader.h" />
+    <ClInclude Include="src\graphics\API\RenderTarget.h" />
     <ClInclude Include="src\graphics\API\Texture.h" />
     <ClInclude Include="src\graphics\API\Texture2D.h" />
     <ClInclude Include="src\graphics\API\VertexBuffer.h" />
@@ -307,6 +326,7 @@
     <ClInclude Include="src\graphics\camera\Camera.h" />
     <ClInclude Include="src\graphics\camera\ControllableCamera.h" />
     <ClInclude Include="src\graphics\Format.h" />
+    <ClInclude Include="src\graphics\GUIRenderer.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\MaterialManager.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
@@ -314,14 +334,24 @@
     <ClInclude Include="src\graphics\Renderer3D.h" />
     <ClInclude Include="src\graphics\Scene.h" />
     <ClInclude Include="src\graphics\shader\DefaultShader.h" />
-    <ClInclude Include="src\graphics\shader\FontShader2D.h" />
+    <ClInclude Include="src\graphics\shader\GUIShader.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\TerrainShader.h" />
     <ClInclude Include="src\graphics\TextureManager.h" />
+    <ClInclude Include="src\gui\components\GUIBackground.h" />
+    <ClInclude Include="src\gui\components\GUILabel.h" />
+    <ClInclude Include="src\gui\components\GUITextureFrame.h" />
+    <ClInclude Include="src\gui\GUIComponent.h" />
+    <ClInclude Include="src\gui\GUIComponentGroup.h" />
+    <ClInclude Include="src\gui\GUIManager.h" />
+    <ClInclude Include="src\gui\VertexBufferHelper.h" />
+    <ClInclude Include="src\maths\Dimensions.h" />
     <ClInclude Include="src\maths\Mat4.h" />
     <ClInclude Include="src\maths\MathUtil.h" />
     <ClInclude Include="src\maths\Maths.h" />
     <ClInclude Include="src\maths\Plane3D.h" />
+    <ClInclude Include="src\maths\Point.h" />
+    <ClInclude Include="src\maths\Rectangle.h" />
     <ClInclude Include="src\maths\Vec2.h" />
     <ClInclude Include="src\maths\Vec3.h" />
     <ClInclude Include="src\maths\Vec4.h" />
@@ -339,7 +369,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\graphics\API\DX\shader\DXDefaultShader.shader" />
-    <None Include="src\graphics\API\DX\shader\DXFontShader2D.shader" />
+    <None Include="src\graphics\API\DX\shader\DXGUIShader.shader" />
     <None Include="src\graphics\API\DX\shader\DXTerrainShader.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

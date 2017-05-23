@@ -16,7 +16,7 @@ namespace zaap {
 
 		Vec4();
 		Vec4(const float& x, const float& y, const float& z, const float& w);
-		Vec4(const Vec2& vec2, const float& z, const float& w);
+		Vec4(const Vec2& vec2, const float& z = 0, const float& w = 0);
 		Vec4(const Vec3& vec3, const float& w = 0);
 
 		String toString() const;

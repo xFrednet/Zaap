@@ -1,20 +1,20 @@
 #include <Zaap.h>
-#include <graphics/Font.h>
-#include <util/Loader.h>
 
 using namespace zaap;
 using namespace graphics;
+using namespace API;
 using namespace scene;
+using namespace gui;
 using namespace std;
 
-Scene* scene_ = nullptr;
-LightSetup *lightSetup = nullptr;
-Light* light = nullptr;
-Light* light2 = nullptr;
-Camera* camera = nullptr;
-Terrain* terrain_ = nullptr;
+Scene* scene_			= nullptr;
+LightSetup *lightSetup	= nullptr;
+Light* light			= nullptr;
+Light* light2			= nullptr;
+Camera* camera			= nullptr;
+Terrain* terrain_		= nullptr;
+GUILabel* label_		= nullptr;
 Font font_;
-API::VertexBuffer *fontVB = nullptr;
 
 // TODO https://trello.com/b/vQItmmsf/zaap
 
@@ -36,17 +36,6 @@ void loadEntitys()
 		scene_->setLightSetup(lightSetup);
 	}
 	
-	//
-	//Font
-	//
-	{
-		font_ = Font::LoadFTTFile("res/arial.ttf", ZAAP_FONT_128_CHARACTERS);
-		//font_ = Font::LoadFontFromTXT("res/leitice/leitice.txt", "res/leitice/leitice.png", 723);
-		//fontVB = font_.getVertexBuffer(Loader::LoadFile("text.txt"));
-		fontVB = font_.getVertexBuffer("This is some awesome text");
-		if (!fontVB)
-			ZA_INFO("fontVB is NULL");
-	}
 	//Terrain
 	{
 		TERRAIN_DESC tDesc;
@@ -59,9 +48,9 @@ void loadEntitys()
 	// tree
 	//
 	{
-		API::Texture::CreateTexture2D("treeTexture", "res/nature/tree/Texture.png");
+		Texture2D treeTex = TextureCore::CreateTexture2D("res/nature/tree/Texture.png");
 		Mesh mesh = Mesh::GetOrLoad("res/nature/tree/Tree.obj");
-		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("treeTexture"));
+		mesh.setTexture(treeTex);
 
 		Vec3 pos;
 		Vec3 rot(0, 0, 0);
@@ -82,9 +71,9 @@ void loadEntitys()
 	// Bush
 	//
 	{
-		API::Texture::CreateTexture2D("bushTexture", "res/nature/bush/Texture.png");
+		Texture2D texture = TextureCore::CreateTexture2D("res/nature/bush/Texture.png");
 		Mesh mesh = Mesh::GetOrLoad("res/nature/bush/bush.obj");
-		mesh.setTexture((API::Texture2D*)TextureManager::GetTexture("bushTexture"));
+		mesh.setTexture(texture);
 		Entity* bush = new Entity(mesh, Vec3(10, terrain_->getHeight(Vec2(10, 10)), 10));
 		scene_->addEntity(bush);
 	}
@@ -102,6 +91,7 @@ public:
 	float rot = 1.5f;
 	uint log = 0;
 	bool val = true;
+	uint labelCounter = 0;
 
 	Test() : Application("ZAAP testing window", 852, 480, scene_)
 	{}
@@ -125,20 +115,24 @@ public:
 		}
 		light2->setPosition(camera->getPosition());
 
+		if ((labelCounter++ % 60) == 0)
+		{
 
-		//light->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
-		//light2->setColor(Color(1.0f, 0.0f, 0.0f, 0.0f));
+			String text = "Hello, I'm ZAAP!!\n";
+			text += "This is a GUILabel and\n";
+			text += "it supports updating text.\n";
+			text += "Like this: <";
+			
+			String updatingText = "******";
+			uint loops = (labelCounter / 60) % updatingText.length();
+			for (uint i = 0; i < loops; i++)
+				text += updatingText.at(i);
+			text += ">";
+			label_->setText(text);
+		}
 
 	}
-	uint timer = 0;
-	bool bTemp = true;
-	void render() override 
-	{
-		Application::render();
 
-		font_.render(fontVB, scene_->getRenderer());
-		scene_->getRenderer()->presentFrame();
-	}
 };
 
 int main(void)
@@ -147,15 +141,24 @@ int main(void)
 	RandomUUID(&id1);
 	ZA_INFO(id1);
 
-	ZA_ERROR("Test", " Error", ZA_ERROR_API_ERROR, "some more text???");
-
 	//source
 	{
 		scene_ = new Scene();
 
 		Test t;
-	
 		loadEntitys();
+		//t.getGUIManager()->add(new gui::GUITextureFrame(Point(0, 0), 225, 100, "res/GUIInfo.png"));
+		
+		ZA_RESULT zar = 2;
+		font_ = FontCore::LoadFont("res/arial.ttf", &zar);
+		
+		t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, "res/GUIInfo.png"));
+		//t.getGUIManager()->add(new GUITextureFrame(Point(0, 0), 450, 200, font_->getCharSheet()));
+		label_ = new GUILabel(Point(450, 0), "Changing", font_, 36.0f);
+		label_->setBackgroundColor(Color(0.9f, 0.9f, 0.9f, 1.0f));
+		label_->setMargin(10, 10, 10, 10);
+		label_->setTextColor(Color(0.0f, 0.0f, 0.0f, 1.0f));
+		t.getGUIManager()->add(label_);
 
 		t.start();
 		

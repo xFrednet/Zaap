@@ -45,14 +45,6 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		ID3D11DeviceContext* m_Devcon;
 
-		// <Value>
-		//      m_RenderTargetView
-		// 
-		// <Description>
-		//      This is the ling between the render target and direct X.
-		//
-		ID3D11RenderTargetView* m_RenderTargetView;
-
 		// TODO add description
 		ID3D11RasterizerState *m_RasterizerState;
 
@@ -90,7 +82,10 @@ namespace zaap { namespace graphics { namespace DX {
 		ID3D11DepthStencilView *m_DepthStencilView;
 	protected:
 		//Constructor to init values
-		DXRenderer3D();
+		DXRenderer3D(ZA_RENDERER_TARGET_TYPE renererTargetType = ZA_RENDERER_TARGET_DEFAULT);
+		~DXRenderer3D();
+
+		void renderTargetUpdated() override;
 
 	private:
 		// <Function>
@@ -127,66 +122,15 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		ZA_RESULT initDepthBuffer();
 
-	protected:
-		// <Function>
-		//      cleanupAPIRenderer (overridden from Renderer3D)
-		//
-		// <Description>
-		//      This method releases all the Direct X objects 
-		//      that are inside this class.
-		//
-		// <Note>
-		//      This is called by the cleanup method in Renderer3D. 
-		//
-		void cleanupAPIRenderer() override;
 	public:
-		// <Function>
-		//      setCustomRenderTarget
-		//      
-		// <Description>
-		//      This sets a custom render target.
-		//      
-		// <Note>
-		//   1. The API renderers have to bin the texture as a resource 
-		//      this can take time and therefor reduce performance. So please
-		//      please don't change the render target every frame.
-		//      
-		//   2. This method should affect m_HasCustomRenderTarget
-		//        - A valid pointer means that a custom render target is set.
-		//        - A null pointer sets m_HasCustomRenderTarget back to false.
-		//          rendered scenes are now rendered to the screen and 
-		//          WindowResizeEvents effect the render target again.
-		//
-		// <Input>
-		//      target: The new render target. Null is also a valid input.
-		//
-		// <Source>
-		//      Copied from Render3D
-		//
-		void setCustomRenderTarget(API::Texture2D* target, uint width, uint height);
 		
 		// <Function>
-		//      prepareFrame (overridden from Renderer3D)
+		//      startRenderer
 		//
 		// <Description>
-		//      "This method should be called at the start of every Frame.
-		//      It prepares the Frame in some different ways, just call it
-		//      for the greater good of the engine." (From Renderer3D)
+		//      It clears the DepthStencil.
 		//      
-		//      It clears the DepthStencil and the current frame.
-		//      
-		void prepareFrame() const override;
-		
-		// <Function>
-		//      prepareFrame (overridden from Renderer3D)
-		//
-		// <Description>
-		//      "This method should be called at the end of every Frame.
-		//      It presents the Frame by swapping the BackBuffer." (From Renderer3D)
-		//      
-		//      This method swaps the current buffer with the BackBuffer.
-		//
-		void presentFrame() const override;
+		void startRenderer() const override;
 
 		// <Function>
 		//      setAlphaTestingState (overridden from Renderer3D)
@@ -226,23 +170,6 @@ namespace zaap { namespace graphics { namespace DX {
 		//                        false = disabled
 		//
 		void setDepthTestingState(bool enable) const override;
-
-		// <Function>
-		//      resize (overridden from Renderer3D)
-		//
-		// <Description>
-		//      This method configures the RenderTarget size and
-		//      the DepthStencil.
-		//      
-		// <Input>
-		//      width   : the new width
-		//      height  : the new height
-		//      
-		// <Note>
-		//      This method will be changed to add extra resize options 
-		//      or to enable the user to set a target frame part
-		//      
-		void resize(uint width, uint height) override;
 	};
 	
 }}}

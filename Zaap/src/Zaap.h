@@ -16,20 +16,54 @@ Macro names:
 #include <Common.h>
 #include <ZAError.h>
 
+#include <maths/Maths.h>
+
 #include <app/Application.h>
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Util //
+/* //////////////////////////////////////////////////////////////////////////////// */
 #include <util/Log.h>
 #include <util/StringUtil.h>
 #include <util/ImageLoader.h>
 #include <util/UUID.h>
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Scene //
+/* //////////////////////////////////////////////////////////////////////////////// */
+#include <graphics/Scene.h>
 #include <scene/terrain/Terrain.h>
 
-#include <graphics/Scene.h>
-#include <graphics/Renderer3D.h>
-#include <graphics/Bitmap.h>
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Graphic objects //
+/* //////////////////////////////////////////////////////////////////////////////// */
+#include <graphics/Format.h>
 #include <graphics/Color.h>
+#include <graphics/Bitmap.h>
 #include <graphics/Material.h>
+#include <graphics/Font.h>
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // GUI //
+/* //////////////////////////////////////////////////////////////////////////////// */
+#include <gui/GUIManager.h>
+#include <gui/GUIComponent.h>
+
+#include <gui/components/GUIBackground.h>
+#include <gui/components/GUITextureFrame.h>
+#include <gui/components/GUILabel.h>
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // API component //
+/* //////////////////////////////////////////////////////////////////////////////// */
+#include <graphics/API/RenderTarget.h>
+#include <graphics/API/Texture.h>
+#include <graphics/API/Texture2D.h>
+#include <graphics/API/VertexBuffer.h>
+
+//renders
+#include <graphics/Renderer3D.h>
+#include <graphics/GUIRenderer.h>
 
 #include <entity/light/LightSetup.h>
 #include <entity/light/Light.h>
@@ -44,6 +78,5 @@ Macro names:
 
 #include <events/Input.h>
 
-#include <maths/Maths.h>
 
 #pragma warning(pop)

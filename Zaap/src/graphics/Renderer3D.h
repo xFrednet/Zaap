@@ -3,15 +3,18 @@
 #include <Common.h>
 #include <maths/Maths.h>
 
-#include "shader/FontShader2D.h"
+#include "API/Context.h"
 #include "shader/DefaultShader.h"
 #include "shader/TerrainShader.h"
 #include "API/Texture2D.h"
 #include "camera/ViewFrustum.h"
+#include "API/RenderTarget.h"
 
 #ifndef ZA_DEFAULT_FOV
 #	define ZA_DEFAULT_FOV 90.0f
 #endif
+
+//TODO put the cleanup methods in the deconstructors
 
 namespace zaap { namespace graphics {
 	class Scene;
@@ -22,7 +25,7 @@ namespace zaap { namespace graphics {
 	//      Renderer3D
 	//
 	// <Description>
-	//      This class is an abstract class. It could/should be passed for rendering.
+	//      This class is an abstract class. It could/should be passed for rendering. <\n>
 	//      
 	//      The constructor is protected. Use CreateNewInstance to create a 
 	//      instance for the current API
@@ -40,11 +43,11 @@ namespace zaap { namespace graphics {
 		//
 		// <Note>
 		//      The instance is created using the new statement the requester 
-		//      has to delete the new instance. Please call cleanup beforehand.,
-		//      
+		//      has to delete the new instance.
+		//
 		// <Return>
 		//      The renderer for the chosen API or a nullptr in case of failure.
-		//      
+		//
 		static Renderer3D* CreateNewInstance();
 
 	protected:
@@ -65,22 +68,12 @@ namespace zaap { namespace graphics {
 		//      m_HasCustomRenderTarget
 		//
 		// <Description>
-		//      This boolean indicates the type of render-target.
-		//                  
-		//          true:   
-		//              This means that m_RenderTarget is set by someone
-		//              or something. WindowResizeEvents are ignored by this
-		//              renderer.
-		//                  
-		//          false:  
-		//              means that m_RenderTarget is the Texture from the 
-		//              actual screen. This also means that WindowResizeEvents
-		//              are handled automatically.
+		//      This represents the Render Target type.
 		//      
 		// <Note>
 		//      It is set to false by default.
 		//
-		bool m_HasCustomRenderTarget = false;
+		ZA_RENDERER_TARGET_TYPE m_RenderTargetType;
 
 		// <Value>
 		//      m_RenderTarget
@@ -89,13 +82,7 @@ namespace zaap { namespace graphics {
 		//      This is the rendering target. It can be set 
 		//      to a custom render-target.
 		//
-		// <Note>
-		//      This usually gets created by the API renderer. 
-		//      The last instance gets deleted in the 
-		//      cleanupBaseRenderer3D method. This is only done if 
-		//      m_HasCustomRenderTarget is false.
-		//
-		API::Texture2D* m_RenderTarget; //TODO add getters / setters
+		API::RenderTarget* m_RenderTarget; //TODO add getters / setters
 		
 		// <Value>
 		//      m_DepthStencil
@@ -112,81 +99,31 @@ namespace zaap { namespace graphics {
 		//      cleanupBaseRenderer3D method. This is only done if 
 		//      m_HasCustomRenderTarget is false.
 		//
-		API::Texture2D* m_DepthStencil; //TODO add getter
-
-		// <Value>
-		//      m_Width
-		// 
-		// <Description>
-		//      The width of the current render-target.
-		//
-		uint m_Width; //TODO add getters / setters
-		
-		// <Value>
-		//      m_Height
-		// 
-		// <Description>
-		//      The height of the current render-target.
-		//
-		uint m_Height; //TODO add getters / setters
+		API::Texture2DCore* m_DepthStencil; //TODO add getter
 
 		//Shader
 		ZA_SHADER_TYPE  m_ActiveShaderType;
 		DefaultShader*  m_DefaultShader;
 		TerrainShader*  m_TerrainShader;
-		FontShader2D*   m_FontShader2D;
-
-	private:
-		// <Function>
-		//      windowCallback
-		//
-		// <Description>
-		//      The constructor adds this method as a windowCallback function.
-		//      Resize events are passed to the resize method
-		//      
-		void windowCallback(const Event& windowEvent);
 
 	protected:
 		//Constructor to init values
-		Renderer3D();
+		Renderer3D(ZA_RENDERER_TARGET_TYPE renderTargetType);
 
-		// <Function>
-		//      cleanupBaseRenderer3D
+	public:
+		// <Deconstructor>
+		//      Renderer3D
 		//
 		// <Description>
 		//      This method deletes all the values that are created
 		//      using the new operator. (This only includes the values that
 		//      are inside this base Renderer3D)
-		// <Note>
-		//      This is called by the cleanup method. 
-		//      It's called after cleanupAPIRenderer.
 		//
-		void cleanupBaseRenderer3D();
+		virtual ~Renderer3D();
 
-		// <Function>
-		//      cleanupAPIRenderer
-		//
-		// <Description>
-		//      This method should cleanup the content of the API Renderer3D
-		//
-		// <Note>
-		//      This is called by the cleanup method. 
-		//      It's called before cleanupBaseRenderer3D.
-		//
-		virtual void cleanupAPIRenderer() = 0;
+	protected:
+		virtual void renderTargetUpdated() = 0;
 	public:
-		virtual ~Renderer3D() {}
-
-		// <Function>
-		//      cleanup
-		//
-		// <Description>
-		//      This method calls the cleanupAPIRenderer and cleanupBaseRenderer3D
-		//      in the named order. This method is called to 
-		//      cleanup the Renderer3D It should be called before deletion.
-		//
-		void cleanup();
-
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Shader stuff //
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -236,7 +173,6 @@ namespace zaap { namespace graphics {
 		//          A pointer to a instance of the @Scene class.
 		//
 		void loadScene(const Scene* scene);
-
 
 		// <Function>
 		//      startShader
@@ -297,28 +233,9 @@ namespace zaap { namespace graphics {
 		//          The height of the render-target. This can be 0 if the target is also
 		//          set to null.
 		//
-		virtual void setCustomRenderTarget(API::Texture2D* target, uint width, uint height) = 0;
+		virtual void setCustomRenderTarget(API::RenderTarget* renderTarget);
 
-		// <Function>
-		//      prepareFrame
-		//
-		// <Description>
-		//      This method should be called at the start of every Frame.
-		//      It prepares the Frame in some different ways, just call it
-		//      for the greater good of the engine.
-		//      (Note: Some APIs might have some extra functions in here.)
-		//
-		virtual void prepareFrame() const = 0;
-
-		// <Function>
-		//      prepareFrame
-		//
-		// <Description>
-		//      This method should be called at the end of every Frame.
-		//      It presents the Frame by swapping the BackBuffer.
-		//      (Note: Some APIs might have some extra functions in here.)
-		//
-		virtual void presentFrame() const = 0;
+		virtual void startRenderer() const = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Rendering options //
@@ -392,25 +309,6 @@ namespace zaap { namespace graphics {
 		//      depth testing. So it's just a easier method.
 		//
 		inline void disableDepthTesting() const;
-
-		// <Function>
-		//      resize
-		//
-		// <Description>
-		//      This method configures the RenderTarget size and
-		//      some API related things.
-		//      
-		// <Input>
-		//      width: 
-		//          the new width.
-		//      height: 
-		//          the new height.
-		//      
-		// <Note>
-		//      This method will be changed to add extra resize options 
-		//      or to enable the user to set a target frame part
-		//      
-		virtual void resize(uint width, uint height) = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Values //

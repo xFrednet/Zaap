@@ -3,125 +3,98 @@
 
 #include <ft2build.h>
 #include <freetype/freetype.h>
+
+#include "Bitmap.h"
 #include "API/Texture.h"
-#include "shader/FontShader2D.h"
-#include "Renderer3D.h"
 #include <util/StringUtil.h>
-
 /* //////////////////////////////////////////////////////////////////////////////// */
-// // ZA_CharMatrix //
-/* //////////////////////////////////////////////////////////////////////////////// */
-namespace zaap { namespace graphics {
-	ZA_CharMarix::ZA_CharMarix()
-		: OrigenXOffset(0),
-		OrigenYOffset(0),
-		TotalWidth(0),
-		TotalHeight(0),
-		Width(0),
-		Height(0)
-	{
-	}
-
-	ZA_CharMarix::ZA_CharMarix(const ZA_CharMarix& charMarix)
-	{
-		memcpy(this, &charMarix, sizeof(ZA_CharMarix));
-	}
-
-	ZA_CharMarix ZA_CharMarix::operator/(float a) const
-	{
-		//TODO add a division by zero error
-		return *this * (1.0f / a);
-	}
-
-	ZA_CharMarix ZA_CharMarix::operator*(float a) const
-	{
-		ZA_CharMarix charMatrix(*this);
-
-		charMatrix.OrigenXOffset *= a;
-		charMatrix.OrigenYOffset *= a;
-		charMatrix.Width *= a;
-		charMatrix.Height *= a;
-		charMatrix.TotalWidth *= a;
-		charMatrix.TotalHeight *= a;
-
-		return charMatrix;
-	}
-}}
-
-/* //////////////////////////////////////////////////////////////////////////////// */
-// // ZA_CharacterInfo //
+// // ZA_FONT_CHAR_MATRIX //
 /* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
-	ZA_CharacterInfo::ZA_CharacterInfo()
-		: Character('\0')
+
+	ZA_FONT_CHAR_MATRIX Multiply(const ZA_FONT_CHAR_MATRIX& a, const float& b)
 	{
+		ZA_FONT_CHAR_MATRIX charMarix;
+		memcpy(&charMarix, &a, sizeof(ZA_FONT_CHAR_MATRIX));
+
+		charMarix.XOffset *= b;
+		charMarix.YOffset *= b;
+		charMarix.Width *= b;
+		charMarix.Height *= b;
+		charMarix.TotalWidth *= b;
+		charMarix.TotalHeight *= b;
+
+		return charMarix;
 	}
 	
-	ZA_CharacterInfo::ZA_CharacterInfo(char c)
-		: Character(c)
+	ZA_FONT_CHAR_MATRIX Divide(const ZA_FONT_CHAR_MATRIX& a, const float& b)
 	{
+		if (b)
+			return Multiply(a, 1.0f / b);
+		
+		ZA_SUBMIT_ERROR(ZA_ERROR_DIVISION_BY_ZERO);
+		return a;
 	}
+
 }}
 
 namespace zaap { namespace graphics {
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// //Static Methods //
+	// // Loaders //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	Mat4 Font::CreateFontTransformationMatrix(const Vec3& position, const float& fontSize)
-	{
-		Mat4 mat(fontSize);
-		
-		mat.m41 = position.X;
-		mat.m42 = position.Y;
-		mat.m43 = position.Z;
 
-		return mat;
+	Font FontCore::LoadFont(const String& srcFile, ZA_RESULT* result)
+	{
+		return Font(LoadFontCore(srcFile, result));
 	}
 
-	String Font::GetFormatCharacters(ZA_FONT_CHAR_FORMAT format)
+	FontCore* FontCore::LoadFontCore(const String& srcFile, ZA_RESULT* result)
 	{
-		switch (format)
+		if (StringUtil::EndsWith(srcFile, ".ttf"))
+			return LoadTTFFile(srcFile, result);
+
+		*result = ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+		return nullptr;
+	}
+
+	/* ********************************************************* */
+	// * FTT file *
+	/* ********************************************************* */
+	inline void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
+	{
+		uint stride = source.width;
+		byte* bytes = target.getPixelArray();
+
+		if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
+			stride *= 4;
+
+		for (uint yy = 0; yy < source.rows; yy++)
 		{
-		case ZAAP_FONT_128_CHARACTERS:
-			return " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-		default:
-			return String();
+			memcpy(&bytes[x + (yy + y) * target.getWidth()], &source.buffer[yy * source.width], stride);
 		}
 	}
+	inline int getUTF8Code(const char& c)
+	{
+		if (c >= ' ' && c <= '~')
+			return int(c);
 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // FTT loader // 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	void copyToBitmap(const uint &x, const uint &y, const FT_Bitmap &source, Bitmap &target)
-	{
-		uint xx, yy, xa, ya;
-		int color;
-		for (yy = 0; yy < source.rows; yy++)
-		{
-			ya = y + yy;
-			for (xx = 0; xx < source.width; xx++)
-			{
-				xa = x + xx;
-				color = source.buffer[xx + yy * source.width];
-				
-				if (target.getFormat() == ZA_FORMAT_R8G8B8A8_UINT) //RGBA
-					target.setColor(xa, ya, Color(color, color, color));
-				else 
-					target.setA(xa, ya, color);
-			}
-		}
+		//¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ
+		return int(0x00A1 + (c - '¡'));
 	}
-	Font Font::LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format)
-	{
-		return LoadFTTFile(file, GetFormatCharacters(format));
-	}
-	Font Font::LoadFTTFile(String file, String chars)
+
+	FontCore* FontCore::LoadTTFFile(const String& srcFile, ZA_RESULT* result)
 	{
 		clock_t timer = clock();
-		FT_Error error;
-		
-		Font font(chars);
+		FontCore* font = new FontCore();
+
+		const char* chars = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþ";
+		uint charCount = strlen(chars);
+		uint bitmapSize = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
+		uint fontSize;
+		float fontSizeF;
+		Bitmap charSheet(bitmapSize, bitmapSize, ZA_FORMAT_A8_UINT);
+
 		FT_Library FTLib;
 		FT_Face face;
 		
@@ -129,425 +102,249 @@ namespace zaap { namespace graphics {
 		// // Init //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		{
+			uint charsPerLine = (uint)sqrtf((float)charCount) + 1; //+1 because 1.999 will be a 1 uint
+			fontSize = (bitmapSize / charsPerLine) - ((bitmapSize / charsPerLine) % 64);
+			fontSizeF = float(fontSize);
+			font->m_CharInfo.resize(charCount);
+			
 			/* ********************************************************* */
 			// * Init FreeType *
 			/* ********************************************************* */
-			error = FT_Init_FreeType(&FTLib);
+			FT_Error error = FT_Init_FreeType(&FTLib);
 			if (error)
 			{
-				//TODO deal with the Error
-				return Font();
+				*result = ZA_ERROR_FONT_FREETYPE_INIT_ERROR;
+				return nullptr;
 			}
 
 			/* ********************************************************* */
 			// * Init face *
 			/* ********************************************************* */
-			error = FT_New_Face(FTLib, file.c_str(), 0, &face);
+			error = FT_New_Face(FTLib, srcFile.c_str(), 0, &face);
 			if (error != FT_Err_Ok){
-				//TODO add error message
 				if (error == FT_Err_Unknown_File_Format)
-				{
-
-				} else
-				{
-					//Another error code means that the font file could not
-					//be opened or read or that it is broken.
-				}
-			
-				return Font();
+					*result = ZA_ERROR_FONT_UNSUPPROTED_FORMAT;
+				else 
+					*result = ZA_ERROR_FONT_ERROR;
+				return nullptr;
 			}
-			
+
+			FT_Set_Char_Size(face, fontSize * 64, 0, 100, 0);
+			FT_Set_Transform(face, nullptr, nullptr);
+
+			font->m_LineHeight = (float(face->max_advance_height + face->height) / 26.6f) / fontSizeF;
 		}
-		
-		//Bitmap values
-		uint charSize;
-		if (chars.size() < 200)
-			charSize = 64;
-		else
-			charSize = 16;
-		
 
-		//Setting size
-		FT_Set_Char_Size(face, charSize * 64, 0, 100, 0);
-		FT_Set_Transform(face, 0, 0);
+		FT_GlyphSlot ftCharInfo = face->glyph;
+		ZA_FONT_CHAR_INFO* charInfo;
 
-		//getting the current char information
-		FT_GlyphSlot charFTInfo = face->glyph;
-
-		//creating objects for the loop
 		FT_Glyph_Metrics ftCharMatrix;
-		ZA_CharMarix charMatirx;
-		FT_Bitmap bitmap;
-		ZA_CharacterInfo charInfo;
-		uint bitmapX = 0;
-		uint bitmapY = 0;
+		ZA_FONT_CHAR_MATRIX* charMatrix;
+		
+		FT_Bitmap ftBitmap;
+		uint bitmapX = 10;
+		uint bitmapY = 10;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // init charSheet //
+		// // Finally the loading part //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		Bitmap charSheet;
+		for (uint i = 0; i < charCount; i++)
 		{
-			for (uint i = 0; i < chars.size(); i++)
+			FT_Load_Char(face, getUTF8Code(chars[i]), FT_LOAD_RENDER);
+			ftBitmap = ftCharInfo->bitmap;
+			ftCharMatrix = ftCharInfo->metrics;
+
+			/* ********************************************************* */
+			// * ZA_FONT_CHAR_MATRIX *
+			/* ********************************************************* */
 			{
-				if (chars.at(i) != ' ')
+				charInfo = &(font->m_CharInfo[i]);
+				charMatrix = &charInfo->CharMatrix;
+
+				charInfo->Character = chars[i];
+
+				charMatrix->XOffset		= (float(ftCharMatrix.horiBearingX) / 64.0f);
+				charMatrix->YOffset		= (fontSizeF - float(ftCharMatrix.horiBearingY) / 64.0f); // charSize - ftCharMatrix.horiBearingY / 64.0f
+				charMatrix->Width		= (float(ftCharMatrix.width) / 64.0f);
+				charMatrix->Height		= (float(ftCharMatrix.height) / 64.0f);
+				charMatrix->TotalWidth	= (float(ftCharMatrix.horiAdvance) / 64.0f);
+				charMatrix->TotalHeight = (float(ftCharMatrix.vertAdvance) / 64.0f);
+			}
+
+			/* ********************************************************* */
+			// * copy charSheet *
+			/* ********************************************************* */
+			{
+				if ((bitmapX + ftBitmap.width + 10) >= charSheet.getWidth())
 				{
-					FT_Load_Char(face, chars.at(i), FT_LOAD_RENDER);
-					break;
+					bitmapX = 10;
+
+					if (bitmapY + fontSize * 1.5f < charSheet.getHeight())
+						bitmapY += (uint)(fontSizeF * 1.5f);
+					else
+						bitmapY = 10;
 				}
+
+				copyToBitmap(bitmapX, bitmapY, ftBitmap, charSheet);
+
+				charInfo->TexMinCoords = charSheet.getPixelCoord(bitmapX - 1, bitmapY - 1);
+				charInfo->TexMaxCoords = charSheet.getPixelCoord(bitmapX + ftBitmap.width + 1, bitmapY + ftBitmap.rows + 1);
 				
+				bitmapX += ftBitmap.width + 10;
 			}
-			
-			bitmap = charFTInfo->bitmap;
-			uint width = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
-			uint height = ZAAP_FONT_DEFAULT_BITMAP_SIZE;
-			//creating the charSheet
-			if (bitmap.pixel_mode == FT_PIXEL_MODE_GRAY)
-				charSheet = Bitmap(width, height, ZA_FORMAT_A8_UINT);
-			else if (bitmap.pixel_mode == FT_PIXEL_MODE_LCD)
-				charSheet = Bitmap(width, height, ZA_FORMAT_R8G8B8A8_UINT);
-			else
-			{
-				charSheet = Bitmap(width, height, ZA_FORMAT_R8G8B8A8_UINT);
-				ZA_ERROR("FreeType loaded the font with a unknown bitmap format");
-			}
-			
+
+			/* ********************************************************* */
+			// * Loop end *
+			/* ********************************************************* */
+			*charMatrix = Divide(*charMatrix, fontSizeF);
 		}
 
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Loading the chars //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		for (uint i = 0; i < chars.size(); i++)
-		{
-			FT_Load_Char(face, chars.at(i), FT_LOAD_RENDER);
-			bitmap = charFTInfo->bitmap;
+		/* ********************************************************* */
+		// * Finishing *
+		/* ********************************************************* */
+		ZA_TEX2D_DESC desc(charSheet.getFormat(), ZA_TEXTURE_FILTER_POINT, false, 1);
+		font->m_CharSheet = API::TextureCore::CreateTexture2D(charSheet, "charSheet", desc, false);
+		font->m_Chars = String(chars);
 
-			/* ********************************************************* */
-			// * setting charInfo *
-			/* ********************************************************* */
-			{
-				ftCharMatrix = charFTInfo->metrics;
-				charInfo = ZA_CharacterInfo(chars.at(i));
-				
-				charMatirx.OrigenXOffset	= float(ftCharMatrix.horiBearingX / 64.0f);
-				charMatirx.OrigenYOffset	= float(charSize - ftCharMatrix.horiBearingY / 64.0f);
-				charMatirx.Width			= float(ftCharMatrix.width / 64.0f);
-				charMatirx.Height			= float(ftCharMatrix.height / 64.0f);
-				charMatirx.TotalWidth		= float(ftCharMatrix.horiAdvance / 64.0f);
-				charMatirx.TotalHeight		= float(ftCharMatrix.vertAdvance / 64.0f);
-
-				charInfo.CharMatirx = charMatirx;
-
-				if (charMatirx.TotalWidth > font.m_MaxCharSize.Width)
-					font.m_MaxCharSize.Width = charMatirx.Width;
-
-				if (charMatirx.TotalHeight > font.m_MaxCharSize.Height)
-					font.m_MaxCharSize.Height = charMatirx.Height;
-
-				if (charMatirx.OrigenYOffset > font.m_MaxCharSize.OrigenYOffset)
-					font.m_MaxCharSize.OrigenYOffset = charMatirx.OrigenYOffset;
-			}
-			/* ********************************************************* */
-			// * test bitmapX and bitmapY *
-			/* ********************************************************* */
-			{
-				if (bitmapX + charMatirx.Width * 1.5f >= charSheet.getWidth())
-				{
-					bitmapX = 0;
-					bitmapY += charSize * 2;
-					if (bitmapY + charSize >= charSheet.getHeight())
-					{
-						bitmapY = 0;
-						ZA_ERROR("the given bitmap is to small for the selected char set");
-					}
-				}
-			}
-
-			/* ********************************************************* */
-			// * filling charInfo *
-			/* ********************************************************* */
-			{
-				
-				charInfo.TexMinCoords = charSheet.getPixelCoord(bitmapX + 1, bitmapY-1);
-				charInfo.TexMaxCoords = charSheet.getPixelCoord(bitmapX + uint(charMatirx.Width + 3), bitmapY + uint(charMatirx.Height + 1));
-			}
-
-			copyToBitmap(bitmapX, bitmapY, bitmap, charSheet);
-
-			//resizing the charMatrix to a fontSize of 1
-			charInfo.CharMatirx = charInfo.CharMatirx / float(charSize); 
-			//adding the char
-			font.m_CharInfo[i] = charInfo;
-
-			bitmapX += uint(charMatirx.Width  * 1.5f);
-		}
-
-		//resize the MaxCharSize
-		font.m_MaxCharSize = font.m_MaxCharSize / float(charSize);
-
-		// generate the texture
-		font.m_CharSheet = API::Texture::CreateTexture2D("font", charSheet);
-
-		//cleaning up the FreeType library
 		FT_Done_Face(face);
 		FT_Done_FreeType(FTLib);
 
-		long time = clock() - timer;
-		ZA_INFO("loaded", file, " in ", time, "ms");
+		timer = clock() - timer;
+		ZA_INFO("I loaded ", srcFile, " in ", timer, "ms");
 
-		return font;
-	}
-
-	Font Font::LoadFontFromTXT(String file, String textureFile, uint size)
-	{
-		using namespace std;
-		
-		clock_t timer = clock();
-
-		Font font;
-		font.m_Size = (float)size;
-		uint width;
-		uint height;
-
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Texture / m_CharSheet loading //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		{
-			font.m_CharSheet = API::Texture::CreateTexture2D(textureFile, textureFile, true);
-			if (!font.m_CharSheet 
-				|| (width = font.m_CharSheet->getWidth()) == 0
-				|| (height = font.m_CharSheet->getHeight()) == 0)
-			{
-				ZA_ERROR("The texture could not be loaded");
-				return font;
-			}
-		}
-		
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // file loading //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		{
-
-			font.m_CharInfo = vector<ZA_CharacterInfo>(); //font sets the size to zero
-			
-			fstream fileStream;
-			fileStream.open(file);
-			if (!fileStream.is_open())
-			{
-				ZA_ERROR("The given file could not be opened. File: " + file);
-				return font;
-			}
-
-			String line;
-			stringstream lStream;
-			ZA_CharacterInfo charInfo;
-			ZA_CharMarix* charMatrix;
-			uint xPixel, yPixel, widthPixel, heightPixel;
-			while (!fileStream.eof())
-			{
-				getline(fileStream, line);
-				if (StringUtil::StartsWith(line, "##") || line.length() <= 1)
-					continue; // it's a command
-				
-				/* ##################################### */
-				// # init charInfo && charMatrix #
-				/* ##################################### */
-				{
-					font.m_Chars += line[0];
-					//char info
-					charInfo = ZA_CharacterInfo(line[0]);
-
-					// charMatrix;
-					charMatrix = &charInfo.CharMatirx;
-				}
-
-				/* ##################################### */
-				// # line processing #
-				/* ##################################### */
-				{
-					line[0] = ' ';
-					lStream = stringstream(line);
-
-					// char- <     Bitmap stuff      >-<               char matrix                  >
-					// char-xPixel-yPixel-width-height-lineXOffset-lineYOffset-totalWidth-totalHeight
-					// A    0      0      610   724    723         25          660        724
-					
-					//
-					// Bitmap stuff;
-					//
-					lStream >> xPixel;
-					charInfo.TexMinCoords.X = (float)xPixel / (float)width;
-					lStream >> yPixel;
-					charInfo.TexMinCoords.Y = (float)yPixel / (float)height;
-
-					lStream >> widthPixel;
-					charInfo.TexMaxCoords.X = (float)(xPixel + widthPixel) / (float)width;
-					lStream >> heightPixel;
-					charInfo.TexMaxCoords.Y = (float)(yPixel + heightPixel) / (float)height;
-
-					//
-					// char matrix
-					//
-					lStream >> charMatrix->OrigenXOffset;
-					lStream >> charMatrix->OrigenYOffset;
-					lStream >> charMatrix->TotalWidth;
-					lStream >> charMatrix->TotalHeight;
-					charMatrix->Width = charMatrix->TotalWidth;
-					charMatrix->Height = charMatrix->TotalHeight;
-
-					charInfo.CharMatirx = *charMatrix / (float)size;
-				}
-
-				font.m_CharInfo.push_back(charInfo);
-			}
-		}
-
-		long time = clock() - timer;
-		ZA_INFO("loaded", file, " in ", time, + "ms");
-
+		*result = ZA_OK;
 		return font;
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Class Members //
+	// // Class //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	Font::Font()
-		: m_Size(11),
-		m_Chars(),
-		m_CharInfo(0)
-	{
-	}
-	Font::Font(String chars)
-		: m_Size(11),
-		m_Chars(chars),
+
+	FontCore::FontCore()
+		: m_Chars(),
+		m_CharInfo(0),
 		m_CharSheet(nullptr),
-		m_CharInfo(chars.size())
+		m_LineHeight(0)
 	{
 	}
 
-	API::VertexBuffer* Font::getVertexBuffer(String string)
+	FontCore::~FontCore()
 	{
-		using namespace std;
-
-		if (m_CharInfo.size() == 0)
-			return nullptr;
-
-		vector<ZA_CharVertex> vertices(string.size() * 4);
-		vector<uint> indices(string.size() * 6);
-
-		float zValue = 0.0f;
-
-		//the x value of the character
-		float drawX = 0.0f;
-		// v0  v3
-		// v1  v2
-		uint v0, v1, v2, v3;
-		//Index of the indices
-		uint iIndex = 0;
-		//the current character
-		char c;
-		ZA_CharacterInfo cInfo;
-		ZA_CharMarix cMatrix;
-		for (uint i = 0; i < string.size(); i++)
-		{
-			c = string.at(i);
-			cInfo = m_CharInfo[getCharIndex(c)];
-			cMatrix = cInfo.CharMatirx;
-			v0 = i * 4;
-			v1 = i * 4 + 1;
-			v2 = i * 4 + 2;
-			v3 = i * 4 + 3;
-			
-			//setting indices
-			{
-				// v0, v1, v2
-				indices[iIndex++] = v0;
-				indices[iIndex++] = v1;
-				indices[iIndex++] = v2;
-
-				// v0, v2, v3
-				indices[iIndex++] = v0;
-				indices[iIndex++] = v3;
-				indices[iIndex++] = v2;
-			}
-			// 0 3
-			// 1 2 
-			
-			//v0
-			vertices[v0].Position.X = cMatrix.OrigenXOffset + drawX;
-			vertices[v0].Position.X = 0 + drawX;
-			vertices[v0].Position.Y = (-cMatrix.OrigenYOffset);
-			vertices[v0].Position.Z = zValue;
-			vertices[v0].TexCoord = cInfo.TexMinCoords;
-
-			//v1
-			vertices[v1].Position.X = cMatrix.OrigenXOffset + drawX;
-			vertices[v1].Position.X = 0 + drawX;
-			vertices[v1].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
-			vertices[v1].Position.Z = zValue;
-			vertices[v1].TexCoord = Vec2(cInfo.TexMinCoords.X, cInfo.TexMaxCoords.Y);
-
-			//v2
-			vertices[v2].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
-			vertices[v2].Position.X = 0 + cMatrix.Width + drawX;
-			vertices[v2].Position.Y = (-cMatrix.OrigenYOffset - cMatrix.Height);
-			vertices[v2].Position.Z = zValue;
-			vertices[v2].TexCoord = cInfo.TexMaxCoords;
-
-			//v3
-			vertices[v3].Position.X = cMatrix.OrigenXOffset + cMatrix.Width + drawX;
-			vertices[v3].Position.X = 0 + cMatrix.Width + drawX;
-			vertices[v3].Position.Y = (-cMatrix.OrigenYOffset);
-			vertices[v3].Position.Z = zValue;
-			vertices[v3].TexCoord = Vec2(cInfo.TexMaxCoords.X, cInfo.TexMinCoords.Y);
-
-			drawX += cMatrix.TotalWidth;
-		}
-
-		return API::VertexBuffer::CreateVertexbuffer(&vertices[0], sizeof(ZA_CharVertex), vertices.size(), &indices[0], indices.size(), ZA_SHADER_FONT_SHADER_2D);
+		m_CharInfo.clear();
 	}
 
-	float temp = 0;
-	Color color;
-	float size = 400.0;
-	void Font::render(API::VertexBuffer *vb, Renderer3D* renderer)
+	/* ********************************************************* */
+	// * Util *
+	/* ********************************************************* */
+
+	/* ##################################### */
+	// # Chars #
+	/* ##################################### */
+	uint FontCore::getCharIndex(const char& c) const
 	{
-		if (!vb) 
-			return;
-		
-		float c = 0.5f + 0.5f * sin(temp);
-		color.R = c;
-		color.G = c;
-		color.B = c;
-
-		temp += 0.005f;
-		size = 100 + 50 * sin(temp);
-		renderer->setAlphaTestingState(true);
-		renderer->disableDepthTesting();
-		renderer->startShader(ZA_SHADER_FONT_SHADER_2D);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setSize(size);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setPixelCoords(10, 10);
-		((FontShader2D*)renderer->getShader(ZA_SHADER_FONT_SHADER_2D))->setColor(color);
-		m_CharSheet->bind(0);
-
-		vb->draw();
-
-		renderer->setAlphaTestingState(false);
-		renderer->enableDepthTesting();
-	}
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Util //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	uint Font::getCharIndex(char c) const
-	{
-		std::string::size_type n = m_Chars.find(c);
-		if (n != std::string::npos)
+		String::size_type n = m_Chars.find(c);
+		if (n != m_Chars.npos)
 			return (uint)n;
 
 		return 0;
 	}
-	uint Font::getCharCount() const
+	uint FontCore::getCharCount() const
 	{
-		return (uint)m_Chars.size();
+		return m_Chars.length();
 	}
+	bool FontCore::isCharValid(const char& c) const
+	{
+		return m_Chars.find(c) != m_Chars.npos;
+	}
+
+	/* ##################################### */
+	// # String #
+	/* ##################################### */
+	uint FontCore::getStringWidth(const String& string, const float& fontSize)
+	{
+		return getStringSize(string, fontSize).Width;
+	}
+	uint FontCore::getStringHeight(const String& string, const float& fontSize)
+	{
+		return getStringSize(string, fontSize).Height;
+	}
+
+	Dimensions FontCore::getStringSize(const String& string, const float& fontSize)
+	{
+		uint strSize = string.length();
+		if (strSize == 0)
+			return Dimensions();
+
+		ZA_FONT_CHAR_MATRIX* matrix = &m_CharInfo[getCharIndex(string.at(0))].CharMatrix;
+		float width = -(matrix->TotalWidth - (matrix->XOffset + matrix->Width));
+		float maxWidth = 0;
+		float maxHeight = 0;
+		uint line = 0;
+		char c;
+
+		for (uint i = 0; i < strSize; i++)
+		{
+			c = string.at(i);
+			matrix = &m_CharInfo[getCharIndex(c)].CharMatrix;
+
+			/* ##################################### */
+			// # new line #
+			/* ##################################### */
+			if (c == '\n')
+			{
+				line++;
+				
+				if (i > 0)
+				{
+					matrix = &m_CharInfo[getCharIndex(string.at(i - 1))].CharMatrix;
+					width -= matrix->TotalWidth - (matrix->XOffset + matrix->Width);
+				}
+				if (width > maxWidth)
+					maxWidth = width;
+
+				if (i + 1 < strSize)
+					width = -m_CharInfo[getCharIndex(string.at(i + 1))].CharMatrix.XOffset;
+				maxHeight = 0;
+
+				continue;
+			}
+
+			/* //////////////////////////////////////////////////////////////////////////////// */
+			// // current line //
+			/* //////////////////////////////////////////////////////////////////////////////// */
+			//width
+			width += matrix->TotalWidth;
+			//height
+			if (matrix->Height + matrix->YOffset > maxHeight)
+				maxHeight = matrix->Height + matrix->YOffset;
+		}
+
+		width -= matrix->TotalWidth - (matrix->XOffset + matrix->Width);
+		if (width > maxWidth)
+			maxWidth = width;
+
+		return Dimensions((uint)(maxWidth * fontSize), (uint)((maxHeight + line * m_LineHeight) * fontSize));
+	}
+
+	/* ##################################### */
+	// # CharSheet Util #
+	/* ##################################### */
+	void FontCore::bindCharShreet(const uint& index) const
+	{
+		m_CharSheet->bind(index);
+	}
+	void FontCore::unbindCharShreet(const uint& index) const
+	{
+		m_CharSheet->unbind(index);
+	}
+
+	void FontCore::setCharSheet(API::Texture2D charSheet)
+	{
+		m_CharSheet = charSheet;
+	}
+	API::Texture2D FontCore::getCharSheet() const
+	{
+		return m_CharSheet;
+	}
+
 }}

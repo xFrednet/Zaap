@@ -3,130 +3,194 @@
 #include <Types.h>
 #include <Common.h>
 
-#include <graphics/Bitmap.h>
 #include "API/Texture2D.h"
 #include "API/VertexBuffer.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4251)
 
+namespace zaap { namespace gui {
+	class VertexBufferHelper;
+}}
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZA_FONT_CHAR_MATRIX //
+/* //////////////////////////////////////////////////////////////////////////////// */
 namespace zaap { namespace graphics {
-	class Renderer3D;
+
+	// ZA_FONT_CHAR_MATRIX
+	//      +-----------------------------+<\n>
+	//      |                             |<\n>
+	//      |  #<XO><---Width---->        |<\n>
+	//      |  ^                      ^   |<\n>
+	//      |  YO                     |   |<\n>
+	//      |  v                      |   |<\n>
+	//      |  ^    ##############    |   |<\n>
+	//      |  |    ##############    |   |<\n>
+	//      |  |          ##          TH  |<\n>
+	//      |  H          ##          |   |<\n>
+	//      |  |          ##          |   |<\n>
+	//      |  |          ##          |   |<\n>
+	//      |  v          ##          v   |<\n>
+	//      |                             |<\n>
+	//      |   <---------TW--------->    |<\n>
+	//      |                             |<\n>
+	//      +-----------------------------+<\n>
+	// XO = XOffset
+	// YO = YOffset
+	// H  = Height
+	// TW = TotalWidth
+	// TH = TotalHeight
 
 	// <Struct>
-	//      ZA_CharMarix
+	//      ZA_FONT_CHAR_MATRIX
 	//
-	// <Descripton>
-	// x = origin                 | x = origin                |   x = origin     (zoomed in) |
-	//                   ^        |                           |   ^                          |
-	//    ##########     |        |    ##########    ^        |   |                          |
-	//        ##         |        |        ##        |        |  OrigenYOffset               |
-	//        ##     TotalHeight  |        ##      Height     |   |                          |
-	//        ##         |        |        ##        |        |   v                          |
-	//        ##         v        |        ##        v        |    <-OrigenXOffset->#########|
-	//  <-TotalWidth->            |    <--Width->             |                     #########|
+	// <Description>
+	//      This stores info about a character.
 	//
-	// This explanation is so bad :P
-	// The values should be the values for a fontSize of 1.
-	// To translate the struct members to the current size they are multiplied by the size. (This is done in the FontShader)
-	struct ZAAP_API ZA_CharMarix
+	// <Members>
+	//      XOffset::
+	//          The horizontal offset from the origin.;;
+	//      YOffset::
+	//          The vertical offset from the origin.;;
+	//          
+	//      TotalWidth::
+	//          The total width of the char. This includes 
+	//          the padding and the offset.;;
+	//          
+	struct ZAAP_API ZA_FONT_CHAR_MATRIX
 	{
-		float OrigenXOffset;
-		float OrigenYOffset;
-
-		float TotalWidth;
-		float TotalHeight;
+		float XOffset;
+		float YOffset;
 
 		float Width;
 		float Height;
 
-		ZA_CharMarix();
-		ZA_CharMarix(const ZA_CharMarix &charMarix);
-
-		ZA_CharMarix operator/(float a) const;
-		ZA_CharMarix operator*(float a) const;
-		
+		float TotalWidth;
+		float TotalHeight;
 	};
+
+	ZAAP_API inline ZA_FONT_CHAR_MATRIX Multiply(const ZA_FONT_CHAR_MATRIX& a, const float& b);
+	ZAAP_API inline ZA_FONT_CHAR_MATRIX Divide(const ZA_FONT_CHAR_MATRIX& a, const float& b);
+
+}}
+
+namespace zaap { namespace graphics {
 	
-	struct ZAAP_API ZA_CharacterInfo
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_FONT_CHAR_INFO //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	struct ZAAP_API ZA_FONT_CHAR_INFO
 	{
 		char Character;
-			
+		
 		Vec2 TexMinCoords;
 		Vec2 TexMaxCoords;
-
-		ZA_CharMarix CharMatirx;
-
-		ZA_CharacterInfo();
-		ZA_CharacterInfo(char c);
+		
+		ZA_FONT_CHAR_MATRIX CharMatrix;
 	};
 
-	struct ZAAP_API ZA_CharVertex
-	{
-		Vec3 Position;
-		Vec2 TexCoord;
-	};
-
-	typedef ZAAP_API enum ZA_FONT_CHAR_FORMAT_
-	{
-		// !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-		ZAAP_FONT_128_CHARACTERS     = 0,
-		//This format requires the user to set the chars to load
-		ZAAP_FONT_UNKNOWN_CHARACTERS = 1
-	} ZA_FONT_CHAR_FORMAT;
-
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Font class //
+	// // Font //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	class ZAAP_API Font
+
+	class FontCore;
+
+	typedef za_ptr<FontCore> Font;
+
+	/* ********************************************************* */
+	// * FontCore *
+	/* ********************************************************* */
+	class ZAAP_API FontCore
 	{
-		//static methods
+	public:
+		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 2048;
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Loaders //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
 
-		static Mat4 CreateFontTransformationMatrix(const Vec3 &position, const float &fontSize);
-
-		//This methods returns all the characters that are supported by a certain ZA_FONT_CHAR_FORMAT
-		static String GetFormatCharacters(ZA_FONT_CHAR_FORMAT format);
-
-		//This methods loads a FTT file and creates a Font object from it
-		static Font LoadFTTFile(String file, ZA_FONT_CHAR_FORMAT format);
-		static Font LoadFTTFile(String file, String chars);
-
-		// <Function>
-		//      LoadFontFromTXT
+		// <Method>
+		//      LoadFont
 		//
 		// <Description>
-		//      This file loads the needed information from a text file.
+		//      This loads a font from the source file.
 		//
-		// <Note>
-		//      This method will be rewritten. It's just a temporary loader for leit2.
+		// <Input>
+		//      srcFile::
+		//          The source file where the @FontCore should be loaded from.;;
+		//      result::
+		//           A @ZA_RESULT that indicates if everything worked.;;
 		//
-		static Font LoadFontFromTXT(String file, String textureFile, uint size);
+		// <Return>
+		//      This returns the loaded Font.
+		//
+		static Font LoadFont(const String& srcFile, ZA_RESULT* result);
 
-		//Members
+		// <Method>
+		//      LoadFontCore
+		//
+		// <Description>
+		//      This loads a @FontCore from the source file.
+		//
+		// <Input>
+		//      srcFile::
+		//          The source file where the @FontCore should be loaded from.;;
+		//      result::
+		//           A @ZA_RESULT that indicates if everything worked.;;
+		//
+		// <Return>
+		//      This returns the loaded @FontCore.
+		//
+		static FontCore* LoadFontCore(const String& srcFile, ZA_RESULT* result);
+
+		//This methods loads a FTT file and creates a Font object from it
+		static FontCore* LoadTTFFile(const String& srcFile, ZA_RESULT* result);
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Class //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
-		static uint const ZAAP_FONT_DEFAULT_BITMAP_SIZE = 1024;
+		friend class gui::VertexBufferHelper;
 
-		float m_Size;
+		float m_LineHeight;
 		String m_Chars;
+		std::vector<ZA_FONT_CHAR_INFO> m_CharInfo;
+		API::Texture2D m_CharSheet;
 
-		// loaded chars
-		API::Texture2D* m_CharSheet;
-		std::vector<ZA_CharacterInfo> m_CharInfo;
-		ZA_CharMarix m_MaxCharSize;
-
-		//Methods
+		FontCore();
 	public:
-		Font();
-		Font(String chars);
+		~FontCore();
 
-		//render
-		API::VertexBuffer* getVertexBuffer(String string);
-		void render(API::VertexBuffer *vb, Renderer3D* renderer);
+		/* ********************************************************* */
+		// * Util *
+		/* ********************************************************* */
 
-		//util
-		uint getCharIndex(char c) const;
+		/* ##################################### */
+		// # Chars #
+		/* ##################################### */
+		uint getCharIndex(const char& c) const;
 		uint getCharCount() const;
+
+		bool isCharValid(const char& c) const;
+
+		/* ##################################### */
+		// # String #
+		/* ##################################### */
+		uint getStringWidth(const String& string, const float& fontSize);
+		uint getStringHeight(const String& string, const float& fontSize);
+
+		Dimensions getStringSize(const String& string, const float& fontSize);
+		
+		/* ##################################### */
+		// # CharSheet Util #
+		/* ##################################### */
+		void bindCharShreet(const uint& index) const;
+		void unbindCharShreet(const uint& index) const;
+
+		void setCharSheet(API::Texture2D charSheet);
+		API::Texture2D getCharSheet() const;
 	};
 		
 }}

@@ -1,24 +1,35 @@
 #pragma once
 
 #include <Common.h>
-#include <Types.h>
 
 #include "Texture.h"
 #include "graphics/Format.h"
 
 namespace zaap { namespace graphics { namespace API {
 
-	class ZAAP_API Texture2D : public Texture
+	// <Class>
+	//      Texture2DCore
+	//
+	// <Description>
+	//      This class is the base class for other @Texture2DCores.
+	//
+	// <Note>
+	//      This is only a representational object for the API textures.
+	//
+	class ZAAP_API Texture2DCore : public TextureCore
 	{
 	protected:
 		uint m_Width;
 		uint m_Height;
 		ZA_FORMAT m_Format;
+
+		//TODO save ZA_TEX2D_DESC
+		//TODO enable dynamic updating
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Constructors //
+		// // Constructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		Texture2D(const String& textureName);
+		Texture2DCore(const String& textureName);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Util // 
@@ -38,8 +49,7 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be bound to.
 		//
-		virtual void bind(uint slot) = 0;
-
+		virtual void bind(uint slot = 0) = 0;
 		// <Function>
 		//      unbind
 		//
@@ -54,7 +64,7 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be unbound from.
 		//
-		virtual void unbind(uint slot) = 0;
+		virtual void unbind(uint slot = 0) = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Getters // 
@@ -73,8 +83,7 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Width.
 		//
-		uint getWidth(void) const;
-
+		uint getWidth() const;
 		// <Function>
 		//      getHeight
 		// 
@@ -88,7 +97,15 @@ namespace zaap { namespace graphics { namespace API {
 		// <Return>
 		//      This returns the value of m_Height.
 		//
-		uint getHeight(void) const;
+		uint getHeight() const;
+
+		// <Method>
+		//      getTextureType
+		//
+		// <Return>
+		//      This method returns the texture type.
+		//
+		ZA_TEXTURE_TYPE getTextureType() const override;
 	};
 
 }}}
