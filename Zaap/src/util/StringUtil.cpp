@@ -62,12 +62,11 @@ namespace zaap {
 		size_t offset = 0;
 		size_t pos;
 
-		//tests if the oldString can be replaced directly
 		while ((pos = baseString.find(oldString, offset)) != baseString.npos)
 		{
 			baseString.replace(pos, oldString.size(), newString);
 
-			offset = pos + newString.size(); // move one more maybe
+			offset = pos + newString.size();
 		}
 
 		return baseString;
