@@ -276,6 +276,9 @@
     <ClCompile Include="src\graphics\API\DX\DXTexture2DCore.cpp">
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClCompile>
+    <ClCompile Include="src\system\FileSystem.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -493,6 +496,9 @@
     </ClInclude>
     <ClInclude Include="src\graphics\API\DX\DXTexture2DCore.h">
       <Filter>Source Files\src\graphics\API\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\FileSystem.h">
+      <Filter>Source Files\src\system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

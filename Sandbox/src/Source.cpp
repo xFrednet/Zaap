@@ -6,6 +6,7 @@ using namespace API;
 using namespace scene;
 using namespace gui;
 using namespace std;
+using namespace system;
 
 Scene* scene_			= nullptr;
 LightSetup *lightSetup	= nullptr;
@@ -140,6 +141,14 @@ int main(void)
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZA_INFO(id1);
+
+
+	SetWorkingDirectory("E:\\Temp\\Temp\\dawd wad awd aw daw daw dawd");
+	cout << GetWorkingDirectory().c_str() << endl;
+
+	cin.get();
+
+	return 0;
 
 	//source
 	{
