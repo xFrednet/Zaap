@@ -3,7 +3,6 @@
 
 #ifdef ZA_OS_WINDOWS
 #	include <windows.h>
-#	include <Shlwapi.h>
 #	include <sys/stat.h>  //works on Linux, UNIX and Windows
 #endif
 
@@ -17,20 +16,36 @@ namespace zaap { namespace system {
 	// * Directories *
 	/* ********************************************************* */
 	list<String> root_dir_list;
+	const String exe_file_directory_ = GetExeDirectory();
+	const String first_working_directory_ = GetWorkingDirectory();
 	char char_buffer[CHAR_BUFFER_SIZE];
 
 	/* ##################################### */
 	// # Root directories #
 	/* ##################################### */
-	void AddRootDir(String directory)
+	bool AddRootDir(String directory)
 	{
+		if (directory.at(directory.length() - 1) == '\\')
+			directory = directory.substr(0, directory.length() - 1);
+
 		if (IsPathRelativ(directory))
 		{
-			//TODO do shit I don't know what
+			if (directory.find_first_of('\\') != 0)
+				directory = "\\" + directory;
+			if (DoesDirExists(first_working_directory_ + directory))
+				directory = first_working_directory_ + directory;
+			else if (DoesDirExists(exe_file_directory_ + directory))
+				directory = exe_file_directory_ + directory;
+			else if (DoesDirExists(GetWorkingDirectory() + directory))
+				directory = GetWorkingDirectory() + directory;
+			else
+				return false;
 		}
 
-
 		root_dir_list.push_back(directory);
+		ZA_INFO("AddRootDir: new root directory: \"", directory.c_str(), "\"");
+
+		return true;
 	}
 	void RemoveRootDir(String directory)
 	{
@@ -45,6 +60,25 @@ namespace zaap { namespace system {
 	list<String> GetRootDirs()
 	{
 		return root_dir_list;
+	}
+#ifdef ZA_OS_WINDOWS
+	String GetExeDirectory()
+	{
+		DWORD bufferSize = GetModuleFileName(NULL, char_buffer, CHAR_BUFFER_SIZE);
+		ZA_ASSERT(bufferSize);
+
+		String result(char_buffer);
+
+		if (bufferSize > CHAR_BUFFER_SIZE)
+		{
+			char* buffer = new char[bufferSize];
+			ZA_ASSERT(buffer);
+			GetModuleFileName(NULL, buffer, bufferSize);
+			result = buffer;
+			delete[] buffer;
+		}
+
+		return result.substr(0, result.find_last_of("\\"));
 	}
 
 	/* ##################################### */
@@ -72,6 +106,23 @@ namespace zaap { namespace system {
 
 		return result;
 	}
+#else
+	String GetExeDirectory()
+	{
+		ZA_ASSERT(false, "GetExeDirectory isn't implemented for this OS yet");
+		return "";
+	}
+	void SetWorkingDirectory(String directory)
+	{
+		ZA_ASSERT(false, "SetWorkingDirectory isn't implemented for this OS yet");
+		return "";
+	}
+	String GetWorkingDirectory()
+	{
+		#ZA_ASSERT(false, "GetWorkingDirectory isn't implemented for this OS yet");
+		return "";
+	}
+#endif
 
 	/* ##################################### */
 	// # Directory util #
@@ -91,7 +142,7 @@ namespace zaap { namespace system {
 	}
 	bool IsPathRelativ(String directory)
 	{
-		return PathIsRelative(directory.c_str());
+		return directory.find(':') == directory.npos;
 	}
 	bool CreateDir(String directory)
 	{
@@ -142,22 +193,22 @@ namespace zaap { namespace system {
 #else
 	bool IsDirValid(String directory)
 	{
-		ZA_ASSERT("Why would you call a Function that isn't implemented... Oh right I have to implement...");
+		ZA_ASSERT(false, "Why would you call a Function that isn't implemented... Oh right I have to implement...");
 		return false;
 	}
 	bool CreateDir(String directory)
 	{
-		ZA_ASSERT("CreateDir isn't implemented for this OS yet");
+		ZA_ASSERT(false, "CreateDir isn't implemented for this OS yet");
 		return false;
 	}
 	bool DoesDirExists(String directory)
 	{
-		ZA_ASSERT("DoesDirExists isn't implemented for this OS yet");
+		ZA_ASSERT(false, "DoesDirExists isn't implemented for this OS yet");
 		return false;
 	}
 	bool DeleteDir(String directory)
 	{
-		ZA_ASSERT("DeleteDir isn't implemented for this OS yet");
+		ZA_ASSERT(false, "DeleteDir isn't implemented for this OS yet");
 		return false;
 	}
 #endif
@@ -190,36 +241,51 @@ namespace zaap { namespace system {
 	}
 	String FindFile(String file)
 	{
-		//TODO find le File
+		if (file.find_first_of('\\'))
+			file = "\\" + file;
+
+		String location;
+		if (DoesFileExists(location = GetWorkingDirectory() + file))
+			return location;
+		if (DoesFileExists(location = first_working_directory_ + file))
+			return location;
+		if (DoesFileExists(location = exe_file_directory_ + file))
+			return location;
+		for (String root : root_dir_list)
+		{
+			if (DoesFileExists(root + file))
+				return root + file;
+		}
+		return "";
 	}
 #else
 	bool IsFileNameValid(String name)
 	{
-		ZA_ASSERT("IsFileNameValid isn't implemented for this OS yet");
+		ZA_ASSERT(false, "IsFileNameValid isn't implemented for this OS yet");
 		return false;
 	}
 	bool DoesFileExists(String file)
 	{
-		ZA_ASSERT("DoesFileExists isn't implemented for this OS yet");
+		ZA_ASSERT(false, "DoesFileExists isn't implemented for this OS yet");
 		return false;
 	}
 	String FindFile(String file)
 	{
-		ZA_ASSERT("FindFile isn't implemented for this OS yet");
+		ZA_ASSERT(false, "FindFile isn't implemented for this OS yet");
 		return false;
 	}
 #endif
 	ifstream OpenReadFile(String file)
 	{
-		
+		return ifstream(FindFile(file).c_str(), ios_base::in | ios_base::binary);
 	}
 	ofstream OpenWriteFile(String file)
 	{
-		
+		return ofstream(FindFile(file).c_str(), ios_base::out | ios_base::binary);
 	}
 	fstream OpenFile(String file)
 	{
-		return fstream(file.c_str(), ios_base::in | ios_base::out | ios_base::binary);
+		return fstream(FindFile(file).c_str(), ios_base::in | ios_base::out | ios_base::binary);
 	}
 
 }}

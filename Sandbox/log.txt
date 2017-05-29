@@ -1,0 +1,8 @@
+
+####################
+# ZA_ASSERT FAILED #
+####################
+Assertion: false
+File: c:\users\xfrednet\zaap\project\zaap\sandbox\src\source.cpp
+Line: 153
+Test

@@ -1,4 +1,6 @@
 #include <Zaap.h>
+#include "util/Log.h"
+#include "util/Log.h"
 
 using namespace zaap;
 using namespace graphics;
@@ -142,9 +144,12 @@ int main(void)
 	RandomUUID(&id1);
 	ZA_INFO(id1);
 
+	AddRootDir("res\\");
+	cout << "==================================================================" << endl;
+	cout << "Find file: findFile.txt   :\"" << FindFile("\\findFile.txt") << "\"" << endl;
+	cout << "Find file: leitice.txt    :\"" << FindFile("\\leitice\\leitice.txt") << "\"" << endl;
+	cout << "Find file: heightMap.png  :\"" << FindFile("\\scene\\heightMap.png") << "\"" << endl;
 
-	SetWorkingDirectory("E:\\Temp\\Temp\\dawd wad awd aw daw daw dawd");
-	cout << GetWorkingDirectory().c_str() << endl;
 
 	cin.get();
 

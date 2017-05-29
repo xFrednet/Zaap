@@ -11,7 +11,7 @@ namespace zaap { namespace system {
 	/* ##################################### */
 	// # Root directories #
 	/* ##################################### */
-	ZAAP_API void AddRootDir(String directory);
+	ZAAP_API bool AddRootDir(String directory);
 	ZAAP_API void RemoveRootDir(String directory);
 	ZAAP_API std::list<String> GetRootDirs();
 
@@ -20,6 +20,7 @@ namespace zaap { namespace system {
 	/* ##################################### */
 	ZAAP_API void SetWorkingDirectory(String directory);
 	ZAAP_API String GetWorkingDirectory();
+	ZAAP_API String GetExeDirectory();
 
 	/* ##################################### */
 	// # Directory util #
