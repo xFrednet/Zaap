@@ -529,7 +529,7 @@ namespace zaap { namespace log {
 #endif
 
 
-#ifndef ZA_DISABLE_ASSERT
+#ifdef ZAAP_DEBUG
 #	ifdef _DEBUG
 #		define ZA_ASSERT_BREAK __debugbreak();
 #	else
@@ -550,6 +550,7 @@ namespace zaap { namespace log {
 		zaap::log::LogCloseFile();            \
 	}
 #else
+#	define ZA_ASSERT_BREAK
 #	define ZA_ASSERT(x, ...)
 #endif
 

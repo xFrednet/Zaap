@@ -145,12 +145,14 @@ int main(void)
 	ZA_INFO(id1);
 
 	AddRootDir("res\\");
+	uint32 size;
+	za_ptr<byte> readFileContent = LoadFileContent("\\readTest.txt", &size);
+
 	cout << "==================================================================" << endl;
-	cout << "Find file: findFile.txt   :\"" << FindFile("\\findFile.txt") << "\"" << endl;
-	cout << "Find file: leitice.txt    :\"" << FindFile("\\leitice\\leitice.txt") << "\"" << endl;
-	cout << "Find file: heightMap.png  :\"" << FindFile("\\scene\\heightMap.png") << "\"" << endl;
-
-
+	cout << "Find file: findFile.txt   :\"" << GetFilePath("\\findFile.txt") << "\"" << endl;
+	cout << "Find file: leitice.txt    :\"" << GetFilePath("\\leitice\\leitice.txt") << "\"" << endl;
+	cout << "Find file: heightMap.png  :\"" << GetFilePath("\\scene\\heightMap.png") << "\"" << endl;
+	cout << "Content:   readFile.txt   :\"" << readFileContent << "\"" << endl;
 	cin.get();
 
 	return 0;

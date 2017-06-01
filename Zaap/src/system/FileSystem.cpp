@@ -47,7 +47,7 @@ namespace zaap { namespace system {
 
 		return true;
 	}
-	void RemoveRootDir(String directory)
+	void RemoveRootDir(const String& directory)
 	{
 		list<String>::iterator it;
 		for (it = root_dir_list.begin(); it != root_dir_list.end(); it++) {
@@ -84,7 +84,7 @@ namespace zaap { namespace system {
 	/* ##################################### */
 	// # Save directory #
 	/* ##################################### */
-	void SetWorkingDirectory(String directory)
+	void SetWorkingDirectory(const String& directory)
 	{
 		if (DoesDirExists(directory))
 			SetCurrentDirectory(directory.c_str());
@@ -112,7 +112,7 @@ namespace zaap { namespace system {
 		ZA_ASSERT(false, "GetExeDirectory isn't implemented for this OS yet");
 		return "";
 	}
-	void SetWorkingDirectory(String directory)
+	void SetWorkingDirectory(const String& directory)
 	{
 		ZA_ASSERT(false, "SetWorkingDirectory isn't implemented for this OS yet");
 		return "";
@@ -128,7 +128,7 @@ namespace zaap { namespace system {
 	// # Directory util #
 	/* ##################################### */
 #ifdef ZA_OS_WINDOWS
-	bool IsDirNameValid(String directory)
+	bool IsDirNameValid(const String& directory)
 	{
 		return (directory.length() < MAX_PATH) &&
 			(directory.find("<") == directory.npos) &&
@@ -140,11 +140,11 @@ namespace zaap { namespace system {
 			(directory.find("|") == directory.npos) &&
 			(directory.find(".") == directory.npos);
 	}
-	bool IsPathRelativ(String directory)
+	bool IsPathRelativ(const String& directory)
 	{
 		return directory.find(':') == directory.npos;
 	}
-	bool CreateDir(String directory)
+	bool CreateDir(const String& directory)
 	{
 		//TODO maybe/surely add SECURITY_ATTRIBUTES attributes;
 		if (IsDirNameValid(directory))
@@ -152,16 +152,16 @@ namespace zaap { namespace system {
 
 		return false;
 	}
-	bool DoesDirExists(String directory)
+	bool DoesDirExists(const String& directory)
 	{
 		struct stat info;
-
+		
 		if (SUCCEEDED(stat(directory.c_str(), &info)))
 			return (bool)(info.st_mode & S_IFDIR);
 
 		return false;
 	}
-	bool DeleteDir(String directory)
+	bool DeleteDir(const String& directory)
 	{
 		cout << directory.c_str() << endl;
 		if (!DoesDirExists(directory))
@@ -191,22 +191,22 @@ namespace zaap { namespace system {
 		return RemoveDirectory(directory.c_str());
 	}
 #else
-	bool IsDirValid(String directory)
+	bool IsDirValid(const String& directory)
 	{
 		ZA_ASSERT(false, "Why would you call a Function that isn't implemented... Oh right I have to implement...");
 		return false;
 	}
-	bool CreateDir(String directory)
+	bool CreateDir(const String& directory)
 	{
 		ZA_ASSERT(false, "CreateDir isn't implemented for this OS yet");
 		return false;
 	}
-	bool DoesDirExists(String directory)
+	bool DoesDirExists(const String& directory)
 	{
 		ZA_ASSERT(false, "DoesDirExists isn't implemented for this OS yet");
 		return false;
 	}
-	bool DeleteDir(String directory)
+	bool DeleteDir(const String& directory)
 	{
 		ZA_ASSERT(false, "DeleteDir isn't implemented for this OS yet");
 		return false;
@@ -221,7 +221,7 @@ namespace zaap { namespace system {
 	// # File util #
 	/* ##################################### */
 #ifdef ZA_OS_WINDOWS
-	bool IsFileNameValid(String file)
+	bool IsFileNameValid(const String& file)
 	{
 		return (file.length() < MAX_PATH) &&
 			(file.find("<") == file.npos) &&
@@ -234,13 +234,15 @@ namespace zaap { namespace system {
 			(file.find("/") == file.npos) &&
 			(file.find("\\") == file.npos);
 	}
-	bool DoesFileExists(String file)
+	bool DoesFileExists(const String& file)
 	{
 		struct stat info;
 		return stat(file.c_str(), &info) == 0;
 	}
-	String FindFile(String file)
+	String GetFilePath(String file)
 	{
+		if (!IsPathRelativ(file))
+			return file;
 		if (file.find_first_of('\\'))
 			file = "\\" + file;
 
@@ -249,43 +251,88 @@ namespace zaap { namespace system {
 			return location;
 		if (DoesFileExists(location = first_working_directory_ + file))
 			return location;
-		if (DoesFileExists(location = exe_file_directory_ + file))
-			return location;
-		for (String root : root_dir_list)
+		if (DoesFileExists(exe_file_directory_ + file))
+			return exe_file_directory_ + file;
+		for (const String& root : root_dir_list)
 		{
 			if (DoesFileExists(root + file))
 				return root + file;
 		}
 		return "";
 	}
+
+	uint64 GetFileSize(const String& file)
+	{
+		struct stat info;
+
+		if (SUCCEEDED(stat(GetFilePath(file).c_str(), &info)))
+			return (uint64)info.st_size;
+
+		return 0;
+	}
 #else
-	bool IsFileNameValid(String name)
+	bool IsFileNameValid(const String& name)
 	{
 		ZA_ASSERT(false, "IsFileNameValid isn't implemented for this OS yet");
 		return false;
 	}
-	bool DoesFileExists(String file)
+	bool DoesFileExists(const String& file)
 	{
 		ZA_ASSERT(false, "DoesFileExists isn't implemented for this OS yet");
 		return false;
 	}
-	String FindFile(String file)
+	String GetFilePath(String file)
 	{
-		ZA_ASSERT(false, "FindFile isn't implemented for this OS yet");
+		ZA_ASSERT(false, "GetFilePath isn't implemented for this OS yet");
 		return false;
 	}
+	uint GetFileSize(const String& file)
+	{
+		ZA_ASSERT(false, "GetFileSize isn't implemented for this OS yet");
+		return 0;
+	}
 #endif
-	ifstream OpenReadFile(String file)
+
+	/* ##################################### */
+	// # File content #
+	/* ##################################### */
+	ifstream OpenFileInStream(const String& file)
 	{
-		return ifstream(FindFile(file).c_str(), ios_base::in | ios_base::binary);
+		return ifstream(GetFilePath(file), ios_base::in | ios_base::binary);
 	}
-	ofstream OpenWriteFile(String file)
+	ofstream OpenFileOutStream(const String& file)
 	{
-		return ofstream(FindFile(file).c_str(), ios_base::out | ios_base::binary);
+		return ofstream(GetFilePath(file), ios_base::out | ios_base::binary);
 	}
-	fstream OpenFile(String file)
+	fstream OpenFile(const String& file)
 	{
-		return fstream(FindFile(file).c_str(), ios_base::in | ios_base::out | ios_base::binary);
+		return fstream(GetFilePath(file), ios_base::in | ios_base::out | ios_base::binary);
 	}
 
+	za_ptr<byte> LoadFileContent(String file, uint32* bufferSize)
+	{
+		//error check
+		ZA_ASSERT(bufferSize, "LoadFileContent: ", file);
+		if (!bufferSize || (file = GetFilePath(file)).length() == 0) {
+			*bufferSize = 0;
+			return nullptr;
+		}
+
+		//Buffer and file size
+		*bufferSize = (uint32)GetFileSize(file);
+
+		byte* buffer = new byte[*bufferSize + 1];
+		buffer[*bufferSize] = 0;
+
+		//reading Data
+		ifstream stream = ifstream(file, ios_base::in | ios_base::binary);
+		if (stream.is_open())
+		{
+			stream.read((char*)buffer, *bufferSize);
+			stream.close();
+			return za_ptr<byte>(buffer);
+		}
+		delete[] buffer;
+		return nullptr;
+	}
 }}
