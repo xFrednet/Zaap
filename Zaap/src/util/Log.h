@@ -528,18 +528,29 @@ namespace zaap { namespace log {
 #	define ZA_FATAL_(...)
 #endif
 
-#ifndef ZA_ASSERT
+
+#ifdef ZAAP_DEBUG
+#	ifdef _DEBUG
+#		define ZA_ASSERT_BREAK __debugbreak();
+#	else
+#		define ZA_ASSERT_BREAK std::cin.get();
+#	endif
+
 #	define ZA_ASSERT(x, ...)                      \
-		if (!(x)) {                               \
-			ZA_FATAL_("");                        \
-			ZA_FATAL_("####################");    \
-			ZA_FATAL_("# ZA_ASSERT FAILED #");    \
-			ZA_FATAL_("####################");    \
-			ZA_FATAL_("Assertion: ", (char*)#x);  \
-			ZA_FATAL_("File: ", __FILE__);        \
-			ZA_FATAL_("Line: ", __LINE__);        \
-			ZA_FATAL_(__VA_ARGS__);               \
-			__debugbreak();                       \
-			zaap::log::LogCloseFile();            \
-		}
+	if (!(x)) {                               \
+		ZA_FATAL_("");                        \
+		ZA_FATAL_("####################");    \
+		ZA_FATAL_("# ZA_ASSERT FAILED #");    \
+		ZA_FATAL_("####################");    \
+		ZA_FATAL_("Assertion: ", (char*)#x);  \
+		ZA_FATAL_("File: ", __FILE__);        \
+		ZA_FATAL_("Line: ", __LINE__);        \
+		ZA_FATAL_(__VA_ARGS__);               \
+		ZA_ASSERT_BREAK;                      \
+		zaap::log::LogCloseFile();            \
+	}
+#else
+#	define ZA_ASSERT_BREAK
+#	define ZA_ASSERT(x, ...)
 #endif
+

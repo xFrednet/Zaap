@@ -1,4 +1,6 @@
 #include <Zaap.h>
+#include "util/Log.h"
+#include "util/Log.h"
 
 using namespace zaap;
 using namespace graphics;
@@ -6,6 +8,7 @@ using namespace API;
 using namespace scene;
 using namespace gui;
 using namespace std;
+using namespace system;
 
 Scene* scene_			= nullptr;
 LightSetup *lightSetup	= nullptr;
@@ -140,6 +143,16 @@ int main(void)
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZA_INFO(id1);
+
+	AddRootDir("res\\");
+	uint32 size;
+	za_ptr<byte> readFileContent = LoadFileContent("\\readTest.txt", &size);
+
+	cout << "==================================================================" << endl;
+	cout << "Find file: findFile.txt   :\"" << GetFilePath("\\findFile.txt") << "\"" << endl;
+	cout << "Find file: leitice.txt    :\"" << GetFilePath("\\leitice\\leitice.txt") << "\"" << endl;
+	cout << "Find file: heightMap.png  :\"" << GetFilePath("\\scene\\heightMap.png") << "\"" << endl;
+	cout << "Content:   readFile.txt   :\"" << readFileContent << "\" [" << size << "]" << endl;
 
 	//source
 	{

@@ -51,7 +51,8 @@ namespace zaap { namespace scene {
 		: m_TerrainDesc(terrainDesc),
 		m_Vertices(0)
 	{
-		init(folder);
+		//TODO improve file loading add File and directory testing
+		init(system::GetFilePath(folder));
 	}
 
 	//
@@ -59,7 +60,7 @@ namespace zaap { namespace scene {
 	//
 	void Terrain::init(String folder)
 	{
-		initVertices(String(folder + "heightMap.png"), String(folder + "textureMap.png"));
+		initVertices(String(folder + "\\heightMap.png"), String(folder + "\\textureMap.png"));
 		initTexture(folder);
 
 		m_ParrentNode = TerrainPart::CreateTerrainPart(0, 0, m_VCountHorizontal, m_VCountVertical, this);

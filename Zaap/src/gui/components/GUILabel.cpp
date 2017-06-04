@@ -59,8 +59,7 @@ namespace zaap { namespace gui{
 	{
 	}
 	GUILabel::GUILabel(const Point& pos, const int& prefWidth, const int& prefHeight, const String& text, 
-		const Font& font, const float& textSize, const Color& textColor, 
-		const Color& background)
+		const Font& font, const float& textSize, const Color& textColor, const Color& background)
 		: GUIComponent(0, 0),
 		m_Text(text),
 		m_TextSize(textSize),

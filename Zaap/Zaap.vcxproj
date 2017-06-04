@@ -37,6 +37,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -44,6 +45,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (MT)|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -51,6 +53,7 @@
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -286,6 +289,7 @@
     <ClCompile Include="src\maths\Vec4.cpp" />
     <ClCompile Include="src\scene\terrain\Terrain.cpp" />
     <ClCompile Include="src\scene\terrain\TerrainPart.cpp" />
+    <ClCompile Include="src\system\FileSystem.cpp" />
     <ClCompile Include="src\util\ImageLoader.cpp" />
     <ClCompile Include="src\util\Loader.cpp" />
     <ClCompile Include="src\util\Log.cpp" />
@@ -357,6 +361,7 @@
     <ClInclude Include="src\maths\Vec4.h" />
     <ClInclude Include="src\scene\terrain\Terrain.h" />
     <ClInclude Include="src\scene\terrain\TerrainPart.h" />
+    <ClInclude Include="src\system\FileSystem.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
     <ClInclude Include="src\util\Loader.h" />

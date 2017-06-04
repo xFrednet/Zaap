@@ -4,6 +4,7 @@
 
 #include <FreeImage.h>
 #include <FreeImage/Utilities.h>
+#include "system/FileSystem.h"
 
 #pragma comment (lib, "FreeImage.lib")
 
@@ -37,6 +38,8 @@ namespace zaap
 			Init();
 		}
 
+		String filePathString = system::GetFilePath(filePath);
+		filePath = filePathString.c_str();
 		*width = 0;
 		*height = 0;
 		*bits = 0;
