@@ -11,14 +11,13 @@ namespace zaap { namespace graphics {
 		/*	newmtl Material
 		Ns 96.078431
 		Ka 0.000000 0.000000 0.000000
-		Kd 0.597895 0.597895 0.597895 //Color
+		Kd 0.597895 0.597895 0.597895 //Diffuse color
 		Ks 0.666000 0.666000 0.666000 //Specular
 		Ni 1.000000
 		d 1.000000
 		illum 2
 		*/
-		std::ifstream fileStream;
-		fileStream.open(file);
+		std::ifstream fileStream = system::OpenFileInStream(file);
 
 		//error check
 		if (!fileStream.is_open())
@@ -53,9 +52,7 @@ namespace zaap { namespace graphics {
 			{
 				str = StringUtil::Split(line, " ");
 				color = Color((float)atof(str[1].c_str()), (float)atof(str[2].c_str()), (float)atof(str[3].c_str()));
-			}
-
-			if (StringUtil::StartsWith(line, "Ks "))
+			} else if (StringUtil::StartsWith(line, "Ks "))
 			{
 				str = StringUtil::Split(line, " ");
 				reflectivity = (float)atof(str[1].c_str());

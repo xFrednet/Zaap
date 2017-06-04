@@ -1,3 +1,3 @@
-java -jar "Line-Counter.jar" "Zaap\src" "ZaapCLI\src" "SandBox\src" "Sandbox CS\src" "start"
+java -jar "Line-Counter.jar" "Zaap\src" "SandBox\src" "start"
 
 pause

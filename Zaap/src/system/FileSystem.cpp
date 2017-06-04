@@ -309,30 +309,39 @@ namespace zaap { namespace system {
 		return fstream(GetFilePath(file), ios_base::in | ios_base::out | ios_base::binary);
 	}
 
-	za_ptr<byte> LoadFileContent(String file, uint32* bufferSize)
+	za_ptr<byte> LoadFileContent(String file, uint32* pBufferSize)
 	{
+		uint32 bufferSize;
+		if (!pBufferSize)
+			pBufferSize = &bufferSize;
+
 		//error check
-		ZA_ASSERT(bufferSize, "LoadFileContent: ", file);
-		if (!bufferSize || (file = GetFilePath(file)).length() == 0) {
-			*bufferSize = 0;
+		if ((file = GetFilePath(file)).length() == 0) {
+			*pBufferSize = 0;
 			return nullptr;
 		}
-
 		//Buffer and file size
-		*bufferSize = (uint32)GetFileSize(file);
-
-		byte* buffer = new byte[*bufferSize + 1];
-		buffer[*bufferSize] = 0;
+		*pBufferSize = (uint32)GetFileSize(file);
 
 		//reading Data
-		ifstream stream = ifstream(file, ios_base::in | ios_base::binary);
+		ifstream stream = OpenFileInStream(file);
 		if (stream.is_open())
 		{
-			stream.read((char*)buffer, *bufferSize);
+			byte* buffer = new byte[*pBufferSize + 1];
+			buffer[*pBufferSize] = 0;
+			
+			stream.read((char*)buffer, *pBufferSize);
 			stream.close();
 			return za_ptr<byte>(buffer);
 		}
-		delete[] buffer;
 		return nullptr;
+	}
+
+	String LoadFileString(String file)
+	{
+		za_ptr<byte> content = LoadFileContent(file, nullptr);
+		String s = (char*)content.get();
+		content.reset();
+		return s;
 	}
 }}

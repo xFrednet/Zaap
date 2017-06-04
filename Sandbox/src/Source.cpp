@@ -152,10 +152,7 @@ int main(void)
 	cout << "Find file: findFile.txt   :\"" << GetFilePath("\\findFile.txt") << "\"" << endl;
 	cout << "Find file: leitice.txt    :\"" << GetFilePath("\\leitice\\leitice.txt") << "\"" << endl;
 	cout << "Find file: heightMap.png  :\"" << GetFilePath("\\scene\\heightMap.png") << "\"" << endl;
-	cout << "Content:   readFile.txt   :\"" << readFileContent << "\"" << endl;
-	cin.get();
-
-	return 0;
+	cout << "Content:   readFile.txt   :\"" << readFileContent << "\" [" << size << "]" << endl;
 
 	//source
 	{

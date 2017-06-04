@@ -49,8 +49,8 @@ namespace zaap { namespace graphics { namespace DX {
 			ZA_INFO("compiled successfully");
 		} else
 		{
-			ZA_ALERT("compiling failed");
-			system("pause"); //TODO remove Debugcode
+			ZA_ASSERT(false, "DXTerrainShader compilation failed");
+			//TODO remove Debug code
 		}
 		
 		//

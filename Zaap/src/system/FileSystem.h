@@ -51,15 +51,16 @@ namespace zaap { namespace system {
 	/* ##################################### */
 	// # File content #
 	/* ##################################### */
-	ZAAP_API std::ifstream OpenFileInStream(const String& file);
-	ZAAP_API std::ofstream OpenFileOutStream(const String& file);
-	ZAAP_API std::fstream  OpenFile(const String& file);
+	ZAAP_API inline std::ifstream OpenFileInStream(const String& file);
+	ZAAP_API inline std::ofstream OpenFileOutStream(const String& file);
+	ZAAP_API inline std::fstream  OpenFile(const String& file);
 	
 	/**
 	 * \brief 
 	 * \param file The name of the file that should be loaded.
-	 * \param bufferSize The size of the returned buffer(without the terminating 0).
+	 * \param bufferSize The size of the returned buffer(without the terminating 0). It can be a null pointer.
 	 * \return The loaded data with a added 0.
 	 */
 	ZAAP_API za_ptr<byte> LoadFileContent(String file, uint32* bufferSize);
+	ZAAP_API String LoadFileString(String file);
 }}

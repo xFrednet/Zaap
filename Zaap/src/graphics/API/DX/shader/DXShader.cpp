@@ -59,7 +59,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	ZA_RESULT DXShader::createShaderFromFile(String shaderFile, D3D11_INPUT_ELEMENT_DESC* ied, uint eCount, String vSMain, String pSMain)
 	{
-		String shaderSrc = zaap::Loader::LoadFile(shaderFile);
+		String shaderSrc = system::LoadFileString(shaderFile);
 		return createShaderFromString(shaderSrc, ied, eCount, vSMain, pSMain);
 	}
 

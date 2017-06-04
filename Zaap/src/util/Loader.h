@@ -12,8 +12,6 @@ namespace zaap {
 	{
 	public:
 		static graphics::Mesh LoadOBJFile(String file);
-
-		static String LoadFile(String file);
 	};
 
 }

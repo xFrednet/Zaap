@@ -24,7 +24,10 @@
 
 #include <cmath>
 
-#include "Za.h"
 
-#include "Types.h"
-#include "ZAError.h"
+#include "Za.h"                   //macros
+
+#include "Types.h"                //types
+#include "ZAError.h"              //ZA_RESULT
+
+#include <system/FileSystem.h>    //File/Directory utilities

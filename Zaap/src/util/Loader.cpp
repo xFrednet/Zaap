@@ -27,8 +27,7 @@ namespace zaap {
 
 		Material materials[ZA_SHADER_MATERIAL_COUNT];
 		uint materialCount = 0;
-		ifstream fileStream;
-		fileStream.open(file);
+		ifstream fileStream = system::OpenFileInStream(file);
 
 		//error check
 		if (!fileStream.is_open())
@@ -160,31 +159,5 @@ namespace zaap {
 		ZA_INFO("Loaded \"", file, "\"");
 
 		return Mesh(file, vBuffer, newMaterials, materialCount);
-	}
-
-	String Loader::LoadFile(String file)
-	{
-		using namespace std;
-
-		String content;
-		fstream fileStream;
-		fileStream.open(file);
-
-		//error check
-		if (!fileStream.is_open())
-		{
-			ZA_ERROR("Could not open: ", file);
-			return "";
-		}
-
-		//loading file
-		String line;
-		while (!fileStream.eof())
-		{
-			getline(fileStream, line);
-			content += line + "\n";
-		}
-
-		return content;
 	}
 }
