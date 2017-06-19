@@ -21,8 +21,6 @@ namespace zaap
 		struct Material;
 	}
 
-	
-
 	struct UUID;
 }
 

@@ -1,6 +1,7 @@
 #include <Zaap.h>
 #include "util/Log.h"
 #include "util/Log.h"
+#include "system/MemoryManager.h"
 
 using namespace zaap;
 using namespace graphics;
@@ -102,6 +103,10 @@ public:
 	void update() override {
 		Application::update();
 		
+		if (Input::IsKeyDown(ZA_VK_ESCAPE)) {
+			stop();
+		}
+
 		count += 0.05f;
 		count2 += 0.0005f;
 		light->setColor(Color(Vec3(1.0f, 1.0f, 1.0f) * (sinf(count2) * 0.25f + 0.75f)));
@@ -138,21 +143,11 @@ public:
 
 };
 
-int main(void)
+int main2(void)
 {
 	zaap::UUID id1;
 	RandomUUID(&id1);
 	ZA_INFO(id1);
-
-	AddRootDir("res\\");
-	uint32 size;
-	za_ptr<byte> readFileContent = LoadFileContent("\\readTest.txt", &size);
-
-	cout << "==================================================================" << endl;
-	cout << "Find file: findFile.txt   :\"" << GetFilePath("\\findFile.txt") << "\"" << endl;
-	cout << "Find file: leitice.txt    :\"" << GetFilePath("\\leitice\\leitice.txt") << "\"" << endl;
-	cout << "Find file: heightMap.png  :\"" << GetFilePath("\\scene\\heightMap.png") << "\"" << endl;
-	cout << "Content:   readFile.txt   :\"" << readFileContent << "\" [" << size << "]" << endl;
 
 	//source
 	{

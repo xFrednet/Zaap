@@ -290,6 +290,7 @@
     <ClCompile Include="src\scene\terrain\Terrain.cpp" />
     <ClCompile Include="src\scene\terrain\TerrainPart.cpp" />
     <ClCompile Include="src\system\FileSystem.cpp" />
+    <ClCompile Include="src\system\MemoryManager.cpp" />
     <ClCompile Include="src\util\ImageLoader.cpp" />
     <ClCompile Include="src\util\Loader.cpp" />
     <ClCompile Include="src\util\Log.cpp" />
@@ -362,6 +363,7 @@
     <ClInclude Include="src\scene\terrain\Terrain.h" />
     <ClInclude Include="src\scene\terrain\TerrainPart.h" />
     <ClInclude Include="src\system\FileSystem.h" />
+    <ClInclude Include="src\system\MemoryManager.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
     <ClInclude Include="src\util\Loader.h" />
