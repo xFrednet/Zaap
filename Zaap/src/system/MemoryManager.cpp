@@ -2,8 +2,8 @@
 
 #include "util/Log.h"
 
-//#define ZAAP_MEM_DEBUG
-//#define ZAAP_MEM_LOG_TO_MUCH
+#define ZAAP_MEM_DEBUG
+#define ZAAP_MEM_LOG_TO_MUCH
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // Macros //
@@ -48,12 +48,27 @@ using namespace std;
 namespace zaap { namespace system
 {
 
-	//MemoryManager* MemoryManager::s_Instance = new MemoryManager();
-	byte* MemoryManager::m_AllocMem = AllocMem();
-	uint MemoryManager::m_Size = ZA_MEM_FIRST_CHUNK_SIZE;
-	ZA_MEM_BLOCK_HEADER* MemoryManager::m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_RESULT_SOURCE_GUI codes //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	MemoryManager* MemoryManager::s_Instance = new MemoryManager();
 
-	byte* MemoryManager::AllocMem(size_t chunkSize)
+	void* MemoryManager::Allocate(size_t blockSize)
+	{
+		ZA_MEM_EXASSERT(s_Instance);
+		return s_Instance->allocate(blockSize);
+	}
+	void MemoryManager::Free(void* block)
+	{
+		ZA_MEM_EXASSERT(block);
+		ZA_MEM_EXASSERT(s_Instance);
+		s_Instance->free(block);
+	}
+	
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Actual memory allocation //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	byte* MemoryManager::allocMem(size_t chunkSize)
 	{
 		ZA_ASSERT(!m_AllocMem, "Why is this not null");
 		//ZA_ASSERT(m_Size == 0, "Why is this not null.. it should be null");
@@ -79,10 +94,9 @@ namespace zaap { namespace system
 
 		return m_AllocMem;
 	}
-	bool MemoryManager::AllocMoreMem(size_t chunkSize)
+	bool MemoryManager::allocMoreMem(size_t chunkSize)
 	{
 		size_t oldSize = m_Size;
-		size_t newSize = m_Size + chunkSize;
 		m_Size = 0;
 		byte* oldAlloc = m_AllocMem;
 		byte* newAlloc = (byte*)realloc(m_AllocMem, oldSize + chunkSize);
@@ -95,6 +109,7 @@ namespace zaap { namespace system
 		}
 		if (newAlloc != oldAlloc)
 		{
+			ZA_ASSERT(false, "this isn't implemented jet. kill the developer");
 			//TODO move ptrs because the alloc location has changed
 		}
 		m_AllocMem = newAlloc;
@@ -134,26 +149,9 @@ namespace zaap { namespace system
 		ZA_MEM_INFO("Freed all memory. Bye bye");
 	}
 
-	//MemoryManager::MemoryManager()
-	//	: m_AllocMem(nullptr),
-	//	m_Size(0),
-	//	m_AllocHeader(nullptr)
-	//{
-	//	if (!AllocMem(ZA_MEM_FIRST_CHUNK_SIZE))
-	//	{
-	//		ZA_ASSERT(false, "AllocNewMemBlock(ZA_MEM_FIRST_CHUNK_SIZE) failed");
-	//		exit(ZA_ERROR_MEM_ALLOCATION_ERROR);
-	//	}
-	//	ZA_INFO("The initialization was successful ");
-	//}
-	//MemoryManager::~MemoryManager()
-	//{
-	//	//
-	//	// Freeing memory
-	//	//
-	//	freeAllMem();
-	//	ZA_LOG_CLEANUP();
-	//}
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Initialization && Deconstruction //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void* MemoryManager::operator new(size_t sz)
 	{
 		MemoryManager* mgr = (MemoryManager*)malloc(sz);
@@ -164,7 +162,28 @@ namespace zaap { namespace system
 		::free(ptr);
 	}
 
-	void MemoryManager::Split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize)
+	MemoryManager::MemoryManager()
+		: m_AllocMem(nullptr),
+		m_Size(0),
+		m_AllocHeader(nullptr)
+	{
+		if (!allocMem(ZA_MEM_FIRST_CHUNK_SIZE))
+		{
+			ZA_ASSERT(false, "AllocNewMemBlock(ZA_MEM_FIRST_CHUNK_SIZE) failed");
+			exit(ZA_ERROR_MEM_ALLOCATION_ERROR);
+		}
+		ZA_INFO("The initialization was successful ");
+	}
+	MemoryManager::~MemoryManager()
+	{
+		//
+		// Freeing memory
+		//
+		freeAllMem();
+		ZA_LOG_CLEANUP();
+	}
+
+	void MemoryManager::split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize)
 	{
 		ZA_ASSERT(header->SIZE > minBlockSize, "WTF you can't make it bigger by splitting it");
 		ZA_ASSERT((void*)((uintptr_t)header + minBlockSize) < &m_AllocMem[m_Size - 1], "HOW?? HOW should the memBlock extend over the allocated memory");
@@ -184,7 +203,7 @@ namespace zaap { namespace system
 			ZA_MEM_EXINFO("I split a MemHeader. The new size is: ", header->SIZE, ". The other split header has a size of: ", splitHeader->SIZE, "(header: ", (uintptr_t)header, ", splitHeader", (uintptr_t)splitHeader ,")");
 		}
 	}
-	void MemoryManager::JoinFree(ZA_MEM_BLOCK_HEADER* header)
+	void MemoryManager::joinFree(ZA_MEM_BLOCK_HEADER* header)
 	{
 		ZA_ASSERT(header->STATE == ZA_MEM_BSTATE_FREE, "The state should be free!! Who did this");
 		uint8 positions = 0;
@@ -194,9 +213,10 @@ namespace zaap { namespace system
 		if (header->NEXT)
 			positions |= header->NEXT->STATE;      //0000 0000 => 0000 000S (S = STATE)
 		//TODO test if m_AllocHeader is destroyd by this
+		
 		ZA_MEM_BLOCK_HEADER* prevHeader;
 		ZA_MEM_BLOCK_HEADER* nextHeader;
-		switch (positions) //assembly
+		switch (positions)
 		{
 		// |O|F|F| => |O|F--|
 		case 0x01: 
@@ -235,7 +255,8 @@ namespace zaap { namespace system
 		}
 	}
 
-	void* MemoryManager::Allocate(size_t blockSize)
+
+	void* MemoryManager::allocate(size_t blockSize)
 	{
 		if (blockSize >= ZA_MEM_CHUNK_SIZE)
 		{
@@ -254,7 +275,7 @@ namespace zaap { namespace system
 			if (memHeader->STATE == ZA_MEM_BSTATE_FREE || memHeader->SIZE >= blockSize)
 			{
 				memHeader->STATE = ZA_MEM_BSTATE_OCCUPIED;
-				Split(memHeader, blockSize);
+				split(memHeader, blockSize);
 				if (memHeader->NEXT)
 					m_AllocHeader = memHeader->NEXT;
 				else
@@ -275,7 +296,7 @@ namespace zaap { namespace system
 		//
 		// memHeader->NEXT => nullptr => alloc new Memory
 		ZA_MEM_EXINFO("Failed to find a fitting memory block => allocating a new memory chunk");
-		if (!AllocMoreMem(ZA_MEM_CHUNK_SIZE))
+		if (!allocMoreMem(ZA_MEM_CHUNK_SIZE))
 		{
 			ZA_ASSERT(false, "AllocMoreMem failed");
 			return nullptr;
@@ -290,7 +311,7 @@ namespace zaap { namespace system
 		{
 			//TODO maybe recall this method it should work this time 
 			memHeader->STATE = ZA_MEM_BSTATE_OCCUPIED;
-			Split(memHeader, blockSize);
+			split(memHeader, blockSize);
 			if (memHeader->NEXT)
 				m_AllocHeader = memHeader->NEXT;
 			else
@@ -304,7 +325,7 @@ namespace zaap { namespace system
 		
 		//Fuck my life... I thought that would be easy
 	}
-	void MemoryManager::Free(void* block)
+	void MemoryManager::free(void* block)
 	{
 		ZA_MEM_EXASSERT(block, "Null why would you give me a nullptr?? What have I done to you")
 		ZA_ASSERT(block >= m_AllocMem + sizeof(ZA_MEM_BLOCK_HEADER) && block < &m_AllocMem[m_Size - 1]);
@@ -316,6 +337,6 @@ namespace zaap { namespace system
 		header->STATE = ZA_MEM_BSTATE_FREE;
 		
 		ZA_MEM_DEBUG_FILL(header);
-		JoinFree(header);
+		joinFree(header);
 	}
 }}

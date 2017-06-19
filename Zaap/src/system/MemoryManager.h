@@ -12,9 +12,11 @@
 #	define ZA_MEM_CHUNK_SIZE            (16 * 1024 * 1024) //16MB
 #endif
 
+#ifndef ZA_MEM_BLOCK_MIN_SPLIT_SIZE
+#	define ZA_MEM_BLOCK_MIN_SPLIT_SIZE     16
+#endif
 #define ZA_MEM_BSTATE_FREE              1
 #define ZA_MEM_BSTATE_OCCUPIED          0
-#define ZA_MEM_BLOCK_MIN_SPLIT_SIZE     16
 
 #define ZA_MEM_DEBUG_PATTERN            0xee
 
@@ -53,28 +55,73 @@ namespace zaap { namespace system {
 	class ZAAP_API MemoryManager
 	{
 	public:
-		//static MemoryManager* s_Instance;
+		static MemoryManager* s_Instance;
 	private:
-		friend void* zaap::newMalloc(size_t size);
-		friend void zaap::newFree(void* t);
-
-	private:
-		static byte* m_AllocMem;
-		static uint m_Size;
-		static ZA_MEM_BLOCK_HEADER* m_AllocHeader;
+		byte* m_AllocMem;
+		uint m_Size;
+		ZA_MEM_BLOCK_HEADER* m_AllocHeader;
 
 		//TODO move m_AllocIndex back
 
-		static byte* AllocMem(size_t chunkSize = ZA_MEM_FIRST_CHUNK_SIZE);
-		static bool AllocMoreMem(size_t chunkSize = ZA_MEM_CHUNK_SIZE);
-		static void freeAllMem();
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Actual memory allocation //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		byte* allocMem(size_t chunkSize = ZA_MEM_FIRST_CHUNK_SIZE);
+		bool allocMoreMem(size_t chunkSize = ZA_MEM_CHUNK_SIZE);
+		void freeAllMem();
 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Initialization && Deconstruction //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		static void* operator new(size_t sz);
 		static void operator delete(void* ptr);
 
-	private:
-		static inline void Split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize);
+		MemoryManager::MemoryManager();
+		MemoryManager::~MemoryManager();
+
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Initialization && Deconstruction //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 		
+		// Splitting:
+		//      H     = Header
+		//      BLOCK = the allocated memory.
+		//      FREE  = free memory that isn't used.
+		//
+		// case 1:
+		//      The block will be split if the leftover memory is large enough
+		//      to fit a ZA_MEM_BLOCK_HEADER with the minimal size of
+		//      ZA_MEM_BLOCK_MIN_SPLIT_SIZE.
+		//
+		//      +---+------------------+    +---+-------+---+------+
+		//      | H | BLOCK : FREE     | => | H | BLOCK | H | FREE |
+		//      +---+------------------+    +---+-------+---+------+
+		//      |<H>|<-MBS->|<--oMem-->|
+		//                  |<H>|<BMSZ>|
+		//
+		//      H    = ZA_MEM_BLOCK_HEADER, the header for the following memory block.
+		//      MBS  = minBlockSize, the minimal size of this block.
+		//      oMem = The memory that is over and can be used differently.
+		//      BMSZ = The minimal size of the split block (ZA_MEM_BLOCK_MIN_SPLIT_SIZE).
+		//
+		// case 2:
+		//      The block won't be split if the leftover memory is too small for
+		//      the ZA_MEM_BLOCK_HEADER and ZA_MEM_BLOCK_MIN_SPLIT_SIZE.
+		//
+		//      +---+--------------+    +---+--------------+
+		//      | H | BLOCK : FREE | => | H | BLOCK : FREE |
+		//      +---+--------------+    +---+--------------+
+		//      |<H>|<-MBS->|<oMem>|
+		//                  |<H>|<BMSZ>|
+		//
+		//      H    = ZA_MEM_BLOCK_HEADER, the header for the following memory block.
+		//      MBS  = minBlockSize, the minimal size of this block.
+		//      oMem = The memory that is over and can be used differently.
+		//      
+		//      |<H>|<BMSZ>| = are the minimal size of the for splitting. the free memory
+		//      isn't large enough to fit them so the block isn't split.
+		//
+		inline void split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize);		
 		// Possibilities
 		//      F = Free
 		//      O = Occupied
@@ -96,10 +143,14 @@ namespace zaap { namespace system {
 		//      | F | F | F | => | F         |
 		//      +---+---+---+    +---+---+---+
 		//
-		static inline void JoinFree(ZA_MEM_BLOCK_HEADER* header);
+		inline void joinFree(ZA_MEM_BLOCK_HEADER* header);
+
 	public:
 		static void* Allocate(size_t blockSize);
 		static void Free(void* block);
+	private:
+		void* allocate(size_t blockSize);
+		void free(void* block);
 	};
 
 }}

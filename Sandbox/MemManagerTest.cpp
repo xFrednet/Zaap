@@ -9,7 +9,8 @@ using namespace gui;
 using namespace std;
 using namespace system;
 
-#define TEST_COUNT              2000000
+//#define TEST_COUNT              2000000
+#define TEST_COUNT              200
 #define MIX_COUNT               (TEST_COUNT * 10)
 #define RAND_SEED               0xf4ed0e7
 #define INIT_POSSIBILITIES      9

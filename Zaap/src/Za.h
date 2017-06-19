@@ -41,8 +41,8 @@
 #	endif
 #endif
 
-#ifndef ZA_32BIT || ZA_64BIT
-#	pragma error("Zaap ERROR : The bit count of the targeted platform could not be determined!!!");
+#if !(defined(ZA_32BIT) || defined(ZA_64BIT))
+#	error Zaap ERROR : The bit count of the targeted platform could not be determined!!!
 #endif
 
 /* //////////////////////////////////////////////////////////////////////////////// */

@@ -1,8 +1,0 @@
-
-####################
-# ZA_ASSERT FAILED #
-####################
-Assertion: header->SIZE > minBlockSize
-File: c:\users\xfrednet\zaap\project\zaap\zaap\src\system\memorymanager.cpp
-Line: 169
-WTF you can't make it bigger by splitting it
