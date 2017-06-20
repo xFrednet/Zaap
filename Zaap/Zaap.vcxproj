@@ -135,7 +135,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\FreeImage\include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>ZA_OS_WINDOWS; ZAAP_DEBUG;_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZAAP_MEM_LOG_TO_MUCH;ZAAP_MEM_DEBUG;ZA_OS_WINDOWS;ZAAP_DEBUG;_CRT_SECURE_NO_WARNINGS;FREEIMAGE_LIB;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -364,6 +364,7 @@
     <ClInclude Include="src\scene\terrain\TerrainPart.h" />
     <ClInclude Include="src\system\FileSystem.h" />
     <ClInclude Include="src\system\MemoryManager.h" />
+    <ClInclude Include="src\system\za_ptr.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
     <ClInclude Include="src\util\Loader.h" />

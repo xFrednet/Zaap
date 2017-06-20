@@ -1,5 +1,6 @@
 #include <Zaap.h>
 #include "system/MemoryManager.h"
+#include "system/za_ptr.h"
 
 using namespace zaap;
 using namespace graphics;
@@ -14,6 +15,10 @@ using namespace system;
 #define MIX_COUNT               (TEST_COUNT * 10)
 #define RAND_SEED               0xf4ed0e7
 #define INIT_POSSIBILITIES      9
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // MemoryManager //
+/* //////////////////////////////////////////////////////////////////////////////// */
 
 //	index	|	size		|	probability		|
 //	1		|	4			|	0.04			|
@@ -124,12 +129,74 @@ void runTest()
 	cout << "CLOCKS_PER_SEC:         " << CLOCKS_PER_SEC << endl;
 }
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // ZASmartPointer //
+/* //////////////////////////////////////////////////////////////////////////////// */
+void ptrTestFunc1(ZASmartPointer<int> i)
+{
+	ZA_INFO("  => ptrTestFunc1");
+	ZA_INFO(*i);
+	ZA_INFO("  <= ptrTestFunc1");
+	i = (int*)newMalloc(sizeof(int));
+}
+
+void ptrTestFunc2(ZASmartPointer<int>& i)
+{
+	ZA_INFO("  => ptrTestFunc2");
+	ZA_INFO(*i);
+	ZA_INFO("  <= ptrTestFunc2");
+}
+void ptrTestFunc3(ZASmartPointer<int> i)
+{
+	ZASmartPointer<int> tp = i;
+	ZA_INFO("  => ptrTestFunc3");
+	ZA_INFO(*tp);
+	ZA_INFO("  <= ptrTestFunc3");
+}
+void ptrTestFunc4(ZASmartPointer<int> i)
+{
+	ZASmartPointer<int> tp = i;
+	ZA_INFO("  => ptrTestFunc4");
+	ZA_INFO(*i);
+	ZA_INFO("  <= ptrTestFunc4");
+}
+void ptrTestFunc5(ZASmartPointer<int> i)
+{
+	ZASmartPointer<int> tp = i;
+	ZA_INFO("  => ptrTestFunc5");
+	ptrTestFunc1(i);
+	ptrTestFunc2(i);
+	ptrTestFunc3(i);
+	ZA_INFO("  <= ptrTestFunc5");
+}
+
+void testSmartPtr()
+{
+	ZA_INFO("============START=================");
+	
+	ZASmartPointer<int> i((int*)newMalloc(sizeof(int)));
+	*i = 10;
+	ptrTestFunc1(i);
+	//ptrTestFunc2(i);
+	//ptrTestFunc3(i);
+	//ptrTestFunc4(i);
+	//ptrTestFunc5(i);
+
+	ZA_INFO("===========END====================");
+
+}
+
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // main //
+/* //////////////////////////////////////////////////////////////////////////////// */
 int main()
 {
-
 	runTest();
 
-	//MemoryManager manager;
+	//log::LogOpenFile("log.txt");
+	//testSmartPtr();
+	//log::LogCloseFile();
+
 	cin.get();
 	return 0;
 }

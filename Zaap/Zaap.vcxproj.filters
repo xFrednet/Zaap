@@ -506,6 +506,9 @@
     <ClInclude Include="src\system\MemoryManager.h">
       <Filter>Source Files\src\system</Filter>
     </ClInclude>
+    <ClInclude Include="src\system\za_ptr.h">
+      <Filter>Source Files\src\system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\graphics\API\DX\shader\DXTerrainShader.shader">
