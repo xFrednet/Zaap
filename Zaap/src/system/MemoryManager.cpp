@@ -183,6 +183,9 @@ namespace zaap { namespace system
 		ZA_LOG_CLEANUP();
 	}
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Memory Block manipulation //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void MemoryManager::split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize)
 	{
 		ZA_ASSERT(header->SIZE > minBlockSize, "WTF you can't make it bigger by splitting it");
@@ -255,7 +258,9 @@ namespace zaap { namespace system
 		}
 	}
 
-
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Allocation and deallocation of memory //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	void* MemoryManager::allocate(size_t blockSize)
 	{
 		if (blockSize >= ZA_MEM_CHUNK_SIZE)

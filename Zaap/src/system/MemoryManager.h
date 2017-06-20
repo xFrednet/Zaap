@@ -80,7 +80,7 @@ namespace zaap { namespace system {
 		MemoryManager::~MemoryManager();
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Initialization && Deconstruction //
+		// // Memory Block manipulation //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		
 		// Splitting:
@@ -118,8 +118,8 @@ namespace zaap { namespace system {
 		//      MBS  = minBlockSize, the minimal size of this block.
 		//      oMem = The memory that is over and can be used differently.
 		//      
-		//      |<H>|<BMSZ>| = are the minimal size of the for splitting. the free memory
-		//      isn't large enough to fit them so the block isn't split.
+		//      |<H>|<BMSZ>| = are the minimal size of the for splitting. The free memory
+		//                     isn't large enough to fit them so the block isn't split.
 		//
 		inline void split(ZA_MEM_BLOCK_HEADER* header, uint32 minBlockSize);		
 		// Possibilities
@@ -145,6 +145,9 @@ namespace zaap { namespace system {
 		//
 		inline void joinFree(ZA_MEM_BLOCK_HEADER* header);
 
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Allocation and deallocation of memory //
+		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
 		static void* Allocate(size_t blockSize);
 		static void Free(void* block);
