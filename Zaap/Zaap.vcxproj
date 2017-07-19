@@ -364,7 +364,6 @@
     <ClInclude Include="src\scene\terrain\TerrainPart.h" />
     <ClInclude Include="src\system\FileSystem.h" />
     <ClInclude Include="src\system\MemoryManager.h" />
-    <ClInclude Include="src\system\za_ptr.h" />
     <ClInclude Include="src\Types.h" />
     <ClInclude Include="src\util\ImageLoader.h" />
     <ClInclude Include="src\util\Loader.h" />

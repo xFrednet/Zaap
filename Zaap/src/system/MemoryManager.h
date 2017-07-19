@@ -11,21 +11,18 @@
 #	define ZA_MEM_CHUNK_SIZE            (16 * 1024 * 1024) //16MB
 #endif
 
+#ifndef ZA_MEM_PAGE_LOCATION_COUNT
+#	 define ZA_MEM_PAGE_LOCATION_COUNT  (64 - 1) // -1 for the NEXT pointer
+#endif
+
 #ifndef ZA_MEM_BLOCK_MIN_SPLIT_SIZE
-#	define ZA_MEM_BLOCK_MIN_SPLIT_SIZE  16
+#	define ZA_MEM_BLOCK_MIN_SPLIT_SIZE  16 // plus the size of the MEM_BLOCK_HEADER
 #endif
 
 #define ZA_MEM_BSTATE_FREE              1
 #define ZA_MEM_BSTATE_OCCUPIED          0
 
 #define ZA_MEM_DEBUG_PATTERN            0xee
-
-#ifndef ZAAP_MEM_DEBUG
-#	define ZAAP_MEM_DEBUG
-#endif
-#ifndef ZAAP_MEM_LOG_TO_MUCH
-#	define ZAAP_MEM_LOG_TO_MUCH
-#endif
 
 //TODO add the option to track the use count or just use the default GarbageColector
 //TODO implement suggestScan
@@ -38,54 +35,75 @@ namespace zaap
 }
 namespace zaap { namespace system {
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_MEM_LOCATION //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	typedef struct ZAAP_API ZA_MEM_LOCATION_ {
+#ifdef ZA_MEM_NULL_DELETED_LOCATION
+		union {
+#endif
+			ZA_MEM_LOCATION_* NEXT;
+			void*             MEM_BLOCK;
+#ifdef ZA_MEM_NULL_DELETED_LOCATION
+		};
+#endif
+	} ZA_MEM_LOCATION;
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_MEM_PAGE //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	typedef struct ZAAP_API ZA_MEM_PAGE_ {
+		ZA_MEM_PAGE_*   NEXT;
+		ZA_MEM_LOCATION LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT];
+		//TODO test performance with a PREV reference
+
+		ZA_MEM_PAGE_();
+	} ZA_MEM_PAGE;
+
+}}
+namespace zaap { namespace system {
+
 	// The header that is placed in front of 
 	// allocated memory blocks.
 	//
 	// 32 BIT 
 	//     => 4 bytes per pointer 
 	//
-	//  Bytes
-	//  0 0 0 0 0 0 0 0 0 0 1 1 1 1 1
-	//  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4
-	// +-------+-------+-------+-+---+
-	// | PREV  | NEXT  | SIZE  |S|UC |
-	// +-------+-------+-------+-+---+
+	//  Bytes 
+	//  0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1
+	//  1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
+	// +-------+-------+-------+-+-------+
+	// | PREV  | NEXT  | SIZE  |S|  LOC  |
+	// +-------+-------+-------+-+-------+
 	//
 	// PREV          :: The pointer to the previous memory block.
 	// NEXT          :: The pointer to the next memory block.
 	// SIZE          :: The size of this memory block. (without the header)
 	// S->STATE      :: The state of this memory block;
-	// UC->USE_COUNT :: The use count of this pointer. This is used by ZASmartPointer.
+	// LOC->LOCATION :: The ID of the Location Page that includes .
 	//
 	typedef struct ZAAP_API ZA_MEM_BLOCK_HEADER_ {
 		ZA_MEM_BLOCK_HEADER_* PREV;
 		ZA_MEM_BLOCK_HEADER_* NEXT;
 		uint32                SIZE;
 		byte                  STATE; // ZA_MEM_BSTATE_FREE or ZA_MEM_BSTATE_OCCUPIED
-		uint16                USE_COUNT;
+		ZA_MEM_LOCATION_*     LOCATION;
 	} ZA_MEM_BLOCK_HEADER;
-
-	template<typename T>
-	class ZASmartPointer;
 
 	class ZAAP_API MemoryManager
 	{
 	public:
 		static MemoryManager* s_Instance;
 	private:
-		template <typename T>
-		friend class ZASmartPointer;
-	private:
 		byte* m_AllocMem;
 		uint m_Size;
-		ZA_MEM_BLOCK_HEADER* m_AllocHeader;
 
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Actual memory allocation //
-		/* //////////////////////////////////////////////////////////////////////////////// */
-		bool allocMem(size_t chunkSize = ZA_MEM_FIRST_CHUNK_SIZE);
-		bool allocMoreMem(size_t chunkSize = ZA_MEM_CHUNK_SIZE);
-		void freeAllMem();
+		//Location List
+		ZA_MEM_PAGE*     m_PageList;
+		ZA_MEM_LOCATION* m_FreeMemLocations;
+
+		//This is the position the next allocation will start searching from
+		ZA_MEM_BLOCK_HEADER* m_AllocHeader;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization && Deconstruction //
@@ -96,11 +114,22 @@ namespace zaap { namespace system {
 
 		MemoryManager::MemoryManager();
 		MemoryManager::~MemoryManager();
+	
+		/* //////////////////////////////////////////////////////////////////////////////// */
+		// // Actual memory allocation //
+		/* //////////////////////////////////////////////////////////////////////////////// */
+	private:
+		bool allocMem(size_t chunkSize = ZA_MEM_FIRST_CHUNK_SIZE);
+		bool allocMoreMem(size_t chunkSize = ZA_MEM_CHUNK_SIZE);
+		void freeAllMem();
+
+		void allocNewLocations();
+		bool isPageUsed(ZA_MEM_PAGE* page) const;
+		void freePage(ZA_MEM_PAGE* page);
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Utilities //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-
 	public:
 		/**
 		* \brief This method tests if the given pointer is inside the bounds of this MemoryManager
@@ -187,12 +216,21 @@ namespace zaap { namespace system {
 		 */
 		inline void joinFree(ZA_MEM_BLOCK_HEADER* header);
 
+		/* ********************************************************* */
+		// * Scan the memory *
+		/* ********************************************************* */
+		void scan();
+		void scanBlock(void* mem, size_t size);
+		bool scanIsValidPointer(void* pointer);
+		
+
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Allocation and deallocation of memory //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
-		void* allocate(size_t blockSize);
+		void** allocate(size_t blockSize);
 		void free(void* block);
+		void free(void** block);
 		void suggestScan();
 	
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -211,8 +249,9 @@ namespace zaap { namespace system {
 		 */
 		static bool Contains(void* block);
 		
-		static void* Allocate(size_t blockSize);
+		static void** Allocate(size_t blockSize);
 		static void Free(void* block);
+		static void Free(void** block);
 		static void SuggestScan();
 	};
 
@@ -228,9 +267,10 @@ namespace zaap
 	{
 	}*/
 
-	inline void* newMalloc(size_t size)
+	template<typename T>
+	inline T** newMalloc(size_t size)
 	{
-		return system::MemoryManager::Allocate(size);
+		return (T**)system::MemoryManager::Allocate(size);
 		//return malloc(size);
 	}
 	inline void newFree(void* t)

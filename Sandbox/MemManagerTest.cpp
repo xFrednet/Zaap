@@ -1,6 +1,5 @@
 #include <Zaap.h>
 #include "system/MemoryManager.h"
-#include "system/za_ptr.h"
 
 using namespace zaap;
 using namespace graphics;
@@ -11,7 +10,7 @@ using namespace std;
 using namespace system;
 
 //#define TEST_COUNT              2000000
-#define TEST_COUNT              200
+#define TEST_COUNT              10
 #define MIX_COUNT               (TEST_COUNT * 10)
 #define RAND_SEED               0xf4ed0e7
 #define INIT_POSSIBILITIES      9
@@ -38,7 +37,7 @@ float probabilities_[INIT_POSSIBILITIES] =
 uint free_order_[TEST_COUNT];
 uint init_sizes_[TEST_COUNT];
 
-void* mem_blocks_[TEST_COUNT];
+void** mem_blocks_[TEST_COUNT];
 
 void initArrays()
 {
@@ -111,7 +110,7 @@ void runTest()
 
 	for (uint i = 0; i < TEST_COUNT; i++)
 	{
-		mem_blocks_[i] = newMalloc(init_sizes_[i]);
+		mem_blocks_[i] = newMalloc<void>(init_sizes_[i]);
 	}
 
 	allocTimer = (GetTickCount() - allocTimer);
@@ -132,51 +131,19 @@ void runTest()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZASmartPointer //
 /* //////////////////////////////////////////////////////////////////////////////// */
-void ptrTestFunc1(ZASmartPointer<int> i)
+void ptrTestFunc1(int** i)
 {
 	ZA_INFO("  => ptrTestFunc1");
-	ZA_INFO(*i);
+	ZA_INFO(**i);
 	ZA_INFO("  <= ptrTestFunc1");
-	i = (int*)newMalloc(sizeof(int));
-}
-
-void ptrTestFunc2(ZASmartPointer<int>& i)
-{
-	ZA_INFO("  => ptrTestFunc2");
-	ZA_INFO(*i);
-	ZA_INFO("  <= ptrTestFunc2");
-}
-void ptrTestFunc3(ZASmartPointer<int> i)
-{
-	ZASmartPointer<int> tp = i;
-	ZA_INFO("  => ptrTestFunc3");
-	ZA_INFO(*tp);
-	ZA_INFO("  <= ptrTestFunc3");
-}
-void ptrTestFunc4(ZASmartPointer<int> i)
-{
-	ZASmartPointer<int> tp = i;
-	ZA_INFO("  => ptrTestFunc4");
-	ZA_INFO(*i);
-	ZA_INFO("  <= ptrTestFunc4");
-}
-void ptrTestFunc5(ZASmartPointer<int> i)
-{
-	ZASmartPointer<int> tp = i;
-	ZA_INFO("  => ptrTestFunc5");
-	ptrTestFunc1(i);
-	ptrTestFunc2(i);
-	ptrTestFunc3(i);
-	ZA_INFO("  <= ptrTestFunc5");
+	i = newMalloc<int>(sizeof(int));
 }
 
 void testSmartPtr()
 {
 	ZA_INFO("============START=================");
 	
-	ZASmartPointer<int> i((int*)newMalloc(sizeof(int)));
-	*i = 10;
-	ptrTestFunc1(i);
+	
 	//ptrTestFunc2(i);
 	//ptrTestFunc3(i);
 	//ptrTestFunc4(i);
@@ -189,9 +156,22 @@ void testSmartPtr()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // main //
 /* //////////////////////////////////////////////////////////////////////////////// */
+struct TestStruct
+{
+	int Value;
+};
+void printIntPP(TestStruct** ts)
+{
+	cout << (*ts)->Value << endl;
+}
+
 int main()
 {
-	runTest();
+	//runTest();
+
+	int** value = newMalloc<int>(sizeof(int));
+	*(*value) = 5;
+	cout << *(*value) << endl;
 
 	//log::LogOpenFile("log.txt");
 	//testSmartPtr();

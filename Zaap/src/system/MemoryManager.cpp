@@ -14,6 +14,7 @@
 #	define ZA_MEM_ALERT(...)                ZA_ALERT(__VA_ARGS__)
 #	define ZA_MEM_ERROR(...)                ZA_ERROR(__VA_ARGS__)
 
+#	define ZA_MEM_DEBUG_CODE(x)             x
 #	define ZA_MEM_EXASSERT(...)             ZA_ASSERT(__VA_ARGS__)
 #	define ZA_MEM_DEBUG_FILL(header)        memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER)), ZA_MEM_DEBUG_PATTERN, header->SIZE)
 #else
@@ -21,6 +22,7 @@
 #	define ZA_MEM_ALERT(...)
 #	define ZA_MEM_ERROR(...)
 
+#	define ZA_MEM_DEBUG_CODE(x)
 #	define ZA_MEM_EXASSERT(...)
 #	define ZA_MEM_DEBUG_FILL(ptr, size)
 #endif
@@ -37,11 +39,25 @@
 /* ********************************************************* */
 #define ZA_MEM_FILL_ZERO(header)     memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER)), 0x00, header->SIZE)
 
-
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // definitions //
 /* //////////////////////////////////////////////////////////////////////////////// */
 using namespace std;
+
+namespace zaap { namespace system {
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_MEM_PAGE //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	ZA_MEM_PAGE_::ZA_MEM_PAGE_()
+		: NEXT(nullptr)
+	{
+		for (uint i = 0; i < ZA_MEM_PAGE_LOCATION_COUNT - 1; i++)
+		{
+			LOCATIONS[i].NEXT = &LOCATIONS[i + 1];
+		}
+	}
+}}
+
 namespace zaap { namespace system
 {
 	MemoryManager* MemoryManager::s_Instance = new MemoryManager();
@@ -133,6 +149,55 @@ namespace zaap { namespace system
 		ZA_MEM_INFO("Freed all memory. Bye bye");
 	}
 
+	void MemoryManager::allocNewLocations()
+	{
+		ZA_MEM_PAGE* page = (ZA_MEM_PAGE*)::malloc(sizeof(ZA_MEM_PAGE));
+		ZA_MEM_EXASSERT(page);
+		//Page list
+		page->NEXT = m_PageList;
+		m_PageList = page;
+		//free locations
+		page->LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT - 1].NEXT = m_FreeMemLocations;
+		m_FreeMemLocations = page->LOCATIONS;
+	}
+	bool MemoryManager::isPageUsed(ZA_MEM_PAGE* page) const
+	{
+		//=> If the Page is free all containing locations of it should be in m_FreeMemLocations
+		uint pointersFound = 0;
+		ZA_MEM_LOCATION* testLoc = m_FreeMemLocations;
+		while (testLoc)
+		{
+			if (testLoc >= page->LOCATIONS && testLoc < &page->LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT - 1])
+				pointersFound++;
+			testLoc = testLoc->NEXT;
+		}
+
+		return pointersFound == ZA_MEM_PAGE_LOCATION_COUNT;
+	}
+	void MemoryManager::freePage(ZA_MEM_PAGE* page)
+	{
+		ZA_MEM_EXASSERT(page, "A page is missing from this book");
+		ZA_MEM_EXASSERT(!isPageUsed(page), "What wants to free this used Page? Me probably, damn!!");
+
+		// remove the page from the List
+		if (m_PageList == page)
+		{
+			m_PageList = page->NEXT;
+		} else
+		{
+			ZA_MEM_PAGE* prevPage = m_PageList;
+			while (prevPage->NEXT && prevPage->NEXT != page)
+			{
+				prevPage = prevPage->NEXT;
+			}
+			ZA_MEM_EXASSERT(prevPage, "the given page is not inside the page list");
+			if (prevPage)
+				prevPage->NEXT = page->NEXT;
+		}
+
+		::free(page);
+	}
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Initialization && Deconstruction //
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -198,6 +263,7 @@ namespace zaap { namespace system
 			splitHeader->NEXT = header->NEXT;
 			splitHeader->STATE = ZA_MEM_BSTATE_FREE;
 			splitHeader->SIZE = header->SIZE - (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER));
+			ZA_MEM_FILL_ZERO(splitHeader);
 			ZA_MEM_DEBUG_FILL(splitHeader);
 
 			header->SIZE = minBlockSize;
@@ -205,6 +271,9 @@ namespace zaap { namespace system
 
 			joinFree(splitHeader);
 			ZA_MEM_EXINFO("I split a MemHeader. The new size is: ", header->SIZE, ". The other split header has a size of: ", splitHeader->SIZE, "(header: ", (uintptr_t)header, ")");
+		} else
+		{
+			memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER) + minBlockSize), 0, header->SIZE - minBlockSize);
 		}
 	}
 	void MemoryManager::joinFree(ZA_MEM_BLOCK_HEADER* header)
@@ -260,10 +329,34 @@ namespace zaap { namespace system
 		}
 	}
 
+	/* ********************************************************* */
+	// * Scan the memory *
+	/* ********************************************************* */
+
+	void MemoryManager::scan()
+	{
+		ZA_MEM_BLOCK_HEADER* header = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
+		while (header) {
+			header = header->NEXT;
+		}
+		//TODO This 
+		m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
+	}
+	void MemoryManager::scanBlock(void* mem, size_t size)
+	{
+		
+	}
+	bool MemoryManager::scanIsValidPointer(void* pointer)
+	{
+		return 
+			((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[0]) + sizeof(ZA_MEM_BLOCK_HEADER))) &&
+			((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[m_Size - 1]))); //TODO add a check if the header is in front of it
+	}
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Allocation and deallocation of memory //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void* MemoryManager::allocate(size_t blockSize)
+	void** MemoryManager::allocate(size_t blockSize)
 	{
 		ZA_MEM_EXASSERT(m_AllocMem && m_Size != 0 && m_AllocHeader, "OKAY.............. Kill your self");
 
@@ -278,6 +371,7 @@ namespace zaap { namespace system
 		// Find free Memory
 		//
 		ZA_MEM_BLOCK_HEADER* memHeader = m_AllocHeader;
+		ZA_MEM_LOCATION* location;
 		while (memHeader)
 		{
 			if (memHeader->STATE == ZA_MEM_BSTATE_FREE || memHeader->SIZE >= blockSize)
@@ -291,7 +385,17 @@ namespace zaap { namespace system
 				
 				ZA_MEM_FILL_ZERO(memHeader);
 				ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-				return (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+				
+				if (!m_FreeMemLocations)
+					allocNewLocations();
+
+				location = m_FreeMemLocations;
+				m_FreeMemLocations = location->NEXT;
+
+				ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
+
+				location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+				return (void**)&(location->MEM_BLOCK);
 			}
 			if (memHeader->NEXT)
 				memHeader = memHeader->NEXT;
@@ -311,6 +415,8 @@ namespace zaap { namespace system
 			return nullptr;
 		}
 		
+		//TODO search for improvements
+
 		//
 		// Find free Memory
 		//
@@ -328,7 +434,14 @@ namespace zaap { namespace system
 
 			ZA_MEM_FILL_ZERO(memHeader);
 			ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-			return (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+			
+			location = m_FreeMemLocations;
+			m_FreeMemLocations = location->NEXT;
+
+			ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
+
+			location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+			return (void**)&(location->MEM_BLOCK);
 		}
 		return nullptr;
 		
@@ -341,12 +454,23 @@ namespace zaap { namespace system
 		if (!contains(block))
 			return;
 
+		//Block head
 		ZA_MEM_BLOCK_HEADER* header = getBlockHeader(block);
+		ZA_MEM_LOCATION* location = header->LOCATION;
 		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BSTATE_OCCUPIED, "Stop just stop!!!")
-		header->STATE = ZA_MEM_BSTATE_FREE;
-		
 		ZA_MEM_DEBUG_FILL(header);
+		header->STATE = ZA_MEM_BSTATE_FREE;
+
+		//location pointer
+		ZA_MEM_DEBUG_CODE(location->MEM_BLOCK = nullptr);
+		location->NEXT = m_FreeMemLocations;
+		m_FreeMemLocations = location;
+
 		joinFree(header);
+	}
+	void MemoryManager::free(void** block)
+	{
+		free(&block);
 	}
 	void MemoryManager::suggestScan()
 	{
@@ -369,10 +493,16 @@ namespace zaap { namespace system
 		return s_Instance->contains(block);
 	}
 
-	void* MemoryManager::Allocate(size_t blockSize)
+	void** MemoryManager::Allocate(size_t blockSize)
 	{
 		ZA_MEM_EXASSERT(s_Instance);
 		return s_Instance->allocate(blockSize);
+	}
+	void MemoryManager::Free(void** block)
+	{
+		ZA_MEM_EXASSERT(block);
+		ZA_MEM_EXASSERT(s_Instance);
+		s_Instance->free(block);
 	}
 	void MemoryManager::Free(void* block)
 	{
