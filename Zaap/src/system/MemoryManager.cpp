@@ -2,6 +2,8 @@
 
 #include "util/Log.h"
 
+#include <new>
+
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // Macros //
 /* //////////////////////////////////////////////////////////////////////////////// */
@@ -43,21 +45,6 @@
 // // definitions //
 /* //////////////////////////////////////////////////////////////////////////////// */
 using namespace std;
-
-namespace zaap { namespace system {
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // ZA_MEM_PAGE //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	ZA_MEM_PAGE_::ZA_MEM_PAGE_()
-		: NEXT(nullptr)
-	{
-		for (uint i = 0; i < ZA_MEM_PAGE_LOCATION_COUNT - 1; i++)
-		{
-			LOCATIONS[i].NEXT = &LOCATIONS[i + 1];
-		}
-	}
-}}
-
 namespace zaap { namespace system
 {
 	MemoryManager* MemoryManager::s_Instance = new MemoryManager();
@@ -153,9 +140,16 @@ namespace zaap { namespace system
 	{
 		ZA_MEM_PAGE* page = (ZA_MEM_PAGE*)::malloc(sizeof(ZA_MEM_PAGE));
 		ZA_MEM_EXASSERT(page);
+		page->NEXT = nullptr;
+		for (uint i = 0; i < ZA_MEM_PAGE_LOCATION_COUNT - 1; i++) {
+			page->LOCATIONS[i].NEXT = &page->LOCATIONS[i + 1];
+			ZA_MEM_DEBUG_CODE(page->LOCATIONS[i].MEM_BLOCK = nullptr);
+		}
+
 		//Page list
 		page->NEXT = m_PageList;
 		m_PageList = page;
+
 		//free locations
 		page->LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT - 1].NEXT = m_FreeMemLocations;
 		m_FreeMemLocations = page->LOCATIONS;
@@ -263,8 +257,7 @@ namespace zaap { namespace system
 			splitHeader->NEXT = header->NEXT;
 			splitHeader->STATE = ZA_MEM_BSTATE_FREE;
 			splitHeader->SIZE = header->SIZE - (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER));
-			ZA_MEM_FILL_ZERO(splitHeader);
-			ZA_MEM_DEBUG_FILL(splitHeader);
+			//TODO WTF this needs a lot of performance, is this needed????? ZA_MEM_FILL_ZERO(splitHeader);
 
 			header->SIZE = minBlockSize;
 			header->NEXT = splitHeader;
@@ -395,6 +388,7 @@ namespace zaap { namespace system
 				ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
 
 				location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+				memHeader->LOCATION = location;
 				return (void**)&(location->MEM_BLOCK);
 			}
 			if (memHeader->NEXT)
@@ -441,6 +435,7 @@ namespace zaap { namespace system
 			ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
 
 			location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
+			memHeader->LOCATION = location;
 			return (void**)&(location->MEM_BLOCK);
 		}
 		return nullptr;
@@ -470,7 +465,7 @@ namespace zaap { namespace system
 	}
 	void MemoryManager::free(void** block)
 	{
-		free(&block);
+		free(*block);
 	}
 	void MemoryManager::suggestScan()
 	{

@@ -3,6 +3,14 @@
 #include "Za.h"
 #include "Types.h"                //types
 
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // Macros //
+/* //////////////////////////////////////////////////////////////////////////////// */
+//#define zanew(type, constructorObjects)     (&(new (*zaap::system::MemoryManager::Allocate(sizeof(type))) type constructorObjects))
+#define zadelete                            delete
+
+
+#pragma region Option Macros
 #ifndef ZA_MEM_FIRST_ALLOC_SIZE
 #	define ZA_MEM_FIRST_CHUNK_SIZE      (256 * 1024 * 1024) //256MB
 #endif
@@ -19,20 +27,18 @@
 #	define ZA_MEM_BLOCK_MIN_SPLIT_SIZE  16 // plus the size of the MEM_BLOCK_HEADER
 #endif
 
+#undef ZAAP_MEM_LOG_TO_MUCH
+
 #define ZA_MEM_BSTATE_FREE              1
 #define ZA_MEM_BSTATE_OCCUPIED          0
 
 #define ZA_MEM_DEBUG_PATTERN            0xee
 
-//TODO add the option to track the use count or just use the default GarbageColector
+#pragma endregion 
+
 //TODO implement suggestScan
 //TODO move m_AllocIndex back
 
-namespace zaap
-{
-	inline void* newMalloc(size_t size);
-	inline void newFree(void* t);
-}
 namespace zaap { namespace system {
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -56,13 +62,11 @@ namespace zaap { namespace system {
 		ZA_MEM_PAGE_*   NEXT;
 		ZA_MEM_LOCATION LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT];
 		//TODO test performance with a PREV reference
-
-		ZA_MEM_PAGE_();
 	} ZA_MEM_PAGE;
 
-}}
-namespace zaap { namespace system {
-
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_MEM_BLOCK_HEADER //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	// The header that is placed in front of 
 	// allocated memory blocks.
 	//
@@ -90,6 +94,9 @@ namespace zaap { namespace system {
 		ZA_MEM_LOCATION_*     LOCATION;
 	} ZA_MEM_BLOCK_HEADER;
 
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // MemoryManager //
+	/* //////////////////////////////////////////////////////////////////////////////// */
 	class ZAAP_API MemoryManager
 	{
 	public:
@@ -222,7 +229,6 @@ namespace zaap { namespace system {
 		void scan();
 		void scanBlock(void* mem, size_t size);
 		bool scanIsValidPointer(void* pointer);
-		
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Allocation and deallocation of memory //
@@ -256,26 +262,11 @@ namespace zaap { namespace system {
 	};
 
 }}
-namespace zaap
+
+template <typename T, typename... Args>
+inline T** zanew(Args&&... args)
 {
-	/*template<typename T>
-	T* operator new(size_t objSize) {
-	}
-
-	template<typename T>
-	void operator delete(T obj)
-	{
-	}*/
-
-	template<typename T>
-	inline T** newMalloc(size_t size)
-	{
-		return (T**)system::MemoryManager::Allocate(size);
-		//return malloc(size);
-	}
-	inline void newFree(void* t)
-	{
-		system::MemoryManager::Free(t);
-		//free(t);
-	}
+	T** t = (T**)zaap::system::MemoryManager::Allocate(sizeof(T));
+	new (*t) T(args...);
+	return t;
 }

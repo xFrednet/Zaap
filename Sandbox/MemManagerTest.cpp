@@ -9,8 +9,8 @@ using namespace gui;
 using namespace std;
 using namespace system;
 
-//#define TEST_COUNT              2000000
-#define TEST_COUNT              10
+#define TEST_COUNT              2000000
+//#define TEST_COUNT              10000
 #define MIX_COUNT               (TEST_COUNT * 10)
 #define RAND_SEED               0xf4ed0e7
 #define INIT_POSSIBILITIES      9
@@ -110,14 +110,14 @@ void runTest()
 
 	for (uint i = 0; i < TEST_COUNT; i++)
 	{
-		mem_blocks_[i] = newMalloc<void>(init_sizes_[i]);
+		//mem_blocks_[i] = newMalloc<void>(init_sizes_[i]);
 	}
 
 	allocTimer = (GetTickCount() - allocTimer);
 	freeTimer = GetTickCount();
 
 	for (uint i = 0; i < TEST_COUNT; i++) {
-		newFree(mem_blocks_[free_order_[i]]);
+		//newFree(mem_blocks_[free_order_[i]]);
 	}
 	totalTimer = GetTickCount() - totalTimer;
 	freeTimer = GetTickCount() - freeTimer;
@@ -136,7 +136,7 @@ void ptrTestFunc1(int** i)
 	ZA_INFO("  => ptrTestFunc1");
 	ZA_INFO(**i);
 	ZA_INFO("  <= ptrTestFunc1");
-	i = newMalloc<int>(sizeof(int));
+	//i = newMalloc<int>(sizeof(int));
 }
 
 void testSmartPtr()
@@ -168,10 +168,16 @@ void printIntPP(TestStruct** ts)
 int main()
 {
 	//runTest();
+	int i = 10;
+	Vec3** vec = zanew<Vec3>(i, 1, 1);
+	cout << (*vec)->X << endl;
 
-	int** value = newMalloc<int>(sizeof(int));
-	*(*value) = 5;
-	cout << *(*value) << endl;
+	cout << sizeof(ImageLoader) << endl;
+	// constructor vecpp();
+	
+	//int** value = newMalloc<int>(sizeof(int));
+	//*(*value) = 5;
+	//cout << *(*value) << endl;
 
 	//log::LogOpenFile("log.txt");
 	//testSmartPtr();
