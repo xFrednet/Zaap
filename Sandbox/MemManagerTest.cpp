@@ -169,10 +169,9 @@ int main()
 {
 	//runTest();
 	int i = 10;
-	Vec3** vec = zanew<Vec3>(i, 1, 1);
-	cout << (*vec)->X << endl;
+	auto vec = zanew<Vec3>();
+	cout << vec->X << endl;
 
-	cout << sizeof(ImageLoader) << endl;
 	// constructor vecpp();
 	
 	//int** value = newMalloc<int>(sizeof(int));

@@ -2,13 +2,7 @@
 
 #include "Za.h"
 #include "Types.h"                //types
-
-/* //////////////////////////////////////////////////////////////////////////////// */
-// // Macros //
-/* //////////////////////////////////////////////////////////////////////////////// */
-//#define zanew(type, constructorObjects)     (&(new (*zaap::system::MemoryManager::Allocate(sizeof(type))) type constructorObjects))
-#define zadelete                            delete
-
+#include "za_ptr.h"
 
 #pragma region Option Macros
 #ifndef ZA_MEM_FIRST_ALLOC_SIZE
@@ -263,10 +257,24 @@ namespace zaap { namespace system {
 
 }}
 
-template <typename T, typename... Args>
-inline T** zanew(Args&&... args)
+template <typename T>
+inline za_ptr_<T> zanew()
 {
-	T** t = (T**)zaap::system::MemoryManager::Allocate(sizeof(T));
+	zaap::ZAPtrWrapper<T> t((T**)zaap::system::MemoryManager::Allocate(sizeof(T)));
+	new (t.get()) T();
+	return t;
+}
+template <typename T, typename... Args>
+inline za_ptr_<T> zanew(Args&&... args)
+{
+	zaap::ZAPtrWrapper<T> t((T**)zaap::system::MemoryManager::Allocate(sizeof(T)));
+	new (t.get()) T(args...);
+	return t;
+}
+template <typename T, typename... Args>
+inline T** zanewA(uint length, Args&&... args)
+{
+	T** t = (T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length);
 	new (*t) T(args...);
 	return t;
 }
