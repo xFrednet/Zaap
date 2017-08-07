@@ -1,4 +1,5 @@
 #include <Zaap.h>
+#include <typeinfo>
 #include "system/MemoryManager.h"
 
 using namespace zaap;
@@ -8,6 +9,7 @@ using namespace scene;
 using namespace gui;
 using namespace std;
 using namespace system;
+
 
 #define TEST_COUNT              2000000
 //#define TEST_COUNT              10000
@@ -156,31 +158,32 @@ void testSmartPtr()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // main //
 /* //////////////////////////////////////////////////////////////////////////////// */
-struct TestStruct
+struct TestStructCore
 {
 	int Value;
+	TestStructCore()
+	{
+		Value = 10;
+		cout << "TestStruct:: I exist" << endl;
+	}
+	~TestStructCore()
+	{
+		cout << "~TestStruct:: I was called" << endl;
+	}
 };
-void printIntPP(TestStruct** ts)
-{
-	cout << (*ts)->Value << endl;
-}
+typedef za_ptr_<TestStructCore> TestStruct;
 
 int main()
 {
 	//runTest();
 	int i = 10;
-	auto vec = zanew<Vec3>();
-	cout << vec->X << endl;
-
-	// constructor vecpp();
+	za_ptr_<Vec3> vec = zanew<Vec3>(Vec2(1, 2), 1);
+	cout << "Vec: "<< vec->X << " " << vec->Y << " " << vec->Z << endl;
+	zadel(vec);
 	
-	//int** value = newMalloc<int>(sizeof(int));
-	//*(*value) = 5;
-	//cout << *(*value) << endl;
-
 	//log::LogOpenFile("log.txt");
 	//testSmartPtr();
-	//log::LogCloseFile();
+	//log::LogCloseFile();*/
 
 	cin.get();
 	return 0;

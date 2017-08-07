@@ -1,22 +1,47 @@
 ﻿#pragma once
 
 #include "Za.h"
-#include "Types.h"                //types
 
 namespace zaap
 {
 	template <typename T>
-	class ZAAP_API ZAPtrWrapper
+	class ZAPtrWrapper;
+
+	template <typename T>
+	inline ZAPtrWrapper<T>** zanewZaPtr(ZAPtrWrapper<T>* ptr);
+
+	class ZAAP_API ZAPtrWrapperBase
 	{
+	private:
+		template <typename T>
+		friend class ZAPtrWrapper;
+
+		ZAPtrWrapperBase() {};
+	};
+
+	template <typename T>
+	class ZAAP_API ZAPtrWrapper : public ZAPtrWrapperBase
+	{
+		template <typename T>
+		friend ZAPtrWrapper<T>** zanewZaPtr(ZAPtrWrapper<T>* ptr);
+		
+	private:
 		T** m_Object;
 		
 	public:
+		typedef T Type;
+		
 		ZAPtrWrapper(T** t = nullptr)
-			: m_Object(t)
+			: ZAPtrWrapperBase(),
+			m_Object(t)
 		{
 			
 		}
+		ZAPtrWrapper(ZAPtrWrapper<T>** tWraped)
+			: ZAPtrWrapper((*(*tWraped)).getLoc())
+		{
 
+		}
 
 		inline operator bool() const 
 		{
@@ -103,7 +128,7 @@ namespace zaap
 		 * \param index The index of the requested object.
 		 * \return The object that is stored under the entered index.
 		 */
-		inline T operator[](uint index) {
+		inline T operator[](unsigned index) {
 			return get()[index];
 		}
 		/**
@@ -113,7 +138,7 @@ namespace zaap
 		 * \param index The index of the requested object.
 		 * \return The object that is stored under the entered index.
 		 */
-		inline T operator[](uint index) const
+		inline T operator[](unsigned index) const
 		{
 			return get()[index];
 		}

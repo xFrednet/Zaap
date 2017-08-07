@@ -3,6 +3,10 @@
 #include "Za.h"
 #include "Types.h"                //types
 #include "za_ptr.h"
+#include "util/Log.h"
+
+#include <thread>
+#include <type_traits>
 
 #pragma region Option Macros
 #ifndef ZA_MEM_FIRST_ALLOC_SIZE
@@ -87,6 +91,19 @@ namespace zaap { namespace system {
 		byte                  STATE; // ZA_MEM_BSTATE_FREE or ZA_MEM_BSTATE_OCCUPIED
 		ZA_MEM_LOCATION_*     LOCATION;
 	} ZA_MEM_BLOCK_HEADER;
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // ZA_MEM_STACK_INFO //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+
+	typedef struct ZAAP_API ZA_MEM_STACK_INFO_ {
+		
+		ZA_MEM_STACK_INFO_* NEXT;
+
+		uint64              STACK_BASE;
+		std::thread::id     THREAD_ID;
+		
+	} ZA_MEM_STACK_INFO;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // MemoryManager //
@@ -257,24 +274,180 @@ namespace zaap { namespace system {
 
 }}
 
+#pragma region zanew
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // zanew //
+/* //////////////////////////////////////////////////////////////////////////////// */
+
+/* ********************************************************* */
+// * zanew for za_ptr  *
+/* ********************************************************* */
+
+static void* _za_ptr_buffer = malloc(sizeof(za_ptr_<int>));
+
+/**
+ * \brief This is a dummy function that is needed but should never be used. If you are reading this 
+ *        you are either very interested in the inner working or something went wrong.
+ * \return a nullptr.
+ */
+template <typename T, typename... Args>
+ZAAP_API inline za_ptr_<T>** zanew(T* za_ptr, Args&&... args)
+{
+	ZA_ASSERT(false, "zanew was called by ",  typeid(T).name());
+	return nullptr;
+}
+/**
+* \brief This function allocates memory for an object T array and initializes every object with the given arguments. The
+*        allocated and initialized memory is returned in the form of a za_ptr.
+*
+*        The added arguments after the za_ptr are put into the constructor of every array member.
+*
+*        The returned pointer should be passed to a za_ptr it will deal with it. The returned pointer can't be kept
+*        as it is because it will be overridden.
+*        
+* \tparam T        This is the type of the wrapped object.
+* \tparam Args     These are the extra arguments that will be passed into the constructors of objects.
+*                  The arguments can be left empty.
+*
+* \param za_ptr    The wrapper of the object that should be initialized.
+* \param length    The length of the array that should be allocated.
+* \param args      These are the extra arguments that will be passed into the constructor of object T.
+*                  The arguments can be left empty.
+*
+* \return          This returns a double ptr to a za_ptr<T> it should be passed into a normal za_ptr
+*                  immediately.
+*/
+template <typename T, typename... Args>
+ZAAP_API inline za_ptr_<T>** zanewA(za_ptr_<T>* za_ptr, uint length, Args&&... args)
+{
+	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+
+	za_ptr->m_Object = (T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length);
+	
+	for (uint i = 0; i < length; i++)
+	{	
+		new (&za_ptr[i]) T(args...);
+	}
+
+	_za_ptr_buffer = za_ptr;
+	return &((za_ptr_<T>*)(_za_ptr_buffer));
+}
+/**
+ * \brief This function allocates memory for object T and initializes the object. The
+ *        allocated and initialized memory is returned in the form of a za_ptr.
+ *        
+ *        The added arguments after the za_ptr are put into the constructor of the wrapped object T.
+ *        
+ *        The returned ptr should be passed to a za_ptr it will deal with it. The returned ptr can't be kept 
+ *        as it is because it will be overridden. 
+ *        
+ * \tparam T        This is the type of the wrapped object.
+ * \tparam Args     These are the extra arguments that will be passed into the constructor of object T. 
+ *                  The objects can be left empty. 
+ *                  
+ * \param za_ptr    The wrapper of the object that should be initialized.
+ * \param args      These are the extra arguments that will be passed into the constructor of object T. 
+ *                  The arguments can be left empty.
+ * 
+ * \return          This returns a double pointer to a za_ptr<T> it should be passed into a normal za_ptr
+ *                  immediately.
+ */
+template <typename T, typename... Args>
+ZAAP_API inline za_ptr_<T>** zanew(za_ptr_<T>* za_ptr, Args&&... args)
+{
+	return zanewA(za_ptr, 1, args);
+}
+
+/* ********************************************************* */
+// * zanew general  *
+/* ********************************************************* */
+
+/**
+ * \brief This function allocates memory for object T array and initializes the objects with the given arguments. The
+ *        allocated and initialized memory is returned in the form of a double pointer.
+ *        
+ *        The objects will be destroyed if the no reference is found the destructors won't be called in this case. Use 
+ *        za_del and the reference to call the destructor.
+ *        
+ *        The double pointer should be keep this way or it should be wrapped in to a za_ptr for easy access.
+ *        
+ *        If the function used to create a za_ptr it will crate the wrapped objects and initialize them with the given arguments.
+ *        It will return a double pointer to the za_ptr. The pointer location will be overridden so it should be passed into a normal za_ptr
+ *        immediately it'll deal with it.
+ *        
+ * \tparam T        The object type of the array.
+ * \tparam Args     The types of the arguments for the object constructor.
+ * 
+ * \param length    The length of the object array.
+ * \param args      These arguments are passed into every constructor in the array. The arguments can be left empty.
+ * 
+ * \return          The double pointer for the object. (If the object is a za_ptr it passed into a normal za_ptr immediately)
+ */
+template <typename T, typename... Args>
+ZAAP_API inline T** zanewA(uint length, Args&&... args)
+{
+	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+
+	if (std::is_base_of<zaap::ZAPtrWrapperBase, T>::value) {
+		return (T**)zanew((T*)new (_za_ptr_buffer) T(), length, args...);
+	}
+	T** t = ((T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length));
+	
+	for (uint i = 0; i < length; i++)
+	{
+		new(&(*t)[i]) T(args...);
+	}
+	return t;
+}
+
+/**
+* \brief This function allocates memory for object T and initializes the object with the given arguments. The
+*        allocated and initialized memory is returned in the form of a double pointer.
+*
+*        The object will be destroyed if the no reference is found the destructor won't be called in this case. Use
+*        za_del and the reference to call the destructor.
+*
+*        The double pointer should be keep this way or it should be wrapped in to a za_ptr for easy access.
+*
+*        If the function used to create a za_ptr it will crate the wrapped object and initialize it with the given arguments.
+*        It will return a double pointer to the za_ptr. The pointer location will be overridden so it should be passed into a normal za_ptr
+*        immediately it'll deal with it.
+*
+* \tparam T        The object type.
+* \tparam Args     The types of the arguments for the object constructor.
+*
+* \param args      These arguments are passed into the constructor. The arguments can be left empty.
+*
+* \return          The double pointer for the object. (If the object is a za_ptr it passed into a normal za_ptr immediately)
+*/
+template <typename T, typename... Args>
+ZAAP_API inline T** zanew(Args&&... args)
+{
+	return zanewA<T>(1, args...);
+}
+
+#pragma endregion 
+#pragma region zadel
+/* //////////////////////////////////////////////////////////////////////////////// */
+// // zadel //
+/* //////////////////////////////////////////////////////////////////////////////// */
 template <typename T>
-inline za_ptr_<T> zanew()
+ZAAP_API inline void zadel(T* t)
 {
-	zaap::ZAPtrWrapper<T> t((T**)zaap::system::MemoryManager::Allocate(sizeof(T)));
-	new (t.get()) T();
-	return t;
+	zaap::system::ZA_MEM_BLOCK_HEADER* header = zaap::system::MemoryManager::GetBlockHeader(t);
+	for (uint i = 0; i < header->SIZE / sizeof(T); i++)
+		(&t[i])->T::~T();
+
+	zaap::system::MemoryManager::Free(t);
 }
-template <typename T, typename... Args>
-inline za_ptr_<T> zanew(Args&&... args)
+template <typename T>
+ZAAP_API inline void zadel(T** t)
 {
-	zaap::ZAPtrWrapper<T> t((T**)zaap::system::MemoryManager::Allocate(sizeof(T)));
-	new (t.get()) T(args...);
-	return t;
+	zadel(*t);
 }
-template <typename T, typename... Args>
-inline T** zanewA(uint length, Args&&... args)
+template <typename T>
+ZAAP_API inline void zadel(za_ptr_<T> t)
 {
-	T** t = (T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length);
-	new (*t) T(args...);
-	return t;
+	zadel(t.getLoc());
 }
+#pragma endregion 
