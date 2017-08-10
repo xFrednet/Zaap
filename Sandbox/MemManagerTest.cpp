@@ -175,6 +175,13 @@ typedef za_ptr_<TestStructCore> TestStruct;
 
 int main()
 {
+	{
+		ZA_MEM_STACK_INFO stackInfo;
+		_asm { MOV stackInfo.STACK_BASE, EBP}
+		stackInfo.THREAD_ID = std::this_thread::get_id();
+		zaap::system::MemoryManager::AddStackInfo(stackInfo);
+	}
+
 	//runTest();
 	int i = 10;
 	za_ptr_<Vec3> vec = zanew<Vec3>(Vec2(1, 2), 1);

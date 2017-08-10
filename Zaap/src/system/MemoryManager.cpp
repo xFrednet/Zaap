@@ -47,7 +47,6 @@
 using namespace std;
 namespace zaap { namespace system
 {
-	MemoryManager* MemoryManager::s_Instance = new MemoryManager();
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Actual memory allocation //
@@ -207,15 +206,19 @@ namespace zaap { namespace system
 	MemoryManager::MemoryManager()
 		: m_AllocMem(nullptr),
 		m_Size(0),
-		m_AllocHeader(nullptr)
+		m_PageList(nullptr),
+		m_FreeMemLocations(nullptr),
+		m_AllocHeader(nullptr),
+		m_StackInfoStack(nullptr)
 	{
-		ZA_MEM_EXASSERT(!s_Instance);
 
 		if (!allocMem(ZA_MEM_FIRST_CHUNK_SIZE))
 		{
 			ZA_ASSERT(false, "AllocNewMemBlock(ZA_MEM_FIRST_CHUNK_SIZE) failed");
 			exit(ZA_ERROR_MEM_ALLOCATION_ERROR);
 		}
+		allocNewLocations();
+
 		ZA_INFO("The initialization was successful ");
 	}
 	MemoryManager::~MemoryManager()
@@ -346,6 +349,32 @@ namespace zaap { namespace system
 			((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[m_Size - 1]))); //TODO add a check if the header is in front of it
 	}
 
+	ZA_MEM_STACK_INFO* MemoryManager::getThreadStackInfo(std::thread::id threadID)
+	{
+		ZA_MEM_STACK_INFO* info = m_StackInfoStack;
+		while (info && info->THREAD_ID != threadID)
+		{
+			info = info->NEXT;
+		}
+
+		return info;
+	}
+	void MemoryManager::addStackInfo(const ZA_MEM_STACK_INFO &stackInfo)
+	{
+		ZA_MEM_EXASSERT(!getThreadStackInfo(stackInfo.THREAD_ID));
+		if (getThreadStackInfo(stackInfo.THREAD_ID))
+		{
+			ZA_ALERT("addStackInfo was called with a StackInfo that is already in the info list.");
+			return;
+		}
+
+		ZA_MEM_STACK_INFO* info = (ZA_MEM_STACK_INFO*)malloc(sizeof(ZA_MEM_STACK_INFO));
+		memcpy(info, &stackInfo, sizeof(ZA_MEM_STACK_INFO));
+
+		info->NEXT = m_StackInfoStack;
+		m_StackInfoStack = info->NEXT;
+	}
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Allocation and deallocation of memory //
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -472,42 +501,4 @@ namespace zaap { namespace system
 		//TODO scan the memory
 	}
 
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Static methods //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	ZA_MEM_BLOCK_HEADER* MemoryManager::GetBlockHeader(void* block)
-	{
-		ZA_MEM_EXASSERT(block);
-		ZA_ASSERT(s_Instance);
-		return s_Instance->getBlockHeader(block);
-	}
-	bool MemoryManager::Contains(void* block)
-	{
-		ZA_MEM_EXASSERT(block);
-		ZA_ASSERT(s_Instance);
-		return s_Instance->contains(block);
-	}
-
-	void** MemoryManager::Allocate(size_t blockSize)
-	{
-		ZA_MEM_EXASSERT(s_Instance);
-		return s_Instance->allocate(blockSize);
-	}
-	void MemoryManager::Free(void** block)
-	{
-		ZA_MEM_EXASSERT(block);
-		ZA_MEM_EXASSERT(s_Instance);
-		s_Instance->free(block);
-	}
-	void MemoryManager::Free(void* block)
-	{
-		ZA_MEM_EXASSERT(block);
-		ZA_MEM_EXASSERT(s_Instance);
-		s_Instance->free(block);
-	}
-	void MemoryManager::SuggestScan()
-	{
-		ZA_MEM_EXASSERT(s_Instance);
-		s_Instance->suggestScan();
-	}
 }}

@@ -34,6 +34,14 @@
 
 #pragma endregion 
 
+#define MemoryManagerNewStack()                             \
+{                                                           \
+	ZA_MEM_STACK_INFO stackInfo;                            \
+	_asm{ MOV stackInfo.STACK_BASE, EBP}                    \
+	stackInfo.THREAD_ID = std::this_thread::get_id();       \
+	zaap::system::MemoryManager::AddStackInfo(stackInfo);   \
+}
+
 //TODO implement suggestScan
 //TODO move m_AllocIndex back
 
@@ -100,7 +108,7 @@ namespace zaap { namespace system {
 		
 		ZA_MEM_STACK_INFO_* NEXT;
 
-		uint64              STACK_BASE;
+		uintptr_t           STACK_BASE;
 		std::thread::id     THREAD_ID;
 		
 	} ZA_MEM_STACK_INFO;
@@ -111,7 +119,11 @@ namespace zaap { namespace system {
 	class ZAAP_API MemoryManager
 	{
 	public:
-		static MemoryManager* s_Instance;
+		static MemoryManager& GetStaticInstance()
+		{
+			static MemoryManager instance;
+			return instance;
+		}
 	private:
 		byte* m_AllocMem;
 		uint m_Size;
@@ -122,6 +134,9 @@ namespace zaap { namespace system {
 
 		//This is the position the next allocation will start searching from
 		ZA_MEM_BLOCK_HEADER* m_AllocHeader;
+
+		//scan related stuff
+		ZA_MEM_STACK_INFO* m_StackInfoStack; //Yes I had to call it a stack ;)
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization && Deconstruction //
@@ -241,6 +256,10 @@ namespace zaap { namespace system {
 		void scanBlock(void* mem, size_t size);
 		bool scanIsValidPointer(void* pointer);
 
+	public:
+		ZA_MEM_STACK_INFO* getThreadStackInfo(std::thread::id threadID = std::this_thread::get_id());
+		void addStackInfo(const ZA_MEM_STACK_INFO &stackInfo);
+
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Allocation and deallocation of memory //
 		/* //////////////////////////////////////////////////////////////////////////////// */
@@ -258,18 +277,42 @@ namespace zaap { namespace system {
 		* \param block The block for the requested header.
 		* \return The found header or a nullptr.
 		*/
-		static ZA_MEM_BLOCK_HEADER* GetBlockHeader(void* block);
+		static inline ZA_MEM_BLOCK_HEADER* GetBlockHeader(void* block)
+		{
+			return GetStaticInstance().getBlockHeader(block);
+		}
 		/**
 		 * \brief This method tests if the given pointer is inside the bounds of this MemoryManager.
 		 * \param block The pointer that should be tested.
 		 * \return This returns whether the given pointer is inside or outside of the managed memory.
 		 */
-		static bool Contains(void* block);
+		static inline bool Contains(void* block)
+		{
+			return GetStaticInstance().contains(block);
+		}
 		
-		static void** Allocate(size_t blockSize);
-		static void Free(void* block);
-		static void Free(void** block);
-		static void SuggestScan();
+		static inline void** Allocate(size_t blockSize)
+		{
+			return GetStaticInstance().allocate(blockSize);
+		}
+		static inline void Free(void* block)
+		{
+			GetStaticInstance().free(block);
+		}
+		static inline void Free(void** block)
+		{
+			GetStaticInstance().free(block);
+		}
+		
+		//scan
+		static inline void SuggestScan()
+		{
+			GetStaticInstance().suggestScan();
+		}
+		static inline void AddStackInfo(const ZA_MEM_STACK_INFO &stackInfo)
+		{
+			GetStaticInstance().addStackInfo(stackInfo);
+		}
 	};
 
 }}
