@@ -2,7 +2,6 @@
 
 #include "Za.h"
 #include "Types.h"                //types
-#include "za_ptr.h"
 #include "util/Log.h"
 
 #include <thread>
@@ -25,40 +24,44 @@
 #	define ZA_MEM_BLOCK_MIN_SPLIT_SIZE  16 // plus the size of the MEM_BLOCK_HEADER
 #endif
 
-#undef ZAAP_MEM_LOG_TO_MUCH
-
-#define ZA_MEM_BSTATE_FREE              1
-#define ZA_MEM_BSTATE_OCCUPIED          0
-
 #define ZA_MEM_DEBUG_PATTERN            0xee
 
 #pragma endregion 
 
-#define MemoryManagerNewStack()                             \
-{                                                           \
-	ZA_MEM_STACK_INFO stackInfo;                            \
-	_asm{ MOV stackInfo.STACK_BASE, EBP}                    \
-	stackInfo.THREAD_ID = std::this_thread::get_id();       \
-	zaap::system::MemoryManager::AddStackInfo(stackInfo);   \
-}
-
 //TODO implement suggestScan
 //TODO move m_AllocIndex back
 
+namespace zaap
+{
+	class ZAPtrWrapperBase;
+
+	template <typename T>
+	class ZAPtrWrapper;
+}
+
 namespace zaap { namespace system {
+
+	typedef enum ZAAP_API ZA_MEM_OBJECT_ORIGIN_ : short {
+		ZA_MEM_OBJECT_ORIGIN_UNKNOWN     = 0,
+		ZA_MEM_OBJECT_ORIGIN_MEMMGR      = 1
+	} ZA_MEM_OBJECT_ORIGIN;
+
+	typedef enum ZAAP_API ZA_MEM_BLOCK_STATE_ {
+		ZA_MEM_BLOCK_STATE_OCCUPIED = 0,
+		ZA_MEM_BLOCK_STATE_FREE     = 1
+	} ZA_MEM_BLOCK_STATE;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // ZA_MEM_LOCATION //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	typedef struct ZAAP_API ZA_MEM_LOCATION_ {
-#ifdef ZA_MEM_NULL_DELETED_LOCATION
-		union {
-#endif
+		union { //This has to be at the start of this struct
 			ZA_MEM_LOCATION_* NEXT;
 			void*             MEM_BLOCK;
-#ifdef ZA_MEM_NULL_DELETED_LOCATION
 		};
-#endif
+
+		short REFERENCE_COUNT;
+		short OBJECT_ORIGIN; //ZA_MEM_OBJECT_ORIGIN_MEMMGR or ZA_MEM_OBJECT_ORIGIN_UNKNOWN
 	} ZA_MEM_LOCATION;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
@@ -80,44 +83,36 @@ namespace zaap { namespace system {
 	//     => 4 bytes per pointer 
 	//
 	//  Bytes 
-	//  0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1
-	//  1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
-	// +-------+-------+-------+-+-------+
-	// | PREV  | NEXT  | SIZE  |S|  LOC  |
-	// +-------+-------+-------+-+-------+
+	//  0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 2
+	//  1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0
+	// +-------+-------+-------+-------+-+-----+
+	// | PREV  | NEXT  |  LOC  | SIZE  |S|  R  |
+	// +-------+-------+-------+-------+-+-----+
 	//
 	// PREV          :: The pointer to the previous memory block.
 	// NEXT          :: The pointer to the next memory block.
+	// LOC->LOCATION :: The pointer to the location.
 	// SIZE          :: The size of this memory block. (without the header)
-	// S->STATE      :: The state of this memory block;
-	// LOC->LOCATION :: The ID of the Location Page that includes .
+	// S->STATE      :: The state of this memory block.
+	// R->RESERVED   :: This memory is reserved for the scan process(It is mostly used to align the data after this header).
 	//
 	typedef struct ZAAP_API ZA_MEM_BLOCK_HEADER_ {
 		ZA_MEM_BLOCK_HEADER_* PREV;
 		ZA_MEM_BLOCK_HEADER_* NEXT;
-		uint32                SIZE;
-		byte                  STATE; // ZA_MEM_BSTATE_FREE or ZA_MEM_BSTATE_OCCUPIED
 		ZA_MEM_LOCATION_*     LOCATION;
+		uint32                SIZE;
+		ZA_MEM_BLOCK_STATE    STATE; // ZA_MEM_BLOCK_STATE_OCCUPIED or ZA_MEM_BLOCK_STATE_FREE
+		byte                  RESERVED[3]; //0: internal references found, 1: external references found, 2: IDK
 	} ZA_MEM_BLOCK_HEADER;
-
-	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // ZA_MEM_STACK_INFO //
-	/* //////////////////////////////////////////////////////////////////////////////// */
-
-	typedef struct ZAAP_API ZA_MEM_STACK_INFO_ {
-		
-		ZA_MEM_STACK_INFO_* NEXT;
-
-		uintptr_t           STACK_BASE;
-		std::thread::id     THREAD_ID;
-		
-	} ZA_MEM_STACK_INFO;
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // MemoryManager //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	class ZAAP_API MemoryManager
 	{
+	private:
+		template <typename T>
+		friend class ZAPtrWrapper;
 	public:
 		static MemoryManager& GetStaticInstance()
 		{
@@ -134,9 +129,6 @@ namespace zaap { namespace system {
 
 		//This is the position the next allocation will start searching from
 		ZA_MEM_BLOCK_HEADER* m_AllocHeader;
-
-		//scan related stuff
-		ZA_MEM_STACK_INFO* m_StackInfoStack; //Yes I had to call it a stack ;)
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Initialization && Deconstruction //
@@ -249,22 +241,22 @@ namespace zaap { namespace system {
 		 */
 		inline void joinFree(ZA_MEM_BLOCK_HEADER* header);
 
+		inline ZA_MEM_LOCATION* getNewMemLocation();
+		inline void returnMemLocation(ZA_MEM_LOCATION* location);
+		
 		/* ********************************************************* */
 		// * Scan the memory *
 		/* ********************************************************* */
-		void scan();
+		/*void reportLiveAllocations();
+		void scanForLifeObjects();
 		void scanBlock(void* mem, size_t size);
-		bool scanIsValidPointer(void* pointer);
-
-	public:
-		ZA_MEM_STACK_INFO* getThreadStackInfo(std::thread::id threadID = std::this_thread::get_id());
-		void addStackInfo(const ZA_MEM_STACK_INFO &stackInfo);
+		bool scanIsValidPointer(void* pointer);*/
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Allocation and deallocation of memory //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	public:
-		void** allocate(size_t blockSize);
+		ZA_MEM_LOCATION* allocate(size_t blockSize);
 		void free(void* block);
 		void free(void** block);
 		void suggestScan();
@@ -291,7 +283,7 @@ namespace zaap { namespace system {
 			return GetStaticInstance().contains(block);
 		}
 		
-		static inline void** Allocate(size_t blockSize)
+		static inline ZA_MEM_LOCATION* Allocate(size_t blockSize)
 		{
 			return GetStaticInstance().allocate(blockSize);
 		}
@@ -302,16 +294,6 @@ namespace zaap { namespace system {
 		static inline void Free(void** block)
 		{
 			GetStaticInstance().free(block);
-		}
-		
-		//scan
-		static inline void SuggestScan()
-		{
-			GetStaticInstance().suggestScan();
-		}
-		static inline void AddStackInfo(const ZA_MEM_STACK_INFO &stackInfo)
-		{
-			GetStaticInstance().addStackInfo(stackInfo);
 		}
 	};
 
@@ -326,6 +308,8 @@ namespace zaap { namespace system {
 // * zanew for za_ptr  *
 /* ********************************************************* */
 
+//TODO add documentation
+
 static void* _za_ptr_buffer = malloc(sizeof(za_ptr_<int>));
 
 /**
@@ -334,11 +318,23 @@ static void* _za_ptr_buffer = malloc(sizeof(za_ptr_<int>));
  * \return a nullptr.
  */
 template <typename T, typename... Args>
-ZAAP_API inline za_ptr_<T>** zanew(T* za_ptr, Args&&... args)
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew(T* za_ptr, Args&&... args)
 {
 	ZA_ASSERT(false, "zanew was called by ",  typeid(T).name());
 	return nullptr;
 }
+/**
+* \brief This is a dummy function that is needed however it should never be used. If you are reading this
+*        you are either very interested in the inner working or something went wrong.
+* \return a nullptr.
+*/
+template <typename T>
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew(T* za_ptr)
+{
+	ZA_ASSERT(false, "zanew was called by ", typeid(T).name());
+	return nullptr;
+}
+
 /**
 * \brief This function allocates memory for an object T array and initializes every object with the given arguments. The
 *        allocated and initialized memory is returned in the form of a za_ptr.
@@ -361,27 +357,41 @@ ZAAP_API inline za_ptr_<T>** zanew(T* za_ptr, Args&&... args)
 *                  immediately.
 */
 template <typename T, typename... Args>
-ZAAP_API inline za_ptr_<T>** zanewA(za_ptr_<T>* za_ptr, uint length, Args&&... args)
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanewA(za_ptr_<T>* za_ptr, uint length, Args&&... args)
 {
 	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+	if (length == 0)
+		return nullptr;
 
-	za_ptr->m_Object = (T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length);
-	
-	for (uint i = 0; i < length; i++)
-	{	
-		new (&za_ptr[i]) T(args...);
+	zaap::system::ZA_MEM_LOCATION* tLoc = zaap::system::MemoryManager::Allocate(sizeof(T) * length);
+
+	for (uint i = 0; i < length; i++) {
+		new(tLoc->MEM_BLOCK) T(args...);
 	}
-
-	_za_ptr_buffer = za_ptr;
-	return &((za_ptr_<T>*)(_za_ptr_buffer));
+	return tLoc;
 }
+template <typename T>
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanewA(za_ptr_<T>* za_ptr, uint length)
+{
+	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+	if (length == 0)
+		return nullptr;
+
+	zaap::system::ZA_MEM_LOCATION* tLoc = zaap::system::MemoryManager::Allocate(sizeof(T) * length);
+
+	for (uint i = 0; i < length; i++) {
+		new(tLoc->MEM_BLOCK) T();
+	}
+	return tLoc;
+}
+
 /**
  * \brief This function allocates memory for object T and initializes the object. The
  *        allocated and initialized memory is returned in the form of a za_ptr.
  *        
  *        The added arguments after the za_ptr are put into the constructor of the wrapped object T.
  *        
- *        The returned ptr should be passed to a za_ptr it will deal with it. The returned ptr can't be kept 
+ *        The returned pointer should be passed to a za_ptr it will deal with it. The returned pointer can't be kept 
  *        as it is because it will be overridden. 
  *        
  * \tparam T        This is the type of the wrapped object.
@@ -396,9 +406,14 @@ ZAAP_API inline za_ptr_<T>** zanewA(za_ptr_<T>* za_ptr, uint length, Args&&... a
  *                  immediately.
  */
 template <typename T, typename... Args>
-ZAAP_API inline za_ptr_<T>** zanew(za_ptr_<T>* za_ptr, Args&&... args)
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew(za_ptr_<T>* za_ptr, Args&&... args)
 {
-	return zanewA(za_ptr, 1, args);
+	return zanewA(za_ptr, 1, args...);
+}
+template <typename T>
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew(za_ptr_<T>* za_ptr)
+{
+	return zanewA(za_ptr, 1);
 }
 
 /* ********************************************************* */
@@ -409,8 +424,7 @@ ZAAP_API inline za_ptr_<T>** zanew(za_ptr_<T>* za_ptr, Args&&... args)
  * \brief This function allocates memory for object T array and initializes the objects with the given arguments. The
  *        allocated and initialized memory is returned in the form of a double pointer.
  *        
- *        The objects will be destroyed if the no reference is found the destructors won't be called in this case. Use 
- *        za_del and the reference to call the destructor.
+ *        Use za_del and the reference to call the destructor.
  *        
  *        The double pointer should be keep this way or it should be wrapped in to a za_ptr for easy access.
  *        
@@ -427,28 +441,46 @@ ZAAP_API inline za_ptr_<T>** zanew(za_ptr_<T>* za_ptr, Args&&... args)
  * \return          The double pointer for the object. (If the object is a za_ptr it passed into a normal za_ptr immediately)
  */
 template <typename T, typename... Args>
-ZAAP_API inline T** zanewA(uint length, Args&&... args)
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanewA(uint length, Args&&... args)
 {
 	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+	if (length == 0)
+		return nullptr;
 
 	if (std::is_base_of<zaap::ZAPtrWrapperBase, T>::value) {
-		return (T**)zanew((T*)new (_za_ptr_buffer) T(), length, args...);
+		return zanewA((T*)&_za_ptr_buffer, length, args...);
 	}
-	T** t = ((T**)zaap::system::MemoryManager::Allocate(sizeof(T) * length));
+	zaap::system::ZA_MEM_LOCATION* tLoc = zaap::system::MemoryManager::Allocate(sizeof(T) * length);
 	
 	for (uint i = 0; i < length; i++)
 	{
-		new(&(*t)[i]) T(args...);
+		new(tLoc->MEM_BLOCK) T(args...);
 	}
-	return t;
+	return tLoc;
+}
+template <typename T>
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanewA(uint length)
+{
+	ZA_ASSERT(length != 0, "A array can't have a length of 0.");
+	if (length == 0)
+		return nullptr;
+
+	if (std::is_base_of<zaap::ZAPtrWrapperBase, T>::value) {
+		return zanewA((T*)&_za_ptr_buffer, length);
+	}
+	zaap::system::ZA_MEM_LOCATION* tLoc = zaap::system::MemoryManager::Allocate(sizeof(T) * length);
+
+	for (uint i = 0; i < length; i++) {
+		new(tLoc->MEM_BLOCK) T();
+	}
+	return tLoc;
 }
 
 /**
 * \brief This function allocates memory for object T and initializes the object with the given arguments. The
 *        allocated and initialized memory is returned in the form of a double pointer.
 *
-*        The object will be destroyed if the no reference is found the destructor won't be called in this case. Use
-*        za_del and the reference to call the destructor.
+*        Use za_del and the reference to call the destructor.
 *
 *        The double pointer should be keep this way or it should be wrapped in to a za_ptr for easy access.
 *
@@ -464,9 +496,14 @@ ZAAP_API inline T** zanewA(uint length, Args&&... args)
 * \return          The double pointer for the object. (If the object is a za_ptr it passed into a normal za_ptr immediately)
 */
 template <typename T, typename... Args>
-ZAAP_API inline T** zanew(Args&&... args)
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew(Args&&... args)
 {
 	return zanewA<T>(1, args...);
+}
+template <typename T>
+ZAAP_API inline zaap::system::ZA_MEM_LOCATION* zanew()
+{
+	return zanewA<T>(1);
 }
 
 #pragma endregion 
@@ -491,6 +528,6 @@ ZAAP_API inline void zadel(T** t)
 template <typename T>
 ZAAP_API inline void zadel(za_ptr_<T> t)
 {
-	zadel(t.getLoc());
+	zadel(t.get());
 }
 #pragma endregion 

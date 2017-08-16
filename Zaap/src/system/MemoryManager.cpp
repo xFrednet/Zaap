@@ -45,8 +45,7 @@
 // // definitions //
 /* //////////////////////////////////////////////////////////////////////////////// */
 using namespace std;
-namespace zaap { namespace system
-{
+namespace zaap { namespace system {
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Actual memory allocation //
@@ -67,10 +66,11 @@ namespace zaap { namespace system
 		
 		m_Size = chunkSize;
 
+		memset(m_AllocMem, 0, chunkSize);
+
 		m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)m_AllocMem;
-		memset(m_AllocHeader, 0, sizeof(ZA_MEM_BLOCK_HEADER));
 		m_AllocHeader->SIZE = (chunkSize - sizeof(ZA_MEM_BLOCK_HEADER));
-		m_AllocHeader->STATE = ZA_MEM_BSTATE_FREE;
+		m_AllocHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
 		ZA_MEM_DEBUG_FILL(m_AllocHeader);
 
 		ZA_MEM_INFO("Allocated the first memory chunk. with the size: ", chunkSize);
@@ -103,7 +103,7 @@ namespace zaap { namespace system
 		ZA_MEM_BLOCK_HEADER* memHeader = m_AllocHeader;
 		while (memHeader->NEXT)
 			memHeader = memHeader->NEXT;
-		if (memHeader->STATE == ZA_MEM_BSTATE_FREE)
+		if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE)
 		{
 			memHeader->SIZE += chunkSize;
 			ZA_MEM_DEBUG_FILL(memHeader);
@@ -114,7 +114,7 @@ namespace zaap { namespace system
 			newHeader->PREV = memHeader;
 			newHeader->NEXT = nullptr;
 			newHeader->SIZE = (uint32)((uintptr_t)&m_AllocMem[m_Size - 1] - (uintptr_t)newHeader - sizeof(ZA_MEM_BLOCK_HEADER));
-			newHeader->STATE = ZA_MEM_BSTATE_FREE;
+			newHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
 
 			memHeader->NEXT = newHeader;
 			ZA_MEM_DEBUG_FILL(newHeader);
@@ -139,6 +139,7 @@ namespace zaap { namespace system
 	{
 		ZA_MEM_PAGE* page = (ZA_MEM_PAGE*)::malloc(sizeof(ZA_MEM_PAGE));
 		ZA_MEM_EXASSERT(page);
+
 		page->NEXT = nullptr;
 		for (uint i = 0; i < ZA_MEM_PAGE_LOCATION_COUNT - 1; i++) {
 			page->LOCATIONS[i].NEXT = &page->LOCATIONS[i + 1];
@@ -208,8 +209,7 @@ namespace zaap { namespace system
 		m_Size(0),
 		m_PageList(nullptr),
 		m_FreeMemLocations(nullptr),
-		m_AllocHeader(nullptr),
-		m_StackInfoStack(nullptr)
+		m_AllocHeader(nullptr)
 	{
 
 		if (!allocMem(ZA_MEM_FIRST_CHUNK_SIZE))
@@ -258,7 +258,7 @@ namespace zaap { namespace system
 			ZA_MEM_BLOCK_HEADER* splitHeader = (ZA_MEM_BLOCK_HEADER*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER) + minBlockSize);
 			splitHeader->PREV = header;
 			splitHeader->NEXT = header->NEXT;
-			splitHeader->STATE = ZA_MEM_BSTATE_FREE;
+			splitHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
 			splitHeader->SIZE = header->SIZE - (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER));
 			//TODO WTF this needs a lot of performance, is this needed????? ZA_MEM_FILL_ZERO(splitHeader);
 
@@ -275,14 +275,14 @@ namespace zaap { namespace system
 	void MemoryManager::joinFree(ZA_MEM_BLOCK_HEADER* header)
 	{
 		ZA_MEM_EXASSERT(contains(header), "Off with his not existing head.");
-		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BSTATE_FREE, "The state should be free!! Who did this");
-		
+		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BLOCK_STATE_FREE, "The state should be free!! Who did this");
+
 		uint8 positions = 0;
 		if (header->PREV)
 			positions |= header->PREV->STATE << 4; //0000 0000 => 000S 0000 (S = STATE)
 		if (header->NEXT)
 			positions |= header->NEXT->STATE;      //0000 0000 => 0000 000S (S = STATE)
-		//TODO test if m_AllocHeader is destroyd by this
+		//TODO test if m_AllocHeader is destroyed by this!!! Fuck you this caused an Error I have to fix this
 		
 		ZA_MEM_BLOCK_HEADER* prevHeader;
 		ZA_MEM_BLOCK_HEADER* nextHeader;
@@ -291,6 +291,8 @@ namespace zaap { namespace system
 		// |O|F|F| => |O|F--|
 		case 0x01: 
 			nextHeader = header->NEXT;
+			if (nextHeader == m_AllocHeader)
+				m_AllocHeader = header;
 
 			header->NEXT = nextHeader->NEXT;
 			header->SIZE = header->SIZE + sizeof(ZA_MEM_BLOCK_HEADER) + nextHeader->SIZE;
@@ -301,6 +303,8 @@ namespace zaap { namespace system
 		// |F|F|O| => |F--|O|
 		case 0x10:
 			prevHeader = header->PREV;
+			if (header == m_AllocHeader)
+				m_AllocHeader = prevHeader;
 
 			prevHeader->NEXT = header->NEXT;
 			prevHeader->SIZE = prevHeader->SIZE + sizeof(ZA_MEM_BLOCK_HEADER) + header->SIZE;
@@ -312,6 +316,8 @@ namespace zaap { namespace system
 		case 0x11:
 			prevHeader = header->PREV;
 			nextHeader = header->NEXT;
+			if (((uintptr_t)header ^ (uintptr_t)m_AllocHeader) * ((uintptr_t)nextHeader ^ (uintptr_t)m_AllocHeader) == 0)//x == y -> x _xor_ y == 0
+				m_AllocHeader = prevHeader;
 
 			prevHeader->NEXT = nextHeader->NEXT + 
 				sizeof(ZA_MEM_BLOCK_HEADER) + header->SIZE + 
@@ -325,60 +331,56 @@ namespace zaap { namespace system
 		}
 	}
 
+	ZA_MEM_LOCATION* MemoryManager::getNewMemLocation()
+	{
+		if (!m_FreeMemLocations)
+			allocNewLocations();
+
+		ZA_MEM_LOCATION* location = m_FreeMemLocations;
+		m_FreeMemLocations = location->NEXT;
+
+		location->REFERENCE_COUNT = 0;
+		return location;
+	}
+	void MemoryManager::returnMemLocation(ZA_MEM_LOCATION* location)
+	{
+		ZA_MEM_DEBUG_CODE(location->MEM_BLOCK = nullptr);
+
+		location->REFERENCE_COUNT = 0;
+		location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_UNKNOWN;
+
+		location->NEXT = m_FreeMemLocations;
+		m_FreeMemLocations = location;
+	}
+
 	/* ********************************************************* */
 	// * Scan the memory *
 	/* ********************************************************* */
 
-	void MemoryManager::scan()
-	{
-		ZA_MEM_BLOCK_HEADER* header = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
-		while (header) {
-			header = header->NEXT;
-		}
-		//TODO This 
-		m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
-	}
-	void MemoryManager::scanBlock(void* mem, size_t size)
-	{
-		
-	}
-	bool MemoryManager::scanIsValidPointer(void* pointer)
-	{
-		return 
-			((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[0]) + sizeof(ZA_MEM_BLOCK_HEADER))) &&
-			((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[m_Size - 1]))); //TODO add a check if the header is in front of it
-	}
-
-	ZA_MEM_STACK_INFO* MemoryManager::getThreadStackInfo(std::thread::id threadID)
-	{
-		ZA_MEM_STACK_INFO* info = m_StackInfoStack;
-		while (info && info->THREAD_ID != threadID)
-		{
-			info = info->NEXT;
-		}
-
-		return info;
-	}
-	void MemoryManager::addStackInfo(const ZA_MEM_STACK_INFO &stackInfo)
-	{
-		ZA_MEM_EXASSERT(!getThreadStackInfo(stackInfo.THREAD_ID));
-		if (getThreadStackInfo(stackInfo.THREAD_ID))
-		{
-			ZA_ALERT("addStackInfo was called with a StackInfo that is already in the info list.");
-			return;
-		}
-
-		ZA_MEM_STACK_INFO* info = (ZA_MEM_STACK_INFO*)malloc(sizeof(ZA_MEM_STACK_INFO));
-		memcpy(info, &stackInfo, sizeof(ZA_MEM_STACK_INFO));
-
-		info->NEXT = m_StackInfoStack;
-		m_StackInfoStack = info->NEXT;
-	}
+	//void MemoryManager::scan()
+	//{
+	//	ZA_MEM_BLOCK_HEADER* header = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
+	//	while (header) {
+	//		header = header->NEXT;
+	//	}
+	//	//TODO This 
+	//	m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)&m_AllocMem[0];
+	//}
+	//void MemoryManager::scanBlock(void* mem, size_t size)
+	//{
+	//	
+	//}
+	//bool MemoryManager::scanIsValidPointer(void* pointer)
+	//{
+	//	return 
+	//		((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[0]) + sizeof(ZA_MEM_BLOCK_HEADER))) &&
+	//		((uintptr_t)pointer > ((uintptr_t)(&m_AllocMem[m_Size - 1]))); //TODO add a check if the header is in front of it
+	//}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Allocation and deallocation of memory //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void** MemoryManager::allocate(size_t blockSize)
+	ZA_MEM_LOCATION* MemoryManager::allocate(size_t blockSize)
 	{
 		ZA_MEM_EXASSERT(m_AllocMem && m_Size != 0 && m_AllocHeader, "OKAY.............. Kill your self");
 
@@ -393,12 +395,12 @@ namespace zaap { namespace system
 		// Find free Memory
 		//
 		ZA_MEM_BLOCK_HEADER* memHeader = m_AllocHeader;
-		ZA_MEM_LOCATION* location;
+		ZA_MEM_LOCATION* location = getNewMemLocation();
 		while (memHeader)
 		{
-			if (memHeader->STATE == ZA_MEM_BSTATE_FREE || memHeader->SIZE >= blockSize)
+			if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE || memHeader->SIZE >= blockSize)
 			{
-				memHeader->STATE = ZA_MEM_BSTATE_OCCUPIED;
+				memHeader->STATE = ZA_MEM_BLOCK_STATE_OCCUPIED;
 				split(memHeader, blockSize);
 				if (memHeader->NEXT)
 					m_AllocHeader = memHeader->NEXT;
@@ -407,18 +409,11 @@ namespace zaap { namespace system
 				
 				ZA_MEM_FILL_ZERO(memHeader);
 				ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-				
-				if (!m_FreeMemLocations)
-					allocNewLocations();
-
-				location = m_FreeMemLocations;
-				m_FreeMemLocations = location->NEXT;
-
-				ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
 
 				location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
 				memHeader->LOCATION = location;
-				return (void**)&(location->MEM_BLOCK);
+				location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_MEMMGR;
+				return location;
 			}
 			if (memHeader->NEXT)
 				memHeader = memHeader->NEXT;
@@ -445,10 +440,10 @@ namespace zaap { namespace system
 		//
 		if (memHeader->NEXT)
 			memHeader = memHeader->NEXT;
-		if (memHeader->STATE == ZA_MEM_BSTATE_FREE)
+		if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE)
 		{
 			//TODO maybe recall this method it should work this time 
-			memHeader->STATE = ZA_MEM_BSTATE_OCCUPIED;
+			memHeader->STATE = ZA_MEM_BLOCK_STATE_OCCUPIED;
 			split(memHeader, blockSize);
 			if (memHeader->NEXT)
 				m_AllocHeader = memHeader->NEXT;
@@ -457,15 +452,11 @@ namespace zaap { namespace system
 
 			ZA_MEM_FILL_ZERO(memHeader);
 			ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-			
-			location = m_FreeMemLocations;
-			m_FreeMemLocations = location->NEXT;
-
-			ZA_MEM_DEBUG_CODE(location->NEXT = nullptr);
 
 			location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
 			memHeader->LOCATION = location;
-			return (void**)&(location->MEM_BLOCK);
+			location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_MEMMGR;
+			return location;
 		}
 		return nullptr;
 		
@@ -481,14 +472,12 @@ namespace zaap { namespace system
 		//Block head
 		ZA_MEM_BLOCK_HEADER* header = getBlockHeader(block);
 		ZA_MEM_LOCATION* location = header->LOCATION;
-		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BSTATE_OCCUPIED, "Stop just stop!!!")
+		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BLOCK_STATE_OCCUPIED, "Stop just stop!!!")
 		ZA_MEM_DEBUG_FILL(header);
-		header->STATE = ZA_MEM_BSTATE_FREE;
+		header->STATE = ZA_MEM_BLOCK_STATE_FREE;
 
 		//location pointer
-		ZA_MEM_DEBUG_CODE(location->MEM_BLOCK = nullptr);
-		location->NEXT = m_FreeMemLocations;
-		m_FreeMemLocations = location;
+		returnMemLocation(location);
 
 		joinFree(header);
 	}

@@ -173,24 +173,52 @@ struct TestStructCore
 };
 typedef za_ptr_<TestStructCore> TestStruct;
 
-int main()
+void za_ptr_T1(za_ptr_<TestStructCore> core)
 {
-	{
-		ZA_MEM_STACK_INFO stackInfo;
-		_asm { MOV stackInfo.STACK_BASE, EBP}
-		stackInfo.THREAD_ID = std::this_thread::get_id();
-		zaap::system::MemoryManager::AddStackInfo(stackInfo);
-	}
+	cout << "    > Value: " << core->Value << "            this: " << "za_ptr_T1" << endl;
+}
+void za_ptr_T2(za_ptr_<TestStructCore>& core)
+{
+	TestStruct other = core;
+	cout << "    > Value: " << other->Value << "            this: " << "za_ptr_T2" << endl;
+}
+void za_ptr_T3(za_ptr_<TestStructCore>* core)
+{
+	cout << "    > Value: " << (*core)->Value << "            this: " << "za_ptr_T3" << endl;
+}
+za_ptr_<TestStructCore> za_ptr_T4(za_ptr_<TestStructCore>& core)
+{
+	cout << "    > Value: " << core->Value << "            this: " << "za_ptr_T4" << endl;
+	return core;
+}
+void za_ptr_T5(za_ptr_<TestStructCore> core)
+{
+	TestStruct other = za_ptr_T4(core);
+	cout << "    > Value: " << other->Value << "            this: " << "za_ptr_T5" << endl;
+}
 
-	//runTest();
-	int i = 10;
-	za_ptr_<Vec3> vec = zanew<Vec3>(Vec2(1, 2), 1);
-	cout << "Vec: "<< vec->X << " " << vec->Y << " " << vec->Z << endl;
-	zadel(vec);
+void za_ptr_test()
+{
+	cout << "------------------------" << endl;
+	TestStruct TS = zanew<TestStruct>();
+	TestStruct other = TS;
 	
-	//log::LogOpenFile("log.txt");
-	//testSmartPtr();
-	//log::LogCloseFile();*/
+	za_ptr_T1(other);
+	za_ptr_T2(other);
+	za_ptr_T3(&other);
+	za_ptr_T5(other);
+
+	cin.get();
+
+}
+
+int main2()
+{
+	TestStruct TS = zanew<TestStruct>();
+	zadel(TS);
+
+	za_ptr_test();
+	cout << "------------------------" << endl;
 
 	cin.get();
 	return 0;

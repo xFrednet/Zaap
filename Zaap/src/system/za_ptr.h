@@ -1,14 +1,23 @@
 ﻿#pragma once
 
 #include "Za.h"
+#include <iostream>
+
+
+namespace zaap
+{
+	namespace system
+	{
+		class MemoryManager;
+		struct ZA_MEM_LOCATION_;
+	}
+}
 
 namespace zaap
 {
 	template <typename T>
 	class ZAPtrWrapper;
 
-	template <typename T>
-	inline ZAPtrWrapper<T>** zanewZaPtr(ZAPtrWrapper<T>* ptr);
 
 	class ZAAP_API ZAPtrWrapperBase
 	{
@@ -22,36 +31,81 @@ namespace zaap
 	template <typename T>
 	class ZAAP_API ZAPtrWrapper : public ZAPtrWrapperBase
 	{
-		template <typename T>
-		friend ZAPtrWrapper<T>** zanewZaPtr(ZAPtrWrapper<T>* ptr);
-		
 	private:
-		T** m_Object;
+		//template <typename U>
+		//zaap::system::ZA_MEM_LOCATION* zanewA(uint length);
+
+		//ZAPtrWrapper(bool initialize)
+		//	: ZAPtrWrapperBase(),
+		//	m_ObjectLoc(nullptr)
+		//{
+		//}
+
+	private:
+		system::ZA_MEM_LOCATION_* m_ObjectLoc;
 		
 	public:
 		typedef T Type;
 		
-		ZAPtrWrapper(T** t = nullptr)
+		ZAPtrWrapper(system::ZA_MEM_LOCATION_* tLoc)
 			: ZAPtrWrapperBase(),
-			m_Object(t)
+			m_ObjectLoc(tLoc)
 		{
+			if (!m_ObjectLoc)
+			{
+				m_ObjectLoc = system::MemoryManager::GetStaticInstance().getNewMemLocation();
+				m_ObjectLoc->MEM_BLOCK = nullptr;
+				m_ObjectLoc->OBJECT_ORIGIN = 0;
+			}
+
+			m_ObjectLoc->REFERENCE_COUNT = 1;
+			std::cout << "ZAPtrWrapper(system::ZA_MEM_LOCATION_* tLoc)                  REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+		}
+		ZAPtrWrapper(T* t = nullptr)
+			: ZAPtrWrapperBase()
+		{
+			m_ObjectLoc = system::MemoryManager::GetStaticInstance().getNewMemLocation();
+			m_ObjectLoc->MEM_BLOCK = t;
+			m_ObjectLoc->REFERENCE_COUNT = 1;
+			m_ObjectLoc->OBJECT_ORIGIN = 0;
+
+			std::cout << "ZAPtrWrapper(T* t = nullptr)                                  REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+		}
+
+		ZAPtrWrapper(const ZAPtrWrapper<T>& other)
+			: ZAPtrWrapperBase(),
+			m_ObjectLoc(other.m_ObjectLoc)
+		{
+			m_ObjectLoc->REFERENCE_COUNT++;
+
+			std::cout << "ZAPtrWrapper(const ZAPtrWrapper<T>& ptr)                      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+		}
+		ZAPtrWrapper<T>& operator=(const ZAPtrWrapper<T>& other) {
+
+			m_ObjectLoc = other.m_ObjectLoc;
+			m_ObjectLoc->REFERENCE_COUNT++;
+
+			std::cout << "ZAPtrWrapper<T>& operator=(const ZAPtrWrapper<T>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
 			
-		}
-		ZAPtrWrapper(ZAPtrWrapper<T>** tWraped)
-			: ZAPtrWrapper((*(*tWraped)).getLoc())
-		{
-
+			return *this;
 		}
 
-		inline operator bool() const 
+		~ZAPtrWrapper()
 		{
-			return (m_Object != nullptr);
-		}
-		bool operator!() const 
-		{
-			return (m_Object == nullptr);
+			std::cout << "~ZAPtrWrapper();                                              REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			m_ObjectLoc->REFERENCE_COUNT--;
+			if (!m_ObjectLoc->REFERENCE_COUNT)
+			{
+				std::cout << "~ZAPtrWrapper() delete       x_x     X_X     X_X     x_x                       " << " this " << this << std::endl;
+				if (m_ObjectLoc->OBJECT_ORIGIN == 0) //ZA_MEM_OBJECT_ORIGIN_UNKNOWN
+					delete m_ObjectLoc->MEM_BLOCK;
+				else
+					zadel((T*)m_ObjectLoc->MEM_BLOCK);
+			}
 		}
 
+		/*void* operator new (size_t size) = delete;
+		void operator delete (void* obj) = delete;*/
 
 		/**
 		 * \brief This returns the location pointer for the wrapped object. It can be casted to a struct called 
@@ -60,9 +114,9 @@ namespace zaap
 		 *        Note: These methods don't check if the pointer or object is valid.
 		 * \return This returns the location pointer for the wrapped object.
 		 */
-		inline T** getLoc()
+		inline system::ZA_MEM_LOCATION_* getLoc()
 		{
-			return m_Object;
+			return m_ObjectLoc;
 		}
 		/**
 		 * \brief This returns the location pointer for the wrapped object. It can be casted to a struct called
@@ -71,11 +125,10 @@ namespace zaap
 		 *        Note: These methods don't check if the pointer or object is valid.
 		 * \return This returns the location pointer for the wrapped object.
 		 */
-		inline T const* const* getLoc() const
+		inline system::ZA_MEM_LOCATION_ const* getLoc() const
 		{
-			return m_Object;
+			return m_ObjectLoc;
 		}
-		
 		/**
 		 * \brief This resolves the current location of the object and returns a pointer to it.
 		 * 
@@ -84,7 +137,7 @@ namespace zaap
 		 */
 		inline T* get()
 		{
-			return (m_Object) ? *m_Object : nullptr;
+			return (m_ObjectLoc) ? (T*)m_ObjectLoc->MEM_BLOCK : nullptr;
 		}
 		/**
 		 * \brief This resolves the current location of the object and returns a pointer to it.
@@ -94,7 +147,17 @@ namespace zaap
 		 */
 		inline T const* get() const
 		{
-			return (m_Object) ? *m_Object : nullptr;
+			return (m_ObjectLoc) ? (T*)m_ObjectLoc->MEM_BLOCK : nullptr;
+		}
+		
+		
+		inline operator bool() const 
+		{
+			return (get() != nullptr);
+		}
+		bool operator!() const 
+		{
+			return (get() == nullptr);
 		}
 		
 		
