@@ -55,7 +55,7 @@ namespace zaap { namespace graphics {
 		//
 		Scene();
 
-		// <Deconstructor>
+		// <Destructor>
 		//      Scene
 		//
 		// <Description>

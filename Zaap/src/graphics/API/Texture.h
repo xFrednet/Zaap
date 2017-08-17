@@ -244,7 +244,7 @@ namespace zaap { namespace graphics {
 		UUID m_UUID;
 
 		/* ********************************************************* */
-		// * Constructor / Deconstructor *
+		// * Constructor / Destructor *
 		/* ********************************************************* */
 
 		TextureCore(const String& textureName);

@@ -62,3 +62,19 @@
 /* //////////////////////////////////////////////////////////////////////////////// */
 #define ZA_METHOD_1(x) std::bind(&x, this, std::placeholders::_1)
 #define ZA_METHOD_0(x) std::bind(&x, this)
+
+namespace zaap
+{
+	
+	template <typename T, typename U>
+	struct is_same_type
+	{
+		static const bool value = false;
+	};
+	template <typename T>
+	struct is_same_type<T, T>
+	{
+		static const bool value = true;
+	};
+
+}

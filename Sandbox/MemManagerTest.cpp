@@ -212,7 +212,7 @@ void za_ptr_test()
 
 }
 
-int main2()
+int main()
 {
 	TestStruct TS = zanew<TestStruct>();
 	zadel(TS);

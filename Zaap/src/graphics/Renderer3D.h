@@ -14,7 +14,7 @@
 #	define ZA_DEFAULT_FOV 90.0f
 #endif
 
-//TODO put the cleanup methods in the deconstructors
+//TODO put the cleanup methods in the destructors
 
 namespace zaap { namespace graphics {
 	class Scene;
@@ -111,7 +111,7 @@ namespace zaap { namespace graphics {
 		Renderer3D(ZA_RENDERER_TARGET_TYPE renderTargetType);
 
 	public:
-		// <Deconstructor>
+		// <Destructor>
 		//      Renderer3D
 		//
 		// <Description>

@@ -45,7 +45,7 @@ namespace zaap { namespace graphics { namespace API {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	
 	/* ********************************************************* */
-	// * Constructor / Deconstructor *
+	// * Constructor / Destructor *
 	/* ********************************************************* */
 	TextureCore::TextureCore(const String& textureName)
 		: m_Name(textureName)

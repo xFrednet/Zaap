@@ -77,7 +77,7 @@ namespace zaap { namespace graphics {
 		virtual ZA_RESULT init() = 0;
 
 	public:
-		// <Deconstructor>
+		// <Destructor>
 		//		GUIRenderer
 		//
 		// <Description>

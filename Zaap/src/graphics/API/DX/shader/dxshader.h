@@ -136,7 +136,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		DXShader();
 
-		// <Deconstructor>
+		// <Destructor>
 		//		~DXShader
 		//
 		// <Description>

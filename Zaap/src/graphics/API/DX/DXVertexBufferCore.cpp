@@ -13,7 +13,7 @@ namespace zaap { namespace graphics { namespace DX {
 	}
 	
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Constructor and Deconstructor //
+	// // Constructor and Destructor //
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	DXVertexBufferCore::DXVertexBufferCore(uint vertexSize, uint vertexCount, uint indexCount, void* vertices, uint* indices)
 		: VertexBufferCore(vertexCount, indexCount),
