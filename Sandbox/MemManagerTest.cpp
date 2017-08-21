@@ -166,11 +166,26 @@ struct TestStructCore
 		Value = 10;
 		cout << "TestStruct:: I exist" << endl;
 	}
-	~TestStructCore()
+	virtual ~TestStructCore()
 	{
 		cout << "~TestStruct:: I was called" << endl;
 	}
 };
+struct TestusStructCore : public TestStructCore
+{
+	unsigned ValuesExistos;
+	TestusStructCore()
+		: TestStructCore(),
+		ValuesExistos(0xaf)
+	{
+		cout << "TestusStructCore Je suis existos" << endl;
+	}
+	~TestusStructCore()
+	{
+		cout << "Why would you kill me ---*Ping*---*Pong*---> DEAD" << endl;
+	}
+};
+
 typedef za_ptr_<TestStructCore> TestStruct;
 
 void za_ptr_T1(za_ptr_<TestStructCore> core)
@@ -212,6 +227,21 @@ void za_ptr_test()
 
 }
 
+void za_ptr_test_sub()
+{
+	cout << "------------------------" << endl;
+	TestStruct TS(new TestusStructCore);
+	TestStruct other = TS;
+
+	za_ptr_T1(other);
+	za_ptr_T2(other);
+	za_ptr_T3(&other);
+	za_ptr_T5(other);
+
+	cin.get();
+
+}
+
 int main()
 {
 	TestStruct TS = zanew<TestStruct>();
@@ -219,6 +249,12 @@ int main()
 
 	za_ptr_test();
 	cout << "------------------------" << endl;
+
+	cin.get();
+
+	za_ptr_test_sub();
+	cout << "------------------------" << endl;
+
 
 	cin.get();
 	return 0;

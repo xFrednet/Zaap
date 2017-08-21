@@ -1,33 +1,25 @@
 ﻿#pragma once
 
 #include "Za.h"
+#include "Memory.h"
 #include <iostream>
-
-
-namespace zaap {
-	namespace system {
-		class MemoryManager;
-		struct ZA_MEM_LOCATION_;
-	}
-}
 
 namespace zaap {
 	template <typename T>
-	class ZAPtrWrapper;
+	class za_ptr_;
 
-
-	class ZAAP_API ZAPtrWrapperBase {
+	class ZAAP_API za_ptr_base {
 	private:
 		template <typename T>
-		friend class ZAPtrWrapper;
+		friend class za_ptr_;
 
-		ZAPtrWrapperBase() {};
+		za_ptr_base() {};
 	};
 
 	template <typename T>
-	class ZAAP_API ZAPtrWrapper : public ZAPtrWrapperBase {
+	class ZAAP_API za_ptr_ : public za_ptr_base {
 	private:
-		system::ZA_MEM_LOCATION_* m_ObjectLoc;
+		system::ZA_MEM_LOCATION* m_ObjectLoc;
 
 	public:
 		typedef T Type;
@@ -40,28 +32,27 @@ namespace zaap {
 		{
 			if (m_ObjectLoc)
 			{
-				system::ZA_MEM_LOCATION_* obj = m_ObjectLoc;
+				system::ZA_MEM_LOCATION* obj = m_ObjectLoc;
 				m_ObjectLoc = nullptr;
 
-				if (m_ObjectLoc->OBJECT_ORIGIN == 0) //ZA_MEM_OBJECT_ORIGIN_UNKNOWN {
+				if (obj->OBJECT_ORIGIN == system::ZA_MEM_OBJECT_ORIGIN_UNKNOWN) //ZA_MEM_OBJECT_ORIGIN_UNKNOWN {
 				{
-					((T*)obj->MEM_BLOCK)->T::~T();
-					delete m_ObjectLoc->MEM_BLOCK;
+					delete (T*)(obj->MEM_BLOCK), false, true, true;
 					system::MemoryManager::GetStaticInstance().returnMemLocation(obj);
 				} else
 				{
-					zadel((T*)m_ObjectLoc->MEM_BLOCK);//zadel calls the destructor
+					zadel((T*)obj->MEM_BLOCK);//zadel calls the destructor
 				}
 
-				std::cout << "ZAPtrWrapper destructObject       x_x     X_X     X_X     x_x                       " << " this " << this << std::endl;
+				std::cout << "za_ptr_ destructObject       x_x     X_X     X_X     x_x                       " << " this " << this << std::endl;
 				
 			}
 			
 		}
 	public:
-		~ZAPtrWrapper()
+		~za_ptr_()
 		{
-			std::cout << "~ZAPtrWrapper();                                              REFERENCE_COUNT:" << ((m_ObjectLoc) ? m_ObjectLoc->REFERENCE_COUNT : -1) << " this " << this << std::endl;
+			std::cout << "~za_ptr_();                                              REFERENCE_COUNT:" << ((m_ObjectLoc) ? m_ObjectLoc->REFERENCE_COUNT : -1) << " this " << this << std::endl;
 
 			if (m_ObjectLoc)
 			{
@@ -78,25 +69,25 @@ namespace zaap {
 		template <typename U>
 		inline void reset(U* u)
 		{
-			static_assert(std::is_base_of<T, U>::value || is_same_type<U, void>::value,
+			static_assert(is_same_type<U, T>::value || std::is_base_of<T, U>::value || is_same_type<U, void>::value,
 				"za_ptr::reset: The entered type has to be ether <T>, a <subclass of T> or <void>");
 
 			destructObject();
 
 			m_ObjectLoc = system::MemoryManager::GetStaticInstance().getNewMemLocation();
 			m_ObjectLoc->MEM_BLOCK = (T*)u;
-			m_ObjectLoc->OBJECT_ORIGIN = 0;
+			m_ObjectLoc->OBJECT_ORIGIN = system::ZA_MEM_OBJECT_ORIGIN_UNKNOWN;
 			m_ObjectLoc->REFERENCE_COUNT = 1;
 		}
 		template <>
-		inline void reset<system::ZA_MEM_LOCATION_>(system::ZA_MEM_LOCATION_* loc)
+		inline void reset<system::ZA_MEM_LOCATION>(system::ZA_MEM_LOCATION* loc)
 		{
 			if (!loc)
 				std::cout << "za_ptr::reset: This has to be on purpose. don't do this... I won't compile!!! (If this didn't happen on purpose contact me ~xFrednet)" << std::endl;
 
 			destructObject();
 
-			m_ObjectLoc = (system::ZA_MEM_LOCATION_*) loc;
+			m_ObjectLoc = (system::ZA_MEM_LOCATION*) loc;
 			m_ObjectLoc->REFERENCE_COUNT = 1;
 		}
 		inline void reset()
@@ -107,39 +98,71 @@ namespace zaap {
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructors //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		template <typename U>
-		ZAPtrWrapper(U* u)
-			: ZAPtrWrapperBase()
+		template <typename TSub>
+		za_ptr_(TSub* tsub)
+			: za_ptr_base()
 		{
-			static_assert(std::is_base_of<T, U>::value || is_same_type<U, system::ZA_MEM_LOCATION_>::value || is_same_type<U, void>::value,
-				"za_ptr: The entered type has to be ether <T>, a <subclass of T>, a <ZA_MEM_LOCATION_> or <void>");
+			static_assert(std::is_base_of<T, TSub>::value || is_same_type<TSub, system::ZA_MEM_LOCATION>::value || is_same_type<TSub, void>::value,
+				"za_ptr::constructor: The entered type has to be ether <T>, a <subclass of T>, a <ZA_MEM_LOCATION> or <void>");
 
-			reset<U>(u);
+			reset<TSub>(tsub);
 		}
-		ZAPtrWrapper()
-			: ZAPtrWrapper((void*)nullptr)
+		za_ptr_()
+			: za_ptr_((void*)nullptr)
 		{
 		}
 
-		ZAPtrWrapper(const ZAPtrWrapper<T>& other)
-			: ZAPtrWrapperBase(),
+		za_ptr_(const za_ptr_<T>& other)
+			: za_ptr_base(),
 			m_ObjectLoc(other.m_ObjectLoc)
 		{
-			m_ObjectLoc->REFERENCE_COUNT++;
+			if (m_ObjectLoc) 
+				m_ObjectLoc->REFERENCE_COUNT++;
 
-			std::cout << "ZAPtrWrapper(const ZAPtrWrapper<T>& ptr)                      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			std::cout << "za_ptr_(const za_ptr_<T>& ptr)                      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
 		}
-		ZAPtrWrapper<T>& operator=(const ZAPtrWrapper<T>& other)
+		za_ptr_<T>& operator=(const za_ptr_<T>& other)
 		{
+			m_ObjectLoc = other.getLoc();
 
-			m_ObjectLoc = other.m_ObjectLoc;
-			m_ObjectLoc->REFERENCE_COUNT++;
+			if (m_ObjectLoc)
+			{
+				m_ObjectLoc->REFERENCE_COUNT++;
+			}
 
-			std::cout << "ZAPtrWrapper<T>& operator=(const ZAPtrWrapper<T>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			std::cout << "za_ptr_<T>& operator=(const za_ptr_<T>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
 
 			return *this;
 		}
 
+		template <typename TSub>
+		za_ptr_(const za_ptr_<TSub>& other)
+			: za_ptr_base()
+		{
+			static_assert(is_same_type<TSub, T>::value || std::is_base_of<T, TSub>::value || is_same_type<TSub, void>::value,
+				"za_ptr::constructor: The type of the entered za_ptr has to be <T>, a <subclass of T> or <void>");
+
+			m_ObjectLoc = other.getLoc();
+
+			if (m_ObjectLoc)
+				m_ObjectLoc->REFERENCE_COUNT++;
+		}
+		template <typename TSub>
+		za_ptr_<T>& operator=(const za_ptr_<TSub>& other) {
+			static_assert(is_same_type<TSub, T>::value || std::is_base_of<T, TSub>::value || is_same_type<TSub, void>::value,
+				"za_ptr::operator=: The type of the entered za_ptr has to be <T>, a <subclass of T> or <void>");
+
+			m_ObjectLoc = other.getLoc();
+
+			if (m_ObjectLoc) {
+				m_ObjectLoc->REFERENCE_COUNT++;
+			}
+
+			std::cout << "za_ptr_<TSub>& operator=(const za_ptr_<TSub>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+
+			return *this;
+		
+		}
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Access methods //
@@ -151,7 +174,7 @@ namespace zaap {
 		*        Note: These methods don't check if the pointer or object is valid.
 		* \return This returns the location pointer for the wrapped object.
 		*/
-		inline system::ZA_MEM_LOCATION_* getLoc()
+		inline system::ZA_MEM_LOCATION* getLoc()
 		{
 			return m_ObjectLoc;
 		}
@@ -162,7 +185,7 @@ namespace zaap {
 		*        Note: These methods don't check if the pointer or object is valid.
 		* \return This returns the location pointer for the wrapped object.
 		*/
-		inline system::ZA_MEM_LOCATION_ const* getLoc() const
+		inline system::ZA_MEM_LOCATION const* getLoc() const
 		{
 			return m_ObjectLoc;
 		}
