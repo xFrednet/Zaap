@@ -667,6 +667,7 @@ namespace zaap
 
 #define ZA_ERROR_MEM_ERROR						ZAAP_TYPEDEF_ZARESULT(0x8230)
 #define ZA_ERROR_MEM_ALLOCATION_ERROR			ZAAP_TYPEDEF_ZARESULT(0x8231)
+#define ZA_ERROR_MEM_ACCESS_VIOLATION			ZAAP_TYPEDEF_ZARESULT(0x8232)
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZA_RESULT_SOURCE_GUI codes //

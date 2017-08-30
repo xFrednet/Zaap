@@ -12,7 +12,7 @@ using namespace system;
 
 
 #define TEST_COUNT              2000000
-//#define TEST_COUNT              10000
+//#define TEST_COUNT              10
 #define MIX_COUNT               (TEST_COUNT * 10)
 #define RAND_SEED               0xf4ed0e7
 #define INIT_POSSIBILITIES      9
@@ -39,7 +39,7 @@ float probabilities_[INIT_POSSIBILITIES] =
 uint free_order_[TEST_COUNT];
 uint init_sizes_[TEST_COUNT];
 
-void** mem_blocks_[TEST_COUNT];
+void* mem_blocks_[TEST_COUNT];
 
 void initArrays()
 {
@@ -112,14 +112,14 @@ void runTest()
 
 	for (uint i = 0; i < TEST_COUNT; i++)
 	{
-		//mem_blocks_[i] = newMalloc<void>(init_sizes_[i]);
+		mem_blocks_[i] = new byte[init_sizes_[i]];
 	}
 
 	allocTimer = (GetTickCount() - allocTimer);
 	freeTimer = GetTickCount();
 
 	for (uint i = 0; i < TEST_COUNT; i++) {
-		//newFree(mem_blocks_[free_order_[i]]);
+		delete (byte*)mem_blocks_[i];
 	}
 	totalTimer = GetTickCount() - totalTimer;
 	freeTimer = GetTickCount() - freeTimer;
@@ -133,22 +133,35 @@ void runTest()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // ZASmartPointer //
 /* //////////////////////////////////////////////////////////////////////////////// */
-void ptrTestFunc1(int** i)
+
+void ptrTestFunc1(za_ptr_<int> i)
 {
-	ZA_INFO("  => ptrTestFunc1");
-	ZA_INFO(**i);
-	ZA_INFO("  <= ptrTestFunc1");
-	//i = newMalloc<int>(sizeof(int));
+	cout << "ptrTestFunc1(za_ptr_<int> i)        " << (*i) << endl;
+}
+void ptrTestFunc2(za_ptr_<int>& i)
+{
+	cout << "ptrTestFunc2(za_ptr_<int>& i)       " << (*i) << endl;
+}
+void ptrTestFunc3(za_ptr_<int>* i)
+{
+	cout << "za_ptr_<int>* i                     " << *(*i).get() << endl;
+
+}
+void ptrTestFunc4(int* i)
+{
+	cout << "ptrTestFunc4(int* i)                " << (*i) << endl;
+
 }
 
 void testSmartPtr()
 {
 	ZA_INFO("============START=================");
 	
-	
-	//ptrTestFunc2(i);
-	//ptrTestFunc3(i);
-	//ptrTestFunc4(i);
+	za_ptr_<int> i(new int);
+	ptrTestFunc1(i);
+	ptrTestFunc2(i);
+	ptrTestFunc3(&i);
+	ptrTestFunc4(i.get());
 	//ptrTestFunc5(i);
 
 	ZA_INFO("===========END====================");
@@ -158,103 +171,10 @@ void testSmartPtr()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // main //
 /* //////////////////////////////////////////////////////////////////////////////// */
-struct TestStructCore
-{
-	int Value;
-	TestStructCore()
-	{
-		Value = 10;
-		cout << "TestStruct:: I exist" << endl;
-	}
-	virtual ~TestStructCore()
-	{
-		cout << "~TestStruct:: I was called" << endl;
-	}
-};
-struct TestusStructCore : public TestStructCore
-{
-	unsigned ValuesExistos;
-	TestusStructCore()
-		: TestStructCore(),
-		ValuesExistos(0xaf)
-	{
-		cout << "TestusStructCore Je suis existos" << endl;
-	}
-	~TestusStructCore()
-	{
-		cout << "Why would you kill me ---*Ping*---*Pong*---> DEAD" << endl;
-	}
-};
+int main() {
 
-typedef za_ptr_<TestStructCore> TestStruct;
-
-void za_ptr_T1(za_ptr_<TestStructCore> core)
-{
-	cout << "    > Value: " << core->Value << "            this: " << "za_ptr_T1" << endl;
-}
-void za_ptr_T2(za_ptr_<TestStructCore>& core)
-{
-	TestStruct other = core;
-	cout << "    > Value: " << other->Value << "            this: " << "za_ptr_T2" << endl;
-}
-void za_ptr_T3(za_ptr_<TestStructCore>* core)
-{
-	cout << "    > Value: " << (*core)->Value << "            this: " << "za_ptr_T3" << endl;
-}
-za_ptr_<TestStructCore> za_ptr_T4(za_ptr_<TestStructCore>& core)
-{
-	cout << "    > Value: " << core->Value << "            this: " << "za_ptr_T4" << endl;
-	return core;
-}
-void za_ptr_T5(za_ptr_<TestStructCore> core)
-{
-	TestStruct other = za_ptr_T4(core);
-	cout << "    > Value: " << other->Value << "            this: " << "za_ptr_T5" << endl;
-}
-
-void za_ptr_test()
-{
-	cout << "------------------------" << endl;
-	TestStruct TS = zanew<TestStruct>();
-	TestStruct other = TS;
-	
-	za_ptr_T1(other);
-	za_ptr_T2(other);
-	za_ptr_T3(&other);
-	za_ptr_T5(other);
-
-	cin.get();
-
-}
-
-void za_ptr_test_sub()
-{
-	cout << "------------------------" << endl;
-	TestStruct TS(new TestusStructCore);
-	TestStruct other = TS;
-
-	za_ptr_T1(other);
-	za_ptr_T2(other);
-	za_ptr_T3(&other);
-	za_ptr_T5(other);
-
-	cin.get();
-
-}
-
-int main()
-{
-	TestStruct TS = zanew<TestStruct>();
-	zadel(TS);
-
-	za_ptr_test();
-	cout << "------------------------" << endl;
-
-	cin.get();
-
-	za_ptr_test_sub();
-	cout << "------------------------" << endl;
-
+	runTest();
+	testSmartPtr();
 
 	cin.get();
 	return 0;

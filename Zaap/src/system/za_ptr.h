@@ -4,23 +4,57 @@
 #include "Memory.h"
 #include <iostream>
 
-namespace zaap {
-	template <typename T>
-	class za_ptr_;
+#ifndef ZA_MEM_PTR_USE_COUNT_PER_PAGE
+#	define ZA_MEM_PTR_USE_COUNT_PER_PAGE 128
+#endif
 
-	class ZAAP_API za_ptr_base {
+#ifndef ZA_MEM_PTR_KEEP_PTR_LOCAL
+#endif
+
+namespace zaap {
+
+	typedef struct ZA_PTR_OBJECT_INFO_ {
+		int                            UseCount;
+		union
+		{
+			ZA_PTR_OBJECT_INFO_*   Next;
+			void*                      Object;
+		};
+	} ZA_PTR_OBJECT_INFO;
+	
+	typedef struct ZA_PTR_OBJECT_INFO_PAGE_ {
+		ZA_PTR_OBJECT_INFO_PAGE_* Next;
+		ZA_PTR_OBJECT_INFO      ObjectInfoList[ZA_MEM_PTR_USE_COUNT_PER_PAGE];
+	} ZA_PTR_OBJECT_INFO_PAGE;
+
+	template <typename T>
+	class ZAAP_API za_ptr_;
+	class ZAAP_API ZaPtrHelper
+	{
 	private:
 		template <typename T>
 		friend class za_ptr_;
 
-		za_ptr_base() {};
+		ZaPtrHelper() = delete;
+		
+		static ZA_PTR_OBJECT_INFO_PAGE*     s_PageList;
+		static ZA_PTR_OBJECT_INFO*          s_FreeObjectInfoList;
+
+		//TODO free unused pages.
+		static void AllocateNewObjectInfoPage();
+		static void FreeObjectInfoPage(ZA_PTR_OBJECT_INFO_PAGE* page);
+		
+		static ZA_PTR_OBJECT_INFO* GetFreeObjectInfo();
+		static void ReturneObjectInfo(ZA_PTR_OBJECT_INFO* info);
+
 	};
 
 	template <typename T>
-	class ZAAP_API za_ptr_ : public za_ptr_base {
+	class ZAAP_API za_ptr_ {
 	private:
-		system::ZA_MEM_LOCATION* m_ObjectLoc;
-
+	private:
+		//this can / should never be null
+		mutable ZA_PTR_OBJECT_INFO* m_ObjectInfo;
 	public:
 		typedef T Type;
 
@@ -28,167 +62,115 @@ namespace zaap {
 		// // Destructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 	private:
-		void destructObject()
+		inline void destructObject()
 		{
-			if (m_ObjectLoc)
+			if (m_ObjectInfo)
 			{
-				system::ZA_MEM_LOCATION* obj = m_ObjectLoc;
-				m_ObjectLoc = nullptr;
+				delete (T*)m_ObjectInfo->Object;
 
-				if (obj->OBJECT_ORIGIN == system::ZA_MEM_OBJECT_ORIGIN_UNKNOWN) //ZA_MEM_OBJECT_ORIGIN_UNKNOWN {
-				{
-					delete (T*)(obj->MEM_BLOCK), false, true, true;
-					system::MemoryManager::GetStaticInstance().returnMemLocation(obj);
-				} else
-				{
-					zadel((T*)obj->MEM_BLOCK);//zadel calls the destructor
-				}
+				ZaPtrHelper::ReturneObjectInfo(m_ObjectInfo);
 
 				std::cout << "za_ptr_ destructObject       x_x     X_X     X_X     x_x                       " << " this " << this << std::endl;
-				
 			}
 			
 		}
-	public:
-		~za_ptr_()
+		inline void decreaseUseCounter()
 		{
-			std::cout << "~za_ptr_();                                              REFERENCE_COUNT:" << ((m_ObjectLoc) ? m_ObjectLoc->REFERENCE_COUNT : -1) << " this " << this << std::endl;
-
-			if (m_ObjectLoc)
-			{
-				m_ObjectLoc->REFERENCE_COUNT--;
-				if (!m_ObjectLoc->REFERENCE_COUNT) {
+			if (m_ObjectInfo) {
+				m_ObjectInfo->UseCount--;
+				if (m_ObjectInfo->UseCount == 0) {
 					destructObject();
 				}
 			}
+		}
+	public:
+		inline ~za_ptr_()
+		{
+			std::cout << "~za_ptr_();                                              REFERENCE_COUNT:" << ((m_ObjectInfo) ? m_ObjectInfo->UseCount : -1) << " this " << this << std::endl;
+
+			decreaseUseCounter();
 		}
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Reset methods //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		template <typename U>
-		inline void reset(U* u)
+		inline void reset(T* t)
 		{
-			static_assert(is_same_type<U, T>::value || std::is_base_of<T, U>::value || is_same_type<U, void>::value,
-				"za_ptr::reset: The entered type has to be ether <T>, a <subclass of T> or <void>");
+			decreaseUseCounter();
 
-			destructObject();
-
-			m_ObjectLoc = system::MemoryManager::GetStaticInstance().getNewMemLocation();
-			m_ObjectLoc->MEM_BLOCK = (T*)u;
-			m_ObjectLoc->OBJECT_ORIGIN = system::ZA_MEM_OBJECT_ORIGIN_UNKNOWN;
-			m_ObjectLoc->REFERENCE_COUNT = 1;
-		}
-		template <>
-		inline void reset<system::ZA_MEM_LOCATION>(system::ZA_MEM_LOCATION* loc)
-		{
-			if (!loc)
-				std::cout << "za_ptr::reset: This has to be on purpose. don't do this... I won't compile!!! (If this didn't happen on purpose contact me ~xFrednet)" << std::endl;
-
-			destructObject();
-
-			m_ObjectLoc = (system::ZA_MEM_LOCATION*) loc;
-			m_ObjectLoc->REFERENCE_COUNT = 1;
+			m_ObjectInfo = ZaPtrHelper::GetFreeObjectInfo();
+			m_ObjectInfo->UseCount = 1; 
+			m_ObjectInfo->Object = t;
 		}
 		inline void reset()
 		{
 			reset<void>(nullptr);
 		}
 
+		template <typename TSub>
+		inline void reset(const za_ptr_<TSub>& other)
+		{
+			static_assert(is_same_type<TSub, T>::value || std::is_base_of<T, TSub>::value || is_same_type<TSub, void>::value,
+				"za_ptr::reset: The entered za_ptr type must be <T>, a <subclass of T> or <void>");
+			
+			decreaseUseCounter();
+
+			m_ObjectInfo = other.m_ObjectInfo; // m_ObjectInfo of other should never be null
+			m_ObjectInfo->UseCount++;
+		}
+		
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Constructors //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		template <typename TSub>
-		za_ptr_(TSub* tsub)
-			: za_ptr_base()
+		inline za_ptr_(T* t)
+			: m_ObjectInfo(nullptr)
 		{
-			static_assert(std::is_base_of<T, TSub>::value || is_same_type<TSub, system::ZA_MEM_LOCATION>::value || is_same_type<TSub, void>::value,
-				"za_ptr::constructor: The entered type has to be ether <T>, a <subclass of T>, a <ZA_MEM_LOCATION> or <void>");
-
-			reset<TSub>(tsub);
+			reset(t);
 		}
-		za_ptr_()
+		inline za_ptr_()
 			: za_ptr_((void*)nullptr)
 		{
 		}
 
-		za_ptr_(const za_ptr_<T>& other)
-			: za_ptr_base(),
-			m_ObjectLoc(other.m_ObjectLoc)
+		inline za_ptr_(const za_ptr_<T>& other)
+			: m_ObjectInfo(nullptr)
 		{
-			if (m_ObjectLoc) 
-				m_ObjectLoc->REFERENCE_COUNT++;
+			reset(other);
 
-			std::cout << "za_ptr_(const za_ptr_<T>& ptr)                      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			std::cout << "za_ptr_(const za_ptr_<T>& ptr)                      REFERENCE_COUNT:" << m_ObjectInfo->UseCount << " this " << this << std::endl;
 		}
-		za_ptr_<T>& operator=(const za_ptr_<T>& other)
+		inline za_ptr_<T>& operator=(const za_ptr_<T>& other)
 		{
-			m_ObjectLoc = other.getLoc();
-
-			if (m_ObjectLoc)
-			{
-				m_ObjectLoc->REFERENCE_COUNT++;
-			}
-
-			std::cout << "za_ptr_<T>& operator=(const za_ptr_<T>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			reset(other);
+			
+			std::cout << "za_ptr_<T>& operator=(const za_ptr_<T>& other)      REFERENCE_COUNT:" << m_ObjectInfo->REFERENCE_COUNT << " this " << this << std::endl;
 
 			return *this;
 		}
 
 		template <typename TSub>
-		za_ptr_(const za_ptr_<TSub>& other)
-			: za_ptr_base()
+		inline za_ptr_(const za_ptr_<TSub>& other)
 		{
 			static_assert(is_same_type<TSub, T>::value || std::is_base_of<T, TSub>::value || is_same_type<TSub, void>::value,
 				"za_ptr::constructor: The type of the entered za_ptr has to be <T>, a <subclass of T> or <void>");
 
-			m_ObjectLoc = other.getLoc();
-
-			if (m_ObjectLoc)
-				m_ObjectLoc->REFERENCE_COUNT++;
+			reset(other);
 		}
 		template <typename TSub>
-		za_ptr_<T>& operator=(const za_ptr_<TSub>& other) {
+		inline za_ptr_<T>& operator=(const za_ptr_<TSub>& other) {
 			static_assert(is_same_type<TSub, T>::value || std::is_base_of<T, TSub>::value || is_same_type<TSub, void>::value,
 				"za_ptr::operator=: The type of the entered za_ptr has to be <T>, a <subclass of T> or <void>");
 
-			m_ObjectLoc = other.getLoc();
+			reset(other);
 
-			if (m_ObjectLoc) {
-				m_ObjectLoc->REFERENCE_COUNT++;
-			}
-
-			std::cout << "za_ptr_<TSub>& operator=(const za_ptr_<TSub>& other)      REFERENCE_COUNT:" << m_ObjectLoc->REFERENCE_COUNT << " this " << this << std::endl;
+			std::cout << "za_ptr_<TSub>& operator=(const za_ptr_<TSub>& other)      REFERENCE_COUNT:" << m_ObjectInfo->REFERENCE_COUNT << " this " << this << std::endl;
 
 			return *this;
-		
 		}
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Access methods //
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		/**
-		* \brief This returns the location pointer for the wrapped object. It can be casted to a struct called
-		*        ZA_MEM_LOCATION it is defined in the MemoryManager file.
-		*
-		*        Note: These methods don't check if the pointer or object is valid.
-		* \return This returns the location pointer for the wrapped object.
-		*/
-		inline system::ZA_MEM_LOCATION* getLoc()
-		{
-			return m_ObjectLoc;
-		}
-		/**
-		* \brief This returns the location pointer for the wrapped object. It can be casted to a struct called
-		*        ZA_MEM_LOCATION it is defined in the MemoryManager file.
-		*
-		*        Note: These methods don't check if the pointer or object is valid.
-		* \return This returns the location pointer for the wrapped object.
-		*/
-		inline system::ZA_MEM_LOCATION const* getLoc() const
-		{
-			return m_ObjectLoc;
-		}
 		/**
 		* \brief This resolves the current location of the object and returns a pointer to it.
 		*
@@ -197,7 +179,7 @@ namespace zaap {
 		*/
 		inline T* get()
 		{
-			return (m_ObjectLoc) ? (T*)m_ObjectLoc->MEM_BLOCK : nullptr;
+			return (T*)m_ObjectInfo->Object;
 		}
 		/**
 		* \brief This resolves the current location of the object and returns a pointer to it.
@@ -207,7 +189,7 @@ namespace zaap {
 		*/
 		inline T const* get() const
 		{
-			return (m_ObjectLoc) ? (T*)m_ObjectLoc->MEM_BLOCK : nullptr;
+			return (T const*)m_ObjectInfo->Object;
 		}
 
 
@@ -233,6 +215,14 @@ namespace zaap {
 		{
 			return get();
 		}
+		inline T& operator*()
+		{
+			return *get();
+		}
+		inline const T& operator*() const
+		{
+			return *get();
+		}
 
 		/**
 		* \brief This treads the wrapped object as a array and returns the object that is stored under the requested index.
@@ -241,7 +231,7 @@ namespace zaap {
 		* \param index The index of the requested object.
 		* \return The object that is stored under the entered index.
 		*/
-		inline T operator[](unsigned index)
+		inline T& operator[](unsigned index)
 		{
 			return get()[index];
 		}
@@ -252,7 +242,7 @@ namespace zaap {
 		* \param index The index of the requested object.
 		* \return The object that is stored under the entered index.
 		*/
-		inline T operator[](unsigned index) const
+		inline const T& operator[](unsigned index) const
 		{
 			return get()[index];
 		}
@@ -263,7 +253,7 @@ namespace zaap {
 		* \param index The index of the requested object.
 		* \return The object that is stored under the entered index.
 		*/
-		inline T operator[](int index)
+		inline T& operator[](int index)
 		{
 			return get()[index];
 		}
@@ -274,7 +264,7 @@ namespace zaap {
 		* \param index The index of the requested object.
 		* \return The object that is stored under the entered index.
 		*/
-		inline T operator[](int index) const
+		inline const T& operator[](int index) const
 		{
 			return get()[index];
 		}

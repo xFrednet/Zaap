@@ -285,6 +285,9 @@
     <ClCompile Include="src\system\za_ptr.cpp">
       <Filter>Source Files\src\system</Filter>
     </ClCompile>
+    <ClCompile Include="src\system\Memory.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">

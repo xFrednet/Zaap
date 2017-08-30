@@ -2,42 +2,78 @@
 
 #include "util/Log.h"
 
+#ifdef ZA_OS_WINDOWS
+#	include <malloc.h>
+#elif ZA_OS_LINUX
+#	include <stdlib.h>
+#endif
+
+
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // Macros //
 /* //////////////////////////////////////////////////////////////////////////////// */
 
 /* ********************************************************* */
+// * patterns *
+/* ********************************************************* */
+#define ZAAP_MEM_CLEAR_TEST_BUFFER_PATTERN       0x00
+#define ZAAP_MEM_TEST_BUFFER_PATTERN             0xdd
+#define ZAAP_MEM_ALIGN_PATTERN                   0xee
+#define ZAAP_MEM_END_PATTERN                     0xff
+
+/* ********************************************************* */
+// * Util macros *
+/* ********************************************************* */
+#define ZAAP_MEM_FILL_ZERO(header)               memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER)), 0x00, header->Size)
+#define ZAAP_MEM_FILL_TEST_BUFFER(header)        memset(header->TestBuffer, ZAAP_MEM_TEST_BUFFER_PATTERN, ZAAP_MEM_TEST_BUFFER_SIZE)
+#define ZAAP_MEM_CLEAR_TEST_BUFFER(header)       memset(header->TestBuffer, ZAAP_MEM_CLEAR_TEST_BUFFER_PATTERN, ZAAP_MEM_TEST_BUFFER_SIZE)
+#define ZAAP_MEM_ALIGN_VALUE(value)              if (value % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT) {value += ZAAP_MEM_BLOCK_HEADER_ALIGNMENT - (value % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT);}
+
+#define intptr(x)                                ((intptr_t)x)
+#define uintptr(x)                               ((uintptr_t)x)
+
+/* ********************************************************* */
+// * end buffer *
+/* ********************************************************* */
+#ifdef ZA_DEBUG_BUILD
+#	define ZAAP_MEM_END_BUFFER_SIZE          (ZAAP_MEM_BLOCK_HEADER_ALIGNMENT * 4)
+#	define ZAAP_MEM_FILL_END_BUFFER(header)  memset(/*pointer = end position - end buffer size*/\
+	(void*)((intptr(header) + sizeof(ZA_MEM_BLOCK_HEADER) + header->Size) - ZAAP_MEM_END_BUFFER_SIZE), \
+	ZAAP_MEM_END_PATTERN, ZAAP_MEM_END_BUFFER_SIZE)//Trust me this should work ;P
+#	define ZAAP_MEM_IS_END_BUFFER_INTACT(header)  (memcmp(/*pointer = end position - end buffer size*/\
+	(void*)((intptr(header) + sizeof(ZA_MEM_BLOCK_HEADER) + header->Size) - ZAAP_MEM_END_BUFFER_SIZE), \
+	end_test_buffer, ZAAP_MEM_END_BUFFER_SIZE) == 0)
+#else
+#	define ZAAP_MEM_END_BUFFER_SIZE                  0
+#	define ZAAP_MEM_FILL_END_BUFFER(header)          
+#	define ZAAP_MEM_IS_END_BUFFER_INTACT(header)     true
+#endif
+
+/* ********************************************************* */
 // * Debug and logging macros *
 /* ********************************************************* */
 #ifdef ZAAP_MEM_DEBUG
-#	define ZA_MEM_INFO(...)                 ZA_INFO(__VA_ARGS__)
-#	define ZA_MEM_ALERT(...)                ZA_ALERT(__VA_ARGS__)
-#	define ZA_MEM_ERROR(...)                ZA_ERROR(__VA_ARGS__)
+#	define ZA_MEM_INFO(...)                      ZA_INFO(__VA_ARGS__)
+#	define ZA_MEM_ALERT(...)                     ZA_ALERT(__VA_ARGS__)
+#	define ZA_MEM_ERROR(...)                     ZA_ERROR(__VA_ARGS__)
 
-#	define ZA_MEM_DEBUG_CODE(x)             x
-#	define ZA_MEM_EXASSERT(...)             ZA_ASSERT(__VA_ARGS__)
-#	define ZA_MEM_DEBUG_FILL(header)        memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER)), ZA_MEM_DEBUG_PATTERN, header->SIZE)
+#	define ZAAP_MEM_DEBUG_CODE(x)                x
+#	define ZA_MEM_EXASSERT(...)                  ZA_ASSERT(__VA_ARGS__)
 #else
 #	define ZA_MEM_INFO(...)
 #	define ZA_MEM_ALERT(...)
 #	define ZA_MEM_ERROR(...)
 
-#	define ZA_MEM_DEBUG_CODE(x)
+#	define ZAAP_MEM_DEBUG_CODE(x)
 #	define ZA_MEM_EXASSERT(...)
-#	define ZA_MEM_DEBUG_FILL(ptr, size)
 #endif
 
 //extra checks, these will slow down the process. They are only used for debugging.
 #ifdef ZAAP_MEM_LOG_TO_MUCH
-#	define ZA_MEM_EXINFO(...)       ZA_MEM_INFO(__VA_ARGS__)
+#	define ZA_MEM_EXINFO(...)                    ZA_MEM_INFO(__VA_ARGS__)
 #else
 #	define ZA_MEM_EXINFO(...)
 #endif
-
-/* ********************************************************* */
-// * Util macros *
-/* ********************************************************* */
-#define ZA_MEM_FILL_ZERO(header)     memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER)), 0x00, header->SIZE)
 
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // definitions //
@@ -45,150 +81,42 @@
 using namespace std;
 namespace zaap { namespace system {
 
+	static mm_byte head_test_buffer[ZAAP_MEM_TEST_BUFFER_SIZE] = { ZAAP_MEM_TEST_BUFFER_PATTERN };
+	static mm_byte end_test_buffer[ZAAP_MEM_TEST_BUFFER_SIZE] = { ZAAP_MEM_TEST_BUFFER_PATTERN };
+
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Actual memory allocation //
+	// // aligned_malloc //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	bool MemoryManager::allocMem(size_t chunkSize)
+#ifdef ZA_OS_WINDOWS
+	void* za_aligned_malloc(size_t size, size_t alignment)
 	{
-		ZA_ASSERT(!m_AllocMem, "Why is this not null");
-		ZA_ASSERT(m_Size == 0, "Why is this not null.. it should be null");
-		ZA_ASSERT(!m_AllocHeader, "Why is this not null... what did I Fuck up");
+		return _aligned_malloc(size, alignment);
+	}
+	void za_aligned_free(void* block)
+	{
+		_aligned_free(block);
+	}
+#elif ZA_OS_LINUX
+	void* za_aligned_malloc(size_t size, size_t alignment)
+	{
+		ZA_MEM_ALIGN_ALIGNMENT(alignment);
+		ZA_MEM_ALIGN_INT(size, alignment);
 		
-		//
-		//data block
-		//
-		m_AllocMem = (mm_byte*)malloc(chunkSize);
-		ZA_ASSERT(m_AllocMem);
-		if (!m_AllocMem)
-			return false;
-		
-		m_Size = chunkSize;
+		void* ptr;
+		if (posix_memalign(&ptr, alignment, size) != 0)
+			return nullptr;
 
-		memset(m_AllocMem, 0, chunkSize);
-
-		m_AllocHeader = (ZA_MEM_BLOCK_HEADER*)m_AllocMem;
-		m_AllocHeader->SIZE = (chunkSize - sizeof(ZA_MEM_BLOCK_HEADER));
-		m_AllocHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
-		ZA_MEM_DEBUG_FILL(m_AllocHeader);
-
-		ZA_MEM_INFO("Allocated the first memory chunk. with the size: ", chunkSize);
-		return true;
+		return ptr;
 	}
-	bool MemoryManager::allocMoreMem(size_t chunkSize)
+	void za_aligned_free(void* block)
 	{
-		ZA_ASSERT(m_AllocMem && m_Size != 0 && m_AllocHeader, "This message should never be visible.");
-
-		size_t oldSize = m_Size;
-		m_Size = 0;
-		mm_byte* oldAlloc = m_AllocMem;
-		mm_byte* newAlloc = (mm_byte*)realloc(m_AllocMem, oldSize + chunkSize);
-		ZA_MEM_EXASSERT(newAlloc);
-		if (!newAlloc)
-		{
-			m_Size = oldSize;
-			m_AllocMem = oldAlloc;
-			return false;
-		}
-		if (newAlloc != oldAlloc)
-		{
-			ZA_ASSERT(false, "this isn't implemented jet. kill the developer");
-			//TODO move ptrs because the alloc location has changed
-		}
-		m_AllocMem = newAlloc;
-		m_Size = oldSize + chunkSize;
-		
-		ZA_MEM_EXASSERT(m_AllocHeader, "I'm not depressed...but this just isn't possible");
-		ZA_MEM_BLOCK_HEADER* memHeader = m_AllocHeader;
-		while (memHeader->NEXT)
-			memHeader = memHeader->NEXT;
-		if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE)
-		{
-			memHeader->SIZE += chunkSize;
-			ZA_MEM_DEBUG_FILL(memHeader);
-		}
-		else
-		{
-			ZA_MEM_BLOCK_HEADER* newHeader = memHeader + sizeof(ZA_MEM_BLOCK_HEADER) + memHeader->SIZE;
-			newHeader->PREV = memHeader;
-			newHeader->NEXT = nullptr;
-			newHeader->SIZE = (size_t)((uintptr_t)&m_AllocMem[m_Size - 1] - (uintptr_t)newHeader - sizeof(ZA_MEM_BLOCK_HEADER));
-			newHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
-
-			memHeader->NEXT = newHeader;
-			ZA_MEM_DEBUG_FILL(newHeader);
-		}
-
-		ZA_MEM_INFO("Allocated a new Memory chunk. The size was: ", chunkSize);
-
-		return true;
+		free(block);
 	}
-	void MemoryManager::freeAllMem()
-	{
-		ZA_ASSERT(m_AllocMem && m_Size != 0 && m_AllocHeader, "This message should never be visible.");
-		
-		//TODO nullptr all smart ptrs
-		m_Size = 0;
-		::free(m_AllocMem);
-
-		ZA_MEM_INFO("Freed all memory. Bye bye");
-	}
-
-	void MemoryManager::allocNewLocations()
-	{
-		ZA_MEM_PAGE* page = (ZA_MEM_PAGE*)::malloc(sizeof(ZA_MEM_PAGE));
-		ZA_MEM_EXASSERT(page);
-
-		page->NEXT = nullptr;
-		for (uint i = 0; i < ZA_MEM_PAGE_LOCATION_COUNT - 1; i++) {
-			page->LOCATIONS[i].NEXT = &page->LOCATIONS[i + 1];
-			ZA_MEM_DEBUG_CODE(page->LOCATIONS[i].MEM_BLOCK = nullptr);
-		}
-
-		//Page list
-		page->NEXT = m_PageList;
-		m_PageList = page;
-
-		//free locations
-		page->LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT - 1].NEXT = m_FreeMemLocations;
-		m_FreeMemLocations = page->LOCATIONS;
-	}
-	bool MemoryManager::isPageUsed(ZA_MEM_PAGE* page) const
-	{
-		//=> If the Page is free all containing locations of it should be in m_FreeMemLocations
-		uint pointersFound = 0;
-		ZA_MEM_LOCATION* testLoc = m_FreeMemLocations;
-		while (testLoc)
-		{
-			if (testLoc >= page->LOCATIONS && testLoc < &page->LOCATIONS[ZA_MEM_PAGE_LOCATION_COUNT - 1])
-				pointersFound++;
-			testLoc = testLoc->NEXT;
-		}
-
-		return pointersFound == ZA_MEM_PAGE_LOCATION_COUNT;
-	}
-	void MemoryManager::freePage(ZA_MEM_PAGE* page)
-	{
-		ZA_MEM_EXASSERT(page, "A page is missing from this book");
-		ZA_MEM_EXASSERT(!isPageUsed(page), "What wants to free this used Page? Me probably, damn!!");
-
-		// remove the page from the List
-		if (m_PageList == page)
-		{
-			m_PageList = page->NEXT;
-		} else
-		{
-			ZA_MEM_PAGE* prevPage = m_PageList;
-			while (prevPage->NEXT && prevPage->NEXT != page)
-			{
-				prevPage = prevPage->NEXT;
-			}
-			ZA_MEM_EXASSERT(prevPage, "the given page is not inside the page list");
-			if (prevPage)
-				prevPage->NEXT = page->NEXT;
-		}
-
-		::free(page);
-	}
+#else
+#	error Zaap ERROR : "za_aligned_malloc" and "za_aligned_free" aren't implemented for the current compiler!!
+	void* za_aligned_malloc(size_t size, size_t alignment) {return nullptr;}
+	void za_aligned_free(void* block) {}
+#endif
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Initialization && Deconstruction //
@@ -203,125 +131,243 @@ namespace zaap { namespace system {
 	}
 
 	MemoryManager::MemoryManager()
-		: m_AllocMem(nullptr),
-		m_Size(0),
-		m_PageList(nullptr),
-		m_FreeMemLocations(nullptr),
+		: m_PartialFilledPools(nullptr),
+		m_FilledPools(nullptr),
 		m_AllocHeader(nullptr)
 	{
+		memset(head_test_buffer, ZAAP_MEM_TEST_BUFFER_PATTERN, ZAAP_MEM_TEST_BUFFER_SIZE);
+		memset(end_test_buffer, ZAAP_MEM_END_PATTERN, ZAAP_MEM_END_BUFFER_SIZE);
 
-		if (!allocMem(ZA_MEM_FIRST_CHUNK_SIZE))
+		m_PartialFilledPools = CreatePool(ZA_MEM_FIRST_POOL_SIZE);
+		if (!m_PartialFilledPools)
 		{
-			ZA_ASSERT(false, "AllocNewMemBlock(ZA_MEM_FIRST_CHUNK_SIZE) failed");
+			ZA_ASSERT(false, "The memory pool allocation failed!!!");
 			exit(ZA_ERROR_MEM_ALLOCATION_ERROR);
 		}
-		allocNewLocations();
 
-		ZA_INFO("The initialization was successful ");
+		//ZA_INFO("The initialization was successful ");
+		cout << "lol" << endl;
 	}
 	MemoryManager::~MemoryManager()
 	{
+		ZA_MEM_MEMORY_POOL* nextPool;
+
 		//
-		// Freeing memory
+		// Freeing m_PartialFilledPools
 		//
-		freeAllMem();
+		ZA_MEM_MEMORY_POOL* pool = m_PartialFilledPools;
+		m_PartialFilledPools = nullptr;
+		while (pool)
+		{
+			nextPool = pool->Next;
+			DestroyPool(pool);
+			pool = nextPool;
+		}
+
+		//
+		// Freeing m_FilledPools
+		//
+		pool = m_FilledPools;
+		m_FilledPools = nullptr;
+		while (pool) {
+			nextPool = pool->Next;
+			DestroyPool(pool);
+			pool = nextPool;
+		}
+
+		ZA_MEM_EXASSERT(!m_PartialFilledPools, "A new allocation was done!");
+		ZA_MEM_EXASSERT(!m_FilledPools, "A new LARGE allocation was done!");
+
 		ZA_LOG_CLEANUP();
 	}
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Memory Block manipulation //
+	// // Actual memory allocation //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	bool MemoryManager::contains(void* block) const
+	ZA_MEM_MEMORY_POOL* MemoryManager::CreatePool(size_t size)
 	{
-		return (block && (uintptr_t)block >= (uintptr_t)m_AllocMem && (uintptr_t)block < (uintptr_t)&m_AllocMem[m_Size - 1]);
-	}
-	ZA_MEM_BLOCK_HEADER* MemoryManager::getBlockHeader(void* block)
-	{
-		ZA_MEM_EXASSERT(contains((void*)((uintptr_t)block - sizeof(ZA_MEM_BLOCK_HEADER))), "block: ", (uintptr_t)block, ", m_AllocMem: ", (uintptr_t)m_AllocMem, ", &m_AllocMem[m_Size - 1]", (uintptr_t)&m_AllocMem[m_Size - 1])
+		//memory allocation
+		ZA_MEM_MEMORY_POOL* pool = (ZA_MEM_MEMORY_POOL*)za_aligned_malloc(sizeof(ZA_MEM_MEMORY_POOL), alignof(ZA_MEM_MEMORY_POOL));
+		ZA_MEM_EXASSERT(pool, "Who did this?? Oh it was you C++... If I'll ever read this I'll start hating you (even more)!!!");
+		if (!pool)
+			return nullptr;
+		memset(pool, 0, sizeof(ZA_MEM_MEMORY_POOL));
+		
+		//pool memory allocation
+		pool->Memory = za_aligned_malloc(size, ZAAP_MEM_BLOCK_HEADER_ALIGNMENT);
+		ZA_MEM_EXASSERT(pool->Memory, "Okay, malloc we have to talk about this. HOW THE F**k?!? (size: ", size);
+		if (!pool->Memory)
+		{
+			za_aligned_free(pool);
+			return nullptr;
+		}
+		pool->Size = size;
+		
+		//inserting the first header
+		ZA_MEM_BLOCK_HEADER* header = (ZA_MEM_BLOCK_HEADER*)pool->Memory;
+		ZAAP_MEM_FILL_TEST_BUFFER(header);
+		header->Next       = nullptr;
+		header->Previous   = nullptr;
+		header->State      = ZA_MEM_BLOCK_STATE_FREE;
+		header->Size       = pool->Size - sizeof(ZA_MEM_BLOCK_HEADER);
 
-		if (!contains((void*)((uintptr_t)block - sizeof(ZA_MEM_BLOCK_HEADER))))
+		ZA_MEM_EXINFO("A new memory pool was created at: ", pool, " the memory is at: ", pool->Memory, " and has the size of: ", pool->Size);
+		return pool;
+	}
+	void MemoryManager::DestroyPool(ZA_MEM_MEMORY_POOL* pool)
+	{
+		ZA_MEM_EXASSERT(pool, "Hello let me just delete this nullptr... Done :)... kys");
+		if (!pool)
+			return;
+
+		if (pool->Memory)
+			za_aligned_free(pool->Memory);
+
+		za_aligned_free(pool);
+
+		ZA_MEM_EXINFO("A memory pool was killed, the crime scene is: ", pool);
+	}
+
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	// // Utilities //
+	/* //////////////////////////////////////////////////////////////////////////////// */
+	ZA_MEM_MEMORY_POOL* MemoryManager::getContainingPool(void const* block)
+	{
+		//m_PartialFilledPools
+		ZA_MEM_MEMORY_POOL* pool = m_PartialFilledPools;
+		for (; pool && !pool->isMember(block); pool = pool->Next) {}
+		if (pool)
+			return pool;
+
+		//m_FilledPools
+		pool = m_FilledPools;
+		for (; pool && !pool->isMember(block); pool = pool->Next) {}
+
+		return pool;
+	}
+	ZA_MEM_MEMORY_POOL const* MemoryManager::getContainingPool(void const* block) const
+	{
+		//m_PartialFilledPools
+		ZA_MEM_MEMORY_POOL* pool = m_PartialFilledPools;
+		for (; pool && !pool->isMember(block); pool = pool->Next) {}
+		if (pool)
+			return pool;
+
+		//m_FilledPools
+		pool = m_FilledPools;
+		for (; pool && !pool->isMember(block); pool = pool->Next) {}
+
+		return pool;
+	}
+	
+	ZA_MEM_BLOCK_HEADER* MemoryManager::getBlockHeader(void const* block)
+	{
+		ZA_MEM_EXASSERT(contains(block), ":) just smile. It's all you've got left when you read this");
+
+		ZA_MEM_MEMORY_POOL* pool = getContainingPool(block);
+
+		//general test
+		if (!pool)
 			return nullptr;
 
-		return (ZA_MEM_BLOCK_HEADER*) ((uintptr_t)block - sizeof(ZA_MEM_BLOCK_HEADER));
+		//default header location
+		intptr_t searchPos = intptr(block) - sizeof(ZA_MEM_BLOCK_HEADER);
+		
+		if (searchPos % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT)
+			searchPos += ZAAP_MEM_BLOCK_HEADER_ALIGNMENT - searchPos % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT;
+
+		for (; searchPos >= intptr(pool->Memory); searchPos -= ZAAP_MEM_BLOCK_HEADER_ALIGNMENT) {
+			if (memcmp((void*)searchPos, head_test_buffer, ZAAP_MEM_TEST_BUFFER_SIZE) == 0)
+			{
+#ifdef ZA_DEBUG_BUILD
+				ZA_MEM_BLOCK_HEADER* head = (ZA_MEM_BLOCK_HEADER*)searchPos;
+				if (uintptr(block) >= uintptr(head) + sizeof(ZA_MEM_BLOCK_HEADER) + head->Size)
+				{
+					cout << "The test buffer of the block seams to be damaged!!!" << endl;
+					ZA_ASSERT_BREAK;
+				}
+#endif
+				return (ZA_MEM_BLOCK_HEADER*)searchPos;
+			}
+		}
+
+		return nullptr;
 	}
 
 	void MemoryManager::split(ZA_MEM_BLOCK_HEADER* header, size_t minBlockSize)
 	{
 		ZA_MEM_EXASSERT(contains(header), "<insert a funny and depressed debug message>");
-		ZA_MEM_EXASSERT(header->SIZE > minBlockSize, "WTF you can't make it bigger by splitting it");
-		ZA_MEM_EXASSERT(((uintptr_t)header + header->SIZE) >= (uintptr_t)&m_AllocMem[m_Size - 1], "HOW?? HOW should the memBlock extend over the allocated memory");
-		
-		if (header->SIZE > (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER) + ZA_MEM_BLOCK_MIN_SPLIT_SIZE))
-		{
-			ZA_MEM_BLOCK_HEADER* splitHeader = (ZA_MEM_BLOCK_HEADER*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER) + minBlockSize);
-			splitHeader->PREV = header;
-			splitHeader->NEXT = header->NEXT;
-			splitHeader->STATE = ZA_MEM_BLOCK_STATE_FREE;
-			splitHeader->SIZE = header->SIZE - (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER));
-			//TODO WTF this needs a lot of performance, is this needed????? ZA_MEM_FILL_ZERO(splitHeader);
+		ZA_MEM_EXASSERT(header->Size > minBlockSize, "WTF you can't make it bigger by splitting it");
+		ZA_MEM_EXASSERT((minBlockSize % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT) == 0, "You are fired!!! Please contact me to get you fired. (I hope I'll never get this message myself)");
 
-			header->SIZE = minBlockSize;
-			header->NEXT = splitHeader;
+		if (header->Size > (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER) + ZA_MEM_BLOCK_MIN_SPLIT_SIZE))
+		{
+			ZA_MEM_BLOCK_HEADER* splitHeader = (ZA_MEM_BLOCK_HEADER*)(uintptr(header) + sizeof(ZA_MEM_BLOCK_HEADER) + minBlockSize);
+			ZA_MEM_EXASSERT((uintptr(header) % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT) == 0, "//TODO remove this test message");
+			ZAAP_MEM_FILL_TEST_BUFFER(splitHeader);
+			splitHeader->Previous = header;
+			splitHeader->Next = header->Next;
+			splitHeader->State = ZA_MEM_BLOCK_STATE_FREE;
+			splitHeader->Size = header->Size - (minBlockSize + sizeof(ZA_MEM_BLOCK_HEADER));
+
+			header->Size = minBlockSize;
+			header->Next = splitHeader;
 
 			joinFree(splitHeader);
-			ZA_MEM_EXINFO("I split a MemHeader. The new size is: ", header->SIZE, ". The other split header has a size of: ", splitHeader->SIZE, "(header: ", (uintptr_t)header, ")");
-		} else
-		{
-			memset((void*)((uintptr_t)header + sizeof(ZA_MEM_BLOCK_HEADER) + minBlockSize), 0, header->SIZE - minBlockSize);
+			ZA_MEM_EXINFO("I split a MemHeader. The new size is: ", header->SIZE, ". The other split header has a size of: ", splitHeader->SIZE, "(header: ", intptr(header), ")");
 		}
 	}
 	void MemoryManager::joinFree(ZA_MEM_BLOCK_HEADER* header)
 	{
 		ZA_MEM_EXASSERT(contains(header), "Off with his not existing head.");
-		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BLOCK_STATE_FREE, "The state should be free!! Who did this");
+		ZA_MEM_EXASSERT(header->State == ZA_MEM_BLOCK_STATE_FREE, "The state should be free!! should is the important word here");
 
 		mm_byte positions = 0;
-		if (header->PREV)
-			positions |= header->PREV->STATE << 4; //0000 0000 => 000S 0000 (S = STATE)
-		if (header->NEXT)
-			positions |= header->NEXT->STATE;      //0000 0000 => 0000 000S (S = STATE)
-		//TODO test if m_AllocHeader is destroyed by this!!! Fuck you this caused an Error I have to fix this
+		if (header->Previous)
+			positions |= header->Previous->State << 4; //0000 0000 => 000S 0000 (S = State)
+		if (header->Next)
+			positions |= header->Next->State;          //0000 0000 => 0000 000S (S = State)
 		
+		//the test buffer of the joined headers aren't cleared but that shouldn't matter
+
 		ZA_MEM_BLOCK_HEADER* prevHeader;
 		ZA_MEM_BLOCK_HEADER* nextHeader;
 		switch (positions)
 		{
 		// |O|F|F| => |O|F--|
 		case 0x01: 
-			nextHeader = header->NEXT;
-			if (nextHeader == m_AllocHeader)
-				m_AllocHeader = header;
+			nextHeader = header->Next;
+			ZAAP_MEM_CLEAR_TEST_BUFFER(nextHeader);
 
-			header->NEXT = nextHeader->NEXT;
-			header->SIZE = header->SIZE + sizeof(ZA_MEM_BLOCK_HEADER) + nextHeader->SIZE;
+			header->Next = nextHeader->Next;
+			header->Size = header->Size + sizeof(ZA_MEM_BLOCK_HEADER) + nextHeader->Size;
 
-			ZA_MEM_DEBUG_FILL(header);
+			m_AllocHeader = header;
 			ZA_MEM_EXINFO("joinFree: joined |O|F|F| => |O|F--|");
 			break;
 		// |F|F|O| => |F--|O|
 		case 0x10:
-			prevHeader = header->PREV;
-			if (header == m_AllocHeader)
-				m_AllocHeader = prevHeader;
+			prevHeader = header->Previous;
+			ZAAP_MEM_CLEAR_TEST_BUFFER(header);
 
-			prevHeader->NEXT = header->NEXT;
-			prevHeader->SIZE = prevHeader->SIZE + sizeof(ZA_MEM_BLOCK_HEADER) + header->SIZE;
+			prevHeader->Next = header->Next;
+			prevHeader->Size = prevHeader->Size + sizeof(ZA_MEM_BLOCK_HEADER) + header->Size;
 
-			ZA_MEM_DEBUG_FILL(prevHeader);
+			m_AllocHeader = prevHeader;
 			ZA_MEM_EXINFO("joinFree: joined |F|F|O| => |F--|O|");
 			break;
 		// |F|F|F| => |F----|
 		case 0x11:
-			prevHeader = header->PREV;
-			nextHeader = header->NEXT;
-			if (((uintptr_t)header ^ (uintptr_t)m_AllocHeader) * ((uintptr_t)nextHeader ^ (uintptr_t)m_AllocHeader) == 0)//x == y -> x _xor_ y == 0
-				m_AllocHeader = prevHeader;
+			prevHeader = header->Previous;
+			nextHeader = header->Next;
+			ZAAP_MEM_CLEAR_TEST_BUFFER(header);
+			ZAAP_MEM_CLEAR_TEST_BUFFER(nextHeader);
 
-			prevHeader->NEXT = nextHeader->NEXT + 
-				sizeof(ZA_MEM_BLOCK_HEADER) + header->SIZE + 
-				sizeof(ZA_MEM_BLOCK_HEADER) + nextHeader->SIZE;
+			prevHeader->Next = nextHeader->Next + 
+				sizeof(ZA_MEM_BLOCK_HEADER) + header->Size + 
+				sizeof(ZA_MEM_BLOCK_HEADER) + nextHeader->Size;
 
-			ZA_MEM_DEBUG_FILL(prevHeader);
+			m_AllocHeader = prevHeader;
 			ZA_MEM_EXINFO("joinFree: joined |F|F|F| => |F----|");
 			break;
 		default:
@@ -329,139 +375,120 @@ namespace zaap { namespace system {
 		}
 	}
 
-	ZA_MEM_LOCATION* MemoryManager::getNewMemLocation()
-	{
-		if (!m_FreeMemLocations)
-			allocNewLocations();
-
-		ZA_MEM_LOCATION* location = m_FreeMemLocations;
-		m_FreeMemLocations = location->NEXT;
-
-		location->REFERENCE_COUNT = 0;
-		return location;
-	}
-	void MemoryManager::returnMemLocation(ZA_MEM_LOCATION* location)
-	{
-		ZA_MEM_DEBUG_CODE(location->MEM_BLOCK = nullptr);
-
-		location->REFERENCE_COUNT = 0;
-		location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_UNKNOWN;
-
-		location->NEXT = m_FreeMemLocations;
-		m_FreeMemLocations = location;
-	}
-
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Allocation and deallocation of memory //
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	ZA_MEM_LOCATION* MemoryManager::allocate(size_t blockSize)
+	void* MemoryManager::allocateSinglePool(size_t size)
 	{
-		ZA_MEM_EXASSERT(m_AllocMem && m_Size != 0 && m_AllocHeader, "OKAY.............. Kill your self");
+		size += ZAAP_MEM_END_BUFFER_SIZE;
+		ZAAP_MEM_ALIGN_VALUE(size);
+		size += sizeof(ZA_MEM_BLOCK_HEADER);       //add size for the ZA_MEM_BLOCK_HEADER
 
-		if (blockSize >= ZA_MEM_CHUNK_SIZE)
-		{
-			//TODO alloc outside m_AllocMem
-			ZA_ASSERT(blockSize < ZA_MEM_CHUNK_SIZE, "TODO alloc outside m_AllocMem");
-			return nullptr;
-		}
 
-		//
-		// Find free Memory
-		//
-		ZA_MEM_BLOCK_HEADER* memHeader = m_AllocHeader;
-		ZA_MEM_LOCATION* location = getNewMemLocation();
-		while (memHeader)
+		ZA_MEM_MEMORY_POOL* pool = CreatePool(size);
+		ZA_MEM_BLOCK_HEADER* header = (ZA_MEM_BLOCK_HEADER*)pool->Memory;
+		ZA_MEM_EXASSERT((uintptr(header) % ZAAP_MEM_BLOCK_HEADER_ALIGNMENT) == 0, "//TODO remove this test message 2");
+		header->State = ZA_MEM_BLOCK_STATE_OCCUPIED;
+
+		pool->Next = m_FilledPools;
+		m_FilledPools = pool;
+
+
+		ZAAP_MEM_FILL_END_BUFFER(header);
+		return (void*)(intptr(header) + sizeof(ZA_MEM_BLOCK_HEADER));
+	}
+	
+	void* MemoryManager::allocate(size_t size)
+	{
+		ZAAP_MEM_ALIGN_VALUE(size);
+
+		if (size >= ZA_MEM_DEFAULT_POOL_SIZE)
+			return allocateSinglePool(size);
+		
+		size += ZAAP_MEM_END_BUFFER_SIZE;
+
+		//scan the alloc header
+		ZA_MEM_BLOCK_HEADER* header = m_AllocHeader;
+		while (header)
 		{
-			if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE || memHeader->SIZE >= blockSize)
+			if (header->State == ZA_MEM_BLOCK_STATE_FREE && header->Size >= size)
 			{
-				memHeader->STATE = ZA_MEM_BLOCK_STATE_OCCUPIED;
-				split(memHeader, blockSize);
-				if (memHeader->NEXT)
-					m_AllocHeader = memHeader->NEXT;
-				else
-					m_AllocHeader = memHeader;
-				
-				ZA_MEM_FILL_ZERO(memHeader);
-				ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-
-				location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
-				memHeader->LOCATION = location;
-				location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_MEMMGR;
-				return location;
-			}
-			if (memHeader->NEXT)
-				memHeader = memHeader->NEXT;
-			else
+				header->State = ZA_MEM_BLOCK_STATE_OCCUPIED;
 				break;
-		}
+			}
 
-		//
-		// Allocate new Memory
-		//
-		// memHeader->NEXT => nullptr => alloc new Memory
-		ZA_MEM_EXINFO("Failed to find a fitting memory block => allocating a new memory chunk");
-		if (!allocMoreMem(ZA_MEM_CHUNK_SIZE))
-		{
-			//TODO deal with error
-			ZA_ASSERT(false, "AllocMoreMem failed");
-			return nullptr;
+			header = header->Next;
 		}
 		
-		//TODO search for improvements
-
-		//
-		// Find free Memory
-		//
-		if (memHeader->NEXT)
-			memHeader = memHeader->NEXT;
-		if (memHeader->STATE == ZA_MEM_BLOCK_STATE_FREE)
+		//scan the pools
+		if (!header)
 		{
-			//TODO maybe recall this method it should work this time 
-			memHeader->STATE = ZA_MEM_BLOCK_STATE_OCCUPIED;
-			split(memHeader, blockSize);
-			if (memHeader->NEXT)
-				m_AllocHeader = memHeader->NEXT;
-			else
-				m_AllocHeader = memHeader;
-
-			ZA_MEM_FILL_ZERO(memHeader);
-			ZA_MEM_EXINFO("Allocated a new memory block at: ", (uintptr_t)(memHeader + sizeof(ZA_MEM_BLOCK_HEADER)), ", with the size: ", memHeader->SIZE);
-
-			location->MEM_BLOCK = (void*)((uintptr_t)memHeader + sizeof(ZA_MEM_BLOCK_HEADER));
-			memHeader->LOCATION = location;
-			location->OBJECT_ORIGIN = ZA_MEM_OBJECT_ORIGIN_MEMMGR;
-			return location;
+			ZA_MEM_MEMORY_POOL* pool = m_PartialFilledPools;
+			while (pool && !header)
+			{
+				header = (ZA_MEM_BLOCK_HEADER*)pool->Memory;
+				while (header)
+				{
+					if (header->State == ZA_MEM_BLOCK_STATE_FREE && header->Size >= size) {
+						header->State = ZA_MEM_BLOCK_STATE_OCCUPIED;
+						break;
+					}
+					header = header->Next;
+				}
+				pool = pool->Next;
+			}
 		}
-		return nullptr;
 		
+		//allocate a new pool
+		if (!header)
+		{
+			ZA_MEM_MEMORY_POOL* pool = CreatePool();
+			if (!pool)
+			{
+				ZA_MEM_EXASSERT(pool, "NÜLL but why!!!");
+				return nullptr;
+			}
+			header = (ZA_MEM_BLOCK_HEADER*)pool->Memory;
+
+			//add the pool to the pool list
+			ZA_MEM_MEMORY_POOL* poolList = m_PartialFilledPools;
+			while (poolList->Next)
+				poolList = poolList->Next;
+
+			poolList->Next = pool;
+		}
+
+		split(header, size);
+		m_AllocHeader = header->Next;
+		ZAAP_MEM_FILL_END_BUFFER(header);
+
+		return (void*)(intptr(header) + sizeof(ZA_MEM_BLOCK_HEADER));
 		//Fuck my life... I thought that would be easy
+		//now I rewrote it a second time...
 	}
 	void MemoryManager::free(void* block)
 	{
 		ZA_MEM_EXASSERT(block, "Null why would you give me a nullptr?? What have I done to you");
 		ZA_MEM_EXASSERT(contains(block));
-		if (!contains(block))
-			return;
 
 		//Block head
 		ZA_MEM_BLOCK_HEADER* header = getBlockHeader(block);
-		ZA_MEM_LOCATION* location = header->LOCATION;
-		ZA_MEM_EXASSERT(header->STATE == ZA_MEM_BLOCK_STATE_OCCUPIED, "Stop just stop!!!")
-		ZA_MEM_DEBUG_FILL(header);
-		header->STATE = ZA_MEM_BLOCK_STATE_FREE;
+		ZA_MEM_EXASSERT(header, "He has no head")
+		if (header)
+		{
+			ZA_MEM_EXASSERT(header->State == ZA_MEM_BLOCK_STATE_OCCUPIED, "Stop just stop!!!")
+			if (!ZAAP_MEM_IS_END_BUFFER_INTACT(header))
+			{
+				std::cout << "The memory outside this allocation was touched by something!" << std::endl;
+				ZA_ASSERT_BREAK;
+				exit(ZA_ERROR_MEM_ACCESS_VIOLATION);
+			}
 
-		//location pointer
-		returnMemLocation(location);
+			header->State = ZA_MEM_BLOCK_STATE_FREE;
 
-		joinFree(header);
-	}
-	void MemoryManager::free(void** block)
-	{
-		free(*block);
-	}
-	void MemoryManager::suggestScan()
-	{
-		//TODO scan the memory
+			joinFree(header);
+		}
+
 	}
 
 }}

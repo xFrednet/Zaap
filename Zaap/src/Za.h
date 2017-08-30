@@ -7,7 +7,6 @@
 /* //////////////////////////////////////////////////////////////////////////////// */
 #ifdef ZA_OS_WINDOWS
 #	define ZAAP_OS_WIN
-#	define ZAAP_OS_WIN32
 
 	//ZA_DO_NOT_INCLUDE_DIRECTX use this macro to remove DirectX
 	//This Macro isn't needed if a different ZA_OS is selected
@@ -20,8 +19,18 @@
 #endif
 
 /* //////////////////////////////////////////////////////////////////////////////// */
-// // Bit count Selection //
+// // Compiler specific //
 /* //////////////////////////////////////////////////////////////////////////////// */
+#ifdef _MSC_VER                        //Microsoft Visual C++
+#	define ZAAP_COMPILER_MSC
+#elif __GNUC__                         //GCC C/C++
+#	define ZAAP_COMPILER_GCC
+#elif __MINGW64__                      //MinGW-w64
+#	define ZAAP_COMPILER_MINGW64
+#	define ZAAP_COMPILER_MINGW
+#elif __MINGW32__                      //MinGW
+#	define ZAAP_COMPILER_MINGW
+#endif
 
 // Check windows
 #if _WIN32 || _WIN64
@@ -33,7 +42,7 @@
 #endif
 
 // Check GCC
-#if __GNUC__
+#if ZAAP_COMPILER_GCC
 #	if __x86_64__ || __ppc64__
 #		define ZA_64BIT
 #	else
