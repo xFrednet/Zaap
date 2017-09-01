@@ -37,7 +37,7 @@ namespace zaap { namespace gui{
 
 	uint GUILabel::getWrappedWidth() const
 	{
-		if (m_Font.get())
+		if (m_Font)
 			return m_MarginLeft + m_Font->getStringWidth(m_Text, m_TextSize) + m_MarginRight;
 
 		return m_MarginLeft + m_MarginRight;

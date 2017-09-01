@@ -146,7 +146,6 @@ namespace zaap { namespace system {
 		}
 
 		//ZA_INFO("The initialization was successful ");
-		cout << "lol" << endl;
 	}
 	MemoryManager::~MemoryManager()
 	{
@@ -445,7 +444,7 @@ namespace zaap { namespace system {
 			ZA_MEM_MEMORY_POOL* pool = CreatePool();
 			if (!pool)
 			{
-				ZA_MEM_EXASSERT(pool, "NÜLL but why!!!");
+				ZA_MEM_EXASSERT(pool, "NÃœLL but why!!!");
 				return nullptr;
 			}
 			header = (ZA_MEM_BLOCK_HEADER*)pool->Memory;

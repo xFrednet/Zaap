@@ -178,10 +178,10 @@ namespace zaap { namespace graphics {
 		/* ##################################### */
 		// # String #
 		/* ##################################### */
-		uint getStringWidth(const String& string, const float& fontSize);
-		uint getStringHeight(const String& string, const float& fontSize);
+		uint getStringWidth(const String& string, const float& fontSize) const;
+		uint getStringHeight(const String& string, const float& fontSize) const;
 
-		Dimensions getStringSize(const String& string, const float& fontSize);
+		Dimensions getStringSize(const String& string, const float& fontSize) const;
 		
 		/* ##################################### */
 		// # CharSheet Util #

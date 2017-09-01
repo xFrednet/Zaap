@@ -260,22 +260,22 @@ namespace zaap { namespace graphics {
 	/* ##################################### */
 	// # String #
 	/* ##################################### */
-	uint FontCore::getStringWidth(const String& string, const float& fontSize)
+	uint FontCore::getStringWidth(const String& string, const float& fontSize) const
 	{
 		return getStringSize(string, fontSize).Width;
 	}
-	uint FontCore::getStringHeight(const String& string, const float& fontSize)
+	uint FontCore::getStringHeight(const String& string, const float& fontSize) const
 	{
 		return getStringSize(string, fontSize).Height;
 	}
 
-	Dimensions FontCore::getStringSize(const String& string, const float& fontSize)
+	Dimensions FontCore::getStringSize(const String& string, const float& fontSize) const
 	{
 		uint strSize = string.length();
 		if (strSize == 0)
 			return Dimensions();
 
-		ZA_FONT_CHAR_MATRIX* matrix = &m_CharInfo[getCharIndex(string.at(0))].CharMatrix;
+		ZA_FONT_CHAR_MATRIX const* matrix = &m_CharInfo[getCharIndex(string.at(0))].CharMatrix;
 		float width = -(matrix->TotalWidth - (matrix->XOffset + matrix->Width));
 		float maxWidth = 0;
 		float maxHeight = 0;
