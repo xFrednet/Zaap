@@ -3,7 +3,6 @@
 #include "Za.h"
 #include "Memory.h"
 #include <iostream>
-#include <memory>
 
 #ifndef ZA_MEM_PTR_USE_COUNT_PER_PAGE
 #	define ZA_MEM_PTR_USE_COUNT_PER_PAGE 128
@@ -29,6 +28,7 @@ namespace zaap {
 
 	template <typename T>
 	class ZAAP_API za_ptr;
+  
 	class ZAAP_API ZaPtrHelper
 	{
 	private:
@@ -70,6 +70,7 @@ namespace zaap {
 		{
 			if (m_ObjectInfo)
 			{
+
 				if (m_Object)
 					delete (T*)m_Object;
 
@@ -177,6 +178,7 @@ namespace zaap {
 		*/
 		inline T* get()
 		{
+
 			return m_Object;
 		}
 		/**
@@ -246,6 +248,7 @@ namespace zaap {
 		{
 			return m_ObjectInfo != ptr.m_ObjectInfo &&
 				m_Object == ptr.m_Object;
+
 		}
 	};
 
