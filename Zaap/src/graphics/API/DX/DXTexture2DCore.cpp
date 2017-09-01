@@ -196,7 +196,7 @@ namespace zaap { namespace graphics { namespace DX {
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	// // Abstract members // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	void DXTexture2DCore::bind(uint slot)
+	void DXTexture2DCore::bind(uint slot) const
 	{
 		
 		if (!m_TextureView && !m_SamplerState)
@@ -205,7 +205,7 @@ namespace zaap { namespace graphics { namespace DX {
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, &m_TextureView);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, &m_SamplerState);
 	}
-	void DXTexture2DCore::unbind(uint slot)
+	void DXTexture2DCore::unbind(uint slot) const
 	{
 		DXContext::GetDevContext()->PSSetShaderResources(slot, 1, nullptr);
 		DXContext::GetDevContext()->PSSetSamplers(slot, 1, nullptr);

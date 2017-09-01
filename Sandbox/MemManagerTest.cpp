@@ -134,17 +134,17 @@ void runTest()
 // // ZASmartPointer //
 /* //////////////////////////////////////////////////////////////////////////////// */
 
-void ptrTestFunc1(za_ptr_<int> i)
+void ptrTestFunc1(za_ptr<int> i)
 {
-	cout << "ptrTestFunc1(za_ptr_<int> i)        " << (*i) << endl;
+ 	cout << "ptrTestFunc1(za_ptr<int> i)        " << (*i.get()) << endl;
 }
-void ptrTestFunc2(za_ptr_<int>& i)
+void ptrTestFunc2(za_ptr<int>& i)
 {
-	cout << "ptrTestFunc2(za_ptr_<int>& i)       " << (*i) << endl;
+	cout << "ptrTestFunc2(za_ptr<int>& i)       " << (*i.get()) << endl;
 }
-void ptrTestFunc3(za_ptr_<int>* i)
+void ptrTestFunc3(za_ptr<int>* i)
 {
-	cout << "za_ptr_<int>* i                     " << *(*i).get() << endl;
+	cout << "za_ptr<int>* i                     " << *(*i).get() << endl;
 
 }
 void ptrTestFunc4(int* i)
@@ -157,7 +157,7 @@ void testSmartPtr()
 {
 	ZA_INFO("============START=================");
 	
-	za_ptr_<int> i(new int);
+	za_ptr<int> i(new int);
 	ptrTestFunc1(i);
 	ptrTestFunc2(i);
 	ptrTestFunc3(&i);
@@ -171,7 +171,20 @@ void testSmartPtr()
 /* //////////////////////////////////////////////////////////////////////////////// */
 // // main //
 /* //////////////////////////////////////////////////////////////////////////////// */
-int main() {
+class TestClass
+{
+	public:
+	TestClass()
+	{
+		cout << " TestClass()" << endl;
+	}
+	~TestClass()
+	{
+		cout << "~TestClass()" << endl;
+	}
+};
+
+int main2() {
 
 	runTest();
 	testSmartPtr();

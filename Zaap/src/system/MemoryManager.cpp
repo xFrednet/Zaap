@@ -146,7 +146,6 @@ namespace zaap { namespace system {
 		}
 
 		//ZA_INFO("The initialization was successful ");
-		cout << "lol" << endl;
 	}
 	MemoryManager::~MemoryManager()
 	{

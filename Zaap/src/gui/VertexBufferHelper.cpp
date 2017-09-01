@@ -186,13 +186,14 @@ namespace zaap { namespace gui {
 		
 		Vec2 pos = position.getVector();
 		Vec2 offset;
-		Vec2 *texMin, *texMax;
+		Vec2 const* texMin;
+		Vec2 const* texMax;
 		float x = 0;
 		float y = 0;
 		float width;
 		float height;
 		char c;
-		graphics::ZA_FONT_CHAR_INFO* charInfo;
+		graphics::ZA_FONT_CHAR_INFO const* charInfo;
 
 		for (uint i = 0; i < strSize; i++)
 		{

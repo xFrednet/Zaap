@@ -81,7 +81,7 @@ namespace zaap {
 			pullEvents();
 			
 			//update stuff
-			if (update_prog >= 1.0f)
+			if (update_prog >= 1.0f || true)
 			{
 				if (Input::IsKeyPressed(ZA_VK_P))
 				{

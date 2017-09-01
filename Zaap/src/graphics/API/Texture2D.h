@@ -49,7 +49,7 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be bound to.
 		//
-		virtual void bind(uint slot = 0) = 0;
+		virtual void bind(uint slot = 0) const = 0;
 		// <Function>
 		//      unbind
 		//
@@ -64,7 +64,7 @@ namespace zaap { namespace graphics { namespace API {
 		//      slot:
 		//          The slot that the @Texture should be unbound from.
 		//
-		virtual void unbind(uint slot = 0) = 0;
+		virtual void unbind(uint slot = 0) const = 0;
 
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		// // Getters // 

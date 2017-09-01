@@ -79,7 +79,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//      slot::
 		//          The slot that the @Texture should be bound to.;;
 		//
-		void bind(uint slot = 0) override;
+		void bind(uint slot = 0) const override;
 		
 		// <Function>
 		//      unbind
@@ -95,6 +95,6 @@ namespace zaap { namespace graphics { namespace DX {
 		//      slot::
 		//          The slot that the @Texture should be unbound from.;;
 		//
-		void unbind(uint slot = 0) override;
+		void unbind(uint slot = 0) const override;
 	};
 }}}
