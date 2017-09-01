@@ -54,7 +54,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		DXDefaultShader();
 
-		// <Deconstructor>
+		// <Destructor>
 		//		~DXShader
 		//
 		// <Description>

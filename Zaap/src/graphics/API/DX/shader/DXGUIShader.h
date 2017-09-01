@@ -23,7 +23,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//
 		DXGUIShader();
 
-		// <Deconstructor>
+		// <Destructor>
 		//		~DXGUIShader
 		//
 		// <Description>

@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include "system/za_ptr.h"
 
 typedef std::string String;
 // <Type>
@@ -9,9 +10,10 @@ typedef std::string String;
 //
 // <Descritpion>
 //      This is a link to "std::shared_ptr". I use a link because I
-//      may try to implement my own smart_prt at some point and to be honest
+//      may try to implement my own smart pointer at some point and to be honest
 //      I just think that za_ptr sounds better ;P.
-//
+
+
 template<typename T>
 using za_ptr = std::shared_ptr<T>;
 

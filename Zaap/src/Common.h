@@ -5,6 +5,8 @@
 
 #include <string>
 #include <memory>
+#include <thread>
+#include <type_traits>
 
 #include <functional>
 #include <iostream>

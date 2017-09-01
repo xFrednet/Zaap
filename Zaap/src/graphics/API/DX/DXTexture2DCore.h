@@ -23,7 +23,7 @@ namespace zaap { namespace graphics { namespace DX {
 
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Constructors / Deconstructor //
+		// // Constructors / Destructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		DXTexture2DCore(String filePath, ZA_TEX2D_DESC desc);
 		DXTexture2DCore(const Bitmap& bitmap, const String& name, ZA_TEX2D_DESC desc);
@@ -49,11 +49,11 @@ namespace zaap { namespace graphics { namespace DX {
 			ID3D11ShaderResourceView* textureView = nullptr, 
 			ID3D11SamplerState* sampler = nullptr);
 
-		// <Deconstructor>
+		// <Destructor>
 		//      DXTexture2D
 		//
 		// <Description>
-		//      The deconstructor releases the created DirectX objects.
+		//      The destructor releases the created DirectX objects.
 		//
 		~DXTexture2DCore();
 

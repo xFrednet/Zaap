@@ -280,11 +280,11 @@ namespace zaap { namespace graphics {
 	class ZAAP_API Shader
 	{
 	public:
-		// <Deconstructor>
+		// <Destructor>
 		//      ~Shader
 		//
 		// <Description>
-		//      This is a virtual deconstructor to support the deconstructors
+		//      This is a virtual destructor to support the destructors
 		//      of the sub classes.
 		//
 		virtual ~Shader() {}

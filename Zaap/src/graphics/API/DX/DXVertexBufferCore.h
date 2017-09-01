@@ -20,7 +20,7 @@ namespace zaap { namespace graphics { namespace DX {
 		uint m_Stride;
 	public:
 		/* //////////////////////////////////////////////////////////////////////////////// */
-		// // Constructor and Deconstructor //
+		// // Constructor and Destructor //
 		/* //////////////////////////////////////////////////////////////////////////////// */
 		DXVertexBufferCore(uint vertexSize, uint vertexCount, uint indexCount, void* vertices = nullptr, uint* indices = nullptr);
 		DXVertexBufferCore(ID3D11Buffer *vertexBuffer, ID3D11Buffer *indexBuffer, uint stride, uint vertexCount, uint indexCount);

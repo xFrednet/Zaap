@@ -279,6 +279,15 @@
     <ClCompile Include="src\system\FileSystem.cpp">
       <Filter>Source Files\src\system</Filter>
     </ClCompile>
+    <ClCompile Include="src\system\MemoryManager.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\za_ptr.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\Memory.cpp">
+      <Filter>Source Files\src\system</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h">
@@ -498,6 +507,15 @@
       <Filter>Source Files\src\graphics\API\DX</Filter>
     </ClInclude>
     <ClInclude Include="src\system\FileSystem.h">
+      <Filter>Source Files\src\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\MemoryManager.h">
+      <Filter>Source Files\src\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\za_ptr.h">
+      <Filter>Source Files\src\system</Filter>
+    </ClInclude>
+    <ClInclude Include="src\system\Memory.h">
       <Filter>Source Files\src\system</Filter>
     </ClInclude>
   </ItemGroup>

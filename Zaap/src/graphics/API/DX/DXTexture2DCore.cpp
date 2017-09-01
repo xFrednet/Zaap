@@ -6,7 +6,7 @@
 namespace zaap { namespace graphics { namespace DX {
 
 	/* //////////////////////////////////////////////////////////////////////////////// */
-	// // Constructors / Deconstructor // 
+	// // Constructors / Destructor // 
 	/* //////////////////////////////////////////////////////////////////////////////// */
 	DXTexture2DCore::DXTexture2DCore(String filePath, ZA_TEX2D_DESC desc)
 		: Texture2DCore(filePath),

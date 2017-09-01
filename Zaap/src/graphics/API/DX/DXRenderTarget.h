@@ -16,7 +16,7 @@ namespace zaap { namespace graphics { namespace DX {
 		//		m_AutoDeleteMembers
 		//
 		// <Descritpion>
-		//		This is used by the deconstructor to decide if
+		//		This is used by the destructor to decide if
 		//		the members should be deleted by this or a different
 		//		source.
 		//
