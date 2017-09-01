@@ -75,8 +75,6 @@ namespace zaap {
 					delete (T*)m_Object;
 
 				ZaPtrHelper::ReturneObjectInfo(m_ObjectInfo);
-
-				std::cout << "za_ptr destructObject       x_x     X_X     X_X     x_x                       " << " this " << this << std::endl;
 			}
 			
 		}
